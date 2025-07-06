@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Game gradient colors */
+  --gradient-from: #3a1344;
+  --gradient-via: #7967e5;
+  --gradient-to: #99eafc;
 }
 
 @theme inline {
