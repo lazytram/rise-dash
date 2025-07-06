@@ -1,0 +1,16 @@
+{
+  "game": {
+    "title": "Rise Dash",
+    "startGame": "Start Game",
+    "restart": "Restart",
+    "distance": "Distance traveled",
+    "meters": "meters",
+    "instructions": "Use SPACEBAR to jump!",
+    "startMessage": "Press SPACE to start",
+    "jumpMessage": "SPACE to jump"
+  },
+  "ui": {
+    "language": "Language",
+    "selectLanguage": "Select Language"
+  }
+}

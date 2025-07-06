@@ -7,12 +7,16 @@ import { GameLogic } from "@/utils/gameLogic";
 import { GameRenderer } from "@/utils/gameRenderer";
 import { useKeyboardControls } from "@/hooks/useKeyboardControls";
 import { useGameLoop } from "@/hooks/useGameLoop";
+import { useTranslations } from "@/hooks/useTranslations";
 import { GameCanvas } from "./GameCanvas";
 import { GameUI } from "./GameUI";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<GameRenderer | null>(null);
+
+  // Translations
+  const { t } = useTranslations();
 
   const [gameState, setGameState] = useState<GameState>(
     GameLogic.createInitialGameState()
@@ -81,10 +85,17 @@ const Game = () => {
         gameState.player,
         gameState.distance,
         gameState.isGameRunning,
-        gameState.isGameOver
+        gameState.isGameOver,
+        {
+          title: t("game.title"),
+          distance: t("game.distance"),
+          meters: t("game.meters"),
+          startMessage: t("game.startMessage"),
+          jumpMessage: t("game.jumpMessage"),
+        }
       );
     }
-  }, [gameState]);
+  }, [gameState, t]);
 
   return (
     <div className="flex flex-col items-center">

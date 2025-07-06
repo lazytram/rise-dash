@@ -1,0 +1,16 @@
+{
+  "game": {
+    "title": "Rise Dash",
+    "startGame": "Commencer le jeu",
+    "restart": "Recommencer",
+    "distance": "Distance parcourue",
+    "meters": "mètres",
+    "instructions": "Utilisez la BARRE D'ESPACE pour sauter !",
+    "startMessage": "Appuyez sur ESPACE pour commencer",
+    "jumpMessage": "ESPACE pour sauter"
+  },
+  "ui": {
+    "language": "Langue",
+    "selectLanguage": "Choisir la langue"
+  }
+}
