@@ -54,17 +54,26 @@ export class GameRenderer {
     this.ctx.fillRect(player.x + 21, player.y + 7, 2, 2);
   }
 
-  drawDistance(distance: number): void {
+  drawDistance(
+    distance: number,
+    distanceText?: string,
+    metersText?: string
+  ): void {
     this.ctx.fillStyle = COLORS.WHITE;
     this.ctx.font = "bold 20px Arial";
-    this.ctx.fillText(
-      `Distance: ${GameLogic.formatDistance(distance)}m`,
-      20,
-      40
-    );
+    const text = distanceText
+      ? `${distanceText}: ${GameLogic.formatDistance(distance)}${
+          metersText ? ` ${metersText}` : "m"
+        }`
+      : `Distance: ${GameLogic.formatDistance(distance)}m`;
+    this.ctx.fillText(text, 20, 40);
   }
 
-  drawStartScreen(): void {
+  drawStartScreen(
+    titleText?: string,
+    startText?: string,
+    jumpText?: string
+  ): void {
     // Semi-transparent overlay
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(
@@ -79,7 +88,7 @@ export class GameRenderer {
     this.ctx.font = "bold 30px Arial";
     this.ctx.textAlign = "center";
     this.ctx.fillText(
-      "RISE DASH",
+      titleText || "RISE DASH",
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
       GAME_CONSTANTS.CANVAS_HEIGHT / 2 - 50
     );
@@ -87,12 +96,12 @@ export class GameRenderer {
     // Instructions
     this.ctx.font = "20px Arial";
     this.ctx.fillText(
-      "Press SPACE to start",
+      startText || "Press SPACE to start",
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
       GAME_CONSTANTS.CANVAS_HEIGHT / 2
     );
     this.ctx.fillText(
-      "SPACE to jump",
+      jumpText || "SPACE to jump",
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
       GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 30
     );
@@ -104,15 +113,26 @@ export class GameRenderer {
     player: Player,
     distance: number,
     isGameRunning: boolean,
-    isGameOver: boolean
+    isGameOver: boolean,
+    translations?: {
+      title?: string;
+      distance?: string;
+      meters?: string;
+      startMessage?: string;
+      jumpMessage?: string;
+    }
   ): void {
     this.clearCanvas();
     this.drawGround();
     this.drawPlayer(player);
-    this.drawDistance(distance);
+    this.drawDistance(distance, translations?.distance, translations?.meters);
 
     if (!isGameRunning && !isGameOver) {
-      this.drawStartScreen();
+      this.drawStartScreen(
+        translations?.title,
+        translations?.startMessage,
+        translations?.jumpMessage
+      );
     }
   }
 }
