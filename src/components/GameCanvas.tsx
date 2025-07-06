@@ -1,4 +1,3 @@
-import { useRef, useEffect } from "react";
 import { GAME_CONSTANTS } from "@/constants/game";
 
 interface GameCanvasProps {
