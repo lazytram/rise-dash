@@ -28,6 +28,7 @@ const Game = () => {
       isGameRunning: true,
       isGameOver: false,
       distance: 0,
+      riceRockets: [],
       player: GameLogic.resetPlayer(prev.player),
     }));
   }, []);
@@ -39,12 +40,17 @@ const Game = () => {
     }));
   }, []);
 
+  const shoot = useCallback(() => {
+    setGameState((prev) => GameLogic.addRiceRocket(prev));
+  }, []);
+
   const gameLoop = useCallback(() => {
     if (!gameState.isGameRunning) return;
 
     setGameState((prev) => ({
       ...prev,
       player: GameLogic.updatePlayerPhysics(prev.player),
+      riceRockets: GameLogic.updateRiceRockets(prev.riceRockets),
       distance: GameLogic.updateDistance(prev.distance),
     }));
   }, [gameState.isGameRunning]);
@@ -53,7 +59,8 @@ const Game = () => {
   const { handleKeyPress } = useKeyboardControls(
     gameState.isGameRunning,
     jump,
-    startGame
+    startGame,
+    shoot
   );
 
   useGameLoop(gameState.isGameRunning, gameLoop);
@@ -83,6 +90,7 @@ const Game = () => {
     if (rendererRef.current) {
       rendererRef.current.render(
         gameState.player,
+        gameState.riceRockets,
         gameState.distance,
         gameState.isGameRunning,
         gameState.isGameOver,

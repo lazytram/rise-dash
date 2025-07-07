@@ -1,18 +1,12 @@
-import { Player, GameState } from "@/types/game";
+import { Player, GameState, RiceRocket } from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
+import { player } from "@/entities/player";
 
 export class GameLogic {
   static createInitialGameState(): GameState {
     return {
-      player: {
-        x: 100,
-        y: 300,
-        width: 30,
-        height: 30,
-        velocityY: 0,
-        isJumping: false,
-        color: "#ff6b6b",
-      },
+      player: player,
+      riceRockets: [],
       distance: 0,
       isGameRunning: false,
       isGameOver: false,
@@ -70,5 +64,34 @@ export class GameLogic {
 
   static formatDistance(distance: number): number {
     return Math.floor(distance / 10);
+  }
+
+  static createRiceRocket(player: Player): RiceRocket {
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: player.x + player.width,
+      y: player.y + player.height / 2,
+      width: GAME_CONSTANTS.RICE_ROCKET_SIZE,
+      height: GAME_CONSTANTS.RICE_ROCKET_SIZE,
+      velocityX: GAME_CONSTANTS.RICE_ROCKET_SPEED,
+      color: "#ffffff",
+    };
+  }
+
+  static updateRiceRockets(riceRockets: RiceRocket[]): RiceRocket[] {
+    return riceRockets
+      .map((rocket) => ({
+        ...rocket,
+        x: rocket.x + rocket.velocityX,
+      }))
+      .filter((rocket) => rocket.x < GAME_CONSTANTS.CANVAS_WIDTH + 50);
+  }
+
+  static addRiceRocket(gameState: GameState): GameState {
+    const newRiceRocket = this.createRiceRocket(gameState.player);
+    return {
+      ...gameState,
+      riceRockets: [...gameState.riceRockets, newRiceRocket],
+    };
   }
 }

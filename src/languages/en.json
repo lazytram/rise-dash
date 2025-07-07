@@ -5,9 +5,9 @@
     "restart": "Restart",
     "distance": "Distance traveled",
     "meters": "meters",
-    "instructions": "Use SPACEBAR to jump!",
-    "startMessage": "Press SPACE to start",
-    "jumpMessage": "SPACE to jump"
+    "instructions": "Use UP ARROW to jump and SPACEBAR to shoot rice rockets!",
+    "startMessage": "Press SPACE or UP ARROW to start",
+    "jumpMessage": "UP ARROW to jump, SPACE to shoot rice rockets"
   },
   "ui": {
     "language": "Language",

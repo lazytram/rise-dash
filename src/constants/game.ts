@@ -8,6 +8,8 @@ export const GAME_CONSTANTS: GameConstants = {
   JUMP_STRENGTH: -15,
   GROUND_HEIGHT: 50,
   FPS: 60,
+  RICE_ROCKET_SPEED: 8,
+  RICE_ROCKET_SIZE: 4,
 };
 
 // Re-export game colors for backward compatibility

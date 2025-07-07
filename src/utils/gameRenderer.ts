@@ -1,4 +1,4 @@
-import { Player } from "@/types/game";
+import { Player, RiceRocket } from "@/types/game";
 import { GAME_CONSTANTS, COLORS } from "@/constants/game";
 import { GameLogic } from "@/utils/gameLogic";
 
@@ -52,6 +52,21 @@ export class GameRenderer {
     this.ctx.fillStyle = COLORS.BLACK;
     this.ctx.fillRect(player.x + 7, player.y + 7, 2, 2);
     this.ctx.fillRect(player.x + 21, player.y + 7, 2, 2);
+  }
+
+  drawRiceRockets(riceRockets: RiceRocket[]): void {
+    riceRockets.forEach((rocket) => {
+      this.ctx.fillStyle = rocket.color;
+      this.ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
+
+      this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      this.ctx.fillRect(
+        rocket.x,
+        rocket.y,
+        rocket.width / 2,
+        rocket.height / 2
+      );
+    });
   }
 
   drawDistance(
@@ -111,6 +126,7 @@ export class GameRenderer {
 
   render(
     player: Player,
+    riceRockets: RiceRocket[],
     distance: number,
     isGameRunning: boolean,
     isGameOver: boolean,
@@ -125,6 +141,7 @@ export class GameRenderer {
     this.clearCanvas();
     this.drawGround();
     this.drawPlayer(player);
+    this.drawRiceRockets(riceRockets);
     this.drawDistance(distance, translations?.distance, translations?.meters);
 
     if (!isGameRunning && !isGameOver) {
