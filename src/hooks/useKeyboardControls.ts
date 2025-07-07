@@ -2,6 +2,7 @@ import { useCallback } from "react";
 
 export const useKeyboardControls = (
   isGameRunning: boolean,
+  isGameOver: boolean,
   onJump: () => void,
   onStartGame: () => void,
   onShoot?: () => void

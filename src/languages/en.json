@@ -7,7 +7,10 @@
     "meters": "meters",
     "instructions": "Use UP ARROW to jump and SPACEBAR to shoot rice rockets!",
     "startMessage": "Press SPACE or UP ARROW to start",
-    "jumpMessage": "UP ARROW to jump, SPACE to shoot rice rockets"
+    "jumpMessage": "UP ARROW to jump, SPACE to shoot rice rockets",
+    "gameOver": "Game Over!",
+    "finalScore": "Final Score",
+    "restartMessage": "Press SPACE or UP ARROW to restart"
   },
   "ui": {
     "language": "Language",
