@@ -5,9 +5,9 @@
     "restart": "Recommencer",
     "distance": "Distance parcourue",
     "meters": "mètres",
-    "instructions": "Utilisez la BARRE D'ESPACE pour sauter !",
-    "startMessage": "Appuyez sur ESPACE pour commencer",
-    "jumpMessage": "ESPACE pour sauter"
+    "instructions": "Utilisez FLÈCHE HAUT pour sauter et BARRE D'ESPACE pour tirer des roquettes de riz !",
+    "startMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour commencer",
+    "jumpMessage": "FLÈCHE HAUT pour sauter, ESPACE pour tirer des roquettes de riz"
   },
   "ui": {
     "language": "Langue",

@@ -5,9 +5,9 @@
     "restart": "Reiniciar",
     "distance": "Distancia recorrida",
     "meters": "metros",
-    "instructions": "¡Usa la BARRA ESPACIADORA para saltar!",
-    "startMessage": "Presiona ESPACIO para comenzar",
-    "jumpMessage": "ESPACIO para saltar"
+    "instructions": "¡Usa FLECHA ARRIBA para saltar y BARRA ESPACIADORA para disparar cohetes de arroz!",
+    "startMessage": "Presiona ESPACIO o FLECHA ARRIBA para comenzar",
+    "jumpMessage": "FLECHA ARRIBA para saltar, ESPACIO para disparar cohetes de arroz"
   },
   "ui": {
     "language": "Idioma",
