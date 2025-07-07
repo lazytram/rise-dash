@@ -1,4 +1,4 @@
-import { Player, RiceRocket } from "@/types/game";
+import { Player, RiceRocket, Sushi } from "@/types/game";
 import { GAME_CONSTANTS, COLORS } from "@/constants/game";
 import { GameLogic } from "@/utils/gameLogic";
 
@@ -69,6 +69,37 @@ export class GameRenderer {
     });
   }
 
+  drawSushis(sushis: Sushi[]): void {
+    sushis.forEach((sushi) => {
+      // Draw sushi base
+      this.ctx.fillStyle = sushi.color;
+      this.ctx.fillRect(sushi.x, sushi.y, sushi.width, sushi.height);
+
+      // Draw rice (white part)
+      this.ctx.fillStyle = COLORS.WHITE;
+      this.ctx.fillRect(
+        sushi.x + 2,
+        sushi.y + sushi.height * 0.4,
+        sushi.width - 4,
+        sushi.height * 0.6
+      );
+
+      // Draw nori (black outline)
+      this.ctx.strokeStyle = COLORS.BLACK;
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeRect(sushi.x, sushi.y, sushi.width, sushi.height);
+
+      // Draw fish/topping (red/pink part)
+      this.ctx.fillStyle = "#ff6b6b";
+      this.ctx.fillRect(
+        sushi.x + 4,
+        sushi.y + 2,
+        sushi.width - 8,
+        sushi.height * 0.3
+      );
+    });
+  }
+
   drawDistance(
     distance: number,
     distanceText?: string,
@@ -127,6 +158,7 @@ export class GameRenderer {
   render(
     player: Player,
     riceRockets: RiceRocket[],
+    sushis: Sushi[],
     distance: number,
     isGameRunning: boolean,
     isGameOver: boolean,
@@ -142,6 +174,7 @@ export class GameRenderer {
     this.drawGround();
     this.drawPlayer(player);
     this.drawRiceRockets(riceRockets);
+    this.drawSushis(sushis);
     this.drawDistance(distance, translations?.distance, translations?.meters);
 
     if (!isGameRunning && !isGameOver) {

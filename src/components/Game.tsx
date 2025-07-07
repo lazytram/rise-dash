@@ -29,6 +29,7 @@ const Game = () => {
       isGameOver: false,
       distance: 0,
       riceRockets: [],
+      sushis: [],
       player: GameLogic.resetPlayer(prev.player),
     }));
   }, []);
@@ -47,12 +48,7 @@ const Game = () => {
   const gameLoop = useCallback(() => {
     if (!gameState.isGameRunning) return;
 
-    setGameState((prev) => ({
-      ...prev,
-      player: GameLogic.updatePlayerPhysics(prev.player),
-      riceRockets: GameLogic.updateRiceRockets(prev.riceRockets),
-      distance: GameLogic.updateDistance(prev.distance),
-    }));
+    setGameState((prev) => GameLogic.updateGameState(prev));
   }, [gameState.isGameRunning]);
 
   // Custom hooks
@@ -91,6 +87,7 @@ const Game = () => {
       rendererRef.current.render(
         gameState.player,
         gameState.riceRockets,
+        gameState.sushis,
         gameState.distance,
         gameState.isGameRunning,
         gameState.isGameOver,

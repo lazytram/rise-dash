@@ -10,6 +10,8 @@ export const GAME_CONSTANTS: GameConstants = {
   FPS: 60,
   RICE_ROCKET_SPEED: 8,
   RICE_ROCKET_SIZE: 4,
+  SUSHI_SPEED: -4,
+  SUSHI_SPAWN_DISTANCE: 150,
 };
 
 // Re-export game colors for backward compatibility
