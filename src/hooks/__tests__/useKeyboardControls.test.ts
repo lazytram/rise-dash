@@ -16,7 +16,13 @@ describe("useKeyboardControls", () => {
   describe("when game is running", () => {
     it("should call onJump when ArrowUp is pressed", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(true, mockOnJump, mockOnStartGame, mockOnShoot)
+        useKeyboardControls(
+          true,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
       );
 
       const mockEvent = {
@@ -34,7 +40,13 @@ describe("useKeyboardControls", () => {
 
     it("should call onShoot when Space is pressed and onShoot is provided", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(true, mockOnJump, mockOnStartGame, mockOnShoot)
+        useKeyboardControls(
+          true,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
       );
 
       const mockEvent = {
@@ -52,7 +64,7 @@ describe("useKeyboardControls", () => {
 
     it("should not call onShoot when Space is pressed and onShoot is not provided", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(true, mockOnJump, mockOnStartGame)
+        useKeyboardControls(true, false, mockOnJump, mockOnStartGame)
       );
 
       const mockEvent = {
@@ -70,7 +82,13 @@ describe("useKeyboardControls", () => {
 
     it("should not react to other key codes", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(true, mockOnJump, mockOnStartGame, mockOnShoot)
+        useKeyboardControls(
+          true,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
       );
 
       const mockEvent = {
@@ -90,7 +108,13 @@ describe("useKeyboardControls", () => {
   describe("when game is not running", () => {
     it("should call onStartGame when ArrowUp is pressed", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(false, mockOnJump, mockOnStartGame, mockOnShoot)
+        useKeyboardControls(
+          false,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
       );
 
       const mockEvent = {
@@ -108,7 +132,13 @@ describe("useKeyboardControls", () => {
 
     it("should call onStartGame when Space is pressed", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(false, mockOnJump, mockOnStartGame, mockOnShoot)
+        useKeyboardControls(
+          false,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
       );
 
       const mockEvent = {
@@ -126,7 +156,13 @@ describe("useKeyboardControls", () => {
 
     it("should not react to other key codes", () => {
       const { result } = renderHook(() =>
-        useKeyboardControls(false, mockOnJump, mockOnStartGame, mockOnShoot)
+        useKeyboardControls(
+          false,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
       );
 
       const mockEvent = {
@@ -139,6 +175,56 @@ describe("useKeyboardControls", () => {
       expect(mockEvent.preventDefault).toHaveBeenCalled();
       expect(mockOnJump).not.toHaveBeenCalled();
       expect(mockOnStartGame).not.toHaveBeenCalled();
+      expect(mockOnShoot).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("when game is over", () => {
+    it("should call onStartGame when ArrowUp is pressed", () => {
+      const { result } = renderHook(() =>
+        useKeyboardControls(
+          false,
+          true,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
+      );
+
+      const mockEvent = {
+        code: "ArrowUp",
+        preventDefault: jest.fn(),
+      } as unknown as KeyboardEvent;
+
+      result.current.handleKeyPress(mockEvent);
+
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
+      expect(mockOnStartGame).toHaveBeenCalledTimes(1);
+      expect(mockOnJump).not.toHaveBeenCalled();
+      expect(mockOnShoot).not.toHaveBeenCalled();
+    });
+
+    it("should call onStartGame when Space is pressed", () => {
+      const { result } = renderHook(() =>
+        useKeyboardControls(
+          false,
+          true,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
+      );
+
+      const mockEvent = {
+        code: "Space",
+        preventDefault: jest.fn(),
+      } as unknown as KeyboardEvent;
+
+      result.current.handleKeyPress(mockEvent);
+
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
+      expect(mockOnStartGame).toHaveBeenCalledTimes(1);
+      expect(mockOnJump).not.toHaveBeenCalled();
       expect(mockOnShoot).not.toHaveBeenCalled();
     });
   });
