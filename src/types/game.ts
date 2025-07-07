@@ -18,9 +18,20 @@ export interface RiceRocket {
   color: string;
 }
 
+export interface Sushi {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  velocityX: number;
+  color: string;
+}
+
 export interface GameState {
   player: Player;
   riceRockets: RiceRocket[];
+  sushis: Sushi[];
   distance: number;
   isGameRunning: boolean;
   isGameOver: boolean;
@@ -35,4 +46,6 @@ export interface GameConstants {
   FPS: number;
   RICE_ROCKET_SPEED: number;
   RICE_ROCKET_SIZE: number;
+  SUSHI_SPEED: number;
+  SUSHI_SPAWN_DISTANCE: number;
 }
