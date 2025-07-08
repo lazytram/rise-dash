@@ -23,4 +23,5 @@ export const GAME_COLORS = {
   PLAYER: "#ff6b6b",
   WHITE: "#FFFFFF",
   BLACK: "#000000",
+  YELLOW: "#FFD700",
 } as const;

@@ -53,6 +53,7 @@ const Game = () => {
   // Custom hooks
   const { handleKeyPress } = useKeyboardControls(
     gameState.isGameRunning,
+    gameState.isGameOver,
     jump,
     startGame,
     shoot
@@ -91,11 +92,13 @@ const Game = () => {
         gameState.isGameRunning,
         gameState.isGameOver,
         {
-          title: t("game.title"),
           distance: t("game.distance"),
           meters: t("game.meters"),
           startMessage: t("game.startMessage"),
           jumpMessage: t("game.jumpMessage"),
+          gameOver: t("game.gameOver"),
+          finalScore: t("game.finalScore"),
+          restartMessage: t("game.restartMessage"),
         }
       );
     }

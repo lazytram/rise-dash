@@ -146,6 +146,61 @@ export class GameRenderer {
     this.ctx.textAlign = "left";
   }
 
+  drawGameOverScreen(
+    distance: number,
+    gameOverText?: string,
+    finalScoreText?: string,
+    metersText?: string,
+    restartText?: string
+  ): void {
+    // Semi-transparent black overlay
+    this.ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+    this.ctx.fillRect(
+      0,
+      0,
+      GAME_CONSTANTS.CANVAS_WIDTH,
+      GAME_CONSTANTS.CANVAS_HEIGHT
+    );
+
+    // Game Over title
+    this.ctx.fillStyle = COLORS.WHITE;
+    this.ctx.font = "bold 48px Arial";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(
+      gameOverText || "GAME OVER!",
+      GAME_CONSTANTS.CANVAS_WIDTH / 2,
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 - 80
+    );
+
+    // Final Score label
+    this.ctx.font = "24px Arial";
+    this.ctx.fillText(
+      finalScoreText || "Final Score",
+      GAME_CONSTANTS.CANVAS_WIDTH / 2,
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 - 30
+    );
+
+    // Distance score
+    this.ctx.fillStyle = COLORS.YELLOW;
+    this.ctx.font = "bold 36px Arial";
+    this.ctx.fillText(
+      `${GameLogic.formatDistance(distance)} ${metersText || "meters"}`,
+      GAME_CONSTANTS.CANVAS_WIDTH / 2,
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 20
+    );
+
+    // Restart message
+    this.ctx.fillStyle = COLORS.WHITE;
+    this.ctx.font = "18px Arial";
+    this.ctx.fillText(
+      restartText || "Press SPACE or UP ARROW to restart",
+      GAME_CONSTANTS.CANVAS_WIDTH / 2,
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 70
+    );
+
+    this.ctx.textAlign = "left";
+  }
+
   render(
     player: Player,
     riceRockets: RiceRocket[],
@@ -159,6 +214,9 @@ export class GameRenderer {
       meters?: string;
       startMessage?: string;
       jumpMessage?: string;
+      gameOver?: string;
+      finalScore?: string;
+      restartMessage?: string;
     }
   ): void {
     this.clearCanvas();
@@ -172,6 +230,14 @@ export class GameRenderer {
       this.drawStartScreen(
         translations?.startMessage,
         translations?.jumpMessage
+      );
+    } else if (isGameOver) {
+      this.drawGameOverScreen(
+        distance,
+        translations?.gameOver,
+        translations?.finalScore,
+        translations?.meters,
+        translations?.restartMessage
       );
     }
   }
