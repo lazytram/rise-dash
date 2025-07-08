@@ -12,10 +12,16 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "@rainbow-me/rainbowkit-siwe-next-auth": "^0.5.0",
+    "@tanstack/react-query": "^5.81.5",
+    "ethers": "^6.15.0",
     "next": "15.3.5",
     "next-intl": "^4.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "viem": "^2.31.7",
+    "wagmi": "^2.15.6",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

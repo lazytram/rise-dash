@@ -115,11 +115,7 @@ export class GameRenderer {
     this.ctx.fillText(text, 20, 40);
   }
 
-  drawStartScreen(
-    titleText?: string,
-    startText?: string,
-    jumpText?: string
-  ): void {
+  drawStartScreen(startText?: string, jumpText?: string): void {
     // Semi-transparent overlay
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(
@@ -232,7 +228,6 @@ export class GameRenderer {
 
     if (!isGameRunning && !isGameOver) {
       this.drawStartScreen(
-        translations?.title,
         translations?.startMessage,
         translations?.jumpMessage
       );
