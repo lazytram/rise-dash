@@ -1,6 +1,6 @@
-import { Player, RiceRocket, Sushi } from "@/types/game";
+import { Player, RiceRocket, Sushi, Torii } from "@/types/game";
 import { GAME_CONSTANTS, COLORS } from "@/constants/game";
-import { GameLogic } from "@/utils/gameLogic";
+import { formatGameDistance } from "@/utils/gameLogic";
 
 export class GameRenderer {
   private ctx: CanvasRenderingContext2D;
@@ -90,12 +90,59 @@ export class GameRenderer {
       this.ctx.strokeRect(sushi.x, sushi.y, sushi.width, sushi.height);
 
       // Draw fish/topping (red/pink part)
-      this.ctx.fillStyle = "#ff6b6b";
+      this.ctx.fillStyle = COLORS.SUSHI_FISH;
       this.ctx.fillRect(
         sushi.x + 4,
         sushi.y + 2,
         sushi.width - 8,
         sushi.height * 0.3
+      );
+    });
+  }
+
+  drawTorii(torii: Torii[]): void {
+    torii.forEach((torii) => {
+      // Traditional red color for Torii
+      this.ctx.fillStyle = COLORS.TORII_RED;
+
+      // Draw vertical pillars
+      const pillarWidth = GAME_CONSTANTS.TORII_PILLAR_WIDTH;
+      const pillarHeight = torii.height;
+
+      // Left pillar
+      this.ctx.fillRect(torii.x, torii.y, pillarWidth, pillarHeight);
+
+      // Right pillar
+      this.ctx.fillRect(
+        torii.x + torii.width - pillarWidth,
+        torii.y,
+        pillarWidth,
+        pillarHeight
+      );
+
+      // Draw top horizontal bar
+      const topBarHeight = GAME_CONSTANTS.TORII_TOP_BAR_HEIGHT;
+      const topBarWidth = torii.width + 10;
+      this.ctx.fillRect(torii.x - 5, torii.y, topBarWidth, topBarHeight);
+
+      // Draw bottom horizontal bar
+      const bottomBarHeight = GAME_CONSTANTS.TORII_BOTTOM_BAR_HEIGHT;
+      const bottomBarWidth = torii.width + 6;
+      this.ctx.fillRect(
+        torii.x - 3,
+        torii.y + 20,
+        bottomBarWidth,
+        bottomBarHeight
+      );
+
+      // Draw center horizontal bar
+      const centerBarHeight = GAME_CONSTANTS.TORII_CENTER_BAR_HEIGHT;
+      const centerBarWidth = torii.width + 2;
+      this.ctx.fillRect(
+        torii.x - 1,
+        torii.y + 40,
+        centerBarWidth,
+        centerBarHeight
       );
     });
   }
@@ -108,10 +155,10 @@ export class GameRenderer {
     this.ctx.fillStyle = COLORS.WHITE;
     this.ctx.font = "bold 20px Arial";
     const text = distanceText
-      ? `${distanceText}: ${GameLogic.formatDistance(distance)}${
+      ? `${distanceText}: ${formatGameDistance(distance)}${
           metersText ? ` ${metersText}` : "m"
         }`
-      : `Distance: ${GameLogic.formatDistance(distance)}m`;
+      : `Distance: ${formatGameDistance(distance)}m`;
     this.ctx.fillText(text, 20, 40);
   }
 
@@ -150,6 +197,7 @@ export class GameRenderer {
     player: Player,
     riceRockets: RiceRocket[],
     sushis: Sushi[],
+    torii: Torii[],
     distance: number,
     isGameRunning: boolean,
     isGameOver: boolean,
@@ -169,6 +217,7 @@ export class GameRenderer {
     this.drawPlayer(player);
     this.drawRiceRockets(riceRockets);
     this.drawSushis(sushis);
+    this.drawTorii(torii);
     this.drawDistance(distance, translations?.distance, translations?.meters);
 
     if (!isGameRunning && !isGameOver) {
