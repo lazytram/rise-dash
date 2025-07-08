@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { GameLogic } from "@/utils/gameLogic";
+import { formatGameDistance } from "@/utils/gameLogic";
 import { UI_COLORS } from "@/constants/colors";
 import { useTranslations } from "@/hooks/useTranslations";
 
@@ -39,7 +39,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           className="text-3xl font-bold mb-6"
           style={{ color: UI_COLORS.GRADIENT_FROM }}
         >
-          {GameLogic.formatDistance(distance)} {t("game.meters")}
+          {formatGameDistance(distance)} {t("game.meters")}
         </div>
 
         <p className="text-lg text-gray-600 mb-6">{t("game.restartMessage")}</p>

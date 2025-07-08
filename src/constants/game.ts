@@ -12,6 +12,20 @@ export const GAME_CONSTANTS: GameConstants = {
   RICE_ROCKET_SIZE: 4,
   SUSHI_SPEED: -4,
   SUSHI_SPAWN_DISTANCE: 150,
+  // Torii constants
+  TORII_SPAWN_DISTANCE: 100, // Spawn every 100 meters traveled
+  TORII_WIDTH: 60,
+  TORII_HEIGHT: 80,
+  TORII_PILLAR_WIDTH: 8,
+  TORII_TOP_BAR_HEIGHT: 12,
+  TORII_BOTTOM_BAR_HEIGHT: 8,
+  TORII_CENTER_BAR_HEIGHT: 6,
+  // Sushi spawn constants
+  SUSHI_MIN_SPAWN_DISTANCE: 300,
+  SUSHI_MAX_SPAWN_DISTANCE: 700,
+  SUSHI_SPAWN_PROBABILITY: 0.7,
+  // Game start constants
+  INITIAL_SUSHI_SPAWN_DISTANCE: 100, // First Torii at 500 meters
 };
 
 // Re-export game colors for backward compatibility

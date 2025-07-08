@@ -23,4 +23,10 @@ export const GAME_COLORS = {
   PLAYER: "#ff6b6b",
   WHITE: "#FFFFFF",
   BLACK: "#000000",
+  YELLOW: "#FFD700",
+  // Torii colors
+  TORII_RED: "#dc2626",
+  // Sushi colors
+  SUSHI_BASE: "#ff9500",
+  SUSHI_FISH: "#ff6b6b",
 } as const;

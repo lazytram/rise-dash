@@ -1,7 +1,13 @@
-import { GameLogic } from "../gameLogic";
 import { GameState, Player, Sushi } from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
-import { player } from "@/entities/player";
+
+import {
+  createInitialGameState,
+  updateGameState,
+  checkPlayerSushiCollisions,
+} from "@/utils/gameLogic";
+import { player } from "@/entities/playerData";
+import { createSushi, shouldSpawnSushi, updateSushis } from "@/entities/sushi";
 
 const createTestSushi = (overrides: Partial<Sushi> = {}): Sushi => ({
   id: "test-sushi",
@@ -28,13 +34,13 @@ describe("GameLogic - Sushi functionality", () => {
   });
 
   beforeEach(() => {
-    initialGameState = GameLogic.createInitialGameState();
+    initialGameState = createInitialGameState();
     testPlayer = { ...player };
   });
 
   describe("createSushi", () => {
     it("should create a sushi with correct properties", () => {
-      const sushi = GameLogic.createSushi();
+      const sushi = createSushi();
 
       expect(sushi).toMatchObject({
         x: GAME_CONSTANTS.CANVAS_WIDTH,
@@ -57,10 +63,7 @@ describe("GameLogic - Sushi functionality", () => {
       const visibleSushi = createTestSushi({ x: 100 });
       const offScreenSushi = createTestSushi({ x: -100 });
 
-      const updatedSushis = GameLogic.updateSushis([
-        visibleSushi,
-        offScreenSushi,
-      ]);
+      const updatedSushis = updateSushis([visibleSushi, offScreenSushi]);
 
       expect(updatedSushis).toHaveLength(1);
       expect(updatedSushis[0].x).toBe(100 + GAME_CONSTANTS.SUSHI_SPEED);
@@ -73,7 +76,7 @@ describe("GameLogic - Sushi functionality", () => {
       [150, true],
     ])("should handle distance %d correctly", (distance, expected) => {
       const gameState = { ...initialGameState, distance };
-      expect(GameLogic.shouldSpawnSushi(gameState)).toBe(expected);
+      expect(shouldSpawnSushi(gameState)).toBe(expected);
     });
   });
 
@@ -83,15 +86,21 @@ describe("GameLogic - Sushi functionality", () => {
 
       // Collision case
       const overlappingPlayer = { ...testPlayer, x: 150, y: 300 };
-      expect(
-        GameLogic.checkCollisionWithSushi(overlappingPlayer, testSushi)
-      ).toBe(true);
+      const collisionGameState = {
+        ...initialGameState,
+        player: overlappingPlayer,
+        sushis: [testSushi],
+      };
+      expect(checkPlayerSushiCollisions(collisionGameState)).toBe(true);
 
       // No collision case
       const separatePlayer = { ...testPlayer, x: 50, y: 300 };
-      expect(GameLogic.checkCollisionWithSushi(separatePlayer, testSushi)).toBe(
-        false
-      );
+      const noCollisionGameState = {
+        ...initialGameState,
+        player: separatePlayer,
+        sushis: [testSushi],
+      };
+      expect(checkPlayerSushiCollisions(noCollisionGameState)).toBe(false);
     });
   });
 
@@ -103,7 +112,7 @@ describe("GameLogic - Sushi functionality", () => {
         isGameRunning: true,
         distance: 150,
       };
-      const spawnResult = GameLogic.updateGameState(spawnGameState);
+      const spawnResult = updateGameState(spawnGameState);
       expect(spawnResult.sushis).toHaveLength(1);
 
       // Test collision
@@ -114,13 +123,13 @@ describe("GameLogic - Sushi functionality", () => {
           player: { ...testPlayer, x: 100, y: 300 },
         }
       );
-      const collisionResult = GameLogic.updateGameState(collisionGameState);
+      const collisionResult = updateGameState(collisionGameState);
       expect(collisionResult.isGameOver).toBe(true);
     });
 
     it("should not update when game is not running", () => {
       const gameState = { ...initialGameState, isGameRunning: false };
-      const result = GameLogic.updateGameState(gameState);
+      const result = updateGameState(gameState);
       expect(result).toBe(gameState);
     });
   });
