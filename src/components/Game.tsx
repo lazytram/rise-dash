@@ -9,7 +9,6 @@ import { useKeyboardControls } from "@/hooks/useKeyboardControls";
 import { useGameLoop } from "@/hooks/useGameLoop";
 import { useTranslations } from "@/hooks/useTranslations";
 import { GameCanvas } from "./GameCanvas";
-import { GameUI } from "./GameUI";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -105,7 +104,6 @@ const Game = () => {
   return (
     <div className="flex flex-col items-center">
       <GameCanvas canvasRef={canvasRef} />
-      <GameUI gameState={gameState} onStartGame={startGame} />
     </div>
   );
 };

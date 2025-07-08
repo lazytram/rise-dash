@@ -115,11 +115,7 @@ export class GameRenderer {
     this.ctx.fillText(text, 20, 40);
   }
 
-  drawStartScreen(
-    titleText?: string,
-    startText?: string,
-    jumpText?: string
-  ): void {
+  drawStartScreen(startText?: string, jumpText?: string): void {
     // Semi-transparent overlay
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(
@@ -133,11 +129,6 @@ export class GameRenderer {
     this.ctx.fillStyle = COLORS.WHITE;
     this.ctx.font = "bold 30px Arial";
     this.ctx.textAlign = "center";
-    this.ctx.fillText(
-      titleText || "RISE DASH",
-      GAME_CONSTANTS.CANVAS_WIDTH / 2,
-      GAME_CONSTANTS.CANVAS_HEIGHT / 2 - 50
-    );
 
     // Instructions
     this.ctx.font = "20px Arial";
@@ -179,7 +170,6 @@ export class GameRenderer {
 
     if (!isGameRunning && !isGameOver) {
       this.drawStartScreen(
-        translations?.title,
         translations?.startMessage,
         translations?.jumpMessage
       );
