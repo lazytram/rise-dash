@@ -3,13 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { GameState } from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
-import {
-  createInitialGameState,
-  resetGamePlayer,
-  makeGamePlayerJump,
-  addGameRiceRocket,
-  updateGameState,
-} from "@/utils/gameLogic";
+import { GameLogic } from "@/utils/gameLogic";
 import { GameRenderer } from "@/utils/gameRenderer";
 import { useKeyboardControls } from "@/hooks/useKeyboardControls";
 import { useGameLoop } from "@/hooks/useGameLoop";
@@ -25,7 +19,7 @@ const Game = () => {
   const { t } = useTranslations();
 
   const [gameState, setGameState] = useState<GameState>(
-    createInitialGameState()
+    GameLogic.createInitialGameState()
   );
 
   const startGame = useCallback(() => {
@@ -36,25 +30,25 @@ const Game = () => {
       distance: 0,
       riceRockets: [],
       sushis: [],
-      player: resetGamePlayer(prev.player),
+      player: GameLogic.resetPlayer(prev.player),
     }));
   }, []);
 
   const jump = useCallback(() => {
     setGameState((prev) => ({
       ...prev,
-      player: makeGamePlayerJump(prev.player),
+      player: GameLogic.makePlayerJump(prev.player),
     }));
   }, []);
 
   const shoot = useCallback(() => {
-    setGameState((prev) => addGameRiceRocket(prev));
+    setGameState((prev) => GameLogic.addRiceRocket(prev));
   }, []);
 
   const gameLoop = useCallback(() => {
     if (!gameState.isGameRunning) return;
 
-    setGameState((prev) => updateGameState(prev));
+    setGameState((prev) => GameLogic.updateGameState(prev));
   }, [gameState.isGameRunning]);
 
   // Custom hooks
@@ -95,7 +89,6 @@ const Game = () => {
         gameState.player,
         gameState.riceRockets,
         gameState.sushis,
-        gameState.torii,
         gameState.distance,
         gameState.isGameRunning,
         gameState.isGameOver,

@@ -28,20 +28,10 @@ export interface Sushi {
   color: string;
 }
 
-export interface Torii {
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  velocityX: number;
-}
-
 export interface GameState {
   player: Player;
   riceRockets: RiceRocket[];
   sushis: Sushi[];
-  torii: Torii[];
   distance: number;
   isGameRunning: boolean;
   isGameOver: boolean;
@@ -58,18 +48,4 @@ export interface GameConstants {
   RICE_ROCKET_SIZE: number;
   SUSHI_SPEED: number;
   SUSHI_SPAWN_DISTANCE: number;
-  // Torii constants
-  TORII_SPAWN_DISTANCE: number;
-  TORII_WIDTH: number;
-  TORII_HEIGHT: number;
-  TORII_PILLAR_WIDTH: number;
-  TORII_TOP_BAR_HEIGHT: number;
-  TORII_BOTTOM_BAR_HEIGHT: number;
-  TORII_CENTER_BAR_HEIGHT: number;
-  // Sushi spawn constants
-  SUSHI_MIN_SPAWN_DISTANCE: number;
-  SUSHI_MAX_SPAWN_DISTANCE: number;
-  SUSHI_SPAWN_PROBABILITY: number;
-  // Game start constants
-  INITIAL_SUSHI_SPAWN_DISTANCE: number;
 }

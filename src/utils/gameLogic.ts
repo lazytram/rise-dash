@@ -1,140 +1,215 @@
-import { Player, GameState } from "@/types/game";
-import { player } from "@/entities/playerData";
-import {
-  resetPlayer,
-  updatePlayerPhysics,
-  canJump,
-  makePlayerJump,
-} from "@/entities/player";
-import { updateSushis, shouldSpawnSushi, addSushi } from "@/entities/sushi";
-import { updateTorii, shouldSpawnTorii, addTorii } from "@/entities/torii";
-import { updateRiceRockets, addRiceRocket } from "@/entities/riceRocket";
-import { formatDistance } from "@/utils/entityUtils";
+import { Player, GameState, RiceRocket, Sushi } from "@/types/game";
+import { GAME_CONSTANTS } from "@/constants/game";
+import { player } from "@/entities/player";
 
-// ================================
-// UTILITY FUNCTIONS
-// ================================
+export class GameLogic {
+  // ================================
+  // GAME STATE MANAGEMENT
+  // ================================
 
-export const updateDistance = (currentDistance: number): number => {
-  return currentDistance + 1;
-};
-
-export const formatGameDistance = (distance: number): number => {
-  return formatDistance(distance);
-};
-
-// ================================
-// GAME STATE MANAGEMENT
-// ================================
-
-export const createInitialGameState = (): GameState => {
-  return {
-    player: player,
-    riceRockets: [],
-    sushis: [],
-    torii: [],
-    distance: 0,
-    isGameRunning: false,
-    isGameOver: false,
-  };
-};
-
-export const updateGameState = (gameState: GameState): GameState => {
-  if (!gameState.isGameRunning || gameState.isGameOver) {
-    return gameState;
-  }
-
-  // Update all game entities
-  const updatedPlayer = updatePlayerPhysics(gameState.player);
-  const updatedRiceRockets = updateRiceRockets(gameState.riceRockets);
-  const updatedSushis = updateSushis(gameState.sushis);
-  const updatedTorii = updateTorii(gameState.torii);
-  const updatedDistance = updateDistance(gameState.distance);
-
-  let newGameState = {
-    ...gameState,
-    player: updatedPlayer,
-    riceRockets: updatedRiceRockets,
-    sushis: updatedSushis,
-    torii: updatedTorii,
-    distance: updatedDistance,
-  };
-
-  // Spawn new entities
-  newGameState = spawnEntities(newGameState);
-
-  // Check for game over conditions
-  if (checkPlayerSushiCollisions(newGameState)) {
-    newGameState = {
-      ...newGameState,
+  static createInitialGameState(): GameState {
+    return {
+      player: player,
+      riceRockets: [],
+      sushis: [],
+      distance: 0,
       isGameRunning: false,
-      isGameOver: true,
+      isGameOver: false,
     };
   }
 
-  return newGameState;
-};
+  static updateGameState(gameState: GameState): GameState {
+    if (!gameState.isGameRunning || gameState.isGameOver) {
+      return gameState;
+    }
 
-const spawnEntities = (gameState: GameState): GameState => {
-  let newGameState = gameState;
+    // Update all game entities
+    const updatedPlayer = this.updatePlayerPhysics(gameState.player);
+    const updatedRiceRockets = this.updateRiceRockets(gameState.riceRockets);
+    const updatedSushis = this.updateSushis(gameState.sushis);
+    const updatedDistance = this.updateDistance(gameState.distance);
 
-  if (shouldSpawnSushi(newGameState)) {
-    newGameState = addSushi(newGameState);
+    let newGameState = {
+      ...gameState,
+      player: updatedPlayer,
+      riceRockets: updatedRiceRockets,
+      sushis: updatedSushis,
+      distance: updatedDistance,
+    };
+
+    // Spawn new sushi if needed
+    if (this.shouldSpawnSushi(newGameState)) {
+      newGameState = this.addSushi(newGameState);
+    }
+
+    // Check for game over conditions
+    if (this.checkPlayerSushiCollisions(newGameState)) {
+      newGameState = {
+        ...newGameState,
+        isGameRunning: false,
+        isGameOver: true,
+      };
+    }
+
+    return newGameState;
   }
 
-  if (shouldSpawnTorii(newGameState)) {
-    newGameState = addTorii(newGameState);
+  // ================================
+  // PLAYER MANAGEMENT
+  // ================================
+
+  static resetPlayer(player: Player): Player {
+    return {
+      ...player,
+      x: 100,
+      y: 300,
+      velocityY: 0,
+      isJumping: false,
+    };
   }
 
-  return newGameState;
-};
+  static updatePlayerPhysics(player: Player): Player {
+    const newPlayer = { ...player };
 
-// ================================
-// PLAYER MANAGEMENT
-// ================================
+    // Apply gravity
+    newPlayer.velocityY += GAME_CONSTANTS.GRAVITY;
+    newPlayer.y += newPlayer.velocityY;
 
-export const resetGamePlayer = (player: Player): Player => {
-  return resetPlayer(player);
-};
+    // Check ground collision
+    const groundY =
+      GAME_CONSTANTS.CANVAS_HEIGHT -
+      GAME_CONSTANTS.GROUND_HEIGHT -
+      newPlayer.height;
 
-export const updateGamePlayerPhysics = (player: Player): Player => {
-  return updatePlayerPhysics(player);
-};
+    if (newPlayer.y >= groundY) {
+      newPlayer.y = groundY;
+      newPlayer.velocityY = 0;
+      newPlayer.isJumping = false;
+    }
 
-export const canPlayerJump = (player: Player): boolean => {
-  return canJump(player);
-};
+    return newPlayer;
+  }
 
-export const makeGamePlayerJump = (player: Player): Player => {
-  return makePlayerJump(player);
-};
+  static canJump(player: Player): boolean {
+    return !player.isJumping;
+  }
 
-// ================================
-// ENTITY SPAWNING
-// ================================
+  static makePlayerJump(player: Player): Player {
+    if (!this.canJump(player)) return player;
 
-export const addGameRiceRocket = (gameState: GameState): GameState => {
-  return addRiceRocket(gameState);
-};
+    return {
+      ...player,
+      velocityY: GAME_CONSTANTS.JUMP_STRENGTH,
+      isJumping: true,
+    };
+  }
 
-// ================================
-// COLLISION DETECTION
-// ================================
+  // ================================
+  // RICE ROCKET MANAGEMENT
+  // ================================
 
-export const checkPlayerSushiCollisions = (gameState: GameState): boolean => {
-  return gameState.sushis.some((sushi) =>
-    checkCollision(gameState.player, sushi)
-  );
-};
+  static createRiceRocket(player: Player): RiceRocket {
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: player.x + player.width,
+      y: player.y + player.height / 2,
+      width: GAME_CONSTANTS.RICE_ROCKET_SIZE,
+      height: GAME_CONSTANTS.RICE_ROCKET_SIZE,
+      velocityX: GAME_CONSTANTS.RICE_ROCKET_SPEED,
+      color: "#ffffff",
+    };
+  }
 
-const checkCollision = (
-  player: Player,
-  entity: { x: number; y: number; width: number; height: number }
-): boolean => {
-  return (
-    player.x < entity.x + entity.width &&
-    player.x + player.width > entity.x &&
-    player.y < entity.y + entity.height &&
-    player.y + player.height > entity.y
-  );
-};
+  static updateRiceRockets(riceRockets: RiceRocket[]): RiceRocket[] {
+    return riceRockets
+      .map((rocket) => ({
+        ...rocket,
+        x: rocket.x + rocket.velocityX,
+      }))
+      .filter((rocket) => rocket.x < GAME_CONSTANTS.CANVAS_WIDTH + 50);
+  }
+
+  static addRiceRocket(gameState: GameState): GameState {
+    const newRiceRocket = this.createRiceRocket(gameState.player);
+    return {
+      ...gameState,
+      riceRockets: [...gameState.riceRockets, newRiceRocket],
+    };
+  }
+
+  // ================================
+  // SUSHI MANAGEMENT
+  // ================================
+
+  static createSushi(): Sushi {
+    const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
+
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: GAME_CONSTANTS.CANVAS_WIDTH,
+      y: groundY - player.height, // Same height as player, on the ground
+      width: player.width, // Same width as player
+      height: player.height, // Same height as player
+      velocityX: GAME_CONSTANTS.SUSHI_SPEED,
+      color: "#ff9500",
+    };
+  }
+
+  static updateSushis(sushis: Sushi[]): Sushi[] {
+    return sushis
+      .map((sushi) => ({
+        ...sushi,
+        x: sushi.x + sushi.velocityX,
+      }))
+      .filter((sushi) => sushi.x > -sushi.width);
+  }
+
+  static shouldSpawnSushi(gameState: GameState): boolean {
+    if (gameState.sushis.length === 0) {
+      return gameState.distance > 100; // Start spawning after some distance
+    }
+
+    const lastSushi = gameState.sushis[gameState.sushis.length - 1];
+    const distanceFromLast = GAME_CONSTANTS.CANVAS_WIDTH - lastSushi.x;
+    return distanceFromLast >= GAME_CONSTANTS.SUSHI_SPAWN_DISTANCE;
+  }
+
+  static addSushi(gameState: GameState): GameState {
+    const newSushi = this.createSushi();
+    return {
+      ...gameState,
+      sushis: [...gameState.sushis, newSushi],
+    };
+  }
+
+  // ================================
+  // COLLISION DETECTION
+  // ================================
+
+  static checkCollisionWithSushi(player: Player, sushi: Sushi): boolean {
+    return (
+      player.x < sushi.x + sushi.width &&
+      player.x + player.width > sushi.x &&
+      player.y < sushi.y + sushi.height &&
+      player.y + player.height > sushi.y
+    );
+  }
+
+  static checkPlayerSushiCollisions(gameState: GameState): boolean {
+    return gameState.sushis.some((sushi) =>
+      this.checkCollisionWithSushi(gameState.player, sushi)
+    );
+  }
+
+  // ================================
+  // UTILITY FUNCTIONS
+  // ================================
+
+  static updateDistance(currentDistance: number): number {
+    return currentDistance + 1;
+  }
+
+  static formatDistance(distance: number): number {
+    return Math.floor(distance / 10);
+  }
+}

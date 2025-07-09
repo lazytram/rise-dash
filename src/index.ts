@@ -15,3 +15,4 @@ export * from "./hooks/useGameLoop";
 // Components
 export { default as Game } from "./components/Game";
 export { GameCanvas } from "./components/GameCanvas";
+export { GameUI } from "./components/GameUI";
