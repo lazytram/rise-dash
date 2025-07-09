@@ -15,12 +15,57 @@ export const UI_COLORS = {
   BUTTON_HOVER: "#f3f4f6", // Light gray
 } as const;
 
-// Game Colors (existing)
-export const GAME_COLORS = {
+// Environment Colors
+export const ENVIRONMENT_COLORS = {
   SKY: "#87CEEB",
   GROUND: "#8B4513",
   GRASS: "#228B22",
-  PLAYER: "#ff6b6b",
+} as const;
+
+// Player Colors
+export const PLAYER_COLORS = {
+  BODY: "#ff6b6b",
+  EYES_WHITE: "#FFFFFF",
+  EYES_PUPIL: "#000000",
+} as const;
+
+// Rice Rocket Colors
+export const RICE_ROCKET_COLORS = {
+  BODY: "#ffffff",
+  HIGHLIGHT: "rgba(255, 255, 255, 0.8)",
+} as const;
+
+// Sushi Colors
+export const SUSHI_COLORS = {
+  BASE: "#ff9500",
+  RICE: "#FFFFFF",
+  FISH: "#ff6b6b",
+  NORI: "#000000",
+} as const;
+
+// Torii Colors
+export const TORII_COLORS = {
+  PRIMARY: "#dc2626",
+  SECONDARY: "#ef4444",
+  WOOD_GRAIN: "rgba(139, 69, 19, 0.3)",
+  GOLD_DETAILS: "#FFD700",
+  SHADOW: "rgba(0, 0, 0, 0.3)",
+  OUTLINE: "rgba(0, 0, 0, 0.5)",
+} as const;
+
+// Common Colors
+export const COMMON_COLORS = {
   WHITE: "#FFFFFF",
   BLACK: "#000000",
+  YELLOW: "#FFD700",
+} as const;
+
+// Legacy export for backward compatibility
+export const GAME_COLORS = {
+  ...ENVIRONMENT_COLORS,
+  ...PLAYER_COLORS,
+  ...COMMON_COLORS,
+  TORII_RED: TORII_COLORS.PRIMARY,
+  SUSHI_BASE: SUSHI_COLORS.BASE,
+  SUSHI_FISH: SUSHI_COLORS.FISH,
 } as const;

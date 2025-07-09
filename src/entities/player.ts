@@ -1,3 +1,4 @@
+import { PLAYER_COLORS } from "@/constants/colors";
 import { Player } from "@/types/game";
 
 export const player: Player = {
@@ -7,5 +8,5 @@ export const player: Player = {
   height: 30,
   velocityY: 0,
   isJumping: false,
-  color: "#ff6b6b",
+  color: PLAYER_COLORS.BODY,
 };

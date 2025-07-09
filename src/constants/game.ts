@@ -1,7 +1,4 @@
-import { GameConstants } from "@/types/game";
-import { GAME_COLORS } from "./colors";
-
-export const GAME_CONSTANTS: GameConstants = {
+export const GAME_CONSTANTS = {
   CANVAS_WIDTH: 800,
   CANVAS_HEIGHT: 400,
   GRAVITY: 0.8,
@@ -12,7 +9,18 @@ export const GAME_CONSTANTS: GameConstants = {
   RICE_ROCKET_SIZE: 4,
   SUSHI_SPEED: -4,
   SUSHI_SPAWN_DISTANCE: 150,
-};
-
-// Re-export game colors for backward compatibility
-export const COLORS = GAME_COLORS;
+  // Torii constants
+  TORII_SPAWN_DISTANCE: 100, // Spawn every 100 meters traveled
+  TORII_WIDTH: 60,
+  TORII_HEIGHT: 80,
+  TORII_PILLAR_WIDTH: 8,
+  TORII_TOP_BAR_HEIGHT: 12,
+  TORII_BOTTOM_BAR_HEIGHT: 8,
+  TORII_CENTER_BAR_HEIGHT: 6,
+  // Sushi spawn constants
+  SUSHI_MIN_SPAWN_DISTANCE: 600,
+  SUSHI_MAX_SPAWN_DISTANCE: 900,
+  SUSHI_SPAWN_PROBABILITY: 0.7,
+  // Game start constants
+  INITIAL_SUSHI_SPAWN_DISTANCE: 100, // First Torii at 500 meters
+} as const;
