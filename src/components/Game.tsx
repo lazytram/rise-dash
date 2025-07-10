@@ -89,6 +89,7 @@ const Game = () => {
         gameState.player,
         gameState.riceRockets,
         gameState.sushis,
+        gameState.toriis,
         gameState.distance,
         gameState.isGameRunning,
         gameState.isGameOver,

@@ -1,5 +1,10 @@
-import { Player, GameState, RiceRocket, Sushi } from "@/types/game";
+import { Player, GameState, RiceRocket, Sushi, Torii } from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
+import {
+  RICE_ROCKET_COLORS,
+  SUSHI_COLORS,
+  TORII_COLORS,
+} from "@/constants/colors";
 import { player } from "@/entities/player";
 
 export class GameLogic {
@@ -12,6 +17,7 @@ export class GameLogic {
       player: player,
       riceRockets: [],
       sushis: [],
+      toriis: [],
       distance: 0,
       isGameRunning: false,
       isGameOver: false,
@@ -27,6 +33,7 @@ export class GameLogic {
     const updatedPlayer = this.updatePlayerPhysics(gameState.player);
     const updatedRiceRockets = this.updateRiceRockets(gameState.riceRockets);
     const updatedSushis = this.updateSushis(gameState.sushis);
+    const updatedToriis = this.updateToriis(gameState.toriis);
     const updatedDistance = this.updateDistance(gameState.distance);
 
     let newGameState = {
@@ -34,21 +41,39 @@ export class GameLogic {
       player: updatedPlayer,
       riceRockets: updatedRiceRockets,
       sushis: updatedSushis,
+      toriis: updatedToriis,
       distance: updatedDistance,
     };
 
-    // Spawn new sushi if needed
-    if (this.shouldSpawnSushi(newGameState)) {
-      newGameState = this.addSushi(newGameState);
-    }
+    // Spawn new entities
+    newGameState = this.spawnEntities(newGameState);
 
     // Check for game over conditions
     if (this.checkPlayerSushiCollisions(newGameState)) {
       newGameState = {
         ...newGameState,
-        isGameRunning: false,
         isGameOver: true,
+        isGameRunning: false,
       };
+    }
+
+    return newGameState;
+  }
+
+  // ================================
+  // ENTITY SPAWNING
+  // ================================
+
+  static spawnEntities(gameState: GameState): GameState {
+    let newGameState = gameState;
+
+    if (this.shouldSpawnSushi(newGameState)) {
+      newGameState = this.addSushi(newGameState);
+    }
+
+    // Spawn Torii
+    if (this.shouldSpawnTorii(newGameState)) {
+      newGameState = this.addTorii(newGameState);
     }
 
     return newGameState;
@@ -116,7 +141,7 @@ export class GameLogic {
       width: GAME_CONSTANTS.RICE_ROCKET_SIZE,
       height: GAME_CONSTANTS.RICE_ROCKET_SIZE,
       velocityX: GAME_CONSTANTS.RICE_ROCKET_SPEED,
-      color: "#ffffff",
+      color: RICE_ROCKET_COLORS.BODY,
     };
   }
 
@@ -151,7 +176,7 @@ export class GameLogic {
       width: player.width, // Same width as player
       height: player.height, // Same height as player
       velocityX: GAME_CONSTANTS.SUSHI_SPEED,
-      color: "#ff9500",
+      color: SUSHI_COLORS.BASE,
     };
   }
 
@@ -171,7 +196,12 @@ export class GameLogic {
 
     const lastSushi = gameState.sushis[gameState.sushis.length - 1];
     const distanceFromLast = GAME_CONSTANTS.CANVAS_WIDTH - lastSushi.x;
-    return distanceFromLast >= GAME_CONSTANTS.SUSHI_SPAWN_DISTANCE;
+    const spawnDistance =
+      GAME_CONSTANTS.SUSHI_MIN_SPAWN_DISTANCE +
+      Math.random() *
+        (GAME_CONSTANTS.SUSHI_MAX_SPAWN_DISTANCE -
+          GAME_CONSTANTS.SUSHI_MIN_SPAWN_DISTANCE);
+    return distanceFromLast >= spawnDistance;
   }
 
   static addSushi(gameState: GameState): GameState {
@@ -179,6 +209,51 @@ export class GameLogic {
     return {
       ...gameState,
       sushis: [...gameState.sushis, newSushi],
+    };
+  }
+
+  // ================================
+  // TORII MANAGEMENT
+  // ================================
+
+  static createTorii(): Torii {
+    const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
+
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: GAME_CONSTANTS.CANVAS_WIDTH,
+      y: groundY - GAME_CONSTANTS.TORII_HEIGHT,
+      width: GAME_CONSTANTS.TORII_WIDTH,
+      height: GAME_CONSTANTS.TORII_HEIGHT,
+      velocityX: GAME_CONSTANTS.SUSHI_SPEED,
+      color: TORII_COLORS.PRIMARY,
+    };
+  }
+
+  static updateToriis(toriis: Torii[]): Torii[] {
+    return toriis
+      .map((torii) => ({
+        ...torii,
+        x: torii.x + torii.velocityX,
+      }))
+      .filter((torii) => torii.x > -torii.width);
+  }
+
+  static shouldSpawnTorii(gameState: GameState): boolean {
+    // Only spawn a torii if there are none currently on screen
+    if (gameState.toriis.length > 0) return false;
+    return (
+      GameLogic.formatDistance(gameState.distance) %
+        GAME_CONSTANTS.TORII_SPAWN_DISTANCE ===
+      0
+    );
+  }
+
+  static addTorii(gameState: GameState): GameState {
+    const newTorii = this.createTorii();
+    return {
+      ...gameState,
+      toriis: [...gameState.toriis, newTorii],
     };
   }
 
