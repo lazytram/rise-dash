@@ -13,5 +13,5 @@ export * from "./hooks/useKeyboardControls";
 export * from "./hooks/useGameLoop";
 
 // Components
-export { default as Game } from "./components/Game";
-export { GameCanvas } from "./components/GameCanvas";
+export { default as Game } from "./components/game/Game";
+export { GameCanvas } from "./components/game/GameCanvas";

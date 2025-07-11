@@ -15,5 +15,12 @@
   "ui": {
     "language": "Language",
     "selectLanguage": "Select Language"
+  },
+  "auth": {
+    "welcomeTitle": "Rise Dash",
+    "welcomeSubtitle": "The arcade game where every jump counts!",
+    "connectWallet": "Connect your wallet and prove you are the real player.",
+    "secureConnection": "Secure connection via RainbowKit & SIWE",
+    "siweStatement": "Sign in to Rise Dash to prove you own this wallet."
   }
 }
