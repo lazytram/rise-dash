@@ -1,9 +1,19 @@
-import { Player, GameState, RiceRocket, Sushi, Torii } from "@/types/game";
+import {
+  Player,
+  GameState,
+  RiceRocket,
+  Sushi,
+  Torii,
+  Samurai,
+  SamuraiBullet,
+} from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
 import {
   RICE_ROCKET_COLORS,
   SUSHI_COLORS,
   TORII_COLORS,
+  SAMURAI_COLORS,
+  SAMURAI_BULLET_COLORS,
 } from "@/constants/colors";
 import { player } from "@/entities/player";
 
@@ -18,6 +28,8 @@ export class GameLogic {
       riceRockets: [],
       sushis: [],
       toriis: [],
+      samurais: [],
+      samuraiBullets: [],
       distance: 0,
       isGameRunning: false,
       isGameOver: false,
@@ -34,6 +46,10 @@ export class GameLogic {
     const updatedRiceRockets = this.updateRiceRockets(gameState.riceRockets);
     const updatedSushis = this.updateSushis(gameState.sushis);
     const updatedToriis = this.updateToriis(gameState.toriis);
+    const updatedSamurais = this.updateSamurais(gameState.samurais);
+    const updatedSamuraiBullets = this.updateSamuraiBullets(
+      gameState.samuraiBullets
+    );
     const updatedDistance = this.updateDistance(gameState.distance);
 
     let newGameState = {
@@ -42,14 +58,19 @@ export class GameLogic {
       riceRockets: updatedRiceRockets,
       sushis: updatedSushis,
       toriis: updatedToriis,
+      samurais: updatedSamurais,
+      samuraiBullets: updatedSamuraiBullets,
       distance: updatedDistance,
     };
 
     // Spawn new entities
     newGameState = this.spawnEntities(newGameState);
 
+    // Check for collisions
+    newGameState = this.checkCollisions(newGameState);
+
     // Check for game over conditions
-    if (this.checkPlayerSushiCollisions(newGameState)) {
+    if (this.checkGameOverConditions(newGameState)) {
       newGameState = {
         ...newGameState,
         isGameOver: true,
@@ -74,6 +95,11 @@ export class GameLogic {
     // Spawn Torii
     if (this.shouldSpawnTorii(newGameState)) {
       newGameState = this.addTorii(newGameState);
+    }
+
+    // Spawn Samurai
+    if (this.shouldSpawnSamurai(newGameState)) {
+      newGameState = this.addSamurai(newGameState);
     }
 
     return newGameState;
@@ -258,25 +284,6 @@ export class GameLogic {
   }
 
   // ================================
-  // COLLISION DETECTION
-  // ================================
-
-  static checkCollisionWithSushi(player: Player, sushi: Sushi): boolean {
-    return (
-      player.x < sushi.x + sushi.width &&
-      player.x + player.width > sushi.x &&
-      player.y < sushi.y + sushi.height &&
-      player.y + player.height > sushi.y
-    );
-  }
-
-  static checkPlayerSushiCollisions(gameState: GameState): boolean {
-    return gameState.sushis.some((sushi) =>
-      this.checkCollisionWithSushi(gameState.player, sushi)
-    );
-  }
-
-  // ================================
   // UTILITY FUNCTIONS
   // ================================
 
@@ -286,5 +293,233 @@ export class GameLogic {
 
   static formatDistance(distance: number): number {
     return Math.floor(distance / 10);
+  }
+
+  // ================================
+  // SAMURAI MANAGEMENT
+  // ================================
+
+  static createSamurai(): Samurai {
+    const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
+
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: GAME_CONSTANTS.CANVAS_WIDTH,
+      y: groundY - GAME_CONSTANTS.SAMURAI_HEIGHT,
+      width: GAME_CONSTANTS.SAMURAI_WIDTH,
+      height: GAME_CONSTANTS.SAMURAI_HEIGHT,
+      velocityX: GAME_CONSTANTS.SAMURAI_SPEED,
+      color: SAMURAI_COLORS.BODY,
+      lives: GAME_CONSTANTS.SAMURAI_LIVES,
+      maxLives: GAME_CONSTANTS.SAMURAI_LIVES,
+      lastShotTime: Date.now(),
+      shotCooldown: GAME_CONSTANTS.SAMURAI_SHOT_COOLDOWN,
+    };
+  }
+
+  static updateSamurais(samurais: Samurai[]): Samurai[] {
+    return samurais
+      .map((samurai) => ({
+        ...samurai,
+        x: samurai.x + samurai.velocityX,
+      }))
+      .filter((samurai) => samurai.x > -samurai.width);
+  }
+
+  static shouldSpawnSamurai(gameState: GameState): boolean {
+    // Only spawn a samurai if there are none currently on screen
+    if (gameState.samurais.length > 0) return false;
+    return (
+      GameLogic.formatDistance(gameState.distance) %
+        GAME_CONSTANTS.SAMURAI_SPAWN_DISTANCE ===
+      0
+    );
+  }
+
+  static addSamurai(gameState: GameState): GameState {
+    const newSamurai = this.createSamurai();
+    return {
+      ...gameState,
+      samurais: [...gameState.samurais, newSamurai],
+    };
+  }
+
+  static createSamuraiBullet(samurai: Samurai): SamuraiBullet {
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: samurai.x, // Start from samurai position
+      y: samurai.y + samurai.height / 2, // Same height as samurai center
+      width: GAME_CONSTANTS.SAMURAI_BULLET_WIDTH,
+      height: GAME_CONSTANTS.SAMURAI_BULLET_HEIGHT,
+      velocityX: -7, // Negative for left direction (opposite of RiceRockets)
+      velocityY: 0, // No vertical movement
+      color: SAMURAI_BULLET_COLORS.BODY,
+    };
+  }
+
+  static updateSamuraiBullets(
+    samuraiBullets: SamuraiBullet[]
+  ): SamuraiBullet[] {
+    return samuraiBullets
+      .map((bullet) => ({
+        ...bullet,
+        x: bullet.x + bullet.velocityX,
+        y: bullet.y + bullet.velocityY,
+      }))
+      .filter((bullet) => bullet.x > -bullet.width);
+  }
+
+  static makeSamuraiShoot(samurai: Samurai): SamuraiBullet | null {
+    const currentTime = Date.now();
+    if (currentTime - samurai.lastShotTime >= samurai.shotCooldown) {
+      return this.createSamuraiBullet(samurai);
+    }
+    return null;
+  }
+
+  // ================================
+  // COLLISION DETECTION
+  // ================================
+
+  static checkCollisions(gameState: GameState): GameState {
+    let newGameState = gameState;
+
+    // Check RiceRocket vs Samurai collisions
+    newGameState = this.checkRiceRocketSamuraiCollisions(newGameState);
+
+    // Check Player vs SamuraiBullet collisions
+    newGameState = this.checkPlayerSamuraiBulletCollisions(newGameState);
+
+    // Make samurais shoot
+    newGameState = this.makeSamuraisShoot(newGameState);
+
+    return newGameState;
+  }
+
+  static checkRiceRocketSamuraiCollisions(gameState: GameState): GameState {
+    const { riceRockets, samurais } = gameState;
+    const newRiceRockets = [...riceRockets];
+    const newSamurais = [...samurais];
+
+    // Check each rice rocket against each samurai
+    for (let i = newRiceRockets.length - 1; i >= 0; i--) {
+      const rocket = newRiceRockets[i];
+      for (let j = newSamurais.length - 1; j >= 0; j--) {
+        const samurai = newSamurais[j];
+        if (this.checkCollision(rocket, samurai)) {
+          // Remove the rocket
+          newRiceRockets.splice(i, 1);
+          // Reduce samurai lives
+          newSamurais[j] = {
+            ...samurai,
+            lives: samurai.lives - 1,
+          };
+          // Remove samurai if no lives left
+          if (newSamurais[j].lives <= 0) {
+            newSamurais.splice(j, 1);
+          }
+          break;
+        }
+      }
+    }
+
+    return {
+      ...gameState,
+      riceRockets: newRiceRockets,
+      samurais: newSamurais,
+    };
+  }
+
+  static checkPlayerSamuraiBulletCollisions(gameState: GameState): GameState {
+    const { player, samuraiBullets } = gameState;
+    const newSamuraiBullets = [...samuraiBullets];
+
+    // Check each samurai bullet against player
+    for (let i = newSamuraiBullets.length - 1; i >= 0; i--) {
+      const bullet = newSamuraiBullets[i];
+      if (this.checkCollision(player, bullet)) {
+        // Remove the bullet
+        newSamuraiBullets.splice(i, 1);
+      }
+    }
+
+    return {
+      ...gameState,
+      samuraiBullets: newSamuraiBullets,
+    };
+  }
+
+  static makeSamuraisShoot(gameState: GameState): GameState {
+    const { samurais, samuraiBullets } = gameState;
+    const newSamuraiBullets = [...samuraiBullets];
+    const newSamurais = [...samurais];
+
+    newSamurais.forEach((samurai, index) => {
+      const bullet = this.makeSamuraiShoot(samurai);
+      if (bullet) {
+        newSamuraiBullets.push(bullet);
+        newSamurais[index] = {
+          ...samurai,
+          lastShotTime: Date.now(),
+        };
+      }
+    });
+
+    return {
+      ...gameState,
+      samurais: newSamurais,
+      samuraiBullets: newSamuraiBullets,
+    };
+  }
+
+  static checkCollision(
+    entity1: { x: number; y: number; width: number; height: number },
+    entity2: { x: number; y: number; width: number; height: number }
+  ): boolean {
+    return (
+      entity1.x < entity2.x + entity2.width &&
+      entity1.x + entity1.width > entity2.x &&
+      entity1.y < entity2.y + entity2.height &&
+      entity1.y + entity1.height > entity2.y
+    );
+  }
+
+  static checkCollisionWithSushi(player: Player, sushi: Sushi): boolean {
+    return this.checkCollision(player, sushi);
+  }
+
+  static checkPlayerSushiCollisions(gameState: GameState): boolean {
+    return gameState.sushis.some((sushi) =>
+      this.checkCollision(gameState.player, sushi)
+    );
+  }
+
+  static checkPlayerSamuraiCollisions(gameState: GameState): boolean {
+    return gameState.samurais.some((samurai) =>
+      this.checkCollision(gameState.player, samurai)
+    );
+  }
+
+  static checkGameOverConditions(gameState: GameState): boolean {
+    // Check if player collides with sushi
+    if (this.checkPlayerSushiCollisions(gameState)) {
+      return true;
+    }
+
+    // Check if player collides with samurai bullet
+    if (
+      gameState.samuraiBullets.some((bullet) =>
+        this.checkCollision(gameState.player, bullet)
+      )
+    ) {
+      return true;
+    }
+
+    // Check if player collides with samurai
+    if (this.checkPlayerSamuraiCollisions(gameState)) {
+      return true;
+    }
+
+    return false;
   }
 }

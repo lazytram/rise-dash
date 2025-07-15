@@ -1,4 +1,11 @@
-import { Player, RiceRocket, Sushi, Torii } from "@/types/game";
+import {
+  Player,
+  RiceRocket,
+  Sushi,
+  Torii,
+  Samurai,
+  SamuraiBullet,
+} from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
 import {
   ENVIRONMENT_COLORS,
@@ -6,6 +13,8 @@ import {
   RICE_ROCKET_COLORS,
   SUSHI_COLORS,
   TORII_COLORS,
+  SAMURAI_COLORS,
+  SAMURAI_BULLET_COLORS,
   COMMON_COLORS,
 } from "@/constants/colors";
 import { GameLogic } from "@/utils/gameLogic";
@@ -258,6 +267,161 @@ export class GameRenderer {
     });
   }
 
+  drawSamurais(samurais: Samurai[]): void {
+    samurais.forEach((samurai) => {
+      // Draw samurai body (armor base) - blue armor like in the image
+      this.ctx.fillStyle = "#0066CC"; // Blue armor base
+      this.ctx.fillRect(samurai.x, samurai.y, samurai.width, samurai.height);
+
+      // Draw samurai helmet (kabuto) - blue helmet with golden crests
+      this.ctx.fillStyle = "#0066CC"; // Blue helmet
+      this.ctx.fillRect(samurai.x + 6, samurai.y, samurai.width - 12, 15);
+
+      // Draw helmet top (hachi) - rounded top
+      this.ctx.fillStyle = "#004499"; // Darker blue for helmet top
+      this.ctx.fillRect(samurai.x + 8, samurai.y - 2, samurai.width - 16, 4);
+
+      // Draw golden horn-like crests (maedate) - prominent golden ornaments
+      this.ctx.fillStyle = "#FFD700"; // Bright gold for crests
+      this.ctx.fillRect(samurai.x + 12, samurai.y - 6, 4, 8);
+      this.ctx.fillRect(samurai.x + 24, samurai.y - 6, 4, 8);
+      this.ctx.fillRect(samurai.x + 18, samurai.y - 8, 4, 6);
+
+      // Draw helmet side flaps (fukigaeshi) - blue flaps
+      this.ctx.fillStyle = "#0066CC"; // Blue for flaps
+      this.ctx.fillRect(samurai.x - 2, samurai.y + 2, 6, 12);
+      this.ctx.fillRect(samurai.x + samurai.width - 4, samurai.y + 2, 6, 12);
+
+      // Draw samurai armor (yoroi) - blue segmented armor
+      this.ctx.fillStyle = "#0066CC"; // Blue for main armor
+      this.ctx.fillRect(samurai.x + 4, samurai.y + 15, samurai.width - 8, 30);
+
+      // Draw segmented armor plates (lamellae) - black lines
+      this.ctx.fillStyle = "#000000"; // Black for segment lines
+      this.ctx.fillRect(samurai.x + 4, samurai.y + 20, samurai.width - 8, 2);
+      this.ctx.fillRect(samurai.x + 4, samurai.y + 25, samurai.width - 8, 2);
+      this.ctx.fillRect(samurai.x + 4, samurai.y + 30, samurai.width - 8, 2);
+      this.ctx.fillRect(samurai.x + 4, samurai.y + 35, samurai.width - 8, 2);
+      this.ctx.fillRect(samurai.x + 4, samurai.y + 40, samurai.width - 8, 2);
+
+      // Draw shoulder guards (sode) - red accents like in the image
+      this.ctx.fillStyle = "#CC0000"; // Red for shoulder guards
+      this.ctx.fillRect(samurai.x - 2, samurai.y + 15, 6, 20);
+      this.ctx.fillRect(samurai.x + samurai.width - 4, samurai.y + 15, 6, 20);
+
+      // Draw armored sleeves (kote) - blue arm armor
+      this.ctx.fillStyle = "#0066CC"; // Blue for arm armor
+      this.ctx.fillRect(samurai.x - 4, samurai.y + 25, 8, 15);
+      this.ctx.fillRect(samurai.x + samurai.width - 4, samurai.y + 25, 8, 15);
+
+      // Draw armored skirt (kusazuri) - red skirt like in the image
+      this.ctx.fillStyle = "#CC0000"; // Red for skirt
+      this.ctx.fillRect(samurai.x + 2, samurai.y + 45, 6, 15);
+      this.ctx.fillRect(samurai.x + 12, samurai.y + 45, 6, 15);
+      this.ctx.fillRect(samurai.x + 22, samurai.y + 45, 6, 15);
+      this.ctx.fillRect(samurai.x + 32, samurai.y + 45, 6, 15);
+
+      // Draw leg protection - blue leg armor
+      this.ctx.fillStyle = "#0066CC"; // Blue for leg armor
+      this.ctx.fillRect(samurai.x + 8, samurai.y + 50, 8, 10);
+      this.ctx.fillRect(samurai.x + 24, samurai.y + 50, 8, 10);
+
+      // Draw samurai face mask (menpo) - red mask like in the image
+      this.ctx.fillStyle = "#CC0000"; // Red for mask
+      this.ctx.fillRect(samurai.x + 10, samurai.y + 8, samurai.width - 20, 8);
+
+      // Draw mask details - brown skin showing through
+      this.ctx.fillStyle = "#8B4513"; // Brown for skin
+      this.ctx.fillRect(samurai.x + 12, samurai.y + 10, samurai.width - 24, 2);
+      this.ctx.fillRect(samurai.x + 12, samurai.y + 14, samurai.width - 24, 2);
+
+      // Draw katana sword - silver blade with golden hilt
+      this.ctx.fillStyle = "#C0C0C0"; // Silver for blade
+      this.ctx.fillRect(samurai.x + 15, samurai.y + 20, 10, 2);
+      this.ctx.fillStyle = "#FFD700"; // Gold for hilt
+      this.ctx.fillRect(samurai.x + 25, samurai.y + 19, 3, 4);
+
+      // Draw samurai lives (hearts) - more detailed
+      this.drawSamuraiLives(samurai);
+    });
+  }
+
+  drawSamuraiLives(samurai: Samurai): void {
+    const heartSize = 8;
+    const heartSpacing = 10;
+    const startX = samurai.x;
+    const startY = samurai.y - 20;
+
+    for (let i = 0; i < samurai.maxLives; i++) {
+      const heartX = startX + i * heartSpacing;
+      const heartY = startY;
+
+      if (i < samurai.lives) {
+        this.ctx.fillStyle = SAMURAI_COLORS.LIFE_HEART;
+      } else {
+        this.ctx.fillStyle = SAMURAI_COLORS.LIFE_HEART_EMPTY;
+      }
+
+      // Draw more detailed pixelated heart
+      // Main heart body
+      this.ctx.fillRect(heartX + 2, heartY + 2, heartSize - 4, heartSize - 4);
+
+      // Heart top curves
+      this.ctx.fillRect(heartX + 1, heartY + 1, 2, 2);
+      this.ctx.fillRect(heartX + heartSize - 3, heartY + 1, 2, 2);
+
+      // Heart bottom point
+      this.ctx.fillRect(heartX + 3, heartY + heartSize - 3, 2, 2);
+
+      // Heart outline (for filled hearts)
+      if (i < samurai.lives) {
+        this.ctx.fillStyle = "#8B0000"; // Darker red for outline
+        this.ctx.fillRect(heartX, heartY, heartSize, 1);
+        this.ctx.fillRect(heartX, heartY + heartSize - 1, heartSize, 1);
+        this.ctx.fillRect(heartX, heartY, 1, heartSize);
+        this.ctx.fillRect(heartX + heartSize - 1, heartY, 1, heartSize);
+      }
+    }
+  }
+
+  drawSamuraiBullets(samuraiBullets: SamuraiBullet[]): void {
+    samuraiBullets.forEach((bullet) => {
+      // Draw shuriken trail
+      this.ctx.fillStyle = SAMURAI_BULLET_COLORS.TRAIL;
+      this.ctx.fillRect(bullet.x - 8, bullet.y, 8, bullet.height);
+
+      // Draw shuriken body (star shape)
+      this.ctx.fillStyle = bullet.color;
+
+      // Draw the shuriken as a simple cross shape
+      const centerX = bullet.x + bullet.width / 2;
+      const centerY = bullet.y + bullet.height / 2;
+
+      // Horizontal blade
+      this.ctx.fillRect(bullet.x, centerY - 1, bullet.width, 2);
+      // Vertical blade
+      this.ctx.fillRect(centerX - 1, bullet.y, 2, bullet.height);
+
+      // Diagonal blades
+      this.ctx.save();
+      this.ctx.translate(centerX, centerY);
+      this.ctx.rotate(Math.PI / 4);
+      this.ctx.fillRect(-bullet.width / 2, -1, bullet.width, 2);
+      this.ctx.rotate(Math.PI / 2);
+      this.ctx.fillRect(-bullet.width / 2, -1, bullet.width, 2);
+      this.ctx.restore();
+
+      // Draw shuriken glow effect
+      this.ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      this.ctx.fillRect(
+        bullet.x + 1,
+        bullet.y + 1,
+        bullet.width - 2,
+        bullet.height - 2
+      );
+    });
+  }
+
   drawDistance(
     distance: number,
     distanceText?: string,
@@ -273,7 +437,11 @@ export class GameRenderer {
     this.ctx.fillText(text, 20, 40);
   }
 
-  drawStartScreen(startText?: string, jumpText?: string): void {
+  drawStartScreen(
+    startText?: string,
+    jumpText?: string,
+    enemyText?: string
+  ): void {
     // Semi-transparent overlay
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(
@@ -300,6 +468,11 @@ export class GameRenderer {
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
       GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 30
     );
+    this.ctx.fillText(
+      enemyText || "Enemies appear every 500m",
+      GAME_CONSTANTS.CANVAS_WIDTH / 2,
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 60
+    );
 
     this.ctx.textAlign = "left";
   }
@@ -309,6 +482,8 @@ export class GameRenderer {
     riceRockets: RiceRocket[],
     sushis: Sushi[],
     toriis: Torii[],
+    samurais: Samurai[],
+    samuraiBullets: SamuraiBullet[],
     distance: number,
     isGameRunning: boolean,
     isGameOver: boolean,
@@ -318,6 +493,7 @@ export class GameRenderer {
       meters?: string;
       startMessage?: string;
       jumpMessage?: string;
+      enemyMessage?: string;
       gameOver?: string;
       finalScore?: string;
       restartMessage?: string;
@@ -329,12 +505,15 @@ export class GameRenderer {
     this.drawRiceRockets(riceRockets);
     this.drawSushis(sushis);
     this.drawToriis(toriis);
+    this.drawSamurais(samurais);
+    this.drawSamuraiBullets(samuraiBullets);
     this.drawDistance(distance, translations?.distance, translations?.meters);
 
     if (!isGameRunning && !isGameOver) {
       this.drawStartScreen(
         translations?.startMessage,
-        translations?.jumpMessage
+        translations?.jumpMessage,
+        translations?.enemyMessage
       );
     }
   }

@@ -53,6 +53,21 @@ export const TORII_COLORS = {
   OUTLINE: "rgba(0, 0, 0, 0.5)",
 } as const;
 
+// Samurai Colors
+export const SAMURAI_COLORS = {
+  BODY: "#8B0000", // Dark red
+  EYES: "#FFD700", // Gold
+  PUPIL: "#000000", // Black
+  LIFE_HEART: "#FF0000", // Red
+  LIFE_HEART_EMPTY: "#666666", // Gray
+} as const;
+
+// Samurai Bullet Colors
+export const SAMURAI_BULLET_COLORS = {
+  BODY: "#FF4500", // Orange red
+  TRAIL: "rgba(255, 69, 0, 0.5)", // Semi-transparent orange red
+} as const;
+
 // Common Colors
 export const COMMON_COLORS = {
   WHITE: "#FFFFFF",

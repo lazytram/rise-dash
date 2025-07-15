@@ -7,7 +7,8 @@
     "meters": "metros",
     "instructions": "¡Usa FLECHA ARRIBA para saltar y BARRA ESPACIADORA para disparar cohetes de arroz!",
     "startMessage": "Presiona ESPACIO o FLECHA ARRIBA para comenzar",
-    "jumpMessage": "FLECHA ARRIBA para saltar, ESPACIO para disparar cohetes de arroz",
+    "jumpMessage": "FLECHA ARRIBA para saltar, ESPACIO para disparar RiceRockets",
+    "enemyMessage": "¡Los samuráis aparecen cada 50m - dispara 3 veces para derrotarlos!",
     "gameOver": "¡Juego Terminado!",
     "finalScore": "Puntuación Final",
     "restartMessage": "Presiona ESPACIO o FLECHA ARRIBA para reiniciar"

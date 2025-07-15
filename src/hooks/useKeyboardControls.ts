@@ -23,6 +23,10 @@ export const useKeyboardControls = (
         } else if (!isGameRunning) {
           onStartGame();
         }
+      } else if (event.code === "Enter") {
+        if (!isGameRunning) {
+          onStartGame();
+        }
       }
     },
     [isGameRunning, onJump, onStartGame, onShoot]
