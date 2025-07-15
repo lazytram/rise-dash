@@ -3,6 +3,7 @@
 import { useLanguageStore, availableLocales } from "@/store/languageStore";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useState } from "react";
+import { Button } from "@/components/ui/Button";
 
 export const LanguageSelector = () => {
   const { locale, setLocale } = useLanguageStore();
@@ -13,9 +14,11 @@ export const LanguageSelector = () => {
 
   return (
     <div className="relative">
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-3 py-2 rounded-lg hover:bg-white/20 transition-colors cursor-pointer"
+        variant="ghost"
+        size="sm"
+        className="flex items-center gap-2 px-3 py-2"
         aria-label={t("ui.selectLanguage")}
       >
         <span className="text-lg">{currentLocale?.flag}</span>
@@ -37,7 +40,7 @@ export const LanguageSelector = () => {
             d="M19 9l-7 7-7-7"
           />
         </svg>
-      </button>
+      </Button>
 
       {isOpen && (
         <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border overflow-hidden z-50 min-w-[150px]">

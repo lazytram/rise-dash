@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GameLogic } from "@/utils/gameLogic";
 import { UI_COLORS } from "@/constants/colors";
 import { useTranslations } from "@/hooks/useTranslations";
+import { ScoreBoard } from "./ScoreBoard";
+import { Button } from "@/components/ui/Button";
 
 interface GameOverScreenProps {
   distance: number;
@@ -13,18 +15,32 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
   onRestart,
 }) => {
   const { t } = useTranslations();
+  const [showScoreBoard, setShowScoreBoard] = useState(false);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === "Space" || event.code === "ArrowUp") {
         event.preventDefault();
-        onRestart();
+        if (showScoreBoard) {
+          setShowScoreBoard(false);
+        } else {
+          onRestart();
+        }
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [onRestart]);
+  }, [onRestart, showScoreBoard]);
+
+  if (showScoreBoard) {
+    return (
+      <ScoreBoard
+        distance={distance}
+        onClose={() => setShowScoreBoard(false)}
+      />
+    );
+  }
 
   return (
     <div className="absolute inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-10 rounded-lg animate-fade-in">
@@ -44,12 +60,14 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 
         <p className="text-lg text-gray-600 mb-6">{t("game.restartMessage")}</p>
 
-        <button
-          onClick={onRestart}
-          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 cursor-pointer"
-        >
-          {t("game.restart")}
-        </button>
+        <div className="flex gap-3 justify-center">
+          <Button onClick={() => setShowScoreBoard(true)} variant="success">
+            {t("blockchain.saveScore")}
+          </Button>
+          <Button onClick={onRestart} variant="primary">
+            {t("game.restart")}
+          </Button>
+        </div>
       </div>
     </div>
   );

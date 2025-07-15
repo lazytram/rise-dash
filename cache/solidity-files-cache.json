@@ -1,0 +1,63 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "contracts/ScoreBoard.sol": {
+      "lastModificationDate": 1752604624623,
+      "contentHash": "665d62703fbe9bd53a078cc5825e024f",
+      "sourceName": "contracts/ScoreBoard.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": ["ast"]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": ["^0.8.19"],
+      "artifacts": ["ScoreBoard"]
+    },
+    "/contracts/ScoreBoard.sol": {
+      "lastModificationDate": 1752606585664,
+      "contentHash": "1f74e3e6abe6356f02832123c1932d4e",
+      "sourceName": "contracts/ScoreBoard.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": ["ast"]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": ["^0.8.19"],
+      "artifacts": ["ScoreBoard"]
+    }
+  }
+}
