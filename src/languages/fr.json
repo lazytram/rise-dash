@@ -22,5 +22,34 @@
     "connectWallet": "Connecte ton wallet et prouve que tu es le vrai joueur.",
     "secureConnection": "Connexion sécurisée via RainbowKit & SIWE",
     "siweStatement": "Connecte-toi à Rise Dash pour prouver que tu possèdes ce wallet."
+  },
+  "blockchain": {
+    "saveScore": "Sauvegarder le Score",
+    "currentScore": "Score Actuel",
+    "bestScore": "Meilleur Score",
+    "scoreSaved": "Score Sauvegardé !",
+    "newRecord": "Nouveau Record Personnel !",
+    "scoreRecorded": "Score enregistré sur la blockchain",
+    "connectWallet": "Veuillez d'abord connecter votre wallet",
+    "connectWalletToSave": "Connectez votre wallet pour sauvegarder votre score sur la blockchain",
+    "namePlaceholder": "Votre nom (max 20 caractères)",
+    "save": "Sauvegarder",
+    "saving": "Sauvegarde...",
+    "errorSaving": "Erreur lors de la sauvegarde du score",
+    "leaderboard": "Classement",
+    "bestScores": "Meilleurs Scores",
+    "yourScores": "Vos Scores",
+    "connectWalletToView": "Connectez votre wallet pour voir vos scores",
+    "loadingScores": "Chargement des scores...",
+    "noScoresYet": "Aucun score encore",
+    "playToEarnScores": "Jouez pour gagner des scores !",
+    "scoresOnBlockchain": "Tous les scores sont stockés sur la blockchain RISE",
+    "bestScoreLabel": "Meilleur score"
+  },
+  "common": {
+    "continue": "Continuer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "retry": "Réessayer"
   }
 }
