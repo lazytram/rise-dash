@@ -154,7 +154,7 @@ describe("useKeyboardControls", () => {
       expect(mockOnShoot).not.toHaveBeenCalled();
     });
 
-    it("should not react to other key codes", () => {
+    it("should call onStartGame when Enter is pressed", () => {
       const { result } = renderHook(() =>
         useKeyboardControls(
           false,
@@ -167,6 +167,30 @@ describe("useKeyboardControls", () => {
 
       const mockEvent = {
         code: "Enter",
+        preventDefault: jest.fn(),
+      } as unknown as KeyboardEvent;
+
+      result.current.handleKeyPress(mockEvent);
+
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
+      expect(mockOnStartGame).toHaveBeenCalledTimes(1);
+      expect(mockOnJump).not.toHaveBeenCalled();
+      expect(mockOnShoot).not.toHaveBeenCalled();
+    });
+
+    it("should not react to other key codes", () => {
+      const { result } = renderHook(() =>
+        useKeyboardControls(
+          false,
+          false,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
+      );
+
+      const mockEvent = {
+        code: "ArrowDown",
         preventDefault: jest.fn(),
       } as unknown as KeyboardEvent;
 

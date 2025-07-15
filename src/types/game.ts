@@ -18,6 +18,17 @@ export interface MovableEntity {
   color: string;
 }
 
+export interface Samurai extends MovableEntity {
+  lives: number;
+  maxLives: number;
+  lastShotTime: number;
+  shotCooldown: number;
+}
+
+export interface SamuraiBullet extends MovableEntity {
+  velocityY: number;
+}
+
 export type RiceRocket = MovableEntity;
 export type Sushi = MovableEntity;
 export type Torii = MovableEntity;
@@ -27,6 +38,8 @@ export interface GameState {
   riceRockets: RiceRocket[];
   sushis: Sushi[];
   toriis: Torii[];
+  samurais: Samurai[];
+  samuraiBullets: SamuraiBullet[];
   distance: number;
   isGameRunning: boolean;
   isGameOver: boolean;

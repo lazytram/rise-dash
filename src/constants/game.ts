@@ -23,4 +23,15 @@ export const GAME_CONSTANTS = {
   SUSHI_SPAWN_PROBABILITY: 0.7,
   // Game start constants
   INITIAL_SUSHI_SPAWN_DISTANCE: 100, // First Torii at 500 meters
+  // Samurai constants
+  SAMURAI_SPAWN_DISTANCE: 50, // Spawn every 50 meters
+  SAMURAI_WIDTH: 40,
+  SAMURAI_HEIGHT: 60,
+  SAMURAI_SPEED: -2,
+  SAMURAI_LIVES: 3,
+  SAMURAI_SHOT_COOLDOWN: 3000, // 3 seconds (increased from 2)
+  // Samurai bullet constants
+  SAMURAI_BULLET_WIDTH: 6,
+  SAMURAI_BULLET_HEIGHT: 6,
+  SAMURAI_BULLET_SPEED: -2, // Reduced speed for easier dodging
 } as const;

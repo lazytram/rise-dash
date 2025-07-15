@@ -7,8 +7,9 @@
     "meters": "mètres",
     "instructions": "Utilisez FLÈCHE HAUT pour sauter et BARRE D'ESPACE pour tirer des roquettes de riz !",
     "startMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour commencer",
-    "jumpMessage": "FLÈCHE HAUT pour sauter, ESPACE pour tirer des roquettes de riz",
-    "gameOver": "Jeu Terminé !",
+    "jumpMessage": "FLÈCHE HAUT pour sauter, ESPACE pour tirer des RiceRockets",
+    "enemyMessage": "Les samouraïs apparaissent tous les 50m - tirez 3 fois pour les vaincre !",
+    "gameOver": "Partie terminée !",
     "finalScore": "Score Final",
     "restartMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour recommencer"
   },
