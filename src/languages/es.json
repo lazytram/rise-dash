@@ -11,7 +11,9 @@
     "enemyMessage": "¡Los samuráis aparecen cada 50m - dispara 3 veces para derrotarlos!",
     "gameOver": "¡Juego Terminado!",
     "finalScore": "Puntuación Final",
-    "restartMessage": "Presiona ESPACIO o FLECHA ARRIBA para reiniciar"
+    "restartMessage": "Presiona ESPACIO o FLECHA ARRIBA para reiniciar",
+    "riceRockets": "Cohetes de Arroz",
+    "ammoCount": "munición"
   },
   "ui": {
     "language": "Idioma",

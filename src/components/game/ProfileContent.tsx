@@ -6,7 +6,12 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Text } from "@/components/ui/Text";
 import { Tabs } from "@/components/ui/Tabs";
-import { ProfileHeader, ProfileStats, ProfileGameHistory } from "./profile";
+import {
+  ProfileHeader,
+  ProfileStats,
+  ProfileGameHistory,
+  ProfileAchievements,
+} from "./profile";
 
 interface PlayerScore {
   score: bigint;
@@ -84,6 +89,11 @@ export const ProfileContent: React.FC = () => {
                   onRetry={loadPlayerScores}
                 />
               ),
+            },
+            {
+              id: "achievements",
+              label: t("profile.achievements"),
+              content: <ProfileAchievements />,
             },
           ]}
           activeTab={activeTab}

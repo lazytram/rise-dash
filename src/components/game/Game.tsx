@@ -4,12 +4,12 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { GameState } from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
 import { GameLogic } from "@/utils/gameLogic";
-import { GameRenderer } from "@/utils/gameRenderer";
 import { useKeyboardControls } from "@/hooks/useKeyboardControls";
 import { useGameLoop } from "@/hooks/useGameLoop";
 import { useTranslations } from "@/hooks/useTranslations";
 import { GameCanvas } from "./GameCanvas";
 import { GameOverScreen } from "./GameOverScreen";
+import { GameRenderer } from "@/utils/gameRenderer";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,6 +30,9 @@ const Game = () => {
       distance: 0,
       riceRockets: [],
       sushis: [],
+      samurais: [], // Clear existing samurais on restart
+      samuraiBullets: [], // Clear existing bullets on restart
+      toriis: [], // Clear existing toriis on restart
       player: GameLogic.resetPlayer(prev.player),
     }));
   }, []);

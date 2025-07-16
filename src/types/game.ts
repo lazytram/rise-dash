@@ -6,6 +6,9 @@ export interface Player {
   velocityY: number;
   isJumping: boolean;
   color: string;
+  riceRocketAmmo: number;
+  maxRiceRocketAmmo: number;
+  lastAmmoRechargeTime: number;
 }
 
 export interface MovableEntity {
