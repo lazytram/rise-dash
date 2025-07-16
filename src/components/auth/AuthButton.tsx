@@ -4,6 +4,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import { useSession, signIn } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { riseTestnet } from "wagmi/chains";
 import { useAuthSync } from "@/hooks/useAuthSync";
 import { useEffect, useState } from "react";
 
@@ -41,7 +42,7 @@ export function AuthButton() {
           statement: "Sign in to Rise Dash to prove you own this wallet.",
           uri: window.location.origin,
           version: "1",
-          chainId: 1,
+          chainId: riseTestnet.id,
           nonce: csrfToken,
         });
 
@@ -58,6 +59,8 @@ export function AuthButton() {
         });
       } catch (error) {
         console.error("SIWE signing error:", error);
+        // Reset signing state on error
+        setIsSigning(false);
       } finally {
         setIsSigning(false);
       }
