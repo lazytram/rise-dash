@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
-import { useSession } from "next-auth/react";
 import { AuthButton } from "@/components/auth/AuthButton";
 import { ProfileButton } from "@/components/auth/ProfileButton";
 import { LeaderboardButton } from "@/components/auth/LeaderboardButton";
@@ -11,16 +10,14 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 
 export function Header() {
   const { isConnected } = useAccount();
-  const { data: session, status } = useSession();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Show menu buttons only when wallet is connected AND user has signed the SIWE message
-  const showMenu =
-    isMounted && isConnected && session && status === "authenticated";
+  // Show menu buttons when wallet is connected (SIWE authentication is optional for basic features)
+  const showMenu = isMounted && isConnected;
 
   return (
     <div
