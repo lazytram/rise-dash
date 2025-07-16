@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccount } from "wagmi";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -8,19 +8,19 @@ import { ProfileContent } from "@/components/game/ProfileContent";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function ProfilePage() {
-  const { isConnected, isConnecting } = useAccount();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (isConnecting) return; // Still connecting
+    if (status === "loading") return; // Still loading
 
-    if (!isConnected) {
-      // Redirect to home if wallet not connected
+    if (!session) {
+      // Redirect to home if not authenticated
       router.push("/");
     }
-  }, [isConnected, isConnecting, router]);
+  }, [session, status, router]);
 
-  if (isConnecting) {
+  if (status === "loading") {
     return (
       <PageLayout className="flex items-center justify-center">
         <LoadingSpinner color="white" />
@@ -28,7 +28,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (!isConnected) {
+  if (!session) {
     return null; // Will redirect
   }
 

@@ -19,54 +19,27 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         try {
-          if (!credentials?.message || !credentials?.signature) {
-            if (process.env.NODE_ENV === "development") {
-              console.error("Missing credentials");
-            }
-            return null;
-          }
-
-          const siwe = new SiweMessage(JSON.parse(credentials.message));
+          const siwe = new SiweMessage(
+            JSON.parse(credentials?.message || "{}")
+          );
           const nextAuthUrl = new URL(
             process.env.NEXTAUTH_URL || "http://localhost:3000"
           );
 
-          // Get nonce from the request headers
-          const csrfToken = await getCsrfToken({ req });
-          if (!csrfToken) {
-            if (process.env.NODE_ENV === "development") {
-              console.error("No CSRF token available");
-            }
-            return null;
-          }
-          const nonce = csrfToken;
-
           const result = await siwe.verify({
-            signature: credentials.signature,
+            signature: credentials?.signature || "",
             domain: nextAuthUrl.host,
-            nonce: nonce,
+            nonce: await getCsrfToken({ req }),
           });
 
           if (result.success) {
-            if (process.env.NODE_ENV === "development") {
-              console.log(
-                "SIWE verification successful for address:",
-                siwe.address
-              );
-            }
             return {
               id: siwe.address,
             };
           }
-
-          if (process.env.NODE_ENV === "development") {
-            console.error("SIWE verification failed");
-          }
           return null;
         } catch (e) {
-          if (process.env.NODE_ENV === "development") {
-            console.error("SIWE verification error:", e);
-          }
+          console.error("SIWE verification error:", e);
           return null;
         }
       },
