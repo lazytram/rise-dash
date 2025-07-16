@@ -6,29 +6,33 @@ import { SiweMessage } from "siwe";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { riseTestnet } from "wagmi/chains";
 import { useAuthSync } from "@/hooks/useAuthSync";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function AuthButton() {
   const { data: session, status } = useSession();
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const [isSigning, setIsSigning] = useState(false);
+  const [shouldSignIn, setShouldSignIn] = useState(false);
+  const hasAttemptedSignIn = useRef(false);
 
   useAuthSync();
 
-  // Trigger SIWE signature only when wallet is connected but not authenticated
+  // Trigger SIWE signature only when explicitly requested
   useEffect(() => {
     const signSiwe = async () => {
-      // Avoid double signatures - wait for session to load
       if (
+        !shouldSignIn ||
         !isConnected ||
         !address ||
         session ||
         isSigning ||
-        status === "loading"
+        status === "loading" ||
+        hasAttemptedSignIn.current
       )
         return;
 
+      hasAttemptedSignIn.current = true;
       setIsSigning(true);
       try {
         // Get nonce
@@ -59,17 +63,48 @@ export function AuthButton() {
         });
       } catch (error) {
         console.error("SIWE signing error:", error);
-        // Reset signing state on error
-        setIsSigning(false);
+        // Reset on error to allow retry
+        hasAttemptedSignIn.current = false;
       } finally {
         setIsSigning(false);
+        setShouldSignIn(false);
       }
     };
 
-    // Delay to avoid conflicts with RainbowKit
-    const timeoutId = setTimeout(signSiwe, 100);
-    return () => clearTimeout(timeoutId);
-  }, [isConnected, address, session, signMessageAsync, isSigning, status]);
+    if (shouldSignIn) {
+      signSiwe();
+    }
+  }, [
+    shouldSignIn,
+    isConnected,
+    address,
+    session,
+    signMessageAsync,
+    isSigning,
+    status,
+  ]);
+
+  // Reset when wallet disconnects
+  useEffect(() => {
+    if (!isConnected) {
+      setShouldSignIn(false);
+      hasAttemptedSignIn.current = false;
+    }
+  }, [isConnected]);
+
+  // Listen for wallet connection and trigger sign in if needed
+  useEffect(() => {
+    if (isConnected && address && !session && !hasAttemptedSignIn.current) {
+      // Only trigger if this is a fresh connection (not auto-reconnect)
+      const timeoutId = setTimeout(() => {
+        if (isConnected && address && !session && !hasAttemptedSignIn.current) {
+          setShouldSignIn(true);
+        }
+      }, 500); // Longer delay to avoid auto-reconnect issues
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isConnected, address, session]);
 
   return <ConnectButton />;
 }

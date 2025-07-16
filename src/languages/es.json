@@ -52,7 +52,10 @@
     "cancel": "Cancelar",
     "close": "Cerrar",
     "retry": "Reintentar",
-    "back": "Volver"
+    "back": "Volver",
+    "showing": "Mostrando",
+    "of": "de",
+    "playNow": "Jugar Ahora"
   },
   "profile": {
     "title": "Perfil",
@@ -66,6 +69,7 @@
     "personalBest": "Mejor Personal",
     "completed": "Completado",
     "achievements": "Logros",
-    "comingSoon": "Próximamente"
+    "comingSoon": "Próximamente",
+    "player": "Jugador"
   }
 }

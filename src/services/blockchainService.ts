@@ -57,10 +57,37 @@ export const SCOREBOARD_ABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [
+      { name: "_offset", type: "uint256" },
+      { name: "_limit", type: "uint256" },
+    ],
+    name: "getLeaderboard",
+    outputs: [
+      {
+        components: [
+          { name: "score", type: "uint256" },
+          { name: "playerName", type: "string" },
+          { name: "playerAddress", type: "address" },
+        ],
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalScores",
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
 ] as const;
 
 export const SCOREBOARD_CONTRACT_ADDRESS =
-  "0x9f119696a4Fc5aCfE5864201ef53E81Caab23ee4" as Address;
+  "0x8Ee01f1151542A256D465244796D51676236f99C" as Address;
 
 // Game Owner Private Key (replace with your private key)
 const GAME_OWNER_PRIVATE_KEY =
@@ -71,6 +98,12 @@ export interface Score {
   timestamp: bigint;
   playerName: string;
   gameHash: string;
+}
+
+export interface LeaderboardEntry {
+  score: bigint;
+  playerName: string;
+  playerAddress: Address;
 }
 
 export interface ContractInfo {
@@ -152,6 +185,36 @@ export class BlockchainService {
     });
 
     return result as Score[];
+  }
+
+  /**
+   * Gets the global leaderboard
+   */
+  async getLeaderboard(
+    offset: number,
+    limit: number
+  ): Promise<LeaderboardEntry[]> {
+    const result = await this.publicClient.readContract({
+      address: SCOREBOARD_CONTRACT_ADDRESS,
+      abi: SCOREBOARD_ABI,
+      functionName: "getLeaderboard",
+      args: [BigInt(offset), BigInt(limit)],
+    });
+
+    return result as LeaderboardEntry[];
+  }
+
+  /**
+   * Gets the total number of scores in the leaderboard
+   */
+  async getTotalScores(): Promise<bigint> {
+    const result = await this.publicClient.readContract({
+      address: SCOREBOARD_CONTRACT_ADDRESS,
+      abi: SCOREBOARD_ABI,
+      functionName: "getTotalScores",
+    });
+
+    return result;
   }
 
   /**

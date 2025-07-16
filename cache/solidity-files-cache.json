@@ -31,8 +31,8 @@
       "artifacts": ["ScoreBoard"]
     },
     "/contracts/ScoreBoard.sol": {
-      "lastModificationDate": 1752606585664,
-      "contentHash": "1f74e3e6abe6356f02832123c1932d4e",
+      "lastModificationDate": 1752667836916,
+      "contentHash": "e615dfff2d3f947f75987e1b84c5cae4",
       "sourceName": "contracts/ScoreBoard.sol",
       "solcConfig": {
         "version": "0.8.19",
