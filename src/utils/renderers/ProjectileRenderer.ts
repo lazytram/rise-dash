@@ -1,6 +1,6 @@
 import { BaseRenderer } from "./BaseRenderer";
 import { RiceRocket, SamuraiBullet } from "@/types/game";
-import { RICE_ROCKET_COLORS, SAMURAI_BULLET_COLORS } from "@/constants/colors";
+import { RICE_ROCKET_COLORS, COMMON_COLORS } from "@/constants/colors";
 
 export class ProjectileRenderer extends BaseRenderer {
   drawRiceRockets(riceRockets: RiceRocket[]): void {
@@ -17,17 +17,17 @@ export class ProjectileRenderer extends BaseRenderer {
 
   private drawRiceRocket(rocket: RiceRocket): void {
     // Main body
-    this.ctx.fillStyle = rocket.color;
+    this.ctx.fillStyle = RICE_ROCKET_COLORS.BODY;
     this.ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
 
     // Highlight
-    this.ctx.fillStyle = RICE_ROCKET_COLORS.HIGHLIGHT;
+    this.ctx.fillStyle = `${COMMON_COLORS.WHITE}CC`; // White with 80% opacity
     this.ctx.fillRect(rocket.x, rocket.y, rocket.width / 2, rocket.height / 2);
   }
 
   private drawSamuraiBullet(bullet: SamuraiBullet): void {
     // Draw shuriken trail
-    this.ctx.fillStyle = SAMURAI_BULLET_COLORS.TRAIL;
+    this.ctx.fillStyle = "rgba(255, 69, 0, 0.5)";
     this.ctx.fillRect(bullet.x - 8, bullet.y, 8, bullet.height);
 
     // Draw shuriken body (star shape)

@@ -13,4 +13,15 @@ export const player: Player = {
   riceRocketAmmo: GAME_CONSTANTS.MAX_RICE_ROCKET_AMMO,
   maxRiceRocketAmmo: GAME_CONSTANTS.MAX_RICE_ROCKET_AMMO,
   lastAmmoRechargeTime: Date.now(),
+  // Power-up states
+  hasShield: false,
+  hasInfiniteAmmo: false,
+  hasSpeedBoost: false,
+  hasMultiShot: false,
+  powerUpEndTimes: {
+    shield: 0,
+    infiniteAmmo: 0,
+    speedBoost: 0,
+    multiShot: 0,
+  },
 };

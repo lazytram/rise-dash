@@ -10,7 +10,7 @@ const createTestSushi = (overrides: Partial<Sushi> = {}): Sushi => ({
   width: 30,
   height: 30,
   velocityX: GAME_CONSTANTS.BASE_SUSHI_SPEED,
-  color: "#ff9500",
+  color: "#FF6B6B",
   ...overrides,
 });
 
@@ -47,7 +47,7 @@ describe("GameLogic - Sushi functionality", () => {
             1 + GAME_CONSTANTS.SPEED_INCREASE_PERCENTAGE,
             Math.floor(testDistance / GAME_CONSTANTS.SPEED_INCREASE_INTERVAL)
           ), // At distance 100, speed should be base speed * 1.025
-        color: "#ff9500",
+        color: "#FF6B6B",
       });
 
       const expectedGroundY =

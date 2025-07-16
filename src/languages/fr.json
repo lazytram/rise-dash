@@ -13,7 +13,54 @@
     "finalScore": "Score Final",
     "restartMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour recommencer",
     "riceRockets": "Roquettes de Riz",
-    "ammoCount": "munitions"
+    "ammoCount": "munitions",
+    "difficulty": "Difficulté",
+    "level": "Niveau",
+    "levelUp": "Niveau Supérieur !",
+    "difficultyIncreases": "La difficulté augmente !",
+    "newEnemies": "Nouveaux ennemis",
+    "ninjaUnlocked": "Les Ninjas apparaissent !",
+    "bossUnlocked": "Un Boss approche !",
+    "powerUpCollected": "Power-up collecté !",
+    "shieldActive": "Bouclier actif",
+    "infiniteAmmoActive": "Munitions illimitées",
+    "speedBoostActive": "Vitesse augmentée",
+    "multiShotActive": "Tirs multiples"
+  },
+  "enemies": {
+    "samurai": "Samouraï",
+    "ninja": "Ninja",
+    "boss": "Boss",
+    "lives": "vies",
+    "defeated": "vaincu"
+  },
+  "powerUps": {
+    "shield": "Bouclier",
+    "infiniteAmmo": "Munitions Illimitées",
+    "speedBoost": "Boost de Vitesse",
+    "multiShot": "Tirs Multiples",
+    "description": {
+      "shield": "Protection contre les collisions",
+      "infiniteAmmo": "Tirs sans limite",
+      "speedBoost": "Mouvement plus rapide",
+      "multiShot": "Plusieurs projectiles"
+    },
+    "duration": "Durée",
+    "seconds": "secondes",
+    "active": "Actif",
+    "expired": "Expiré"
+  },
+  "difficulty": {
+    "beginner": "Débutant",
+    "novice": "Novice",
+    "apprentice": "Apprenti",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "expert": "Expert",
+    "master": "Maître",
+    "legend": "Légende",
+    "divine": "Divin",
+    "ultimate": "Ultime"
   },
   "ui": {
     "language": "Langue",
@@ -73,5 +120,32 @@
     "achievements": "Succès",
     "comingSoon": "Bientôt Disponible",
     "player": "Joueur"
+  },
+  "instructions": {
+    "title": "Instructions",
+    "subtitle": "Apprenez à jouer à Rise Dash",
+    "controls": {
+      "title": "Contrôles",
+      "jump": "Sauter",
+      "shoot": "Tirer des Roquettes de Riz",
+      "start": "Commencer le Jeu"
+    },
+    "gameplay": {
+      "title": "Gameplay",
+      "objective": "Objectif",
+      "objectiveDesc": "Courez le plus loin possible en évitant les ennemis et en collectant des power-ups. Votre distance parcourue est votre score.",
+      "enemies": "Ennemis",
+      "enemiesDesc": "Les samouraïs apparaissent tous les 50m et tirent des shurikens. Tirez 3 fois pour les vaincre. Les ninjas et boss apparaissent à des distances plus élevées.",
+      "powerUps": "Power-ups",
+      "powerUpsDesc": "Collectez des power-ups pour obtenir des avantages temporaires : Bouclier (protection), Munitions Illimitées (tirs sans limite), Boost de Vitesse (mouvement plus rapide), Tirs Multiples (plusieurs projectiles)."
+    },
+    "tips": {
+      "title": "Conseils",
+      "tip1": "Chronométrez vos sauts avec soin pour éviter les ennemis et les obstacles",
+      "tip2": "Gardez vos roquettes de riz pour les situations difficiles",
+      "tip3": "Collectez les power-ups dès que possible pour augmenter vos chances de survie",
+      "tip4": "La difficulté augmente tous les 1000m - soyez prêt pour des ennemis plus difficiles"
+    },
+    "playNow": "Jouer Maintenant"
   }
 }

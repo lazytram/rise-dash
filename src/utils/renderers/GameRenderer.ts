@@ -72,7 +72,6 @@ export class GameRenderer {
       translations?.distance,
       translations?.meters
     );
-    this.uiRenderer.drawAmmoIndicator(player, translations?.riceRockets);
 
     // Render start screen if needed
     if (!isGameRunning && !isGameOver) {

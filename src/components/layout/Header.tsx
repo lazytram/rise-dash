@@ -7,6 +7,7 @@ import { AuthButton } from "@/components/auth/AuthButton";
 import { ProfileButton } from "@/components/auth/ProfileButton";
 import { LeaderboardButton } from "@/components/auth/LeaderboardButton";
 import { GameButton } from "@/components/auth/GameButton";
+import { InstructionsButton } from "@/components/auth/InstructionsButton";
 import { LanguageSelector } from "@/components/LanguageSelector";
 
 export function Header() {
@@ -28,12 +29,13 @@ export function Header() {
         showMenu ? "justify-between" : "justify-end"
       }`}
     >
-      {/* Left side - Game, Profile and Leaderboard buttons (only when connected AND authenticated) */}
+      {/* Left side - Game, Profile, Leaderboard and Instructions buttons (only when connected AND authenticated) */}
       {showMenu && (
         <div className="flex flex-col items-start gap-y-4">
           <GameButton />
           <ProfileButton />
           <LeaderboardButton />
+          <InstructionsButton />
         </div>
       )}
 

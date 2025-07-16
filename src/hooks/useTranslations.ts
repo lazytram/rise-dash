@@ -3,10 +3,6 @@ import en from "@/languages/en.json";
 import fr from "@/languages/fr.json";
 import es from "@/languages/es.json";
 
-type TranslationValue =
-  | string
-  | Record<string, string | Record<string, string>>;
-
 const languages = {
   en,
   fr,
@@ -18,7 +14,8 @@ export const useTranslations = () => {
 
   const t = (key: string): string => {
     const keys = key.split(".");
-    let value: TranslationValue = languages[locale];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let value: any = languages[locale];
 
     for (const k of keys) {
       if (value && typeof value === "object" && k in value) {

@@ -26,7 +26,7 @@ export class DecorationRenderer extends BaseRenderer {
   }
 
   private drawToriiShadow(torii: Torii, baseY: number): void {
-    this.ctx.fillStyle = TORII_COLORS.SHADOW;
+    this.ctx.fillStyle = "#654321"; // Dark brown shadow
     this.ctx.fillRect(torii.x + 3, baseY + 2, torii.width, 8);
   }
 
@@ -42,7 +42,7 @@ export class DecorationRenderer extends BaseRenderer {
       torii.y
     );
     leftGradient.addColorStop(0, TORII_COLORS.PRIMARY);
-    leftGradient.addColorStop(0.5, TORII_COLORS.SECONDARY);
+    leftGradient.addColorStop(0.5, "#A0522D"); // Saddle brown
     leftGradient.addColorStop(1, TORII_COLORS.PRIMARY);
     this.ctx.fillStyle = leftGradient;
     this.ctx.fillRect(torii.x, torii.y, pillarWidth, pillarHeight);
@@ -55,7 +55,7 @@ export class DecorationRenderer extends BaseRenderer {
       torii.y
     );
     rightGradient.addColorStop(0, TORII_COLORS.PRIMARY);
-    rightGradient.addColorStop(0.5, TORII_COLORS.SECONDARY);
+    rightGradient.addColorStop(0.5, "#A0522D"); // Saddle brown
     rightGradient.addColorStop(1, TORII_COLORS.PRIMARY);
     this.ctx.fillStyle = rightGradient;
     this.ctx.fillRect(
@@ -66,7 +66,7 @@ export class DecorationRenderer extends BaseRenderer {
     );
 
     // Draw pillar details (wood grain effect)
-    this.ctx.fillStyle = TORII_COLORS.WOOD_GRAIN;
+    this.ctx.fillStyle = "#654321"; // Dark brown wood grain
     for (let i = 0; i < 3; i++) {
       this.ctx.fillRect(
         torii.x + 1,
@@ -133,7 +133,7 @@ export class DecorationRenderer extends BaseRenderer {
     const pillarWidth = GAME_CONSTANTS.TORII_PILLAR_WIDTH;
 
     // Add golden details
-    this.ctx.fillStyle = TORII_COLORS.GOLD_DETAILS;
+    this.ctx.fillStyle = "#FFD700"; // Gold
     this.ctx.fillRect(
       torii.x - 8,
       torii.y,
@@ -148,7 +148,7 @@ export class DecorationRenderer extends BaseRenderer {
     );
 
     // Draw decorative elements on pillars
-    this.ctx.fillStyle = TORII_COLORS.GOLD_DETAILS;
+    this.ctx.fillStyle = "#FFD700"; // Gold
     this.ctx.fillRect(torii.x + 1, torii.y + 15, pillarWidth - 2, 3);
     this.ctx.fillRect(
       torii.x + torii.width - pillarWidth + 1,
@@ -165,7 +165,7 @@ export class DecorationRenderer extends BaseRenderer {
     );
 
     // Draw subtle outline
-    this.ctx.strokeStyle = TORII_COLORS.OUTLINE;
+    this.ctx.strokeStyle = "#654321"; // Dark brown outline
     this.ctx.lineWidth = 1;
     this.ctx.strokeRect(torii.x, torii.y, torii.width, torii.height);
   }
