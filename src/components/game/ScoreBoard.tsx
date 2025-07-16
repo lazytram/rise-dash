@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useAccount } from "wagmi";
+import Image from "next/image";
 import { useBlockchainScore } from "@/hooks/useBlockchainScore";
 import { useTranslations } from "@/hooks/useTranslations";
 import { UI_COLORS } from "@/constants/colors";
@@ -62,7 +63,15 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     return (
       <Modal size="sm">
         <div className="text-center">
-          <div className="text-6xl mb-4">🎉</div>
+          <div className="mb-6">
+            <Image
+              src="/armchair.png"
+              alt="Victory"
+              width={95}
+              height={95}
+              className="mx-auto mb-4 animate-bounce"
+            />
+          </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             {isNewPersonalBest
               ? t("blockchain.newRecord")
