@@ -23,6 +23,11 @@ export function Header() {
   const showMenu =
     isMounted && isConnected && session && status === "authenticated";
 
+  // Don't render anything until mounted to avoid hydration issues
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div
       className={`flex items-start absolute top-4 left-4 right-4 z-1 ${
