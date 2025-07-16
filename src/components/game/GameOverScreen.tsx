@@ -4,6 +4,8 @@ import { UI_COLORS } from "@/constants/colors";
 import { useTranslations } from "@/hooks/useTranslations";
 import { ScoreBoard } from "./ScoreBoard";
 import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
+import { Text } from "@/components/ui/Text";
 
 interface GameOverScreenProps {
   distance: number;
@@ -43,13 +45,15 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
   }
 
   return (
-    <div className="absolute inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-10 rounded-lg animate-fade-in">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center shadow-2xl animate-scale-in">
+    <Modal size="sm">
+      <div className="text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">
           {t("game.gameOver")}
         </h1>
 
-        <p className="text-xl text-gray-600 mb-4">{t("game.finalScore")}</p>
+        <Text variant="subtitle" size="xl" className="mb-4">
+          {t("game.finalScore")}
+        </Text>
 
         <div
           className="text-3xl font-bold mb-6"
@@ -58,7 +62,9 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           {GameLogic.formatDistance(distance)} {t("game.meters")}
         </div>
 
-        <p className="text-lg text-gray-600 mb-6">{t("game.restartMessage")}</p>
+        <Text variant="subtitle" size="lg" className="mb-6">
+          {t("game.restartMessage")}
+        </Text>
 
         <div className="flex gap-3 justify-center">
           <Button onClick={() => setShowScoreBoard(true)} variant="success">
@@ -69,6 +75,6 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };

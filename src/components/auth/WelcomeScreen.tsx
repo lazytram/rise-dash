@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "@/hooks/useTranslations";
+import { Text } from "@/components/ui/Text";
 
 export function WelcomeScreen() {
   const { t } = useTranslations();
@@ -18,11 +19,15 @@ export function WelcomeScreen() {
       <h1 className="text-5xl font-extrabold text-white drop-shadow-lg mb-2 text-center">
         {t("auth.welcomeTitle")}
       </h1>
-      <p className="text-xl text-white/80 mb-6 text-center max-w-xl">
+      <Text
+        variant="subtitle"
+        size="xl"
+        className="text-white/80 mb-6 text-center max-w-xl"
+      >
         {t("auth.welcomeSubtitle")}
         <br />
         {t("auth.connectWallet")}
-      </p>
+      </Text>
     </div>
   );
 }

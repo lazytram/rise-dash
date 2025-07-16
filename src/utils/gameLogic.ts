@@ -69,7 +69,7 @@ export class GameLogic {
     // Check for collisions
     newGameState = this.checkCollisions(newGameState);
 
-    // Check for game over conditions
+    // Check for game over conditions (sushi and samurai collisions)
     if (this.checkGameOverConditions(newGameState)) {
       newGameState = {
         ...newGameState,
@@ -390,6 +390,19 @@ export class GameLogic {
     // Check Player vs SamuraiBullet collisions
     newGameState = this.checkPlayerSamuraiBulletCollisions(newGameState);
 
+    // Check if player was hit by a samurai bullet (game over)
+    const originalBulletCount = gameState.samuraiBullets.length;
+    const newBulletCount = newGameState.samuraiBullets.length;
+    if (newBulletCount < originalBulletCount) {
+      // A bullet was removed, meaning player was hit
+      newGameState = {
+        ...newGameState,
+        isGameOver: true,
+        isGameRunning: false,
+      };
+      return newGameState;
+    }
+
     // Make samurais shoot
     newGameState = this.makeSamuraisShoot(newGameState);
 
@@ -438,7 +451,7 @@ export class GameLogic {
     for (let i = newSamuraiBullets.length - 1; i >= 0; i--) {
       const bullet = newSamuraiBullets[i];
       if (this.checkCollision(player, bullet)) {
-        // Remove the bullet
+        // Remove the bullet immediately (like sushi collision)
         newSamuraiBullets.splice(i, 1);
       }
     }
@@ -503,15 +516,6 @@ export class GameLogic {
   static checkGameOverConditions(gameState: GameState): boolean {
     // Check if player collides with sushi
     if (this.checkPlayerSushiCollisions(gameState)) {
-      return true;
-    }
-
-    // Check if player collides with samurai bullet
-    if (
-      gameState.samuraiBullets.some((bullet) =>
-        this.checkCollision(gameState.player, bullet)
-      )
-    ) {
       return true;
     }
 

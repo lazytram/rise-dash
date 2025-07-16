@@ -7,7 +7,7 @@
     "meters": "meters",
     "instructions": "Use UP ARROW to jump and SPACEBAR to shoot rice rockets!",
     "startMessage": "Press SPACE or UP ARROW to start",
-    "jumpMessage": "UP ARROW to jump, SPACE to shoot rice rockets",
+    "jumpMessage": "UP ARROW to jump, SPACE to shoot RiceRockets",
     "enemyMessage": "Samurais appear every 50m - shoot them 3 times to defeat!",
     "gameOver": "Game Over!",
     "finalScore": "Final Score",
@@ -30,7 +30,7 @@
     "bestScore": "Best Score",
     "scoreSaved": "Score Saved!",
     "newRecord": "New Personal Record!",
-    "scoreRecorded": "Score recorded on RiseChain",
+    "scoreRecorded": "Score recorded on the RISE blockchain",
     "connectWallet": "Please connect your wallet first",
     "connectWalletToSave": "Connect your wallet to save your score on the blockchain",
     "namePlaceholder": "Your name (max 20 characters)",
@@ -51,6 +51,21 @@
     "continue": "Continue",
     "cancel": "Cancel",
     "close": "Close",
-    "retry": "Retry"
+    "retry": "Retry",
+    "back": "Back"
+  },
+  "profile": {
+    "title": "Profile",
+    "bestScore": "Best Score",
+    "totalGames": "Total Games",
+    "averageScore": "Average Score",
+    "gameHistory": "Game History",
+    "score": "Score",
+    "date": "Date",
+    "status": "Status",
+    "personalBest": "Personal Best",
+    "completed": "Completed",
+    "achievements": "Achievements",
+    "comingSoon": "Coming Soon"
   }
 }

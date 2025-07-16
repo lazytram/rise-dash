@@ -30,7 +30,7 @@
     "bestScore": "Mejor Puntuación",
     "scoreSaved": "¡Puntuación Guardada!",
     "newRecord": "¡Nuevo Récord Personal!",
-    "scoreRecorded": "Puntuación registrada en la blockchain",
+    "scoreRecorded": "Puntuación registrada en la blockchain RISE",
     "connectWallet": "Por favor conecta tu wallet primero",
     "connectWalletToSave": "Conecta tu wallet para guardar tu puntuación en la blockchain",
     "namePlaceholder": "Tu nombre (máx 20 caracteres)",
@@ -43,7 +43,7 @@
     "connectWalletToView": "Conecta tu wallet para ver tus puntuaciones",
     "loadingScores": "Cargando puntuaciones...",
     "noScoresYet": "Aún no hay puntuaciones",
-    "playToEarnScores": "¡Juega para ganar puntuaciones!",
+    "playToEarnScores": "¡Juega para subir en la tabla de posiciones!",
     "scoresOnBlockchain": "Todas las puntuaciones se almacenan en la blockchain RISE",
     "bestScoreLabel": "Mejor puntuación"
   },
@@ -51,6 +51,21 @@
     "continue": "Continuar",
     "cancel": "Cancelar",
     "close": "Cerrar",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "back": "Volver"
+  },
+  "profile": {
+    "title": "Perfil",
+    "bestScore": "Mejor Puntuación",
+    "totalGames": "Total de Juegos",
+    "averageScore": "Puntuación Promedio",
+    "gameHistory": "Historial de Juegos",
+    "score": "Puntuación",
+    "date": "Fecha",
+    "status": "Estado",
+    "personalBest": "Mejor Personal",
+    "completed": "Completado",
+    "achievements": "Logros",
+    "comingSoon": "Próximamente"
   }
 }

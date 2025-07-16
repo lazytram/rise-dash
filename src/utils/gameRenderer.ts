@@ -9,7 +9,6 @@ import {
 import { GAME_CONSTANTS } from "@/constants/game";
 import {
   ENVIRONMENT_COLORS,
-  PLAYER_COLORS,
   RICE_ROCKET_COLORS,
   SUSHI_COLORS,
   TORII_COLORS,
@@ -57,18 +56,67 @@ export class GameRenderer {
   }
 
   drawPlayer(player: Player): void {
-    // Draw player body
-    this.ctx.fillStyle = player.color;
-    this.ctx.fillRect(player.x, player.y, player.width, player.height);
+    // Draw player shadow
+    this.ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+    this.ctx.fillRect(
+      player.x + 2,
+      player.y + player.height + 2,
+      player.width - 4,
+      4
+    );
 
-    // Draw character eyes
-    this.ctx.fillStyle = PLAYER_COLORS.EYES_WHITE;
-    this.ctx.fillRect(player.x + 5, player.y + 5, 6, 6);
-    this.ctx.fillRect(player.x + 19, player.y + 5, 6, 6);
+    // Draw player body (kimono-like shape)
+    this.ctx.fillStyle = "#8B4513"; // Brown kimono color
+    this.ctx.fillRect(
+      player.x + 2,
+      player.y + 8,
+      player.width - 4,
+      player.height - 8
+    );
 
-    this.ctx.fillStyle = PLAYER_COLORS.EYES_PUPIL;
-    this.ctx.fillRect(player.x + 7, player.y + 7, 2, 2);
-    this.ctx.fillRect(player.x + 21, player.y + 7, 2, 2);
+    // Draw kimono collar (white)
+    this.ctx.fillStyle = "#FFFFFF";
+    this.ctx.fillRect(player.x + 4, player.y + 6, player.width - 8, 6);
+
+    // Draw kimono belt (red)
+    this.ctx.fillStyle = "#DC143C";
+    this.ctx.fillRect(player.x + 3, player.y + 18, player.width - 6, 4);
+
+    // Draw head (skin tone)
+    this.ctx.fillStyle = "#FFE4B5";
+    this.ctx.fillRect(player.x + 4, player.y, player.width - 8, 12);
+
+    // Draw hair (black)
+    this.ctx.fillStyle = "#000000";
+    this.ctx.fillRect(player.x + 2, player.y, player.width - 4, 6);
+
+    // Draw eyes (white)
+    this.ctx.fillStyle = "#FFFFFF";
+    this.ctx.fillRect(player.x + 7, player.y + 4, 4, 4);
+    this.ctx.fillRect(player.x + 19, player.y + 4, 4, 4);
+
+    // Draw pupils (black)
+    this.ctx.fillStyle = "#000000";
+    this.ctx.fillRect(player.x + 8, player.y + 5, 2, 2);
+    this.ctx.fillRect(player.x + 20, player.y + 5, 2, 2);
+
+    // Draw mouth (simple line)
+    this.ctx.strokeStyle = "#8B0000";
+    this.ctx.lineWidth = 1;
+    this.ctx.beginPath();
+    this.ctx.moveTo(player.x + 12, player.y + 10);
+    this.ctx.lineTo(player.x + 18, player.y + 10);
+    this.ctx.stroke();
+
+    // Draw kimono sleeves
+    this.ctx.fillStyle = "#8B4513";
+    this.ctx.fillRect(player.x, player.y + 10, 4, 8);
+    this.ctx.fillRect(player.x + player.width - 4, player.y + 10, 4, 8);
+
+    // Draw hands
+    this.ctx.fillStyle = "#FFE4B5";
+    this.ctx.fillRect(player.x - 2, player.y + 12, 3, 4);
+    this.ctx.fillRect(player.x + player.width - 1, player.y + 12, 3, 4);
   }
 
   drawRiceRockets(riceRockets: RiceRocket[]): void {
