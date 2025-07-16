@@ -8,7 +8,7 @@ import { useAuthSync } from "@/hooks/useAuthSync";
 import { useEffect, useState } from "react";
 
 export function AuthButton() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const [isSigning, setIsSigning] = useState(false);
@@ -18,8 +18,15 @@ export function AuthButton() {
   // Trigger SIWE signature only when wallet is connected but not authenticated
   useEffect(() => {
     const signSiwe = async () => {
-      // Avoid double signatures
-      if (!isConnected || !address || session || isSigning) return;
+      // Avoid double signatures - wait for session to load
+      if (
+        !isConnected ||
+        !address ||
+        session ||
+        isSigning ||
+        status === "loading"
+      )
+        return;
 
       setIsSigning(true);
       try {
@@ -59,7 +66,7 @@ export function AuthButton() {
     // Delay to avoid conflicts with RainbowKit
     const timeoutId = setTimeout(signSiwe, 100);
     return () => clearTimeout(timeoutId);
-  }, [isConnected, address, session, signMessageAsync, isSigning]);
+  }, [isConnected, address, session, signMessageAsync, isSigning, status]);
 
   return <ConnectButton />;
 }

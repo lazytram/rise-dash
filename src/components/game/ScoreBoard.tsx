@@ -4,6 +4,8 @@ import { useBlockchainScore } from "@/hooks/useBlockchainScore";
 import { useTranslations } from "@/hooks/useTranslations";
 import { UI_COLORS } from "@/constants/colors";
 import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
+import { Text } from "@/components/ui/Text";
 import { GameLogic } from "@/utils/gameLogic";
 
 interface ScoreBoardProps {
@@ -58,42 +60,38 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   if (isSuccess) {
     return (
-      <div className="absolute inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-20 rounded-lg animate-fade-in">
-        <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center shadow-2xl animate-scale-in">
+      <Modal size="sm">
+        <div className="text-center">
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             {isNewPersonalBest
               ? t("blockchain.newRecord")
               : t("blockchain.scoreSaved")}
           </h2>
-          <p className="text-lg text-gray-600 mb-6">
+          <Text variant="subtitle" size="lg" className="mb-6">
             {t("blockchain.scoreRecorded")}: {distance} {t("game.meters")}
-          </p>
+          </Text>
           {onClose && (
             <Button onClick={onClose} variant="primary">
               {t("common.continue")}
             </Button>
           )}
         </div>
-      </div>
+      </Modal>
     );
   }
 
   return (
-    <div
-      className="absolute inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-20 rounded-lg animate-fade-in"
-      onKeyDown={(e) => e.stopPropagation()}
-      onKeyUp={(e) => e.stopPropagation()}
-    >
-      <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center shadow-2xl animate-scale-in">
+    <Modal size="sm">
+      <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
           {t("blockchain.saveScore")}
         </h2>
 
         <div className="mb-6">
-          <p className="text-lg text-gray-600 mb-2">
+          <Text variant="subtitle" size="lg" className="mb-2">
             {t("blockchain.currentScore")}
-          </p>
+          </Text>
           <div
             className="text-3xl font-bold mb-4"
             style={{ color: UI_COLORS.GRADIENT_FROM }}
@@ -102,18 +100,18 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
 
           {playerBestScore !== null && (
-            <div className="text-sm text-gray-500">
+            <Text variant="caption">
               {t("blockchain.bestScore")}: {formatScore(playerBestScore)}{" "}
               {t("game.meters")}
-            </div>
+            </Text>
           )}
         </div>
 
         {!isConnected ? (
           <div className="mb-6">
-            <p className="text-red-600 mb-4">
+            <Text variant="error" className="mb-4">
               {t("blockchain.connectWalletToSave")}
-            </p>
+            </Text>
             <Button onClick={onClose} variant="secondary">
               {t("common.cancel")}
             </Button>
@@ -143,6 +141,6 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </Modal>
   );
 };

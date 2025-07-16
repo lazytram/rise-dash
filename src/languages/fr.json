@@ -30,7 +30,7 @@
     "bestScore": "Meilleur Score",
     "scoreSaved": "Score Sauvegardé !",
     "newRecord": "Nouveau Record Personnel !",
-    "scoreRecorded": "Score enregistré sur la blockchain",
+    "scoreRecorded": "Score enregistré sur la blockchain RISE",
     "connectWallet": "Veuillez d'abord connecter votre wallet",
     "connectWalletToSave": "Connectez votre wallet pour sauvegarder votre score sur la blockchain",
     "namePlaceholder": "Votre nom (max 20 caractères)",
@@ -40,10 +40,10 @@
     "leaderboard": "Classement",
     "bestScores": "Meilleurs Scores",
     "yourScores": "Vos Scores",
-    "connectWalletToView": "Connectez votre wallet pour voir vos scores",
+    "connectWalletToView": "Connectez votre wallet pour accéder aux scores",
     "loadingScores": "Chargement des scores...",
     "noScoresYet": "Aucun score encore",
-    "playToEarnScores": "Jouez pour gagner des scores !",
+    "playToEarnScores": "Jouez pour grimper au classement !",
     "scoresOnBlockchain": "Tous les scores sont stockés sur la blockchain RISE",
     "bestScoreLabel": "Meilleur score"
   },
@@ -51,6 +51,21 @@
     "continue": "Continuer",
     "cancel": "Annuler",
     "close": "Fermer",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "back": "Retour"
+  },
+  "profile": {
+    "title": "Profil",
+    "bestScore": "Meilleur Score",
+    "totalGames": "Total de Parties",
+    "averageScore": "Score Moyen",
+    "gameHistory": "Historique des Parties",
+    "score": "Score",
+    "date": "Date",
+    "status": "Statut",
+    "personalBest": "Record Personnel",
+    "completed": "Terminé",
+    "achievements": "Succès",
+    "comingSoon": "Bientôt Disponible"
   }
 }
