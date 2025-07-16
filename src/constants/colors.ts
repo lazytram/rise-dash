@@ -31,41 +31,48 @@ export const PLAYER_COLORS = {
 
 // Rice Rocket Colors
 export const RICE_ROCKET_COLORS = {
-  BODY: "#ffffff",
-  HIGHLIGHT: "rgba(255, 255, 255, 0.8)",
+  BODY: "#FFFFFF", // White
 } as const;
 
 // Sushi Colors
 export const SUSHI_COLORS = {
-  BASE: "#ff9500",
-  RICE: "#FFFFFF",
-  FISH: "#ff6b6b",
-  NORI: "#000000",
+  BASE: "#FF6B6B", // Red
+  FISH: "#FF6B6B", // Red (same as base for compatibility)
+  RICE: "#FFFFFF", // White
+  NORI: "#000000", // Black
 } as const;
 
 // Torii Colors
 export const TORII_COLORS = {
-  PRIMARY: "#dc2626",
-  SECONDARY: "#ef4444",
-  WOOD_GRAIN: "rgba(139, 69, 19, 0.3)",
-  GOLD_DETAILS: "#FFD700",
-  SHADOW: "rgba(0, 0, 0, 0.3)",
-  OUTLINE: "rgba(0, 0, 0, 0.5)",
+  PRIMARY: "#8B4513", // Brown
 } as const;
 
 // Samurai Colors
 export const SAMURAI_COLORS = {
-  BODY: "#8B0000", // Dark red
-  EYES: "#FFD700", // Gold
-  PUPIL: "#000000", // Black
-  LIFE_HEART: "#FF0000", // Red
-  LIFE_HEART_EMPTY: "#666666", // Gray
+  BODY: "#4169E1", // Blue
 } as const;
 
 // Samurai Bullet Colors
 export const SAMURAI_BULLET_COLORS = {
-  BODY: "#FF4500", // Orange red
-  TRAIL: "rgba(255, 69, 0, 0.5)", // Semi-transparent orange red
+  BODY: "#FF4500", // Orange
+} as const;
+
+export const NINJA_COLORS = {
+  BODY: "#800080", // Purple
+  SHADOW: "#4B0082", // Dark purple
+} as const;
+
+export const BOSS_COLORS = {
+  BODY: "#DC143C", // Crimson
+  ARMOR: "#8B0000", // Dark red
+  EYES: "#FFD700", // Gold
+} as const;
+
+export const POWERUP_COLORS = {
+  SHIELD: "#00CED1", // Cyan
+  INFINITE_AMMO: "#32CD32", // Lime green
+  SPEED_BOOST: "#FF69B4", // Hot pink
+  MULTI_SHOT: "#FF8C00", // Dark orange
 } as const;
 
 // Common Colors

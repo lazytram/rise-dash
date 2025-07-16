@@ -1,6 +1,5 @@
 import { BaseRenderer } from "./BaseRenderer";
 import { Sushi, Samurai } from "@/types/game";
-import { SUSHI_COLORS, SAMURAI_COLORS } from "@/constants/colors";
 
 export class EnemyRenderer extends BaseRenderer {
   drawSushis(sushis: Sushi[]): void {
@@ -21,7 +20,7 @@ export class EnemyRenderer extends BaseRenderer {
     this.ctx.fillRect(sushi.x, sushi.y, sushi.width, sushi.height);
 
     // Draw rice (white part)
-    this.ctx.fillStyle = SUSHI_COLORS.RICE;
+    this.ctx.fillStyle = "#FFFFFF";
     this.ctx.fillRect(
       sushi.x + 2,
       sushi.y + sushi.height * 0.4,
@@ -30,12 +29,12 @@ export class EnemyRenderer extends BaseRenderer {
     );
 
     // Draw nori (black outline)
-    this.ctx.strokeStyle = SUSHI_COLORS.NORI;
+    this.ctx.strokeStyle = "#000000";
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(sushi.x, sushi.y, sushi.width, sushi.height);
 
     // Draw fish/topping (red/pink part)
-    this.ctx.fillStyle = SUSHI_COLORS.FISH;
+    this.ctx.fillStyle = "#FF6B6B";
     this.ctx.fillRect(
       sushi.x + 4,
       sushi.y + 2,
@@ -148,9 +147,9 @@ export class EnemyRenderer extends BaseRenderer {
       const heartY = startY;
 
       if (i < samurai.lives) {
-        this.ctx.fillStyle = SAMURAI_COLORS.LIFE_HEART;
+        this.ctx.fillStyle = "#FF0000";
       } else {
-        this.ctx.fillStyle = SAMURAI_COLORS.LIFE_HEART_EMPTY;
+        this.ctx.fillStyle = "#666666";
       }
 
       // Draw pixelated heart

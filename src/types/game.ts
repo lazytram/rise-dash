@@ -9,6 +9,17 @@ export interface Player {
   riceRocketAmmo: number;
   maxRiceRocketAmmo: number;
   lastAmmoRechargeTime: number;
+  // Power-up states
+  hasShield: boolean;
+  hasInfiniteAmmo: boolean;
+  hasSpeedBoost: boolean;
+  hasMultiShot: boolean;
+  powerUpEndTimes: {
+    shield: number;
+    infiniteAmmo: number;
+    speedBoost: number;
+    multiShot: number;
+  };
 }
 
 export interface MovableEntity {
@@ -28,13 +39,57 @@ export interface Samurai extends MovableEntity {
   shotCooldown: number;
 }
 
+export interface Ninja extends MovableEntity {
+  lives: number;
+  maxLives: number;
+  lastShotTime: number;
+  shotCooldown: number;
+  velocityY: number;
+  isJumping: boolean;
+  jumpCooldown: number;
+  lastJumpTime: number;
+}
+
+export interface Boss extends MovableEntity {
+  lives: number;
+  maxLives: number;
+  lastShotTime: number;
+  shotCooldown: number;
+  phase: number; // Boss phases for different attack patterns
+  lastPhaseChange: number;
+}
+
 export interface SamuraiBullet extends MovableEntity {
   velocityY: number;
+}
+
+export interface PowerUp extends MovableEntity {
+  type: "shield" | "infinite_ammo" | "speed_boost" | "multi_shot";
+  duration: number;
 }
 
 export type RiceRocket = MovableEntity;
 export type Sushi = MovableEntity;
 export type Torii = MovableEntity;
+
+export interface DifficultyLevel {
+  level: number;
+  speedMultiplier: number;
+  samuraiSpawnDistance: number;
+  sushiSpawnProbability: number;
+  samuraiShotCooldown: number;
+  samuraiLives: number;
+  samuraiBulletSpeed: number;
+  // New enemy parameters
+  ninjaSpawnDistance: number;
+  ninjaShotCooldown: number;
+  ninjaLives: number;
+  bossSpawnDistance: number;
+  bossShotCooldown: number;
+  bossLives: number;
+  // Power-up parameters
+  powerUpSpawnProbability: number;
+}
 
 export interface GameState {
   player: Player;
@@ -42,10 +97,14 @@ export interface GameState {
   sushis: Sushi[];
   toriis: Torii[];
   samurais: Samurai[];
+  ninjas: Ninja[];
+  bosses: Boss[];
   samuraiBullets: SamuraiBullet[];
+  powerUps: PowerUp[];
   distance: number;
   isGameRunning: boolean;
   isGameOver: boolean;
+  difficultyLevel: DifficultyLevel;
 }
 
 export interface GameConstants {

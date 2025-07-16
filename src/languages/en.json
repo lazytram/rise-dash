@@ -8,21 +8,68 @@
     "instructions": "Use UP ARROW to jump and SPACEBAR to shoot rice rockets!",
     "startMessage": "Press SPACE or UP ARROW to start",
     "jumpMessage": "UP ARROW to jump, SPACE to shoot RiceRockets",
-    "enemyMessage": "Samurais appear every 50m - shoot them 3 times to defeat!",
+    "enemyMessage": "Samurais appear every 50m - shoot 3 times to defeat them!",
     "gameOver": "Game Over!",
     "finalScore": "Final Score",
     "restartMessage": "Press SPACE or UP ARROW to restart",
     "riceRockets": "Rice Rockets",
-    "ammoCount": "ammo"
+    "ammoCount": "ammo",
+    "difficulty": "Difficulty",
+    "level": "Level",
+    "levelUp": "Level Up!",
+    "difficultyIncreases": "Difficulty increases!",
+    "newEnemies": "New enemies",
+    "ninjaUnlocked": "Ninjas appear!",
+    "bossUnlocked": "A Boss approaches!",
+    "powerUpCollected": "Power-up collected!",
+    "shieldActive": "Shield active",
+    "infiniteAmmoActive": "Infinite ammo",
+    "speedBoostActive": "Speed boost",
+    "multiShotActive": "Multi shot"
+  },
+  "enemies": {
+    "samurai": "Samurai",
+    "ninja": "Ninja",
+    "boss": "Boss",
+    "lives": "lives",
+    "defeated": "defeated"
+  },
+  "powerUps": {
+    "shield": "Shield",
+    "infiniteAmmo": "Infinite Ammo",
+    "speedBoost": "Speed Boost",
+    "multiShot": "Multi Shot",
+    "description": {
+      "shield": "Protection against collisions",
+      "infiniteAmmo": "Unlimited shots",
+      "speedBoost": "Faster movement",
+      "multiShot": "Multiple projectiles"
+    },
+    "duration": "Duration",
+    "seconds": "seconds",
+    "active": "Active",
+    "expired": "Expired"
+  },
+  "difficulty": {
+    "beginner": "Beginner",
+    "novice": "Novice",
+    "apprentice": "Apprentice",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master",
+    "legend": "Legend",
+    "divine": "Divine",
+    "ultimate": "Ultimate"
   },
   "ui": {
     "language": "Language",
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select language"
   },
   "auth": {
     "welcomeTitle": "Rise Dash",
     "welcomeSubtitle": "The arcade game where every jump counts!",
-    "connectWallet": "Connect your wallet and prove you are the real player.",
+    "connectWallet": "Connect your wallet and prove you're the real player.",
     "secureConnection": "Secure connection via RainbowKit & SIWE",
     "siweStatement": "Sign in to Rise Dash to prove you own this wallet."
   },
@@ -32,7 +79,7 @@
     "bestScore": "Best Score",
     "scoreSaved": "Score Saved!",
     "newRecord": "New Personal Record!",
-    "scoreRecorded": "Score recorded on the RISE blockchain",
+    "scoreRecorded": "Score recorded on RISE blockchain",
     "connectWallet": "Please connect your wallet first",
     "connectWalletToSave": "Connect your wallet to save your score on the blockchain",
     "namePlaceholder": "Your name (max 20 characters)",
@@ -42,11 +89,11 @@
     "leaderboard": "Leaderboard",
     "bestScores": "Best Scores",
     "yourScores": "Your Scores",
-    "connectWalletToView": "Connect your wallet to view your scores",
+    "connectWalletToView": "Connect your wallet to access scores",
     "loadingScores": "Loading scores...",
     "noScoresYet": "No scores yet",
-    "playToEarnScores": "Play the game to climb the leaderboard!",
-    "scoresOnBlockchain": "All scores are stored on the RISE blockchain",
+    "playToEarnScores": "Play to climb the leaderboard!",
+    "scoresOnBlockchain": "All scores are stored on RISE blockchain",
     "bestScoreLabel": "Best score"
   },
   "common": {
@@ -73,5 +120,32 @@
     "achievements": "Achievements",
     "comingSoon": "Coming Soon",
     "player": "Player"
+  },
+  "instructions": {
+    "title": "Instructions",
+    "subtitle": "Learn how to play Rise Dash",
+    "controls": {
+      "title": "Controls",
+      "jump": "Jump",
+      "shoot": "Shoot Rice Rockets",
+      "start": "Start Game"
+    },
+    "gameplay": {
+      "title": "Gameplay",
+      "objective": "Objective",
+      "objectiveDesc": "Run as far as possible while avoiding enemies and collecting power-ups. Your distance traveled is your score.",
+      "enemies": "Enemies",
+      "enemiesDesc": "Samurais appear every 50m and shoot shurikens. Shoot them 3 times to defeat them. Ninjas and bosses appear at higher distances.",
+      "powerUps": "Power-ups",
+      "powerUpsDesc": "Collect power-ups to gain temporary advantages: Shield (protection), Infinite Ammo (unlimited shots), Speed Boost (faster movement), Multi Shot (multiple projectiles)."
+    },
+    "tips": {
+      "title": "Tips",
+      "tip1": "Time your jumps carefully to avoid enemies and obstacles",
+      "tip2": "Save your rice rockets for difficult situations",
+      "tip3": "Collect power-ups whenever possible to increase your survival chances",
+      "tip4": "The difficulty increases every 1000m - be prepared for more challenging enemies"
+    },
+    "playNow": "Play Now"
   }
 }

@@ -9,6 +9,8 @@ import { useGameLoop } from "@/hooks/useGameLoop";
 import { useTranslations } from "@/hooks/useTranslations";
 import { GameCanvas } from "./GameCanvas";
 import { GameOverScreen } from "./GameOverScreen";
+import { DifficultyIndicator } from "./DifficultyIndicator";
+import { AmmoIndicator } from "./AmmoIndicator";
 import { GameRenderer } from "@/utils/gameRenderer";
 
 const Game = () => {
@@ -116,6 +118,12 @@ const Game = () => {
     <div className="flex flex-col items-center">
       <div className="relative">
         <GameCanvas canvasRef={canvasRef} />
+        {gameState.isGameRunning && !gameState.isGameOver && (
+          <>
+            <DifficultyIndicator difficultyLevel={gameState.difficultyLevel} />
+            <AmmoIndicator player={gameState.player} />
+          </>
+        )}
         {gameState.isGameOver && (
           <GameOverScreen distance={gameState.distance} onRestart={startGame} />
         )}
