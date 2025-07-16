@@ -4,10 +4,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { ProfileContent } from "@/components/game/ProfileContent";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { LeaderboardContent } from "@/components/game/LeaderboardContent";
 
-export default function ProfilePage() {
+export default function LeaderboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -34,7 +34,7 @@ export default function ProfilePage() {
 
   return (
     <PageLayout>
-      <ProfileContent />
+      <LeaderboardContent />
     </PageLayout>
   );
 }

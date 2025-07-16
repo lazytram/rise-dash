@@ -4,10 +4,16 @@ import {
   blockchainService,
   SCOREBOARD_ABI,
   SCOREBOARD_CONTRACT_ADDRESS,
+  LeaderboardEntry,
 } from "@/services/blockchainService";
 
 export interface UseBlockchainScoreReturn {
   recordScore: (score: number, playerName: string) => Promise<void>;
+  getLeaderboard: (
+    offset: number,
+    limit: number
+  ) => Promise<LeaderboardEntry[]>;
+  getTotalScores: () => Promise<bigint>;
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
@@ -87,8 +93,21 @@ export function useBlockchainScore(): UseBlockchainScoreReturn {
     [address, writeContract]
   );
 
+  const getLeaderboard = useCallback(
+    async (offset: number, limit: number): Promise<LeaderboardEntry[]> => {
+      return await blockchainService.getLeaderboard(offset, limit);
+    },
+    []
+  );
+
+  const getTotalScores = useCallback(async (): Promise<bigint> => {
+    return await blockchainService.getTotalScores();
+  }, []);
+
   return {
     recordScore,
+    getLeaderboard,
+    getTotalScores,
     isLoading,
     isSuccess,
     isError,

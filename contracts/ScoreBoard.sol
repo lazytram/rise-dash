@@ -9,10 +9,21 @@ contract ScoreBoard {
         bytes32 gameHash; // Hash to verify score authenticity
     }
 
+    struct LeaderboardEntry {
+        uint256 score;
+        string playerName;
+        address playerAddress;
+    }
+
     mapping(address => Score[]) public playerScores;
     mapping(address => uint256) public playerBestScore;
     mapping(address => uint256) public lastScoreTimestamp; // Anti-spam protection
     mapping(bytes32 => bool) public usedGameHashes; // Prevent score reuse
+
+    // Global leaderboard tracking
+    address[] public allPlayers;
+    mapping(address => bool) public playerExists;
+    mapping(address => string) public playerNames; // Store player names
 
     uint256 public constant MIN_TIME_BETWEEN_SCORES = 30 seconds; // Minimum time between scores
 
@@ -71,6 +82,13 @@ contract ScoreBoard {
         playerScores[_playerAddress].push(newScore);
         lastScoreTimestamp[_playerAddress] = block.timestamp;
 
+        // Add player to global tracking if not already present
+        if (!playerExists[_playerAddress]) {
+            allPlayers.push(_playerAddress);
+            playerExists[_playerAddress] = true;
+            playerNames[_playerAddress] = _playerName;
+        }
+
         // Update best score if this is higher
         if (_score > playerBestScore[_playerAddress]) {
             playerBestScore[_playerAddress] = _score;
@@ -103,6 +121,13 @@ contract ScoreBoard {
 
         playerScores[msg.sender].push(newScore);
 
+        // Add player to global tracking if not already present
+        if (!playerExists[msg.sender]) {
+            allPlayers.push(msg.sender);
+            playerExists[msg.sender] = true;
+            playerNames[msg.sender] = _playerName;
+        }
+
         if (_score > playerBestScore[msg.sender]) {
             playerBestScore[msg.sender] = _score;
             emit BestScoreUpdated(msg.sender, _score);
@@ -121,6 +146,65 @@ contract ScoreBoard {
 
     function getScoreCount(address _player) public view returns (uint256) {
         return playerScores[_player].length;
+    }
+
+    /**
+     * @dev Gets the global leaderboard with pagination
+     * @param _offset Starting index for pagination
+     * @param _limit Number of entries to return
+     * @return Array of LeaderboardEntry structs
+     */
+    function getLeaderboard(uint256 _offset, uint256 _limit) public view returns (LeaderboardEntry[] memory) {
+        uint256 totalPlayers = allPlayers.length;
+
+        if (_offset >= totalPlayers) {
+            return new LeaderboardEntry[](0);
+        }
+
+        uint256 endIndex = _offset + _limit;
+        if (endIndex > totalPlayers) {
+            endIndex = totalPlayers;
+        }
+
+        uint256 resultLength = endIndex - _offset;
+        LeaderboardEntry[] memory result = new LeaderboardEntry[](resultLength);
+
+        // Create a temporary array to sort by best scores
+        LeaderboardEntry[] memory allEntries = new LeaderboardEntry[](totalPlayers);
+        for (uint256 i = 0; i < totalPlayers; i++) {
+            address player = allPlayers[i];
+            allEntries[i] = LeaderboardEntry({
+                score: playerBestScore[player],
+                playerName: playerNames[player],
+                playerAddress: player
+            });
+        }
+
+        // Sort by score (descending) - simple bubble sort for small arrays
+        for (uint256 i = 0; i < totalPlayers - 1; i++) {
+            for (uint256 j = 0; j < totalPlayers - i - 1; j++) {
+                if (allEntries[j].score < allEntries[j + 1].score) {
+                    LeaderboardEntry memory temp = allEntries[j];
+                    allEntries[j] = allEntries[j + 1];
+                    allEntries[j + 1] = temp;
+                }
+            }
+        }
+
+        // Copy the requested range
+        for (uint256 i = 0; i < resultLength; i++) {
+            result[i] = allEntries[_offset + i];
+        }
+
+        return result;
+    }
+
+    /**
+     * @dev Gets the total number of players in the leaderboard
+     * @return Total number of players
+     */
+    function getTotalScores() public view returns (uint256) {
+        return allPlayers.length;
     }
 
     /**

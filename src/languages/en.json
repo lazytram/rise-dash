@@ -52,7 +52,10 @@
     "cancel": "Cancel",
     "close": "Close",
     "retry": "Retry",
-    "back": "Back"
+    "back": "Back",
+    "showing": "Showing",
+    "of": "of",
+    "playNow": "Play Now"
   },
   "profile": {
     "title": "Profile",
@@ -66,6 +69,7 @@
     "personalBest": "Personal Best",
     "completed": "Completed",
     "achievements": "Achievements",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "player": "Player"
   }
 }
