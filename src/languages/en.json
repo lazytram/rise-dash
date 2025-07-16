@@ -43,6 +43,7 @@
     "bestScores": "Best Scores",
     "yourScores": "Your Scores",
     "connectWalletToView": "Connect your wallet to view your scores",
+    "signSiweToViewScores": "Connect your wallet and sign the SIWE message to view your scores saved on the blockchain",
     "loadingScores": "Loading scores...",
     "noScoresYet": "No scores yet",
     "playToEarnScores": "Play the game to climb the leaderboard!",

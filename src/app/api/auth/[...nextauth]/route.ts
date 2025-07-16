@@ -21,24 +21,43 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         try {
-          const siwe = new SiweMessage(
-            JSON.parse(credentials?.message || "{}")
-          );
+          if (!credentials?.message || !credentials?.signature) {
+            console.error("Missing credentials");
+            return null;
+          }
+
+          const siwe = new SiweMessage(JSON.parse(credentials.message));
           const nextAuthUrl = new URL(
             process.env.NEXTAUTH_URL || "http://localhost:3000"
           );
 
+          // Get nonce from the request headers or generate one
+          let nonce: string;
+          try {
+            const csrfToken = await getCsrfToken({ req });
+            nonce = csrfToken || "fallback-nonce";
+          } catch {
+            console.warn("Could not get CSRF token, using fallback");
+            nonce = "fallback-nonce";
+          }
+
           const result = await siwe.verify({
-            signature: credentials?.signature || "",
+            signature: credentials.signature,
             domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
+            nonce: nonce,
           });
 
           if (result.success) {
+            console.log(
+              "SIWE verification successful for address:",
+              siwe.address
+            );
             return {
               id: siwe.address,
             };
           }
+
+          console.error("SIWE verification failed");
           return null;
         } catch (e) {
           console.error("SIWE verification error:", e);

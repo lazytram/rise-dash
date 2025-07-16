@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
@@ -24,6 +25,7 @@ interface LeaderboardEntryWithRank extends LeaderboardEntry {
 export const LeaderboardContent: React.FC = () => {
   const { t } = useTranslations();
   const { isConnected } = useAccount();
+  const { data: session } = useSession();
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardEntryWithRank[]
   >([]);
@@ -78,6 +80,21 @@ export const LeaderboardContent: React.FC = () => {
           </h2>
           <Text variant="error" className="mb-4">
             {t("blockchain.connectWalletToView")}
+          </Text>
+        </Card>
+      </Container>
+    );
+  }
+
+  if (!session) {
+    return (
+      <Container>
+        <Card>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            {t("blockchain.leaderboard")}
+          </h2>
+          <Text variant="body" className="mb-4 text-yellow-600">
+            {t("blockchain.signSiweToViewScores")}
           </Text>
         </Card>
       </Container>

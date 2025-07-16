@@ -43,6 +43,7 @@
     "bestScores": "Mejores Puntuaciones",
     "yourScores": "Tus Puntuaciones",
     "connectWalletToView": "Conecta tu wallet para ver tus puntuaciones",
+    "signSiweToViewScores": "Conecta tu wallet y firma el mensaje SIWE para ver tus puntuaciones guardadas en la blockchain",
     "loadingScores": "Cargando puntuaciones...",
     "noScoresYet": "Aún no hay puntuaciones",
     "playToEarnScores": "¡Juega para subir en la tabla de posiciones!",
