@@ -78,7 +78,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
               : t("blockchain.scoreSaved")}
           </h2>
           <Text variant="subtitle" size="lg" className="mb-6">
-            {t("blockchain.scoreRecorded")}: {distance} {t("game.meters")}
+            {t("blockchain.scoreRecorded")}:{" "}
+            {GameLogic.formatDistance(distance)} {t("game.meters")}
           </Text>
           {onClose && (
             <Button onClick={onClose} variant="primary">
