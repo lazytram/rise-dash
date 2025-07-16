@@ -42,7 +42,7 @@ describe("useTranslations", () => {
       const { result } = renderHook(() => useTranslations());
 
       expect(result.current.t("game.title")).toBe("Rise Dash");
-      expect(result.current.t("game.startGame")).toBe("Comenzar juego");
+      expect(result.current.t("game.startGame")).toBe("Comenzar Juego");
     });
 
     it("should handle nested translation keys", () => {
@@ -51,7 +51,7 @@ describe("useTranslations", () => {
       const { result } = renderHook(() => useTranslations());
 
       expect(result.current.t("game.distance")).toBe("Distance traveled");
-      expect(result.current.t("ui.selectLanguage")).toBe("Select Language");
+      expect(result.current.t("ui.selectLanguage")).toBe("Select language");
     });
 
     it("should return the current locale", () => {
