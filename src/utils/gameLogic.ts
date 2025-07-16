@@ -116,29 +116,51 @@ export class GameLogic {
       y: 300,
       velocityY: 0,
       isJumping: false,
+      riceRocketAmmo: GAME_CONSTANTS.MAX_RICE_ROCKET_AMMO,
+      lastAmmoRechargeTime: Date.now(),
     };
   }
 
   static updatePlayerPhysics(player: Player): Player {
-    const newPlayer = { ...player };
+    const newVelocityY = player.velocityY + GAME_CONSTANTS.GRAVITY;
+    const newY = player.y + newVelocityY;
+    const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
-    // Apply gravity
-    newPlayer.velocityY += GAME_CONSTANTS.GRAVITY;
-    newPlayer.y += newPlayer.velocityY;
-
-    // Check ground collision
-    const groundY =
-      GAME_CONSTANTS.CANVAS_HEIGHT -
-      GAME_CONSTANTS.GROUND_HEIGHT -
-      newPlayer.height;
-
-    if (newPlayer.y >= groundY) {
-      newPlayer.y = groundY;
-      newPlayer.velocityY = 0;
-      newPlayer.isJumping = false;
+    // Check if player hit the ground
+    if (newY >= groundY - player.height) {
+      return {
+        ...player,
+        y: groundY - player.height,
+        velocityY: 0,
+        isJumping: false,
+      };
     }
 
-    return newPlayer;
+    // Update ammo recharge
+    const currentTime = Date.now();
+    const timeSinceLastRecharge = currentTime - player.lastAmmoRechargeTime;
+
+    if (
+      timeSinceLastRecharge >= GAME_CONSTANTS.AMMO_RECHARGE_INTERVAL &&
+      player.riceRocketAmmo < player.maxRiceRocketAmmo
+    ) {
+      return {
+        ...player,
+        y: newY,
+        velocityY: newVelocityY,
+        riceRocketAmmo: Math.min(
+          player.riceRocketAmmo + 1,
+          player.maxRiceRocketAmmo
+        ),
+        lastAmmoRechargeTime: currentTime,
+      };
+    }
+
+    return {
+      ...player,
+      y: newY,
+      velocityY: newVelocityY,
+    };
   }
 
   static canJump(player: Player): boolean {
@@ -181,10 +203,19 @@ export class GameLogic {
   }
 
   static addRiceRocket(gameState: GameState): GameState {
+    // Check if player has ammo
+    if (gameState.player.riceRocketAmmo <= 0) {
+      return gameState; // Can't shoot without ammo
+    }
+
     const newRiceRocket = this.createRiceRocket(gameState.player);
     return {
       ...gameState,
       riceRockets: [...gameState.riceRockets, newRiceRocket],
+      player: {
+        ...gameState.player,
+        riceRocketAmmo: gameState.player.riceRocketAmmo - 1,
+      },
     };
   }
 
@@ -192,7 +223,7 @@ export class GameLogic {
   // SUSHI MANAGEMENT
   // ================================
 
-  static createSushi(): Sushi {
+  static createSushi(distance: number): Sushi {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
     return {
@@ -201,7 +232,7 @@ export class GameLogic {
       y: groundY - player.height, // Same height as player, on the ground
       width: player.width, // Same width as player
       height: player.height, // Same height as player
-      velocityX: GAME_CONSTANTS.SUSHI_SPEED,
+      velocityX: this.getCurrentSushiSpeed(distance),
       color: SUSHI_COLORS.BASE,
     };
   }
@@ -222,16 +253,24 @@ export class GameLogic {
 
     const lastSushi = gameState.sushis[gameState.sushis.length - 1];
     const distanceFromLast = GAME_CONSTANTS.CANVAS_WIDTH - lastSushi.x;
-    const spawnDistance =
+
+    // Calculate base spawn distance with more variance
+    const baseSpawnDistance =
       GAME_CONSTANTS.SUSHI_MIN_SPAWN_DISTANCE +
       Math.random() *
         (GAME_CONSTANTS.SUSHI_MAX_SPAWN_DISTANCE -
           GAME_CONSTANTS.SUSHI_MIN_SPAWN_DISTANCE);
-    return distanceFromLast >= spawnDistance;
+
+    // Add additional variance based on the variance constant
+    const variance = baseSpawnDistance * GAME_CONSTANTS.SUSHI_SPACING_VARIANCE;
+    const finalSpawnDistance =
+      baseSpawnDistance + (Math.random() - 0.5) * variance;
+
+    return distanceFromLast >= finalSpawnDistance;
   }
 
   static addSushi(gameState: GameState): GameState {
-    const newSushi = this.createSushi();
+    const newSushi = this.createSushi(gameState.distance);
     return {
       ...gameState,
       sushis: [...gameState.sushis, newSushi],
@@ -242,7 +281,7 @@ export class GameLogic {
   // TORII MANAGEMENT
   // ================================
 
-  static createTorii(): Torii {
+  static createTorii(distance: number): Torii {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
     return {
@@ -251,7 +290,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.TORII_HEIGHT,
       width: GAME_CONSTANTS.TORII_WIDTH,
       height: GAME_CONSTANTS.TORII_HEIGHT,
-      velocityX: GAME_CONSTANTS.SUSHI_SPEED,
+      velocityX: this.getCurrentSushiSpeed(distance), // Use same speed as sushi
       color: TORII_COLORS.PRIMARY,
     };
   }
@@ -276,7 +315,7 @@ export class GameLogic {
   }
 
   static addTorii(gameState: GameState): GameState {
-    const newTorii = this.createTorii();
+    const newTorii = this.createTorii(gameState.distance);
     return {
       ...gameState,
       toriis: [...gameState.toriis, newTorii],
@@ -296,10 +335,36 @@ export class GameLogic {
   }
 
   // ================================
+  // SPEED PROGRESSION SYSTEM
+  // ================================
+
+  static calculateSpeedMultiplier(distance: number): number {
+    const speedLevel = Math.floor(
+      distance / GAME_CONSTANTS.SPEED_INCREASE_INTERVAL
+    );
+    return Math.pow(1 + GAME_CONSTANTS.SPEED_INCREASE_PERCENTAGE, speedLevel);
+  }
+
+  static getCurrentSushiSpeed(distance: number): number {
+    const speedMultiplier = this.calculateSpeedMultiplier(distance);
+    return GAME_CONSTANTS.BASE_SUSHI_SPEED * speedMultiplier;
+  }
+
+  static getCurrentSamuraiSpeed(distance: number): number {
+    const speedMultiplier = this.calculateSpeedMultiplier(distance);
+    return GAME_CONSTANTS.BASE_SAMURAI_SPEED * speedMultiplier;
+  }
+
+  static getCurrentSamuraiBulletSpeed(distance: number): number {
+    const speedMultiplier = this.calculateSpeedMultiplier(distance);
+    return GAME_CONSTANTS.BASE_SAMURAI_BULLET_SPEED * speedMultiplier;
+  }
+
+  // ================================
   // SAMURAI MANAGEMENT
   // ================================
 
-  static createSamurai(): Samurai {
+  static createSamurai(distance: number): Samurai {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
     return {
@@ -308,7 +373,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.SAMURAI_HEIGHT,
       width: GAME_CONSTANTS.SAMURAI_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_HEIGHT,
-      velocityX: GAME_CONSTANTS.SAMURAI_SPEED,
+      velocityX: this.getCurrentSamuraiSpeed(distance),
       color: SAMURAI_COLORS.BODY,
       lives: GAME_CONSTANTS.SAMURAI_LIVES,
       maxLives: GAME_CONSTANTS.SAMURAI_LIVES,
@@ -329,29 +394,41 @@ export class GameLogic {
   static shouldSpawnSamurai(gameState: GameState): boolean {
     // Only spawn a samurai if there are none currently on screen
     if (gameState.samurais.length > 0) return false;
-    return (
-      GameLogic.formatDistance(gameState.distance) %
-        GAME_CONSTANTS.SAMURAI_SPAWN_DISTANCE ===
-      0
-    );
+
+    const formattedDistance = GameLogic.formatDistance(gameState.distance);
+
+    // Don't spawn samurai before minimum distance
+    if (formattedDistance < GAME_CONSTANTS.SAMURAI_MIN_SPAWN_DISTANCE) {
+      return false;
+    }
+
+    // Don't spawn at exactly 0 (which would be the case at the very beginning)
+    if (formattedDistance === 0) {
+      return false;
+    }
+
+    return formattedDistance % GAME_CONSTANTS.SAMURAI_SPAWN_DISTANCE === 0;
   }
 
   static addSamurai(gameState: GameState): GameState {
-    const newSamurai = this.createSamurai();
+    const newSamurai = this.createSamurai(gameState.distance);
     return {
       ...gameState,
       samurais: [...gameState.samurais, newSamurai],
     };
   }
 
-  static createSamuraiBullet(samurai: Samurai): SamuraiBullet {
+  static createSamuraiBullet(
+    samurai: Samurai,
+    distance: number
+  ): SamuraiBullet {
     return {
       id: Date.now().toString() + Math.random(),
       x: samurai.x, // Start from samurai position
       y: samurai.y + samurai.height / 2, // Same height as samurai center
       width: GAME_CONSTANTS.SAMURAI_BULLET_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_BULLET_HEIGHT,
-      velocityX: -7, // Negative for left direction (opposite of RiceRockets)
+      velocityX: this.getCurrentSamuraiBulletSpeed(distance), // Dynamic speed based on distance
       velocityY: 0, // No vertical movement
       color: SAMURAI_BULLET_COLORS.BODY,
     };
@@ -369,10 +446,13 @@ export class GameLogic {
       .filter((bullet) => bullet.x > -bullet.width);
   }
 
-  static makeSamuraiShoot(samurai: Samurai): SamuraiBullet | null {
+  static makeSamuraiShoot(
+    samurai: Samurai,
+    distance: number
+  ): SamuraiBullet | null {
     const currentTime = Date.now();
     if (currentTime - samurai.lastShotTime >= samurai.shotCooldown) {
-      return this.createSamuraiBullet(samurai);
+      return this.createSamuraiBullet(samurai, distance);
     }
     return null;
   }
@@ -468,7 +548,7 @@ export class GameLogic {
     const newSamurais = [...samurais];
 
     newSamurais.forEach((samurai, index) => {
-      const bullet = this.makeSamuraiShoot(samurai);
+      const bullet = this.makeSamuraiShoot(samurai, gameState.distance);
       if (bullet) {
         newSamuraiBullets.push(bullet);
         newSamurais[index] = {

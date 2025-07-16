@@ -9,7 +9,7 @@ const createTestSushi = (overrides: Partial<Sushi> = {}): Sushi => ({
   y: 300,
   width: 30,
   height: 30,
-  velocityX: GAME_CONSTANTS.SUSHI_SPEED,
+  velocityX: GAME_CONSTANTS.BASE_SUSHI_SPEED,
   color: "#ff9500",
   ...overrides,
 });
@@ -34,13 +34,19 @@ describe("GameLogic - Sushi functionality", () => {
 
   describe("createSushi", () => {
     it("should create a sushi with correct properties", () => {
-      const sushi = GameLogic.createSushi();
+      const testDistance = 100;
+      const sushi = GameLogic.createSushi(testDistance);
 
       expect(sushi).toMatchObject({
         x: GAME_CONSTANTS.CANVAS_WIDTH,
         width: player.width,
         height: player.height,
-        velocityX: GAME_CONSTANTS.SUSHI_SPEED,
+        velocityX:
+          GAME_CONSTANTS.BASE_SUSHI_SPEED *
+          Math.pow(
+            1 + GAME_CONSTANTS.SPEED_INCREASE_PERCENTAGE,
+            Math.floor(testDistance / GAME_CONSTANTS.SPEED_INCREASE_INTERVAL)
+          ), // At distance 100, speed should be base speed * 1.025
         color: "#ff9500",
       });
 
@@ -63,7 +69,7 @@ describe("GameLogic - Sushi functionality", () => {
       ]);
 
       expect(updatedSushis).toHaveLength(1);
-      expect(updatedSushis[0].x).toBe(100 + GAME_CONSTANTS.SUSHI_SPEED);
+      expect(updatedSushis[0].x).toBe(100 + GAME_CONSTANTS.BASE_SUSHI_SPEED);
     });
   });
 

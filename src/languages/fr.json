@@ -11,7 +11,9 @@
     "enemyMessage": "Les samouraïs apparaissent tous les 50m - tirez 3 fois pour les vaincre !",
     "gameOver": "Partie terminée !",
     "finalScore": "Score Final",
-    "restartMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour recommencer"
+    "restartMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour recommencer",
+    "riceRockets": "Roquettes de Riz",
+    "ammoCount": "munitions"
   },
   "ui": {
     "language": "Langue",

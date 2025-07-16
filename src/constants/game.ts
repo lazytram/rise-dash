@@ -25,6 +25,7 @@ export const GAME_CONSTANTS = {
   INITIAL_SUSHI_SPAWN_DISTANCE: 100, // First Torii at 500 meters
   // Samurai constants
   SAMURAI_SPAWN_DISTANCE: 50, // Spawn every 50 meters
+  SAMURAI_MIN_SPAWN_DISTANCE: 15, // Don't spawn samurai before 15 meters
   SAMURAI_WIDTH: 40,
   SAMURAI_HEIGHT: 60,
   SAMURAI_SPEED: -2,
@@ -34,4 +35,15 @@ export const GAME_CONSTANTS = {
   SAMURAI_BULLET_WIDTH: 6,
   SAMURAI_BULLET_HEIGHT: 6,
   SAMURAI_BULLET_SPEED: -2, // Reduced speed for easier dodging
+  // Speed progression constants
+  SPEED_INCREASE_INTERVAL: 100, // Every 100 meters
+  SPEED_INCREASE_PERCENTAGE: 0.025, // 2.5% increase
+  BASE_SUSHI_SPEED: -4, // Base speed for sushi
+  BASE_SAMURAI_SPEED: -2, // Base speed for samurai
+  BASE_SAMURAI_BULLET_SPEED: -7, // Increased base speed for samurai bullets (shurikens)
+  // Enhanced sushi spacing constants
+  SUSHI_SPACING_VARIANCE: 0.4, // 40% variance in spacing
+  // Rice rocket ammo constants
+  MAX_RICE_ROCKET_AMMO: 10, // Maximum ammo capacity
+  AMMO_RECHARGE_INTERVAL: 1000, // Recharge 1 ammo every 1 second
 } as const;

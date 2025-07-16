@@ -11,7 +11,9 @@
     "enemyMessage": "Samurais appear every 50m - shoot them 3 times to defeat!",
     "gameOver": "Game Over!",
     "finalScore": "Final Score",
-    "restartMessage": "Press SPACE or UP ARROW to restart"
+    "restartMessage": "Press SPACE or UP ARROW to restart",
+    "riceRockets": "Rice Rockets",
+    "ammoCount": "ammo"
   },
   "ui": {
     "language": "Language",
