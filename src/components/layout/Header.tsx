@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useMemo, useCallback } from "react";
 import { useAccount } from "wagmi";
 import { useSession } from "next-auth/react";
 import { AuthButton } from "@/components/auth/AuthButton";
@@ -10,18 +10,30 @@ import { GameButton } from "@/components/auth/GameButton";
 import { InstructionsButton } from "@/components/auth/InstructionsButton";
 import { LanguageSelector } from "@/components/LanguageSelector";
 
-export function Header() {
+export const Header = memo(function Header() {
   const { isConnected } = useAccount();
   const { data: session, status } = useSession();
   const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
+  const handleMount = useCallback(() => {
     setIsMounted(true);
   }, []);
 
-  // Show menu buttons only when wallet is connected AND user has signed the SIWE message
-  const showMenu =
-    isMounted && isConnected && session && status === "authenticated";
+  useEffect(() => {
+    handleMount();
+  }, [handleMount]);
+
+  // Memoize the showMenu calculation to prevent unnecessary re-renders
+  const showMenu = useMemo(() => {
+    return isMounted && isConnected && session && status === "authenticated";
+  }, [isMounted, isConnected, session, status]);
+
+  // Memoize the className to prevent unnecessary re-renders
+  const containerClassName = useMemo(() => {
+    return `flex items-start absolute top-4 left-4 right-4 z-1 ${
+      showMenu ? "justify-between" : "justify-end"
+    }`;
+  }, [showMenu]);
 
   // Don't render anything until mounted to avoid hydration issues
   if (!isMounted) {
@@ -29,11 +41,7 @@ export function Header() {
   }
 
   return (
-    <div
-      className={`flex items-start absolute top-4 left-4 right-4 z-1 ${
-        showMenu ? "justify-between" : "justify-end"
-      }`}
-    >
+    <div className={containerClassName}>
       {/* Left side - Game, Profile, Leaderboard and Instructions buttons (only when connected AND authenticated) */}
       {showMenu && (
         <div className="flex flex-col items-start gap-y-4">
@@ -51,4 +59,4 @@ export function Header() {
       </div>
     </div>
   );
-}
+});

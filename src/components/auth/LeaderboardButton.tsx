@@ -2,8 +2,9 @@
 
 import { useTranslations } from "@/hooks/useTranslations";
 import { CircularButton } from "@/components/ui/CircularButton";
+import { memo } from "react";
 
-export function LeaderboardButton() {
+export const LeaderboardButton = memo(function LeaderboardButton() {
   const { t } = useTranslations();
 
   return (
@@ -15,4 +16,4 @@ export function LeaderboardButton() {
       gradientTo="#d97706"
     />
   );
-}
+});

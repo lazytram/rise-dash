@@ -6,9 +6,9 @@ import { SiweMessage } from "siwe";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { riseTestnet } from "wagmi/chains";
 import { useAuthSync } from "@/hooks/useAuthSync";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 
-export function AuthButton() {
+export const AuthButton = memo(function AuthButton() {
   const { data: session, status } = useSession();
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
@@ -74,15 +74,7 @@ export function AuthButton() {
     if (shouldSignIn) {
       signSiwe();
     }
-  }, [
-    shouldSignIn,
-    isConnected,
-    address,
-    session,
-    signMessageAsync,
-    isSigning,
-    status,
-  ]);
+  }, [shouldSignIn, isConnected, address, session, signMessageAsync, isSigning, status]);
 
   // Reset when wallet disconnects
   useEffect(() => {
@@ -107,4 +99,4 @@ export function AuthButton() {
   }, [isConnected, address, session]);
 
   return <ConnectButton />;
-}
+});

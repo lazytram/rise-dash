@@ -2,20 +2,36 @@
 
 import { useLanguageStore, availableLocales } from "@/store/languageStore";
 import { useTranslations } from "@/hooks/useTranslations";
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { Button } from "@/components/ui/Button";
 
-export const LanguageSelector = () => {
+export const LanguageSelector = memo(function LanguageSelector() {
   const { locale, setLocale } = useLanguageStore();
   const { t } = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
 
   const currentLocale = availableLocales.find((l) => l.code === locale);
 
+  const handleToggle = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  const handleLocaleChange = useCallback(
+    (newLocale: string) => {
+      setLocale(newLocale as "en" | "fr" | "es");
+      setIsOpen(false);
+    },
+    [setLocale]
+  );
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <div className="relative">
       <Button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         variant="ghost"
         size="sm"
         className="flex items-center gap-2 px-3 py-2"
@@ -47,10 +63,7 @@ export const LanguageSelector = () => {
           {availableLocales.map((localeOption) => (
             <button
               key={localeOption.code}
-              onClick={() => {
-                setLocale(localeOption.code);
-                setIsOpen(false);
-              }}
+              onClick={() => handleLocaleChange(localeOption.code)}
               className={`w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors cursor-pointer ${
                 locale === localeOption.code
                   ? "bg-blue-50 text-blue-600"
@@ -65,9 +78,7 @@ export const LanguageSelector = () => {
       )}
 
       {/* Overlay to close dropdown when clicking outside */}
-      {isOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-      )}
+      {isOpen && <div className="fixed inset-0 z-40" onClick={handleClose} />}
     </div>
   );
-};
+});

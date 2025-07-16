@@ -4,8 +4,9 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { CircularButton } from "@/components/ui/CircularButton";
+import { memo } from "react";
 
-export function ProfileButton() {
+export const ProfileButton = memo(function ProfileButton() {
   const { data: session } = useSession();
   const { t } = useTranslations();
 
@@ -30,4 +31,4 @@ export function ProfileButton() {
       gradientTo="#1d4ed8"
     />
   );
-}
+});
