@@ -3,8 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 
-// Environment variables for NextAuth configuration
-
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -22,7 +20,9 @@ const handler = NextAuth({
       async authorize(credentials, req) {
         try {
           if (!credentials?.message || !credentials?.signature) {
-            console.error("Missing credentials");
+            if (process.env.NODE_ENV === "development") {
+              console.error("Missing credentials");
+            }
             return null;
           }
 
@@ -31,15 +31,15 @@ const handler = NextAuth({
             process.env.NEXTAUTH_URL || "http://localhost:3000"
           );
 
-          // Get nonce from the request headers or generate one
-          let nonce: string;
-          try {
-            const csrfToken = await getCsrfToken({ req });
-            nonce = csrfToken || "fallback-nonce";
-          } catch {
-            console.warn("Could not get CSRF token, using fallback");
-            nonce = "fallback-nonce";
+          // Get nonce from the request headers
+          const csrfToken = await getCsrfToken({ req });
+          if (!csrfToken) {
+            if (process.env.NODE_ENV === "development") {
+              console.error("No CSRF token available");
+            }
+            return null;
           }
+          const nonce = csrfToken;
 
           const result = await siwe.verify({
             signature: credentials.signature,
@@ -48,25 +48,31 @@ const handler = NextAuth({
           });
 
           if (result.success) {
-            console.log(
-              "SIWE verification successful for address:",
-              siwe.address
-            );
+            if (process.env.NODE_ENV === "development") {
+              console.log(
+                "SIWE verification successful for address:",
+                siwe.address
+              );
+            }
             return {
               id: siwe.address,
             };
           }
 
-          console.error("SIWE verification failed");
+          if (process.env.NODE_ENV === "development") {
+            console.error("SIWE verification failed");
+          }
           return null;
         } catch (e) {
-          console.error("SIWE verification error:", e);
+          if (process.env.NODE_ENV === "development") {
+            console.error("SIWE verification error:", e);
+          }
           return null;
         }
       },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET || "your-secret-key-here",
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 2 * 24 * 60 * 60, // 2 days
