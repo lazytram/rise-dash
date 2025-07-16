@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, memo, useMemo, useCallback } from "react";
+import { memo, useMemo } from "react";
 import { useAccount } from "wagmi";
 import { useSession } from "next-auth/react";
 import { AuthButton } from "@/components/auth/AuthButton";
@@ -9,24 +9,25 @@ import { LeaderboardButton } from "@/components/auth/LeaderboardButton";
 import { GameButton } from "@/components/auth/GameButton";
 import { InstructionsButton } from "@/components/auth/InstructionsButton";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { useHydration } from "@/hooks/useHydration";
+import { HeaderSkeleton } from "./HeaderSkeleton";
 
 export const Header = memo(function Header() {
   const { isConnected } = useAccount();
   const { data: session, status } = useSession();
-  const [isMounted, setIsMounted] = useState(false);
-
-  const handleMount = useCallback(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    handleMount();
-  }, [handleMount]);
+  const { isHydrated, isMounted, isServer } = useHydration();
 
   // Memoize the showMenu calculation to prevent unnecessary re-renders
   const showMenu = useMemo(() => {
-    return isMounted && isConnected && session && status === "authenticated";
-  }, [isMounted, isConnected, session, status]);
+    // Ne pas afficher le menu tant que l'hydratation n'est pas complète
+    return (
+      isMounted &&
+      isHydrated &&
+      isConnected &&
+      session &&
+      status === "authenticated"
+    );
+  }, [isMounted, isHydrated, isConnected, session, status]);
 
   // Memoize the className to prevent unnecessary re-renders
   const containerClassName = useMemo(() => {
@@ -35,9 +36,9 @@ export const Header = memo(function Header() {
     }`;
   }, [showMenu]);
 
-  // Don't render anything until mounted to avoid hydration issues
-  if (!isMounted) {
-    return null;
+  // Rendu côté serveur ou pendant l'hydratation - afficher le skeleton
+  if (isServer || !isMounted) {
+    return <HeaderSkeleton />;
   }
 
   return (
