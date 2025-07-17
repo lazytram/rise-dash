@@ -27,16 +27,29 @@ contract ScoreBoard {
 
     uint256 public constant MIN_TIME_BETWEEN_SCORES = 30 seconds; // Minimum time between scores
 
-    address public gameOwner; // Address authorized to record scores
+    address public gameOwner; // Address authorized to manage the contract
     bool public paused = false;
 
-    event ScoreRecorded(address indexed player, uint256 score, uint256 timestamp, bytes32 gameHash);
+    // Security key for signing scores (set by game owner)
+    bytes32 public securityKey;
+    bool public securityKeySet = false;
+
+    event ScoreRecorded(
+        address indexed player,
+        uint256 score,
+        uint256 timestamp,
+        bytes32 gameHash
+    );
     event BestScoreUpdated(address indexed player, uint256 newBestScore);
     event GameOwnerUpdated(address indexed oldOwner, address indexed newOwner);
     event ContractPaused(bool paused);
+    event SecurityKeyUpdated(bytes32 newKey);
 
     modifier onlyGameOwner() {
-        require(msg.sender == gameOwner, "Only game owner can call this function");
+        require(
+            msg.sender == gameOwner,
+            "Only game owner can call this function"
+        );
         _;
     }
 
@@ -50,24 +63,40 @@ contract ScoreBoard {
     }
 
     /**
-     * @dev Records a score - ONLY THE GAME OWNER CAN CALL THIS FUNCTION
+     * @dev Records a score - ANY PLAYER CAN CALL THIS FUNCTION WITH VALID SIGNATURE
      * @param _score The score to record
      * @param _playerName The player's name
-     * @param _playerAddress The player's address
      * @param _gameHash Unique game hash to verify authenticity
+     * @param _signature Signature created with the security key
      */
     function recordScore(
         uint256 _score,
         string memory _playerName,
-        address _playerAddress,
-        bytes32 _gameHash
-    ) public onlyGameOwner whenNotPaused {
+        bytes32 _gameHash,
+        bytes memory _signature
+    ) public whenNotPaused {
         require(_score > 0, "Score must be greater than 0");
         require(!usedGameHashes[_gameHash], "Game hash already used");
         require(
-            block.timestamp >= lastScoreTimestamp[_playerAddress] + MIN_TIME_BETWEEN_SCORES,
+            block.timestamp >=
+                lastScoreTimestamp[msg.sender] + MIN_TIME_BETWEEN_SCORES,
             "Too soon since last score"
         );
+        require(securityKeySet, "Security key not set");
+
+        // Verify the signature
+        bytes32 messageHash = keccak256(
+            abi.encodePacked(_score, _playerName, msg.sender, _gameHash)
+        );
+        bytes32 ethSignedMessageHash = keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", messageHash)
+        );
+
+        // Recover the signer from the signature
+        address signer = recoverSigner(ethSignedMessageHash, _signature);
+
+        // The signer should be the game owner (who has the security key)
+        require(signer == gameOwner, "Invalid signature");
 
         // Mark hash as used
         usedGameHashes[_gameHash] = true;
@@ -79,23 +108,23 @@ contract ScoreBoard {
             gameHash: _gameHash
         });
 
-        playerScores[_playerAddress].push(newScore);
-        lastScoreTimestamp[_playerAddress] = block.timestamp;
+        playerScores[msg.sender].push(newScore);
+        lastScoreTimestamp[msg.sender] = block.timestamp;
 
         // Add player to global tracking if not already present
-        if (!playerExists[_playerAddress]) {
-            allPlayers.push(_playerAddress);
-            playerExists[_playerAddress] = true;
-            playerNames[_playerAddress] = _playerName;
+        if (!playerExists[msg.sender]) {
+            allPlayers.push(msg.sender);
+            playerExists[msg.sender] = true;
+            playerNames[msg.sender] = _playerName;
         }
 
         // Update best score if this is higher
-        if (_score > playerBestScore[_playerAddress]) {
-            playerBestScore[_playerAddress] = _score;
-            emit BestScoreUpdated(_playerAddress, _score);
+        if (_score > playerBestScore[msg.sender]) {
+            playerBestScore[msg.sender] = _score;
+            emit BestScoreUpdated(msg.sender, _score);
         }
 
-        emit ScoreRecorded(_playerAddress, _score, block.timestamp, _gameHash);
+        emit ScoreRecorded(msg.sender, _score, block.timestamp, _gameHash);
     }
 
     /**
@@ -105,6 +134,7 @@ contract ScoreBoard {
     function recordScoreEmergency(
         uint256 _score,
         string memory _playerName,
+        address _playerAddress,
         bytes32 _gameHash
     ) public onlyGameOwner whenNotPaused {
         require(_score > 0, "Score must be greater than 0");
@@ -119,24 +149,54 @@ contract ScoreBoard {
             gameHash: _gameHash
         });
 
-        playerScores[msg.sender].push(newScore);
+        playerScores[_playerAddress].push(newScore);
 
         // Add player to global tracking if not already present
-        if (!playerExists[msg.sender]) {
-            allPlayers.push(msg.sender);
-            playerExists[msg.sender] = true;
-            playerNames[msg.sender] = _playerName;
+        if (!playerExists[_playerAddress]) {
+            allPlayers.push(_playerAddress);
+            playerExists[_playerAddress] = true;
+            playerNames[_playerAddress] = _playerName;
         }
 
-        if (_score > playerBestScore[msg.sender]) {
-            playerBestScore[msg.sender] = _score;
-            emit BestScoreUpdated(msg.sender, _score);
+        if (_score > playerBestScore[_playerAddress]) {
+            playerBestScore[_playerAddress] = _score;
+            emit BestScoreUpdated(_playerAddress, _score);
         }
 
-        emit ScoreRecorded(msg.sender, _score, block.timestamp, _gameHash);
+        emit ScoreRecorded(_playerAddress, _score, block.timestamp, _gameHash);
     }
 
-    function getPlayerScores(address _player) public view returns (Score[] memory) {
+    /**
+     * @dev Recovers the signer from a signature
+     */
+    function recoverSigner(
+        bytes32 _ethSignedMessageHash,
+        bytes memory _signature
+    ) internal pure returns (address) {
+        require(_signature.length == 65, "Invalid signature length");
+
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+
+        assembly {
+            r := mload(add(_signature, 32))
+            s := mload(add(_signature, 64))
+            v := byte(0, mload(add(_signature, 96)))
+        }
+
+        if (v < 27) {
+            v += 27;
+        }
+
+        require(v == 27 || v == 28, "Invalid signature 'v' value");
+
+        return ecrecover(_ethSignedMessageHash, v, r, s);
+    }
+
+    function getPlayerScores(
+        address _player
+    ) public view returns (Score[] memory) {
         return playerScores[_player];
     }
 
@@ -154,7 +214,10 @@ contract ScoreBoard {
      * @param _limit Number of entries to return
      * @return Array of LeaderboardEntry structs
      */
-    function getLeaderboard(uint256 _offset, uint256 _limit) public view returns (LeaderboardEntry[] memory) {
+    function getLeaderboard(
+        uint256 _offset,
+        uint256 _limit
+    ) public view returns (LeaderboardEntry[] memory) {
         uint256 totalPlayers = allPlayers.length;
 
         if (_offset >= totalPlayers) {
@@ -170,7 +233,9 @@ contract ScoreBoard {
         LeaderboardEntry[] memory result = new LeaderboardEntry[](resultLength);
 
         // Create a temporary array to sort by best scores
-        LeaderboardEntry[] memory allEntries = new LeaderboardEntry[](totalPlayers);
+        LeaderboardEntry[] memory allEntries = new LeaderboardEntry[](
+            totalPlayers
+        );
         for (uint256 i = 0; i < totalPlayers; i++) {
             address player = allPlayers[i];
             allEntries[i] = LeaderboardEntry({
@@ -222,15 +287,26 @@ contract ScoreBoard {
         emit ContractPaused(_paused);
     }
 
-    function getContractInfo() public view returns (
-        address _gameOwner,
-        bool _paused,
-        uint256 _minTimeBetweenScores
-    ) {
-        return (
-            gameOwner,
-            paused,
-            MIN_TIME_BETWEEN_SCORES
-        );
+    /**
+     * @dev Sets the security key for signing scores
+     * @param _securityKey The new security key
+     */
+    function setSecurityKey(bytes32 _securityKey) public onlyGameOwner {
+        securityKey = _securityKey;
+        securityKeySet = true;
+        emit SecurityKeyUpdated(_securityKey);
+    }
+
+    function getContractInfo()
+        public
+        view
+        returns (
+            address _gameOwner,
+            bool _paused,
+            uint256 _minTimeBetweenScores,
+            bool _securityKeySet
+        )
+    {
+        return (gameOwner, paused, MIN_TIME_BETWEEN_SCORES, securityKeySet);
     }
 }

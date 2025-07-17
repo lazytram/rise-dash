@@ -95,7 +95,7 @@ export const useToastStore = create<ToastStore>()(
           message,
           transactionHash,
           viewTransactionText,
-          duration: 8000, // Success toasts stay longer
+          duration: 6000, // Success toasts stay longer
         });
       },
 
@@ -104,7 +104,7 @@ export const useToastStore = create<ToastStore>()(
           type: "error",
           title,
           message,
-          duration: 10000, // Error toasts stay longer
+          duration: 6000, // Error toasts disappear after 6 seconds
         });
       },
 
@@ -129,7 +129,7 @@ export const useToastStore = create<ToastStore>()(
           type: "info",
           title,
           message,
-          duration: 5000,
+          duration: 4000, // Info toasts disappear after 4 seconds
         });
       },
 

@@ -82,6 +82,7 @@
     "newRecord": "New Personal Record!",
     "scoreRecorded": "Score recorded on RISE blockchain",
     "connectWallet": "Please connect your wallet first",
+    "connectWalletMessage": "Please connect your wallet to access this feature",
     "connectWalletToSave": "Connect your wallet to save your score on the blockchain",
     "namePlaceholder": "Your name (max 20 characters)",
     "save": "Save",
@@ -103,7 +104,12 @@
     "transactionSuccessMessage": "Your score has been successfully saved!",
     "transactionFailed": "Transaction Failed",
     "transactionFailedMessage": "Failed to save your score. Please try again.",
-    "viewTransaction": "View Transaction"
+    "viewTransaction": "View Transaction",
+    "contractPaused": "Contract is paused",
+    "securityKeyNotConfigured": "Security key not configured",
+    "onlyGameOwnerCanUseEmergency": "Only game owner can use emergency function",
+    "leaderboardError": "Unable to load leaderboard",
+    "leaderboardErrorDescription": "There was an issue connecting to the blockchain. Please try again later."
   },
   "common": {
     "continue": "Continue",
@@ -115,7 +121,13 @@
     "of": "of",
     "backToWelcome": "Back to Welcome",
     "playNow": "Play Now",
-    "readyToPlay": "Ready to Play?"
+    "readyToPlay": "Ready to Play?",
+    "error": "Error",
+    "success": "Success",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "you": "You"
   },
   "profile": {
     "title": "Profile",

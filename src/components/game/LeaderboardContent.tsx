@@ -23,7 +23,7 @@ interface LeaderboardEntryWithRank extends LeaderboardEntry {
 
 export const LeaderboardContent: React.FC = () => {
   const { t } = useTranslations();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardEntryWithRank[]
   >([]);
@@ -31,6 +31,7 @@ export const LeaderboardContent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalEntries, setTotalEntries] = useState(0);
+  const [hasError, setHasError] = useState(false);
   const itemsPerPage = 10;
 
   const { getLeaderboard, getTotalScores } = useBlockchainScore();
@@ -61,13 +62,18 @@ export const LeaderboardContent: React.FC = () => {
         setLeaderboardData(rankedData);
       } catch (error) {
         console.error("Error loading leaderboard:", error);
+        // Set default values on error to prevent infinite retries
+        setTotalEntries(0);
+        setTotalPages(1);
+        setLeaderboardData([]);
+        setHasError(true);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadLeaderboard();
-  }, [isConnected, currentPage, getLeaderboard, getTotalScores]);
+  }, [isConnected, currentPage]);
 
   if (!isConnected) {
     return (
@@ -93,11 +99,20 @@ export const LeaderboardContent: React.FC = () => {
           <div className="flex justify-center items-center py-8">
             <LoadingSpinner color="white" />
           </div>
+        ) : hasError ? (
+          <div className="text-center py-8">
+            <Text variant="error" className="mb-4">
+              {t("blockchain.leaderboardError")}
+            </Text>
+            <Text variant="body" className="text-white/70">
+              {t("blockchain.leaderboardErrorDescription")}
+            </Text>
+          </div>
         ) : leaderboardData.length === 0 ? (
           <EmptyLeaderboard />
         ) : (
           <>
-            <LeaderboardTable data={leaderboardData} />
+            <LeaderboardTable data={leaderboardData} userAddress={address} />
 
             {totalPages > 1 && (
               <div className="mt-6 flex justify-center">

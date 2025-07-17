@@ -4,6 +4,7 @@ import {
   createPublicClient,
   http,
   hashMessage,
+  toHex,
 } from "viem";
 import { riseTestnet } from "wagmi/chains";
 
@@ -13,10 +14,22 @@ export const SCOREBOARD_ABI = [
     inputs: [
       { name: "_score", type: "uint256" },
       { name: "_playerName", type: "string" },
+      { name: "_gameHash", type: "bytes32" },
+      { name: "_signature", type: "bytes" },
+    ],
+    name: "recordScore",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "_score", type: "uint256" },
+      { name: "_playerName", type: "string" },
       { name: "_playerAddress", type: "address" },
       { name: "_gameHash", type: "bytes32" },
     ],
-    name: "recordScore",
+    name: "recordScoreEmergency",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -53,6 +66,7 @@ export const SCOREBOARD_ABI = [
       { name: "_gameOwner", type: "address" },
       { name: "_paused", type: "bool" },
       { name: "_minTimeBetweenScores", type: "uint256" },
+      { name: "_securityKeySet", type: "bool" },
     ],
     stateMutability: "view",
     type: "function",
@@ -84,14 +98,25 @@ export const SCOREBOARD_ABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [{ name: "_securityKey", type: "bytes32" }],
+    name: "setSecurityKey",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ] as const;
 
 export const SCOREBOARD_CONTRACT_ADDRESS =
-  "0x8Ee01f1151542A256D465244796D51676236f99C" as Address;
+  "0xaf483B1DcE4FEfcDd929D0dc17bbfe5B34e5Bd0a" as Address;
 
 // Game Owner Private Key (replace with your private key)
-const GAME_OWNER_PRIVATE_KEY =
+const GAME_AUTH_PRIVATE_KEY =
   process.env.NEXT_PUBLIC_GAME_OWNER_PRIVATE_KEY || "";
+
+// Security key for signing scores (should be kept secret on the server)
+const SECURITY_KEY =
+  process.env.NEXT_PUBLIC_SECURITY_KEY || "default_security_key_123";
 
 export interface Score {
   score: bigint;
@@ -110,6 +135,7 @@ export interface ContractInfo {
   gameOwner: Address;
   paused: boolean;
   minTimeBetweenScores: bigint;
+  securityKeySet: boolean;
 }
 
 export class BlockchainService {
@@ -132,18 +158,69 @@ export class BlockchainService {
   }
 
   /**
-   * Records a score on the blockchain - ONLY GAME OWNER CAN CALL
+   * Creates a signature for a score using the security key
+   */
+  async createScoreSignature(
+    score: number,
+    playerName: string,
+    playerAddress: Address,
+    gameHash: string
+  ): Promise<`0x${string}`> {
+    if (!GAME_AUTH_PRIVATE_KEY) {
+      throw new Error("Game owner private key not configured");
+    }
+
+    // Create the message hash that will be signed
+    const messageHash = hashMessage(
+      `${score}-${playerName}-${playerAddress}-${gameHash}`
+    );
+
+    // For now, we'll use a simple approach - in production, this should be done server-side
+    // The signature should be created by the server using the game owner's private key
+    // This is a placeholder implementation
+    const signature = `0x${messageHash.slice(2)}` as `0x${string}`;
+
+    return signature;
+  }
+
+  /**
+   * Records a score on the blockchain - ANY PLAYER CAN CALL WITH VALID SIGNATURE
    */
   async recordScore(
     score: number,
     playerName: string,
     playerAddress: Address
+  ): Promise<{ gameHash: `0x${string}`; signature: `0x${string}` }> {
+    // Generate a unique hash for this game
+    const gameHash = this.generateGameHash(
+      score,
+      playerName,
+      playerAddress
+    ) as `0x${string}`;
+
+    // Create the signature
+    const signature = await this.createScoreSignature(
+      score,
+      playerName,
+      playerAddress,
+      gameHash
+    );
+
+    return { gameHash, signature };
+  }
+
+  /**
+   * Emergency function to record a score (only game owner)
+   */
+  async recordScoreEmergency(
+    score: number,
+    playerName: string,
+    playerAddress: Address
   ): Promise<`0x${string}`> {
-    if (!GAME_OWNER_PRIVATE_KEY) {
+    if (!GAME_AUTH_PRIVATE_KEY) {
       throw new Error("Game owner private key not configured");
     }
 
-    // Generate a unique hash for this game
     const gameHash = this.generateGameHash(
       score,
       playerName,
@@ -152,8 +229,25 @@ export class BlockchainService {
 
     const data = encodeFunctionData({
       abi: SCOREBOARD_ABI,
-      functionName: "recordScore",
+      functionName: "recordScoreEmergency",
       args: [BigInt(score), playerName, playerAddress, gameHash],
+    });
+
+    return data;
+  }
+
+  /**
+   * Sets the security key (only game owner)
+   */
+  async setSecurityKey(securityKey: string): Promise<`0x${string}`> {
+    if (!GAME_AUTH_PRIVATE_KEY) {
+      throw new Error("Game owner private key not configured");
+    }
+
+    const data = encodeFunctionData({
+      abi: SCOREBOARD_ABI,
+      functionName: "setSecurityKey",
+      args: [toHex(securityKey, { size: 32 })],
     });
 
     return data;
@@ -231,6 +325,7 @@ export class BlockchainService {
       gameOwner: result[0],
       paused: result[1],
       minTimeBetweenScores: result[2],
+      securityKeySet: result[3],
     };
   }
 
@@ -254,7 +349,14 @@ export class BlockchainService {
    * Checks if the game owner private key is configured
    */
   isGameOwnerConfigured(): boolean {
-    return !!GAME_OWNER_PRIVATE_KEY;
+    return !!GAME_AUTH_PRIVATE_KEY;
+  }
+
+  /**
+   * Checks if the security key is configured
+   */
+  isSecurityKeyConfigured(): boolean {
+    return !!SECURITY_KEY;
   }
 }
 

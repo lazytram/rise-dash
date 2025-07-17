@@ -82,6 +82,7 @@
     "newRecord": "¡Nuevo Récord Personal!",
     "scoreRecorded": "Puntuación registrada en la blockchain RISE",
     "connectWallet": "Por favor conecta tu wallet primero",
+    "connectWalletMessage": "Por favor conecta tu wallet para acceder a esta función",
     "connectWalletToSave": "Conecta tu wallet para guardar tu puntuación en la blockchain",
     "namePlaceholder": "Tu nombre (máx 20 caracteres)",
     "save": "Guardar",
@@ -102,7 +103,12 @@
     "transactionSuccessMessage": "¡Tu puntuación se ha guardado exitosamente!",
     "transactionFailed": "Transacción Fallida",
     "transactionFailedMessage": "Error al guardar tu puntuación. Por favor, inténtalo de nuevo.",
-    "viewTransaction": "Ver transacción"
+    "viewTransaction": "Ver transacción",
+    "contractPaused": "El contrato está en pausa",
+    "securityKeyNotConfigured": "Clave de seguridad no configurada",
+    "onlyGameOwnerCanUseEmergency": "Solo el propietario del juego puede usar la función de emergencia",
+    "leaderboardError": "No se pudo cargar el ranking",
+    "leaderboardErrorDescription": "Hubo un problema al conectar con la blockchain. Por favor, inténtalo de nuevo más tarde."
   },
   "common": {
     "continue": "Continuar",
@@ -114,7 +120,13 @@
     "of": "de",
     "backToWelcome": "Volver al Inicio",
     "playNow": "Jugar Ahora",
-    "readyToPlay": "¿Listo para jugar?"
+    "readyToPlay": "¿Listo para jugar?",
+    "error": "Error",
+    "success": "Éxito",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página",
+    "you": "Tú"
   },
   "profile": {
     "title": "Perfil",

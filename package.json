@@ -13,7 +13,9 @@
     "deploy:contract": "npx hardhat run scripts/deploy.cjs --network riseTestnet",
     "verify:contract": "npx hardhat verify --network riseTestnet",
     "compile:contract": "npx hardhat compile",
-    "test:contract": "npx hardhat test"
+    "test:contract": "npx hardhat test",
+    "setup:security": "npx hardhat run scripts/setup-security.cjs --network riseTestnet",
+    "generate:keys": "node scripts/generate-keys.js"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.8",

@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Text } from "./Text";
 import { Button } from "./Button";
 import { useToastStore, Toast } from "@/store/toastStore";
 
 export const Toaster: React.FC = () => {
   const { toasts, removeToast } = useToastStore();
+  const [exitingToasts, setExitingToasts] = useState<Set<string>>(new Set());
 
   const getToastStyles = (type: Toast["type"]) => {
     switch (type) {
@@ -42,14 +44,28 @@ export const Toaster: React.FC = () => {
     window.open(explorerUrl, "_blank");
   };
 
+  const handleRemoveToast = (id: string) => {
+    setExitingToasts((prev) => new Set(prev).add(id));
+    setTimeout(() => {
+      removeToast(id);
+      setExitingToasts((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+    }, 300); // Animation duration
+  };
+
   return (
     <div className="fixed bottom-4 right-4 z-50 space-y-2 flex flex-col-reverse">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`min-w-80 max-w-md p-4 rounded-lg border shadow-lg transform transition-all duration-300 ease-in-out ${getToastStyles(
-            toast.type
-          )}`}
+          className={`min-w-80 max-w-md p-4 rounded-lg border shadow-lg transform transition-all duration-300 ease-in-out ${
+            exitingToasts.has(toast.id)
+              ? "opacity-0 translate-x-full scale-95"
+              : "opacity-100 translate-x-0 scale-100"
+          } ${getToastStyles(toast.type)}`}
         >
           <div className="flex items-start justify-between">
             <div className="flex items-start space-x-3 flex-1">
@@ -74,7 +90,7 @@ export const Toaster: React.FC = () => {
               </div>
             </div>
             <button
-              onClick={() => removeToast(toast.id)}
+              onClick={() => handleRemoveToast(toast.id)}
               className="ml-2 text-white/70 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
             >
               ✕

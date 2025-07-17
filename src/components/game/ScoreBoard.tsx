@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useAccount } from "wagmi";
 import Image from "next/image";
 import { useBlockchainScore } from "@/hooks/useBlockchainScore";
@@ -22,18 +22,16 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const { t } = useTranslations();
   const { isConnected, address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { showInfo } = useToastStore();
+  const [isNewPersonalBest, setIsNewPersonalBest] = useState(false);
+  const { showInfo, clearToasts } = useToastStore();
 
-  const {
-    recordScore,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-    playerBestScore,
-    isNewPersonalBest,
-    isGameOwnerConfigured,
-  } = useBlockchainScore();
+  // Clear toasts when component mounts
+  useEffect(() => {
+    clearToasts();
+  }, []);
+
+  const { recordScore, checkNewPersonalBest, isRecording, isSuccess, error } =
+    useBlockchainScore();
 
   const handleSaveScore = useCallback(async () => {
     if (isSubmitting || !isConnected) {
@@ -42,7 +40,6 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           t("blockchain.connectWallet"),
           t("blockchain.connectWalletMessage")
         );
-
         return;
       }
       return;
@@ -53,18 +50,28 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
       // Use a default name based on address
       const defaultName = `Player_${address?.slice(2, 8)}`;
 
+      // Check if it's a new personal best
+      const isNewBest = await checkNewPersonalBest(
+        GameLogic.formatDistance(distance)
+      );
+      setIsNewPersonalBest(isNewBest);
+
       await recordScore(GameLogic.formatDistance(distance), defaultName);
     } catch (err) {
       console.error("Error saving score:", err);
     } finally {
       setIsSubmitting(false);
     }
-  }, [isSubmitting, isConnected, showInfo, t, address, recordScore, distance]);
-
-  const formatScore = (score: bigint | null) => {
-    if (!score) return "0";
-    return score.toString();
-  };
+  }, [
+    isSubmitting,
+    isConnected,
+    showInfo,
+    t,
+    address,
+    recordScore,
+    checkNewPersonalBest,
+    distance,
+  ]);
 
   if (isSuccess) {
     return (
@@ -115,13 +122,6 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           >
             {GameLogic.formatDistance(distance)} {t("game.meters")}
           </div>
-
-          {playerBestScore !== null && (
-            <Text variant="caption">
-              {t("blockchain.bestScore")}: {formatScore(playerBestScore)}{" "}
-              {t("game.meters")}
-            </Text>
-          )}
         </div>
 
         {!isConnected ? (
@@ -137,10 +137,10 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <div className="flex gap-2 justify-center">
             <Button
               onClick={handleSaveScore}
-              disabled={isLoading || isSubmitting || !isGameOwnerConfigured}
+              disabled={isRecording || isSubmitting}
               variant="primary"
             >
-              {isLoading || isSubmitting
+              {isRecording || isSubmitting
                 ? t("blockchain.saving")
                 : t("blockchain.saveScore")}
             </Button>
@@ -152,7 +152,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
         )}
 
-        {isError && (
+        {error && (
           <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
             {error?.message || t("blockchain.errorSaving")}
           </div>

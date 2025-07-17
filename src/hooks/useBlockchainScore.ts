@@ -1,194 +1,207 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   useAccount,
   useWriteContract,
-  useReadContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
 import {
   blockchainService,
-  SCOREBOARD_ABI,
   SCOREBOARD_CONTRACT_ADDRESS,
-  LeaderboardEntry,
-} from "@/services/blockchainService";
-import { useToastStore } from "@/store/toastStore";
+  SCOREBOARD_ABI,
+} from "../services/blockchainService";
+import { useToastStore } from "../store/toastStore";
 import { useTranslations } from "./useTranslations";
 
-export interface UseBlockchainScoreReturn {
-  recordScore: (score: number, playerName: string) => Promise<void>;
-  getLeaderboard: (
-    offset: number,
-    limit: number
-  ) => Promise<LeaderboardEntry[]>;
-  getTotalScores: () => Promise<bigint>;
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: Error | null;
-  playerBestScore: bigint | null;
-  isNewPersonalBest: boolean;
-  reset: () => void;
-  isGameOwnerConfigured: boolean;
-}
-
-export function useBlockchainScore(): UseBlockchainScoreReturn {
+export const useBlockchainScore = () => {
   const { address } = useAccount();
-  const [isNewPersonalBest, setIsNewPersonalBest] = useState(false);
-  const [transactionHash, setTransactionHash] = useState<`0x${string}` | null>(
-    null
-  );
+  const [isRecording, setIsRecording] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
+  const { showError, showSuccess, showPending, clearToasts } = useToastStore();
   const { t } = useTranslations();
-  const { showSuccess, showError, showPending } = useToastStore();
 
-  // Refs to track if toasts have been shown to prevent infinite loops
-  const pendingToastShown = useRef<Set<string>>(new Set());
-  const successToastShown = useRef<Set<string>>(new Set());
-  const errorToastShown = useRef<Set<string>>(new Set());
+  const { writeContract, data: hash, isPending, error } = useWriteContract();
 
-  // Hook for writing to the blockchain
-  const {
-    writeContract,
-    isPending: isLoading,
-    isSuccess,
-    isError,
-    error,
-    reset,
-    data: hash,
-  } = useWriteContract();
-
-  // Hook for waiting for transaction receipt
-  const { isSuccess: isConfirmed, isError: isFailed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
-
-  // Hook for reading the player's best score
-  const { data: playerBestScore } = useReadContract({
-    address: SCOREBOARD_CONTRACT_ADDRESS,
-    abi: SCOREBOARD_ABI,
-    functionName: "getPlayerBestScore",
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    },
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+    hash,
   });
 
-  // Handle transaction status changes and show toasts
+  // Debug logs for transaction status
   useEffect(() => {
-    if (hash && hash !== transactionHash) {
-      setTransactionHash(hash);
-      if (!pendingToastShown.current.has(hash)) {
-        pendingToastShown.current.add(hash);
+    console.log("🔍 Transaction status:", {
+      hash,
+      isPending,
+      isConfirming,
+      isSuccess,
+      error: error?.message,
+    });
+  }, [hash, isPending, isConfirming, isSuccess, error]);
+
+  const recordScore = async (score: number, playerName: string) => {
+    console.log("🚀 Starting recordScore with:", {
+      score,
+      playerName,
+      address,
+    });
+
+    if (!address) {
+      console.log("❌ No address found");
+      showError(t("common.error"), t("blockchain.connectWallet"));
+      return false;
+    }
+
+    // Clear any existing toasts before starting
+    clearToasts();
+    setIsRecording(true);
+    console.log("📝 Setting isRecording to true");
+
+    try {
+      // Check if the contract is properly configured
+      console.log("🔍 Checking contract info...");
+      const contractInfo = await blockchainService.getContractInfo();
+      console.log("📊 Contract info:", contractInfo);
+
+      if (contractInfo.paused) {
+        console.log("⏸️ Contract is paused");
+        showError(t("common.error"), t("blockchain.contractPaused"));
+        return false;
+      }
+
+      if (!contractInfo.securityKeySet) {
+        console.log("🔑 Security key not set");
+        showError(t("common.error"), t("blockchain.securityKeyNotConfigured"));
+        return false;
+      }
+
+      // Générer le gameHash
+      const gameHash = blockchainService.generateGameHash(
+        score,
+        playerName,
+        address
+      ) as `0x${string}`;
+      console.log("🔑 Generated gameHash:", gameHash);
+
+      // Appeler l'API pour obtenir la signature
+      let signature: `0x${string}` | undefined = undefined;
+      try {
         showPending(
           t("blockchain.transactionPending"),
-          t("blockchain.transactionPendingMessage"),
-          hash,
-          t("blockchain.viewTransaction")
+          t("blockchain.transactionPendingMessage")
         );
-      }
-    }
-  }, [hash, showPending, t, transactionHash]);
-
-  useEffect(() => {
-    if (isConfirmed && transactionHash) {
-      if (!successToastShown.current.has(transactionHash)) {
-        successToastShown.current.add(transactionHash);
-        showSuccess(
-          t("blockchain.transactionSuccess"),
-          t("blockchain.transactionSuccessMessage"),
-          transactionHash,
-          t("blockchain.viewTransaction")
-        );
-      }
-    }
-  }, [isConfirmed, transactionHash, showSuccess, t]);
-
-  useEffect(() => {
-    if (isFailed && transactionHash) {
-      if (!errorToastShown.current.has(transactionHash)) {
-        errorToastShown.current.add(transactionHash);
+        const response = await fetch("/api/sign-score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            score,
+            playerName,
+            playerAddress: address,
+            gameHash,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error("API signature error");
+        }
+        const data = await response.json();
+        signature = data.signature;
+        if (!signature) throw new Error("No signature returned");
+        console.log("✍️ Received signature:", signature);
+      } catch {
         showError(
-          t("blockchain.transactionFailed"),
-          t("blockchain.transactionFailedMessage")
+          t("common.error"),
+          t("blockchain.errorSaving") + ` (signature)`
         );
-      }
-    }
-  }, [isFailed, transactionHash, showError, t]);
-
-  const recordScore = useCallback(
-    async (score: number, playerName: string) => {
-      if (!address) {
-        throw new Error("Wallet not connected");
+        return false;
       }
 
-      if (!blockchainService.isGameOwnerConfigured()) {
-        throw new Error(
-          "Game owner private key not configured. Only authorized users can save scores."
-        );
-      }
-
+      // Appeler le smart contract avec la signature
       try {
-        // Check if it's a new personal record
-        const isNewBest = await blockchainService.isNewPersonalBest(
-          address,
-          score
-        );
-        setIsNewPersonalBest(isNewBest);
-
-        // Send the transaction (only game owner can call this)
         writeContract({
           address: SCOREBOARD_CONTRACT_ADDRESS,
           abi: SCOREBOARD_ABI,
           functionName: "recordScore",
-          args: [
-            BigInt(score),
-            playerName,
-            address,
-            blockchainService.generateGameHash(
-              score,
-              playerName,
-              address
-            ) as `0x${string}`,
-          ],
+          args: [BigInt(score), playerName, gameHash, signature],
         });
-      } catch (err) {
-        console.error("Error recording score:", err);
-        throw err;
+        console.log("📤 writeContract called successfully");
+      } catch (writeError) {
+        console.error("❌ writeContract error:", writeError);
+        showError(t("common.error"), t("blockchain.errorSaving"));
+        return false;
       }
-    },
-    [address, writeContract]
-  );
 
-  const getLeaderboard = useCallback(
-    async (offset: number, limit: number): Promise<LeaderboardEntry[]> => {
-      return await blockchainService.getLeaderboard(offset, limit);
-    },
-    []
-  );
+      return true;
+    } catch (error) {
+      console.error("❌ Error recording score:", error);
+      showError(t("common.error"), t("blockchain.errorSaving"));
+      return false;
+    } finally {
+      console.log("🏁 Setting isRecording to false");
+      setIsRecording(false);
+    }
+  };
 
-  const getTotalScores = useCallback(async (): Promise<bigint> => {
+  const checkNewPersonalBest = async (score: number): Promise<boolean> => {
+    if (!address) {
+      return false;
+    }
+
+    setIsChecking(true);
+
+    try {
+      const isNewBest = await blockchainService.isNewPersonalBest(
+        address,
+        score
+      );
+      return isNewBest;
+    } catch (error) {
+      console.error("Error checking personal best:", error);
+      return false;
+    } finally {
+      setIsChecking(false);
+    }
+  };
+
+  // Handle transaction status with useEffect to avoid infinite loops
+  useEffect(() => {
+    if (isSuccess && hash) {
+      console.log(
+        "🎉 Transaction successful, showing success toast with hash:",
+        hash
+      );
+      showSuccess(
+        "Transaction Successful",
+        "Your score has been successfully saved!",
+        hash,
+        "View Transaction"
+      );
+    }
+  }, [isSuccess, hash, showSuccess]);
+
+  useEffect(() => {
+    if (error && error.message) {
+      console.log("❌ Transaction failed, showing error toast:", error.message);
+      showError(
+        "Error",
+        `Failed to save your score. Please try again.: ${error.message}`
+      );
+    }
+  }, [error, showError]);
+
+  const getLeaderboard = async (offset: number, limit: number) => {
+    return await blockchainService.getLeaderboard(offset, limit);
+  };
+
+  const getTotalScores = async () => {
     return await blockchainService.getTotalScores();
-  }, []);
-
-  // Enhanced reset function that cleans up toast tracking
-  const resetWithCleanup = useCallback(() => {
-    pendingToastShown.current.clear();
-    successToastShown.current.clear();
-    errorToastShown.current.clear();
-    reset();
-  }, [reset]);
+  };
 
   return {
     recordScore,
+    checkNewPersonalBest,
     getLeaderboard,
     getTotalScores,
-    isLoading,
+    isRecording: isRecording || isPending || isConfirming,
+    isChecking,
     isSuccess,
-    isError,
     error,
-    playerBestScore: playerBestScore || null,
-    isNewPersonalBest,
-    reset: resetWithCleanup,
-    isGameOwnerConfigured: blockchainService.isGameOwnerConfigured(),
+    hash,
   };
-}
+};
