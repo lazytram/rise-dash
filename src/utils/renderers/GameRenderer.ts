@@ -5,6 +5,7 @@ import {
   Torii,
   Samurai,
   SamuraiBullet,
+  PowerUp,
 } from "@/types/game";
 import { EnvironmentRenderer } from "./EnvironmentRenderer";
 import { PlayerRenderer } from "./PlayerRenderer";
@@ -12,6 +13,7 @@ import { ProjectileRenderer } from "./ProjectileRenderer";
 import { EnemyRenderer } from "./EnemyRenderer";
 import { DecorationRenderer } from "./DecorationRenderer";
 import { UIRenderer } from "./UIRenderer";
+import { PowerUpRenderer } from "./PowerUpRenderer";
 
 export class GameRenderer {
   private environmentRenderer: EnvironmentRenderer;
@@ -20,6 +22,7 @@ export class GameRenderer {
   private enemyRenderer: EnemyRenderer;
   private decorationRenderer: DecorationRenderer;
   private uiRenderer: UIRenderer;
+  private powerUpRenderer: PowerUpRenderer;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.environmentRenderer = new EnvironmentRenderer(ctx);
@@ -28,6 +31,7 @@ export class GameRenderer {
     this.enemyRenderer = new EnemyRenderer(ctx);
     this.decorationRenderer = new DecorationRenderer(ctx);
     this.uiRenderer = new UIRenderer(ctx);
+    this.powerUpRenderer = new PowerUpRenderer(ctx);
   }
 
   render(
@@ -37,6 +41,7 @@ export class GameRenderer {
     toriis: Torii[],
     samurais: Samurai[],
     samuraiBullets: SamuraiBullet[],
+    powerUps: PowerUp[],
     distance: number,
     isGameRunning: boolean,
     isGameOver: boolean,
@@ -65,6 +70,7 @@ export class GameRenderer {
     this.enemyRenderer.drawSushis(sushis);
     this.enemyRenderer.drawSamurais(samurais);
     this.decorationRenderer.drawToriis(toriis);
+    this.powerUpRenderer.drawPowerUps(powerUps);
 
     // Render UI
     this.uiRenderer.drawDistance(

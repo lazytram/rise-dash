@@ -41,7 +41,7 @@ export const useToastStore = create<ToastStore>()(
       addToast: (toast: Omit<Toast, "id">) => {
         const id = `${toast.type}-${
           toast.transactionHash || Date.now()
-        }-${Math.random().toString(36).substr(2, 9)}`;
+        }-${Math.random().toString(36).substring(2, 11)}`;
         const newToast: Toast = {
           ...toast,
           id,

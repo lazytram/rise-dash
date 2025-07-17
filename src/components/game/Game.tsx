@@ -9,8 +9,7 @@ import { useGameLoop } from "@/hooks/useGameLoop";
 import { useTranslations } from "@/hooks/useTranslations";
 import { GameCanvas } from "./GameCanvas";
 import { GameOverScreen } from "./GameOverScreen";
-import { DifficultyIndicator } from "./DifficultyIndicator";
-import { AmmoIndicator } from "./AmmoIndicator";
+import { GameIndicators } from "./GameIndicators";
 import { GameRenderer } from "@/utils/gameRenderer";
 
 const Game = () => {
@@ -32,9 +31,10 @@ const Game = () => {
       distance: 0,
       riceRockets: [],
       sushis: [],
-      samurais: [], // Clear existing samurais on restart
-      samuraiBullets: [], // Clear existing bullets on restart
-      toriis: [], // Clear existing toriis on restart
+      samurais: [],
+      samuraiBullets: [],
+      toriis: [],
+      powerUps: [],
       player: GameLogic.resetPlayer(prev.player),
     }));
   }, []);
@@ -97,6 +97,7 @@ const Game = () => {
         gameState.toriis,
         gameState.samurais,
         gameState.samuraiBullets,
+        gameState.powerUps,
         gameState.distance,
         gameState.isGameRunning,
         gameState.isGameOver,
@@ -115,19 +116,19 @@ const Game = () => {
   }, [gameState, t]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex items-start justify-center">
       <div className="relative">
         <GameCanvas canvasRef={canvasRef} />
-        {gameState.isGameRunning && !gameState.isGameOver && (
-          <>
-            <DifficultyIndicator difficultyLevel={gameState.difficultyLevel} />
-            <AmmoIndicator player={gameState.player} />
-          </>
-        )}
         {gameState.isGameOver && (
           <GameOverScreen distance={gameState.distance} onRestart={startGame} />
         )}
       </div>
+      {gameState.isGameRunning && !gameState.isGameOver && (
+        <GameIndicators
+          player={gameState.player}
+          difficultyLevel={gameState.difficultyLevel}
+        />
+      )}
     </div>
   );
 };

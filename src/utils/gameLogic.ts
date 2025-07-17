@@ -420,10 +420,11 @@ export class GameLogic {
     return {
       id: Date.now().toString() + Math.random(),
       x: GAME_CONSTANTS.CANVAS_WIDTH,
-      y: groundY - player.height, // Same height as player, on the ground
-      width: player.width, // Same width as player
-      height: player.height, // Same height as player
-      velocityX: this.getCurrentSushiSpeed(distance),
+      y: groundY - player.width, // Fixed height (same as player)
+      width: player.width, // Fixed sushi width
+      height: player.width, // Fixed sushi height
+      velocityX:
+        this.getCurrentSushiSpeed(distance) * (0.8 + Math.random() * 0.4), // ±20% speed variation
       color: SUSHI_COLORS.BASE,
     };
   }
@@ -438,26 +439,37 @@ export class GameLogic {
   }
 
   static shouldSpawnSushi(gameState: GameState): boolean {
+    // Start spawning after some distance
+    if (gameState.distance < 100) {
+      return false;
+    }
+
+    // If no sushi on screen, use probability-based spawning
     if (gameState.sushis.length === 0) {
-      return gameState.distance > 100; // Start spawning after some distance
+      return Math.random() < gameState.difficultyLevel.sushiSpawnProbability;
     }
 
     const lastSushi = gameState.sushis[gameState.sushis.length - 1];
     const distanceFromLast = GAME_CONSTANTS.CANVAS_WIDTH - lastSushi.x;
 
-    // Calculate base spawn distance with more variance
-    const baseSpawnDistance =
-      GAME_CONSTANTS.SUSHI_MIN_SPAWN_DISTANCE +
-      Math.random() *
-        (GAME_CONSTANTS.SUSHI_MAX_SPAWN_DISTANCE -
-          GAME_CONSTANTS.SUSHI_MIN_SPAWN_DISTANCE);
+    // Much more random spawn distance
+    const minDistance = 200; // Minimum distance between sushis
+    const maxDistance = 1200; // Maximum distance between sushis
 
-    // Add additional variance based on the variance constant
-    const variance = baseSpawnDistance * GAME_CONSTANTS.SUSHI_SPACING_VARIANCE;
-    const finalSpawnDistance =
-      baseSpawnDistance + (Math.random() - 0.5) * variance;
+    // Use exponential distribution for more randomness
+    const randomValue = Math.random();
+    const spawnDistance =
+      minDistance + (maxDistance - minDistance) * Math.pow(randomValue, 2);
 
-    return distanceFromLast >= finalSpawnDistance;
+    // Add extra randomness with probability check
+    const shouldSpawn = distanceFromLast >= spawnDistance;
+
+    if (shouldSpawn) {
+      // Additional probability check to make it even more random
+      return Math.random() < gameState.difficultyLevel.sushiSpawnProbability;
+    }
+
+    return false;
   }
 
   static addSushi(gameState: GameState): GameState {
@@ -1020,6 +1032,7 @@ export class GameLogic {
   }
 
   static shouldSpawnPowerUp(gameState: GameState): boolean {
+    // Only one power-up at a time
     if (gameState.powerUps.length > 0) return false;
 
     const formattedDistance = GameLogic.formatDistance(gameState.distance);
@@ -1044,33 +1057,58 @@ export class GameLogic {
     const currentTime = Date.now();
     const endTime = currentTime + powerUp.duration;
 
+    // Reset all power-up states first (only one power-up at a time)
+    const resetPlayer = {
+      ...player,
+      hasShield: false,
+      hasInfiniteAmmo: false,
+      hasSpeedBoost: false,
+      hasMultiShot: false,
+      powerUpEndTimes: {
+        shield: 0,
+        infiniteAmmo: 0,
+        speedBoost: 0,
+        multiShot: 0,
+      },
+    };
+
+    // Apply the new power-up
     switch (powerUp.type) {
       case "shield":
         return {
-          ...player,
+          ...resetPlayer,
           hasShield: true,
-          powerUpEndTimes: { ...player.powerUpEndTimes, shield: endTime },
+          powerUpEndTimes: { ...resetPlayer.powerUpEndTimes, shield: endTime },
         };
       case "infinite_ammo":
         return {
-          ...player,
+          ...resetPlayer,
           hasInfiniteAmmo: true,
-          powerUpEndTimes: { ...player.powerUpEndTimes, infiniteAmmo: endTime },
+          powerUpEndTimes: {
+            ...resetPlayer.powerUpEndTimes,
+            infiniteAmmo: endTime,
+          },
         };
       case "speed_boost":
         return {
-          ...player,
+          ...resetPlayer,
           hasSpeedBoost: true,
-          powerUpEndTimes: { ...player.powerUpEndTimes, speedBoost: endTime },
+          powerUpEndTimes: {
+            ...resetPlayer.powerUpEndTimes,
+            speedBoost: endTime,
+          },
         };
       case "multi_shot":
         return {
-          ...player,
+          ...resetPlayer,
           hasMultiShot: true,
-          powerUpEndTimes: { ...player.powerUpEndTimes, multiShot: endTime },
+          powerUpEndTimes: {
+            ...resetPlayer.powerUpEndTimes,
+            multiShot: endTime,
+          },
         };
       default:
-        return player;
+        return resetPlayer;
     }
   }
 

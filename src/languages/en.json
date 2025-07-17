@@ -48,7 +48,8 @@
     "duration": "Duration",
     "seconds": "seconds",
     "active": "Active",
-    "expired": "Expired"
+    "expired": "Expired",
+    "remaining": "remaining"
   },
   "difficulty": {
     "beginner": "Beginner",
@@ -112,6 +113,7 @@
     "back": "Back",
     "showing": "Showing",
     "of": "of",
+    "backToWelcome": "Back to Welcome",
     "playNow": "Play Now",
     "readyToPlay": "Ready to Play?"
   },
