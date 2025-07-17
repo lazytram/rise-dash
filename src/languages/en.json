@@ -87,6 +87,7 @@
     "saving": "Saving...",
     "errorSaving": "Error saving score",
     "leaderboard": "Leaderboard",
+    "leaderboardSubtitle": "Compete with the best players and climb the ranks",
     "bestScores": "Best Scores",
     "yourScores": "Your Scores",
     "connectWalletToView": "Connect your wallet to access scores",
@@ -104,10 +105,12 @@
     "back": "Back",
     "showing": "Showing",
     "of": "of",
-    "playNow": "Play Now"
+    "playNow": "Play Now",
+    "readyToPlay": "Ready to Play?"
   },
   "profile": {
     "title": "Profile",
+    "subtitle": "View your achievements and game statistics",
     "bestScore": "Best Score",
     "totalGames": "Total Games",
     "averageScore": "Average Score",

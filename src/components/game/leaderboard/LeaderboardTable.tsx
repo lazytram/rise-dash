@@ -31,12 +31,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
           {data.map((entry) => (
             <tr
               key={`${entry.playerAddress}-${entry.rank}`}
-              className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+              className="border-b border-white/10 hover:bg-white/5 transition-all duration-200 cursor-pointer"
             >
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm ${getRankStyle(
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shadow-lg ${getRankStyle(
                       entry.rank
                     )}`}
                   >
@@ -44,10 +44,10 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
                   </span>
                 </div>
               </TableCell>
-              <TableCell className="font-semibold text-gray-800">
+              <TableCell className="font-semibold text-white/90">
                 {entry.score.toString()} {t("game.meters")}
               </TableCell>
-              <TableCell className="text-gray-600">
+              <TableCell className="text-white/80">
                 {entry.playerName}
               </TableCell>
             </tr>

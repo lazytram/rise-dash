@@ -15,6 +15,28 @@ export const UI_COLORS = {
   BUTTON_HOVER: "#f3f4f6", // Light gray
 } as const;
 
+// Scene Header Colors
+export const SCENE_COLORS = {
+  // Profile scene - Purple theme
+  PROFILE: {
+    GRADIENT_FROM: "#8B5CF6", // Purple
+    GRADIENT_VIA: "#A855F7", // Light purple
+    GRADIENT_TO: "#C084FC", // Lighter purple
+  },
+  // Leaderboard scene - Green theme
+  LEADERBOARD: {
+    GRADIENT_FROM: "#10B981", // Emerald
+    GRADIENT_VIA: "#34D399", // Light emerald
+    GRADIENT_TO: "#6EE7B7", // Lighter emerald
+  },
+  // Instructions scene - Blue theme
+  INSTRUCTIONS: {
+    GRADIENT_FROM: "#3B82F6", // Blue
+    GRADIENT_VIA: "#60A5FA", // Light blue
+    GRADIENT_TO: "#93C5FD", // Lighter blue
+  },
+} as const;
+
 // Environment Colors
 export const ENVIRONMENT_COLORS = {
   SKY: "#87CEEB",

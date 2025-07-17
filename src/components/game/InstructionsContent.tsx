@@ -5,6 +5,7 @@ import { useTranslations } from "@/hooks/useTranslations";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Text } from "@/components/ui/Text";
+import { SceneHeader } from "@/components/ui/SceneHeader";
 import {
   InstructionsControls,
   InstructionsGameplay,
@@ -37,7 +38,7 @@ export const InstructionsContent: React.FC = () => {
     },
     {
       id: "actions",
-      title: "Ready to Play?",
+      title: t("instructions.actions.title"),
       icon: "🚀",
       component: <InstructionsActions />,
     },
@@ -75,23 +76,13 @@ export const InstructionsContent: React.FC = () => {
     <Container className="py-8">
       <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
         {/* Enhanced Header */}
-        <div className="text-center space-y-2 mb-4">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 blur-xl opacity-30 animate-pulse"></div>
-            <h1 className="relative text-3xl md:text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent mb-2">
-              {t("instructions.title")}
-            </h1>
-          </div>
-          <div className="relative">
-            <Text
-              variant="subtitle"
-              className="text-xl text-white/90 font-medium"
-            >
-              {t("instructions.subtitle")}
-            </Text>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
-          </div>
-        </div>
+        <SceneHeader
+          title={t("instructions.title")}
+          subtitle={t("instructions.subtitle")}
+          gradientFrom="#fbbf24"
+          gradientVia="#f59e0b"
+          gradientTo="#dc2626"
+        />
 
         {/* Slider Container */}
         <div className="relative overflow-hidden">
@@ -101,8 +92,13 @@ export const InstructionsContent: React.FC = () => {
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {slides.map((slide) => (
-              <div key={slide.id} className="w-full flex-shrink-0">
-                <div className="max-w-2xl mx-auto">{slide.component}</div>
+              <div
+                key={slide.id}
+                className="w-full flex-shrink-0 items-center flex justify-center"
+              >
+                <div className="max-w-2xl mx-auto w-full">
+                  {slide.component}
+                </div>
               </div>
             ))}
           </div>

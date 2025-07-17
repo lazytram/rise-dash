@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { useTranslations } from "@/hooks/useTranslations";
-import { UI_COLORS } from "@/constants/colors";
 import { Button } from "@/components/ui/Button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Box } from "@/components/ui/Box";
@@ -53,7 +52,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
         id: "index",
         header: "#",
         cell: ({ row }) => (
-          <span className="font-semibold text-gray-700 text-sm">
+          <span className="font-semibold text-white/90 text-sm">
             {row.index + 1}
           </span>
         ),
@@ -62,10 +61,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
         id: "score",
         header: t("profile.score"),
         cell: ({ getValue }) => (
-          <span
-            className="font-bold text-lg"
-            style={{ color: UI_COLORS.GRADIENT_FROM }}
-          >
+          <span className="font-bold text-lg text-white">
             {formatScore(getValue())} {t("game.meters")}
           </span>
         ),
@@ -74,7 +70,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
         id: "date",
         header: t("profile.date"),
         cell: ({ getValue }) => (
-          <span className="text-gray-700 font-medium text-sm">
+          <span className="text-white/80 font-medium text-sm">
             {formatDate(getValue())}
           </span>
         ),
@@ -84,10 +80,10 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
         header: t("profile.status"),
         cell: ({ row }) => (
           <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
               row.index === 0
-                ? "bg-green-100 text-green-800"
-                : "bg-gray-100 text-gray-800"
+                ? "bg-gradient-to-r from-green-400 to-green-500 text-white"
+                : "bg-white/20 text-white/90 border border-white/30"
             }`}
           >
             {row.index === 0
@@ -154,7 +150,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-200"
+                  className="px-4 py-2 text-left text-sm font-semibold text-white/90 border-b border-white/20"
                 >
                   {header.isPlaceholder
                     ? null
@@ -169,11 +165,14 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50">
+            <tr
+              key={row.id}
+              className="hover:bg-white/5 transition-all duration-200 cursor-pointer"
+            >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className="px-4 py-3 border-b border-gray-100"
+                  className="px-4 py-3 border-b border-white/10"
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
