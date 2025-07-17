@@ -1,5 +1,6 @@
 "use client";
 
+import "@rainbow-me/rainbowkit/styles.css";
 import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useHydration } from "@/hooks/useHydration";
@@ -10,16 +11,13 @@ interface HeaderPortalProps {
   children: ReactNode;
 }
 
-// Composant Header isolé via portal
 function HeaderPortalContent() {
   const { isHydrated, isMounted, isServer } = useHydration();
 
-  // Rendu côté serveur ou pendant l'hydratation - afficher le skeleton
   if (isServer || !isMounted) {
     return <HeaderSkeleton />;
   }
 
-  // Attendre que l'hydratation soit complète avant d'afficher le Header
   if (!isHydrated) {
     return <HeaderSkeleton />;
   }
@@ -33,11 +31,9 @@ export function HeaderPortal({ children }: HeaderPortalProps) {
   );
   const [isClient, setIsClient] = useState(false);
 
-  // Créer le conteneur pour le portal
   useEffect(() => {
     setIsClient(true);
 
-    // Créer un conteneur dédié pour le header
     const container = document.createElement("div");
     container.id = "header-portal-container";
     container.style.position = "fixed";
@@ -45,12 +41,11 @@ export function HeaderPortal({ children }: HeaderPortalProps) {
     container.style.left = "0";
     container.style.right = "0";
     container.style.zIndex = "50";
-    container.style.pointerEvents = "none"; // Permettre les clics à travers par défaut
+    container.style.pointerEvents = "none";
 
     document.body.appendChild(container);
     setPortalContainer(container);
 
-    // Cleanup lors du démontage
     return () => {
       if (container && container.parentNode) {
         container.parentNode.removeChild(container);
@@ -60,7 +55,6 @@ export function HeaderPortal({ children }: HeaderPortalProps) {
 
   return (
     <>
-      {/* Portal pour le Header - complètement isolé de la hiérarchie React */}
       {isClient &&
         portalContainer &&
         createPortal(
@@ -70,7 +64,6 @@ export function HeaderPortal({ children }: HeaderPortalProps) {
           portalContainer
         )}
 
-      {/* Contenu principal */}
       {children}
     </>
   );
