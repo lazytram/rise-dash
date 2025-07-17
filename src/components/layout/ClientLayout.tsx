@@ -1,12 +1,17 @@
 "use client";
 
 import { ReactNode } from "react";
-import { HeaderPortal } from "./HeaderPortal";
+import { Header } from "./Header";
 
 interface ClientLayoutProps {
   children: ReactNode;
 }
 
 export function ClientLayout({ children }: ClientLayoutProps) {
-  return <HeaderPortal>{children}</HeaderPortal>;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }
