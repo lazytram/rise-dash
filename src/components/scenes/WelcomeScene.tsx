@@ -2,13 +2,11 @@
 
 import { memo } from "react";
 import Image from "next/image";
-
 import { useAccount } from "wagmi";
 import { useSession } from "next-auth/react";
 import { useSceneStore } from "@/store/sceneStore";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
 import { Text } from "@/components/ui/Text";
 
 export const WelcomeScene = memo(function WelcomeScene() {
@@ -36,30 +34,39 @@ export const WelcomeScene = memo(function WelcomeScene() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
-      <Container className="flex flex-col items-center justify-center max-w-md w-full">
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="flex flex-col items-center justify-center max-w-md w-full text-center">
         {/* Logo avec image pfp */}
-        <div className="mb-8 text-center w-full flex flex-col items-center">
-          <div className="w-24 h-24 mb-6 mx-auto">
+        <div className="mb-8">
+          <div className="w-28 h-28 bg-gradient-to-br from-purple-400 via-purple-600 to-blue-600 rounded-full flex items-center justify-center shadow-2xl mb-6 mx-auto p-2 relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-purple-900/50 rounded-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-tl from-blue-400/40 to-transparent rounded-full"></div>
             <Image
               src="/pfp.png"
               alt="Rise Dash Logo"
               width={96}
               height={96}
-              className="rounded-full object-cover"
+              className="rounded-full object-cover relative z-10"
               priority
             />
           </div>
-          <Text className="text-3xl font-bold text-center mb-2">
-            {t("auth.welcomeTitle")}
-          </Text>
-          <Text className="text-lg text-center text-gray-300 mb-8">
-            {t("auth.welcomeSubtitle")}
-          </Text>
         </div>
 
+        {/* Titre principal */}
+        <Text className="text-4xl font-bold text-white mb-6">
+          {t("auth.welcomeTitle")}
+        </Text>
+
+        {/* Sous-titre */}
+        <Text className="text-lg text-white mb-2">
+          {t("auth.welcomeSubtitle")}
+        </Text>
+        <Text className="text-lg text-white mb-8">
+          {t("auth.connectWallet")}
+        </Text>
+
         {/* Navigation Buttons (only show when authenticated) */}
-        {isAuthenticated ? (
+        {isAuthenticated && (
           <div className="flex flex-col items-center w-full space-y-4">
             <div className="flex justify-center w-full">
               <Button
@@ -93,17 +100,8 @@ export const WelcomeScene = memo(function WelcomeScene() {
               {t("instructions.title")}
             </Button>
           </div>
-        ) : (
-          <div className="text-center">
-            <Text className="text-lg text-gray-300">
-              {t("auth.connectWallet")}
-            </Text>
-            <Text className="text-sm text-gray-400 mt-2">
-              {t("auth.secureConnection")}
-            </Text>
-          </div>
         )}
-      </Container>
+      </div>
     </div>
   );
 });
