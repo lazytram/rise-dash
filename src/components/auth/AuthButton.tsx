@@ -98,5 +98,9 @@ export const AuthButton = memo(function AuthButton() {
     }
   }, [isConnected, address, session]);
 
-  return <ConnectButton />;
+  return (
+    <div className="rainbow-kit-wrapper">
+      <ConnectButton />
+    </div>
+  );
 });

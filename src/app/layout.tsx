@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/wallet/Providers";
-import { Header } from "@/components/layout/Header";
+import { ClientLayout } from "@/components/layout/ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,8 +59,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Providers>
-          <Header />
-          {children}
+          <ClientLayout>{children}</ClientLayout>
         </Providers>
       </body>
     </html>
