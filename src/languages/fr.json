@@ -94,7 +94,14 @@
     "noScoresYet": "Aucun score encore",
     "playToEarnScores": "Jouez pour grimper au classement !",
     "scoresOnBlockchain": "Tous les scores sont stockés sur la blockchain RISE",
-    "bestScoreLabel": "Meilleur score"
+    "bestScoreLabel": "Meilleur score",
+    "transactionPending": "Transaction en Cours",
+    "transactionPendingMessage": "Votre score est en cours de sauvegarde sur la blockchain...",
+    "transactionSuccess": "Transaction Réussie",
+    "transactionSuccessMessage": "Votre score a été sauvegardé avec succès !",
+    "transactionFailed": "Transaction Échouée",
+    "transactionFailedMessage": "Échec de la sauvegarde de votre score. Veuillez réessayer.",
+    "viewTransaction": "Voir la transaction"
   },
   "common": {
     "continue": "Continuer",

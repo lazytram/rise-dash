@@ -95,7 +95,14 @@
     "noScoresYet": "No scores yet",
     "playToEarnScores": "Play to climb the leaderboard!",
     "scoresOnBlockchain": "All scores are stored on RISE blockchain",
-    "bestScoreLabel": "Best score"
+    "bestScoreLabel": "Best score",
+    "transactionPending": "Transaction Pending",
+    "transactionPendingMessage": "Your score is being saved to the blockchain...",
+    "transactionSuccess": "Transaction Successful",
+    "transactionSuccessMessage": "Your score has been successfully saved!",
+    "transactionFailed": "Transaction Failed",
+    "transactionFailedMessage": "Failed to save your score. Please try again.",
+    "viewTransaction": "View Transaction"
   },
   "common": {
     "continue": "Continue",

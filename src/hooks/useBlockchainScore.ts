@@ -1,11 +1,18 @@
-import { useState, useCallback } from "react";
-import { useAccount, useWriteContract, useReadContract } from "wagmi";
+import { useState, useCallback, useEffect, useRef } from "react";
+import {
+  useAccount,
+  useWriteContract,
+  useReadContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 import {
   blockchainService,
   SCOREBOARD_ABI,
   SCOREBOARD_CONTRACT_ADDRESS,
   LeaderboardEntry,
 } from "@/services/blockchainService";
+import { useToastStore } from "@/store/toastStore";
+import { useTranslations } from "./useTranslations";
 
 export interface UseBlockchainScoreReturn {
   recordScore: (score: number, playerName: string) => Promise<void>;
@@ -27,6 +34,16 @@ export interface UseBlockchainScoreReturn {
 export function useBlockchainScore(): UseBlockchainScoreReturn {
   const { address } = useAccount();
   const [isNewPersonalBest, setIsNewPersonalBest] = useState(false);
+  const [transactionHash, setTransactionHash] = useState<`0x${string}` | null>(
+    null
+  );
+  const { t } = useTranslations();
+  const { showSuccess, showError, showPending } = useToastStore();
+
+  // Refs to track if toasts have been shown to prevent infinite loops
+  const pendingToastShown = useRef<Set<string>>(new Set());
+  const successToastShown = useRef<Set<string>>(new Set());
+  const errorToastShown = useRef<Set<string>>(new Set());
 
   // Hook for writing to the blockchain
   const {
@@ -36,7 +53,14 @@ export function useBlockchainScore(): UseBlockchainScoreReturn {
     isError,
     error,
     reset,
+    data: hash,
   } = useWriteContract();
+
+  // Hook for waiting for transaction receipt
+  const { isSuccess: isConfirmed, isError: isFailed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   // Hook for reading the player's best score
   const { data: playerBestScore } = useReadContract({
@@ -48,6 +72,48 @@ export function useBlockchainScore(): UseBlockchainScoreReturn {
       enabled: !!address,
     },
   });
+
+  // Handle transaction status changes and show toasts
+  useEffect(() => {
+    if (hash && hash !== transactionHash) {
+      setTransactionHash(hash);
+      if (!pendingToastShown.current.has(hash)) {
+        pendingToastShown.current.add(hash);
+        showPending(
+          t("blockchain.transactionPending"),
+          t("blockchain.transactionPendingMessage"),
+          hash,
+          t("blockchain.viewTransaction")
+        );
+      }
+    }
+  }, [hash, showPending, t, transactionHash]);
+
+  useEffect(() => {
+    if (isConfirmed && transactionHash) {
+      if (!successToastShown.current.has(transactionHash)) {
+        successToastShown.current.add(transactionHash);
+        showSuccess(
+          t("blockchain.transactionSuccess"),
+          t("blockchain.transactionSuccessMessage"),
+          transactionHash,
+          t("blockchain.viewTransaction")
+        );
+      }
+    }
+  }, [isConfirmed, transactionHash, showSuccess, t]);
+
+  useEffect(() => {
+    if (isFailed && transactionHash) {
+      if (!errorToastShown.current.has(transactionHash)) {
+        errorToastShown.current.add(transactionHash);
+        showError(
+          t("blockchain.transactionFailed"),
+          t("blockchain.transactionFailedMessage")
+        );
+      }
+    }
+  }, [isFailed, transactionHash, showError, t]);
 
   const recordScore = useCallback(
     async (score: number, playerName: string) => {
@@ -104,6 +170,14 @@ export function useBlockchainScore(): UseBlockchainScoreReturn {
     return await blockchainService.getTotalScores();
   }, []);
 
+  // Enhanced reset function that cleans up toast tracking
+  const resetWithCleanup = useCallback(() => {
+    pendingToastShown.current.clear();
+    successToastShown.current.clear();
+    errorToastShown.current.clear();
+    reset();
+  }, [reset]);
+
   return {
     recordScore,
     getLeaderboard,
@@ -114,7 +188,7 @@ export function useBlockchainScore(): UseBlockchainScoreReturn {
     error,
     playerBestScore: playerBestScore || null,
     isNewPersonalBest,
-    reset,
+    reset: resetWithCleanup,
     isGameOwnerConfigured: blockchainService.isGameOwnerConfigured(),
   };
 }
