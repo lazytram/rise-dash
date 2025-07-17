@@ -71,8 +71,8 @@ export const LeaderboardContent: React.FC = () => {
 
   if (!isConnected) {
     return (
-      <Container>
-        <Card>
+      <Container className="py-8">
+        <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
             {t("blockchain.leaderboard")}
           </h2>
@@ -85,8 +85,8 @@ export const LeaderboardContent: React.FC = () => {
   }
 
   return (
-    <Container>
-      <Card>
+    <Container className="py-8">
+      <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
         <LeaderboardHeader />
 
         {isLoading ? (

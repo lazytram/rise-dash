@@ -39,7 +39,7 @@ export const Header = memo(function Header() {
   }, [isConnected, session, status]);
 
   const containerClassName = useMemo(() => {
-    return `flex items-start absolute top-4 left-4 right-4 z-1 ${
+    return `flex items-start absolute top-4 left-4 right-4 z-10 ${
       showMenu ? "justify-between" : "justify-end"
     }`;
   }, [showMenu]);

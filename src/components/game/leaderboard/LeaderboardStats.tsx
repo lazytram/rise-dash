@@ -15,10 +15,15 @@ export const LeaderboardStats: React.FC<LeaderboardStatsProps> = ({
   const { t } = useTranslations();
 
   return (
-    <div className="mt-4 text-center text-sm text-gray-500">
-      {t("common.showing")} {(currentPage - 1) * itemsPerPage + 1} -{" "}
-      {Math.min(currentPage * itemsPerPage, totalEntries)} {t("common.of")}{" "}
-      {totalEntries} {t("blockchain.bestScores")}
+    <div className="mt-6 text-center text-sm text-white/70 font-medium">
+      {t("common.showing")}{" "}
+      <span className="text-white/90 font-semibold">
+        {(currentPage - 1) * itemsPerPage + 1} -{" "}
+        {Math.min(currentPage * itemsPerPage, totalEntries)}
+      </span>{" "}
+      {t("common.of")}{" "}
+      <span className="text-white/90 font-semibold">{totalEntries}</span>{" "}
+      {t("blockchain.bestScores")}
     </div>
   );
 };

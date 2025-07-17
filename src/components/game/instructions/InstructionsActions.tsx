@@ -7,7 +7,7 @@ export const InstructionsActions: React.FC = () => {
   const { t } = useTranslations();
 
   return (
-    <div className="text-center pt-4">
+    <div className="text-center pt-4 z-15">
       <Link href="/">
         <Button variant="primary" className="px-8 py-3 text-lg">
           {t("instructions.playNow")}

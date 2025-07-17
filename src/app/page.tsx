@@ -1,15 +1,11 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { WelcomeScreen } from "@/components/auth/WelcomeScreen";
-import { GameScreen } from "@/components/game/GameScreen";
+import { SceneManager } from "@/components/scenes/SceneManager";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
-    <main className="bg-gradient-to-b from-[var(--gradient-from)] via-[var(--gradient-via)] to-[var(--gradient-to)] min-h-screen flex flex-col items-center justify-center">
-      {!session ? <WelcomeScreen /> : <GameScreen />}
+    <main className="bg-gradient-to-b from-[var(--gradient-from)] via-[var(--gradient-via)] to-[var(--gradient-to)] min-h-screen">
+      <SceneManager />
     </main>
   );
 }

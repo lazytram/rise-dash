@@ -1,3 +1,4 @@
+@import "@rainbow-me/rainbowkit/styles.css";
 @import "tailwindcss";
 
 :root {
@@ -50,6 +51,17 @@ body {
   }
 }
 
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
@@ -58,23 +70,14 @@ body {
   animation: scale-in 0.4s ease-out;
 }
 
-/* Styles pour RainbowKit dans le portal */
-.rainbow-kit-portal {
-  position: relative;
-  z-index: 50;
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
 }
 
-.rainbow-kit-portal [data-rk] {
-  position: relative;
-  z-index: 51;
+.animation-delay-200 {
+  animation-delay: 0.2s;
 }
 
-.rainbow-kit-wrapper {
-  position: relative;
-  z-index: 52;
-}
-
-.rainbow-kit-wrapper [data-rk] {
-  position: relative;
-  z-index: 53;
+.animation-delay-400 {
+  animation-delay: 0.4s;
 }

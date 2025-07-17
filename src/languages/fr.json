@@ -104,7 +104,8 @@
     "back": "Retour",
     "showing": "Affichage",
     "of": "sur",
-    "playNow": "Jouer Maintenant"
+    "playNow": "Jouer Maintenant",
+    "readyToPlay": "Prêt à jouer ?"
   },
   "profile": {
     "title": "Profil",

@@ -1,6 +1,5 @@
 "use client";
 
-import "@rainbow-me/rainbowkit/styles.css";
 import React, { ReactNode } from "react";
 import { injected, WagmiProvider } from "wagmi";
 import { http, createConfig } from "wagmi";
