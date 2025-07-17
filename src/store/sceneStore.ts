@@ -1,5 +1,7 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { SceneType, SceneState } from "@/types/scenes";
+import { StoreKeys } from "./storeKeys";
 
 interface SceneStore extends SceneState {
   navigateTo: (scene: SceneType) => void;
@@ -12,32 +14,39 @@ const initialState: SceneState = {
   history: ["welcome"],
 };
 
-export const useSceneStore = create<SceneStore>((set, get) => ({
-  ...initialState,
+export const useSceneStore = create<SceneStore>()(
+  persist(
+    (set, get) => ({
+      ...initialState,
 
-  navigateTo: (scene: SceneType) => {
-    const { currentScene, history } = get();
-    set({
-      currentScene: scene,
-      previousScene: currentScene,
-      history: [...history, scene],
-    });
-  },
+      navigateTo: (scene: SceneType) => {
+        const { currentScene, history } = get();
+        set({
+          currentScene: scene,
+          previousScene: currentScene,
+          history: [...history, scene],
+        });
+      },
 
-  goBack: () => {
-    const { history } = get();
-    if (history.length > 1) {
-      const newHistory = history.slice(0, -1);
-      const previousScene = newHistory[newHistory.length - 1];
-      set({
-        currentScene: previousScene,
-        previousScene: newHistory[newHistory.length - 2],
-        history: newHistory,
-      });
+      goBack: () => {
+        const { history } = get();
+        if (history.length > 1) {
+          const newHistory = history.slice(0, -1);
+          const previousScene = newHistory[newHistory.length - 1];
+          set({
+            currentScene: previousScene,
+            previousScene: newHistory[newHistory.length - 2],
+            history: newHistory,
+          });
+        }
+      },
+
+      reset: () => {
+        set(initialState);
+      },
+    }),
+    {
+      name: StoreKeys.SceneStore,
     }
-  },
-
-  reset: () => {
-    set(initialState);
-  },
-}));
+  )
+);

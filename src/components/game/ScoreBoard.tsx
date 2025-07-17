@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
 import { GameLogic } from "@/utils/gameLogic";
+import { useToastStore } from "@/store/toastStore";
 
 interface ScoreBoardProps {
   distance: number;
@@ -21,6 +22,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const { t } = useTranslations();
   const { isConnected, address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showInfo } = useToastStore();
 
   const {
     recordScore,
@@ -36,7 +38,12 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const handleSaveScore = useCallback(async () => {
     if (isSubmitting || !isConnected) {
       if (!isConnected) {
-        alert(t("blockchain.connectWallet"));
+        showInfo(
+          t("blockchain.connectWallet"),
+          t("blockchain.connectWalletMessage")
+        );
+
+        return;
       }
       return;
     }
@@ -52,7 +59,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     } finally {
       setIsSubmitting(false);
     }
-  }, [isConnected, recordScore, distance, isSubmitting, address, t]);
+  }, [isSubmitting, isConnected, showInfo, t, address, recordScore, distance]);
 
   const formatScore = (score: bigint | null) => {
     if (!score) return "0";
