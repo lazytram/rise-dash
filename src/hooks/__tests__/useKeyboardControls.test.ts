@@ -204,7 +204,7 @@ describe("useKeyboardControls", () => {
   });
 
   describe("when game is over", () => {
-    it("should call onStartGame when ArrowUp is pressed", () => {
+    it("should not handle any keyboard input when ArrowUp is pressed", () => {
       const { result } = renderHook(() =>
         useKeyboardControls(
           false,
@@ -223,12 +223,12 @@ describe("useKeyboardControls", () => {
       result.current.handleKeyPress(mockEvent);
 
       expect(mockEvent.preventDefault).toHaveBeenCalled();
-      expect(mockOnStartGame).toHaveBeenCalledTimes(1);
+      expect(mockOnStartGame).not.toHaveBeenCalled();
       expect(mockOnJump).not.toHaveBeenCalled();
       expect(mockOnShoot).not.toHaveBeenCalled();
     });
 
-    it("should call onStartGame when Space is pressed", () => {
+    it("should not handle any keyboard input when Space is pressed", () => {
       const { result } = renderHook(() =>
         useKeyboardControls(
           false,
@@ -247,7 +247,31 @@ describe("useKeyboardControls", () => {
       result.current.handleKeyPress(mockEvent);
 
       expect(mockEvent.preventDefault).toHaveBeenCalled();
-      expect(mockOnStartGame).toHaveBeenCalledTimes(1);
+      expect(mockOnStartGame).not.toHaveBeenCalled();
+      expect(mockOnJump).not.toHaveBeenCalled();
+      expect(mockOnShoot).not.toHaveBeenCalled();
+    });
+
+    it("should not handle any keyboard input when Enter is pressed", () => {
+      const { result } = renderHook(() =>
+        useKeyboardControls(
+          false,
+          true,
+          mockOnJump,
+          mockOnStartGame,
+          mockOnShoot
+        )
+      );
+
+      const mockEvent = {
+        code: "Enter",
+        preventDefault: jest.fn(),
+      } as unknown as KeyboardEvent;
+
+      result.current.handleKeyPress(mockEvent);
+
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
+      expect(mockOnStartGame).not.toHaveBeenCalled();
       expect(mockOnJump).not.toHaveBeenCalled();
       expect(mockOnShoot).not.toHaveBeenCalled();
     });

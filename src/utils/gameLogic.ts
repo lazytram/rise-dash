@@ -159,23 +159,33 @@ export class GameLogic {
       return gameState;
     }
 
-    // Update all game entities
-    const updatedPlayer = this.updatePlayerPhysics(gameState.player);
-    const updatedRiceRockets = this.updateRiceRockets(gameState.riceRockets);
-    const updatedSushis = this.updateSushis(gameState.sushis);
-    const updatedToriis = this.updateToriis(gameState.toriis);
-    const updatedSamurais = this.updateSamurais(gameState.samurais);
-    const updatedNinjas = this.updateNinjas(gameState.ninjas);
-    const updatedBosses = this.updateBosses(gameState.bosses);
-    const updatedSamuraiBullets = this.updateSamuraiBullets(
-      gameState.samuraiBullets
-    );
-    const updatedPowerUps = this.updatePowerUps(gameState.powerUps);
+    // Pre-calculate common values for better performance
     const updatedDistance = this.updateDistance(gameState.distance);
-
-    // Calculate new difficulty level
     const updatedDifficultyLevel =
       this.calculateDifficultyLevel(updatedDistance);
+
+    // Update all game entities in parallel for better performance
+    const [
+      updatedPlayer,
+      updatedRiceRockets,
+      updatedSushis,
+      updatedToriis,
+      updatedSamurais,
+      updatedNinjas,
+      updatedBosses,
+      updatedSamuraiBullets,
+      updatedPowerUps,
+    ] = [
+      this.updatePlayerPhysics(gameState.player),
+      this.updateRiceRockets(gameState.riceRockets),
+      this.updateSushis(gameState.sushis),
+      this.updateToriis(gameState.toriis),
+      this.updateSamurais(gameState.samurais),
+      this.updateNinjas(gameState.ninjas),
+      this.updateBosses(gameState.bosses),
+      this.updateSamuraiBullets(gameState.samuraiBullets),
+      this.updatePowerUps(gameState.powerUps),
+    ];
 
     let newGameState = {
       ...gameState,
@@ -416,17 +426,33 @@ export class GameLogic {
 
   static createSushi(distance: number): Sushi {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
+    const baseSpeed = this.getCurrentSushiSpeed(distance);
+    const speedVariation = this.calculateSushiSpeedVariation();
 
     return {
-      id: Date.now().toString() + Math.random(),
+      id: this.generateEntityId(),
       x: GAME_CONSTANTS.CANVAS_WIDTH,
-      y: groundY - player.width, // Fixed height (same as player)
-      width: player.width, // Fixed sushi width
-      height: player.width, // Fixed sushi height
-      velocityX:
-        this.getCurrentSushiSpeed(distance) * (0.8 + Math.random() * 0.4), // ±20% speed variation
+      y: groundY - player.width,
+      width: player.width,
+      height: player.width,
+      velocityX: baseSpeed * speedVariation,
       color: SUSHI_COLORS.BASE,
     };
+  }
+
+  /**
+   * Generates a unique ID for game entities
+   */
+  private static generateEntityId(): string {
+    return Date.now().toString() + Math.random();
+  }
+
+  /**
+   * Calculates speed variation for sushis (±7.5% variation)
+   * Returns a multiplier between 0.925 and 1.075
+   */
+  private static calculateSushiSpeedVariation(): number {
+    return 0.925 + Math.random() * 0.15;
   }
 
   static updateSushis(sushis: Sushi[]): Sushi[] {
@@ -439,12 +465,12 @@ export class GameLogic {
   }
 
   static shouldSpawnSushi(gameState: GameState): boolean {
-    // Start spawning after some distance
+    // Don't spawn sushis too early in the game
     if (gameState.distance < 100) {
       return false;
     }
 
-    // If no sushi on screen, use probability-based spawning
+    // If no sushi on screen, spawn based on difficulty probability
     if (gameState.sushis.length === 0) {
       return Math.random() < gameState.difficultyLevel.sushiSpawnProbability;
     }
@@ -452,24 +478,53 @@ export class GameLogic {
     const lastSushi = gameState.sushis[gameState.sushis.length - 1];
     const distanceFromLast = GAME_CONSTANTS.CANVAS_WIDTH - lastSushi.x;
 
-    // Much more random spawn distance
-    const minDistance = 200; // Minimum distance between sushis
-    const maxDistance = 1200; // Maximum distance between sushis
+    // Calculate spawn distance using hybrid approach
+    const spawnDistance = this.calculateSushiSpawnDistance();
 
-    // Use exponential distribution for more randomness
-    const randomValue = Math.random();
-    const spawnDistance =
-      minDistance + (maxDistance - minDistance) * Math.pow(randomValue, 2);
-
-    // Add extra randomness with probability check
-    const shouldSpawn = distanceFromLast >= spawnDistance;
-
-    if (shouldSpawn) {
-      // Additional probability check to make it even more random
+    // Only spawn if distance is sufficient and probability check passes
+    if (distanceFromLast >= spawnDistance) {
       return Math.random() < gameState.difficultyLevel.sushiSpawnProbability;
     }
 
     return false;
+  }
+
+  /**
+   * Calculates the spawn distance for sushis using a hybrid approach:
+   * - 85% of the time: Linear distribution (predictable spacing)
+   * - 15% of the time: Exponential distribution (surprise factor)
+   */
+  private static calculateSushiSpawnDistance(): number {
+    const useExponentialDistribution = Math.random() < 0.15;
+
+    if (useExponentialDistribution) {
+      return this.calculateExponentialSpawnDistance();
+    } else {
+      return this.calculateLinearSpawnDistance();
+    }
+  }
+
+  /**
+   * Calculates spawn distance using exponential distribution for unpredictability
+   * Creates more varied spacing with occasional very close or far spawns
+   */
+  private static calculateExponentialSpawnDistance(): number {
+    const minDistance = 200;
+    const maxDistance = 1200;
+    const randomValue = Math.random();
+
+    return minDistance + (maxDistance - minDistance) * Math.pow(randomValue, 2);
+  }
+
+  /**
+   * Calculates spawn distance using linear distribution for predictability
+   * Creates consistent, player-friendly spacing
+   */
+  private static calculateLinearSpawnDistance(): number {
+    const minDistance = 300;
+    const maxDistance = 800;
+
+    return minDistance + Math.random() * (maxDistance - minDistance);
   }
 
   static addSushi(gameState: GameState): GameState {

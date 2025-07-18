@@ -1,26 +1,45 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { GAME_CONSTANTS } from "@/constants/game";
 
 export const useGameLoop = (isGameRunning: boolean, gameLoop: () => void) => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
+  const targetFrameTime = 1000 / GAME_CONSTANTS.FPS;
+
+  const animate = useCallback(
+    (currentTime: number) => {
+      if (!isGameRunning) return;
+
+      const deltaTime = currentTime - lastTimeRef.current;
+
+      if (deltaTime >= targetFrameTime) {
+        gameLoop();
+        lastTimeRef.current = currentTime;
+      }
+
+      animationFrameRef.current = requestAnimationFrame(animate);
+    },
+    [isGameRunning, gameLoop, targetFrameTime]
+  );
 
   useEffect(() => {
     if (isGameRunning) {
-      intervalRef.current = setInterval(gameLoop, 1000 / GAME_CONSTANTS.FPS);
+      lastTimeRef.current = performance.now();
+      animationFrameRef.current = requestAnimationFrame(animate);
     } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     }
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     };
-  }, [isGameRunning, gameLoop]);
+  }, [isGameRunning, gameLoop, animate]);
 
-  return intervalRef;
+  return animationFrameRef;
 };

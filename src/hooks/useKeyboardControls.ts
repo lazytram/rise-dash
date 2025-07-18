@@ -11,6 +11,12 @@ export const useKeyboardControls = (
     (event: KeyboardEvent) => {
       event.preventDefault();
 
+      // Don't handle keyboard input when game is over
+      // The GameOverScreen handles its own keyboard events
+      if (isGameOver) {
+        return;
+      }
+
       if (event.code === "ArrowUp") {
         if (isGameRunning) {
           onJump();
@@ -29,7 +35,7 @@ export const useKeyboardControls = (
         }
       }
     },
-    [isGameRunning, onJump, onStartGame, onShoot]
+    [isGameRunning, isGameOver, onJump, onStartGame, onShoot]
   );
 
   return { handleKeyPress };

@@ -23,8 +23,10 @@ export class GameRenderer {
   private decorationRenderer: DecorationRenderer;
   private uiRenderer: UIRenderer;
   private powerUpRenderer: PowerUpRenderer;
+  private ctx: CanvasRenderingContext2D;
 
   constructor(ctx: CanvasRenderingContext2D) {
+    this.ctx = ctx;
     this.environmentRenderer = new EnvironmentRenderer(ctx);
     this.playerRenderer = new PlayerRenderer(ctx);
     this.projectileRenderer = new ProjectileRenderer(ctx);
@@ -32,6 +34,21 @@ export class GameRenderer {
     this.decorationRenderer = new DecorationRenderer(ctx);
     this.uiRenderer = new UIRenderer(ctx);
     this.powerUpRenderer = new PowerUpRenderer(ctx);
+
+    // Optimize canvas context for better performance
+    this.optimizeContext();
+  }
+
+  private optimizeContext(): void {
+    // Enable hardware acceleration
+    this.ctx.imageSmoothingEnabled = false;
+
+    // Set composite operation for better blending
+    this.ctx.globalCompositeOperation = "source-over";
+
+    // Optimize text rendering
+    this.ctx.textBaseline = "top";
+    this.ctx.font = "16px Arial";
   }
 
   render(

@@ -26,7 +26,7 @@ export class GameIndicators extends React.Component<GameIndicatorsProps> {
   componentDidMount() {
     this.intervalId = setInterval(() => {
       this.setState({ currentTime: Date.now() });
-    }, 1000);
+    }, 100); // Update more frequently for smoother animations
   }
 
   componentWillUnmount() {

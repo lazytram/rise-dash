@@ -93,6 +93,7 @@
     "yourScores": "Vos Scores",
     "connectWalletToView": "Connectez votre wallet pour accéder aux scores",
     "loadingScores": "Chargement des scores...",
+    "loadingAchievements": "Chargement des succès...",
     "noScoresYet": "Aucun score encore",
     "playToEarnScores": "Jouez pour grimper au classement !",
     "scoresOnBlockchain": "Tous les scores sont stockés sur la blockchain RISE",
