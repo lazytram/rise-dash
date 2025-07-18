@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { GameState } from "@/types/game";
 import { GAME_CONSTANTS } from "@/constants/game";
 import { GameLogic } from "@/utils/gameLogic";
@@ -87,6 +87,21 @@ const Game = () => {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [handleKeyPress]);
 
+  // Memoize translations to prevent unnecessary re-renders
+  const translations = useMemo(
+    () => ({
+      distance: t("game.distance"),
+      meters: t("game.meters"),
+      startMessage: t("game.startMessage"),
+      jumpMessage: t("game.jumpMessage"),
+      enemyMessage: t("game.enemyMessage"),
+      gameOver: t("game.gameOver"),
+      finalScore: t("game.finalScore"),
+      restartMessage: t("game.restartMessage"),
+    }),
+    [t]
+  );
+
   // Game rendering
   useEffect(() => {
     if (rendererRef.current) {
@@ -101,19 +116,10 @@ const Game = () => {
         gameState.distance,
         gameState.isGameRunning,
         gameState.isGameOver,
-        {
-          distance: t("game.distance"),
-          meters: t("game.meters"),
-          startMessage: t("game.startMessage"),
-          jumpMessage: t("game.jumpMessage"),
-          enemyMessage: t("game.enemyMessage"),
-          gameOver: t("game.gameOver"),
-          finalScore: t("game.finalScore"),
-          restartMessage: t("game.restartMessage"),
-        }
+        translations
       );
     }
-  }, [gameState, t]);
+  }, [gameState, translations]);
 
   return (
     <div className="flex items-start justify-center">

@@ -10,7 +10,9 @@ export const GameCanvas = ({ canvasRef }: GameCanvasProps) => {
       <canvas
         ref={canvasRef}
         className="border-2 border-gray-300 rounded"
-        style={{ display: "block" }}
+        style={{
+          display: "block",
+        }}
         width={GAME_CONSTANTS.CANVAS_WIDTH}
         height={GAME_CONSTANTS.CANVAS_HEIGHT}
       />

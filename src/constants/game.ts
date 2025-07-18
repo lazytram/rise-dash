@@ -4,7 +4,7 @@ export const GAME_CONSTANTS = {
   GRAVITY: 0.8,
   JUMP_STRENGTH: -15,
   GROUND_HEIGHT: 50,
-  FPS: 60,
+  FPS: 120, // Increased for smoother animations
   RICE_ROCKET_SPEED: 8,
   RICE_ROCKET_SIZE: 4,
   SUSHI_SPEED: -4,
@@ -38,7 +38,7 @@ export const GAME_CONSTANTS = {
   // Speed progression constants
   SPEED_INCREASE_INTERVAL: 100, // Every 100 meters
   SPEED_INCREASE_PERCENTAGE: 0.025, // 2.5% increase
-  BASE_SUSHI_SPEED: -4, // Base speed for sushi
+  BASE_SUSHI_SPEED: -4, // Reduced from -4 for slower, more predictable movement
   BASE_SAMURAI_SPEED: -2, // Base speed for samurai
   BASE_SAMURAI_BULLET_SPEED: -7, // Increased base speed for samurai bullets (shurikens)
   // Enhanced sushi spacing constants
@@ -54,9 +54,9 @@ export const GAME_CONSTANTS = {
   SAMURAI_SPAWN_DISTANCE_DECREASE: 5, // Decrease spawn distance by 5m per level
   MIN_SAMURAI_SPAWN_DISTANCE: 20, // Minimum spawn distance
   // Sushi spawn rate progression
-  BASE_SUSHI_SPAWN_PROBABILITY: 0.8,
-  SUSHI_SPAWN_PROBABILITY_INCREASE: 0.05, // Increase probability by 5% per level
-  MAX_SUSHI_SPAWN_PROBABILITY: 0.95, // Maximum spawn probability
+  BASE_SUSHI_SPAWN_PROBABILITY: 0.7, // Reduced from 0.8
+  SUSHI_SPAWN_PROBABILITY_INCREASE: 0.03, // Reduced from 0.05 - slower increase
+  MAX_SUSHI_SPAWN_PROBABILITY: 0.9, // Reduced from 0.95 - lower maximum
   // Samurai behavior progression
   BASE_SAMURAI_SHOT_COOLDOWN: 3000,
   SAMURAI_SHOT_COOLDOWN_DECREASE: 200, // Decrease cooldown by 200ms per level

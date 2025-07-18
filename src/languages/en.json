@@ -94,6 +94,7 @@
     "yourScores": "Your Scores",
     "connectWalletToView": "Connect your wallet to access scores",
     "loadingScores": "Loading scores...",
+    "loadingAchievements": "Loading achievements...",
     "noScoresYet": "No scores yet",
     "playToEarnScores": "Play to climb the leaderboard!",
     "scoresOnBlockchain": "All scores are stored on RISE blockchain",

@@ -18,14 +18,25 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 }) => {
   const { t } = useTranslations();
   const [showScoreBoard, setShowScoreBoard] = useState(false);
+  const [canRestart, setCanRestart] = useState(false);
+
+  // Enable restart after 1.5 seconds to prevent accidental restarts
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCanRestart(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === "Space" || event.code === "ArrowUp") {
         event.preventDefault();
+
         if (showScoreBoard) {
           setShowScoreBoard(false);
-        } else {
+        } else if (canRestart) {
           onRestart();
         }
       }
@@ -33,7 +44,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [onRestart, showScoreBoard]);
+  }, [onRestart, showScoreBoard, canRestart]);
 
   if (showScoreBoard) {
     return (
@@ -63,15 +74,20 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
         </div>
 
         <Text variant="subtitle" size="lg" className="mb-6">
-          {t("game.restartMessage")}
+          {canRestart ? t("game.restartMessage") : "Sauvegarde en cours..."}
         </Text>
 
         <div className="flex gap-3 justify-center">
           <Button onClick={() => setShowScoreBoard(true)} variant="success">
             {t("blockchain.saveScore")}
           </Button>
-          <Button onClick={onRestart} variant="primary">
-            {t("game.restart")}
+          <Button
+            onClick={onRestart}
+            variant="primary"
+            disabled={!canRestart}
+            className={!canRestart ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            {canRestart ? t("game.restart") : "Patientez..."}
           </Button>
         </div>
       </div>

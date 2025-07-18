@@ -26,6 +26,10 @@ export const ProfileContent: React.FC = () => {
   const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [achievementsLoading, setAchievementsLoading] = useState(false);
+  const [achievementsError, setAchievementsError] = useState<string | null>(
+    null
+  );
   const [activeTab, setActiveTab] = useState("gameHistory");
 
   const loadPlayerScores = useCallback(async () => {
@@ -49,6 +53,21 @@ export const ProfileContent: React.FC = () => {
       setLoading(false);
     }
   }, [address]);
+
+  const loadAchievements = useCallback(async () => {
+    try {
+      setAchievementsLoading(true);
+      // TODO: Implement achievements loading logic
+      // For now, just simulate loading
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setAchievementsError(null);
+    } catch (err) {
+      console.error("Error loading achievements:", err);
+      setAchievementsError("Error loading achievements");
+    } finally {
+      setAchievementsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (isConnected && address) {
@@ -93,7 +112,13 @@ export const ProfileContent: React.FC = () => {
             {
               id: "achievements",
               label: t("profile.achievements"),
-              content: <ProfileAchievements />,
+              content: (
+                <ProfileAchievements
+                  loading={achievementsLoading}
+                  error={achievementsError}
+                  onRetry={loadAchievements}
+                />
+              ),
             },
           ]}
           activeTab={activeTab}

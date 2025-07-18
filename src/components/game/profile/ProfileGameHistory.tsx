@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Box } from "@/components/ui/Box";
 import { Text } from "@/components/ui/Text";
+import { ProfileSection } from "./ProfileSection";
 import {
   useReactTable,
   getCoreRowModel,
@@ -110,81 +111,89 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
 
   if (loading) {
     return (
-      <Box variant="centered">
-        <LoadingSpinner className="mx-auto mb-4" />
-        <Text variant="subtitle">{t("blockchain.loadingScores")}</Text>
-      </Box>
+      <ProfileSection>
+        <Box variant="centered" className="flex-1">
+          <LoadingSpinner className="mx-auto mb-4" />
+          <Text variant="subtitle">{t("blockchain.loadingScores")}</Text>
+        </Box>
+      </ProfileSection>
     );
   }
 
   if (error) {
     return (
-      <Box variant="centered">
-        <Text variant="error" className="mb-4">
-          {error}
-        </Text>
-        <Button onClick={onRetry} variant="primary">
-          {t("common.retry")}
-        </Button>
-      </Box>
+      <ProfileSection>
+        <Box variant="centered" className="flex-1">
+          <Text variant="error" className="mb-4">
+            {error}
+          </Text>
+          <Button onClick={onRetry} variant="primary">
+            {t("common.retry")}
+          </Button>
+        </Box>
+      </ProfileSection>
     );
   }
 
   if (playerScores.length === 0) {
     return (
-      <Box variant="centered">
-        <Text variant="subtitle" className="mb-4">
-          {t("blockchain.noScoresYet")}
-        </Text>
-        <Text variant="caption">{t("blockchain.playGameToSeeScores")}</Text>
-      </Box>
+      <ProfileSection>
+        <Box variant="centered" className="flex-1">
+          <Text variant="subtitle" className="mb-4">
+            {t("blockchain.noScoresYet")}
+          </Text>
+          <Text variant="caption">{t("blockchain.playGameToSeeScores")}</Text>
+        </Box>
+      </ProfileSection>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="px-4 py-2 text-left text-sm font-semibold text-white/90 border-b border-white/20"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className="hover:bg-white/5 transition-all duration-200 cursor-pointer"
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="px-4 py-3 border-b border-white/10"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <ProfileSection className="overflow-x-auto">
+      <div className="flex-1">
+        <table className="w-full">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="px-4 py-2 text-left text-sm font-semibold text-white/90 border-b border-white/20"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="hover:bg-white/5 transition-all duration-200 cursor-pointer"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="px-4 py-3 border-b border-white/10"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Pagination */}
       {table.getPageCount() > 1 && (
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
           <div className="flex items-center gap-2">
             <Button
               variant="secondary"
@@ -209,6 +218,6 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </ProfileSection>
   );
 };
