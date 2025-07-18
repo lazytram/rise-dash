@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useAccount } from "wagmi";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Container } from "@/components/ui/Container";
@@ -16,6 +16,7 @@ import {
   EmptyLeaderboard,
 } from "./leaderboard";
 import { SceneHeader } from "@/components/ui/SceneHeader";
+import { SceneType } from "@/types/scenes";
 
 interface LeaderboardEntryWithRank extends LeaderboardEntry {
   rank: number;
@@ -39,7 +40,7 @@ export const LeaderboardContent: React.FC = () => {
 
   const { getLeaderboard, getTotalScores } = useBlockchainScore();
 
-  const loadLeaderboard = async () => {
+  const loadLeaderboard = useCallback(async () => {
     // Prevent multiple simultaneous calls
     if (loadingRef.current) {
       return;
@@ -93,7 +94,7 @@ export const LeaderboardContent: React.FC = () => {
         loadingRef.current = false;
       }
     }, 300); // 300ms debounce
-  };
+  }, [isConnected, currentPage, getTotalScores, getLeaderboard, itemsPerPage]);
 
   useEffect(() => {
     loadLeaderboard();
@@ -104,17 +105,17 @@ export const LeaderboardContent: React.FC = () => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [isConnected, currentPage, getTotalScores, getLeaderboard]);
+  }, [loadLeaderboard]);
 
   if (!isConnected) {
     return (
       <Container className="py-8">
         <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            {t("blockchain.leaderboard")}
+            {t("scenes.leaderboard.title")}
           </h2>
           <Text variant="error" className="mb-4">
-            {t("blockchain.connectWalletToView")}
+            {t("scenes.leaderboard.connectWalletToView")}
           </Text>
         </Card>
       </Container>
@@ -126,9 +127,9 @@ export const LeaderboardContent: React.FC = () => {
       <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
         {/* Enhanced Header */}
         <SceneHeader
-          title={t("blockchain.leaderboard")}
-          subtitle={t("blockchain.leaderboardSubtitle")}
-          menuColorKey="leaderboard"
+          title={t("scenes.leaderboard.title")}
+          subtitle={t("scenes.leaderboard.subtitle")}
+          menuColorKey={SceneType.LEADERBOARD}
         />
 
         {isLoading ? (
@@ -136,12 +137,12 @@ export const LeaderboardContent: React.FC = () => {
             <LoadingSpinner color="white" />
           </div>
         ) : hasError ? (
-          <div className="text-center py-8">
-            <Text variant="error" className="mb-4">
-              {errorMessage || t("blockchain.leaderboardError")}
+          <div className="text-center">
+            <Text variant="subtitle" className="text-red-400">
+              {errorMessage || t("scenes.leaderboard.leaderboardError")}
             </Text>
-            <Text variant="body" className="text-white/70">
-              {t("blockchain.leaderboardErrorDescription")}
+            <Text variant="caption" className="text-white/60">
+              {t("scenes.leaderboard.leaderboardErrorDescription")}
             </Text>
           </div>
         ) : leaderboardData.length === 0 ? (
@@ -162,8 +163,8 @@ export const LeaderboardContent: React.FC = () => {
 
             <LeaderboardStats
               currentPage={currentPage}
-              totalEntries={totalEntries}
-              itemsPerPage={itemsPerPage}
+              totalPages={totalPages}
+              totalScores={totalEntries}
             />
           </>
         )}

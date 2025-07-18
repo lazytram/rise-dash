@@ -38,15 +38,15 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({ playerScores }) => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       <Card variant="gradient-purple">
         <h3 className="text-sm font-medium opacity-90">
-          {t("profile.bestScore")}
+          {t("scenes.profile.bestScore")}
         </h3>
         <Text variant="bold" size="2xl">
-          {getBestScore()} {t("game.meters")}
+          {getBestScore()} {t("features.gameplay.meters")}
         </Text>
       </Card>
       <Card variant="gradient-blue">
         <h3 className="text-sm font-medium opacity-90">
-          {t("profile.totalGames")}
+          {t("scenes.profile.totalGames")}
         </h3>
         <Text variant="bold" size="2xl">
           {getTotalGames()}
@@ -54,10 +54,10 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({ playerScores }) => {
       </Card>
       <Card variant="gradient-green">
         <h3 className="text-sm font-medium opacity-90">
-          {t("profile.averageScore")}
+          {t("scenes.profile.averageScore")}
         </h3>
         <Text variant="bold" size="2xl">
-          {getAverageScore()} {t("game.meters")}
+          {getAverageScore()} {t("features.gameplay.meters")}
         </Text>
       </Card>
     </div>

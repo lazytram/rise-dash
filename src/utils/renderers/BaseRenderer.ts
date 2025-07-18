@@ -2,6 +2,7 @@
 
 export abstract class BaseRenderer {
   protected ctx: CanvasRenderingContext2D;
+  private cachedGradients: Map<string, CanvasGradient> = new Map();
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -26,14 +27,22 @@ export abstract class BaseRenderer {
     colors: string[],
     direction: "horizontal" | "vertical" = "horizontal"
   ): void {
-    const gradient =
-      direction === "horizontal"
-        ? this.ctx.createLinearGradient(x, y, x + width, y)
-        : this.ctx.createLinearGradient(x, y, x, y + height);
+    const gradientKey = `${colors.join(",")}-${direction}-${width}-${height}`;
 
-    colors.forEach((color, index) => {
-      gradient.addColorStop(index / (colors.length - 1), color);
-    });
+    let gradient = this.cachedGradients.get(gradientKey);
+
+    if (!gradient) {
+      gradient =
+        direction === "horizontal"
+          ? this.ctx.createLinearGradient(x, y, x + width, y)
+          : this.ctx.createLinearGradient(x, y, x, y + height);
+
+      colors.forEach((color, index) => {
+        gradient!.addColorStop(index / (colors.length - 1), color);
+      });
+
+      this.cachedGradients.set(gradientKey, gradient);
+    }
 
     this.ctx.fillStyle = gradient;
     this.ctx.fillRect(x, y, width, height);
@@ -75,5 +84,47 @@ export abstract class BaseRenderer {
     this.ctx.strokeStyle = borderColor;
     this.ctx.lineWidth = borderWidth;
     this.ctx.strokeRect(x, y, width, height);
+  }
+
+  // Optimized batch rendering methods
+  protected drawMultipleRects(
+    rects: Array<{
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      color: string;
+    }>
+  ): void {
+    // Group by color to minimize context changes
+    const colorGroups = new Map<
+      string,
+      Array<{ x: number; y: number; width: number; height: number }>
+    >();
+
+    rects.forEach((rect) => {
+      if (!colorGroups.has(rect.color)) {
+        colorGroups.set(rect.color, []);
+      }
+      colorGroups.get(rect.color)!.push({
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height,
+      });
+    });
+
+    // Draw each color group
+    colorGroups.forEach((group, color) => {
+      this.ctx.fillStyle = color;
+      group.forEach((rect) => {
+        this.ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+      });
+    });
+  }
+
+  // Clear gradient cache when needed
+  protected clearGradientCache(): void {
+    this.cachedGradients.clear();
   }
 }

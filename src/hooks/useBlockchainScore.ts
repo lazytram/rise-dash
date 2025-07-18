@@ -83,7 +83,7 @@ export const useBlockchainScore = () => {
 
       if (!address) {
         console.log("❌ No address found");
-        showError(t("common.error"), t("blockchain.connectWallet"));
+        showError(t("common.error"), t("features.blockchain.connectWallet"));
         return false;
       }
 
@@ -102,7 +102,7 @@ export const useBlockchainScore = () => {
 
         if (contractInfo.paused) {
           console.log("⏸️ Contract is paused");
-          showError(t("common.error"), t("blockchain.contractPaused"));
+          showError(t("common.error"), t("features.blockchain.contractPaused"));
           return false;
         }
 
@@ -110,7 +110,7 @@ export const useBlockchainScore = () => {
           console.log("🔑 Security key not set");
           showError(
             t("common.error"),
-            t("blockchain.securityKeyNotConfigured")
+            t("features.blockchain.securityKeyNotConfigured")
           );
           return false;
         }
@@ -127,8 +127,8 @@ export const useBlockchainScore = () => {
         let signature: `0x${string}` | undefined = undefined;
         try {
           showPending(
-            t("blockchain.transactionPending"),
-            t("blockchain.transactionPendingMessage")
+            t("features.blockchain.transactionPending"),
+            t("features.blockchain.transactionPendingMessage")
           );
           const response = await fetch("/api/sign-score", {
             method: "POST",
@@ -150,7 +150,7 @@ export const useBlockchainScore = () => {
         } catch {
           showError(
             t("common.error"),
-            t("blockchain.errorSaving") + ` (signature)`
+            t("features.blockchain.errorSaving") + ` (signature)`
           );
           return false;
         }
@@ -166,14 +166,14 @@ export const useBlockchainScore = () => {
           console.log("📤 writeContract called successfully");
         } catch (writeError) {
           console.error("❌ writeContract error:", writeError);
-          showError(t("common.error"), t("blockchain.errorSaving"));
+          showError(t("common.error"), t("features.blockchain.errorSaving"));
           return false;
         }
 
         return true;
       } catch (error) {
         console.error("❌ Error recording score:", error);
-        showError(t("common.error"), t("blockchain.errorSaving"));
+        showError(t("common.error"), t("features.blockchain.errorSaving"));
         return false;
       } finally {
         console.log("🏁 Setting isRecording to false");

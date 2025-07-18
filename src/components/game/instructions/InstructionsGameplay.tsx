@@ -13,7 +13,7 @@ export const InstructionsGameplay: React.FC = () => {
           <span className="text-white font-bold text-sm">🎯</span>
         </div>
         <h2 className="text-xl font-semibold text-white">
-          {t("instructions.gameplay.title")}
+          {t("scenes.instructions.gameplay.title")}
         </h2>
       </div>
       <div className="space-y-4">
@@ -23,11 +23,11 @@ export const InstructionsGameplay: React.FC = () => {
               <span className="text-white text-xs font-bold">🏆</span>
             </div>
             <div>
-              <Text variant="bold" className="font-medium text-white mb-2">
-                {t("instructions.gameplay.objective")}
-              </Text>
-              <Text variant="body" className="text-white/90 leading-relaxed">
-                {t("instructions.gameplay.objectiveDesc")}
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {t("scenes.instructions.gameplay.objective")}
+              </h3>
+              <Text variant="body" className="text-white/90">
+                {t("scenes.instructions.gameplay.objectiveDesc")}
               </Text>
             </div>
           </div>
@@ -38,11 +38,11 @@ export const InstructionsGameplay: React.FC = () => {
               <span className="text-white text-xs font-bold">⚔️</span>
             </div>
             <div>
-              <Text variant="bold" className="font-medium text-white mb-2">
-                {t("instructions.gameplay.enemies")}
-              </Text>
-              <Text variant="body" className="text-white/90 leading-relaxed">
-                {t("instructions.gameplay.enemiesDesc")}
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {t("scenes.instructions.gameplay.enemies")}
+              </h3>
+              <Text variant="body" className="text-white/90">
+                {t("scenes.instructions.gameplay.enemiesDesc")}
               </Text>
             </div>
           </div>
@@ -53,11 +53,11 @@ export const InstructionsGameplay: React.FC = () => {
               <span className="text-white text-xs font-bold">⭐</span>
             </div>
             <div>
-              <Text variant="bold" className="font-medium text-white mb-2">
-                {t("instructions.gameplay.powerUps")}
-              </Text>
-              <Text variant="body" className="text-white/90 leading-relaxed">
-                {t("instructions.gameplay.powerUpsDesc")}
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {t("scenes.instructions.gameplay.powerUps")}
+              </h3>
+              <Text variant="body" className="text-white/90">
+                {t("scenes.instructions.gameplay.powerUpsDesc")}
               </Text>
             </div>
           </div>

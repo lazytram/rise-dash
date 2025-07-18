@@ -28,7 +28,7 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
 
   const getUpgradeDescription = () => {
     if (isMaxLevel) {
-      return t("powerUps.maxLevelReached");
+      return t("features.powerUps.maxLevelReached");
     }
 
     const current = currentUpgrade;
@@ -37,13 +37,13 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
     switch (powerUp.type) {
       case "riceRocketAmmo":
         return `${current.ammoCount} → ${next?.ammoCount} ${t(
-          "powerUps.ammo"
+          "features.powerUps.ammo"
         )}`;
       case "shield":
       case "infiniteAmmo":
         return `${(current.duration || 0) / 1000}s → ${
           (next?.duration || 0) / 1000
-        }s ${t("powerUps.duration")}`;
+        }s ${t("features.powerUps.duration")}`;
       case "speedBoost":
         const currentSpeed = (
           ((current.speedMultiplier || 1) - 1) *
@@ -66,6 +66,10 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
     return (currentLevel / 10) * 100;
   };
 
+  const getShortPowerUpName = (type: string) => {
+    return t(`features.powerUps.shortNames.${type}`);
+  };
+
   return (
     <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-6 border border-white/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
       {/* Header */}
@@ -78,9 +82,9 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
             <Text
               variant="title"
               size="lg"
-              className="text-white font-bold truncate"
+              className="text-white font-bold leading-tight"
             >
-              {t(`powerUps.${powerUp.type}`)}
+              {getShortPowerUpName(powerUp.type)}
             </Text>
             <Text
               variant="title"
@@ -90,8 +94,12 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
               {currentLevel}/10
             </Text>
           </div>
-          <Text variant="subtitle" size="sm" className="text-white/70">
-            {t(`powerUps.description.${powerUp.type}`)}
+          <Text
+            variant="subtitle"
+            size="sm"
+            className="text-white/70 line-clamp-2"
+          >
+            {t(`features.powerUps.description.${powerUp.type}`)}
           </Text>
         </div>
       </div>
@@ -117,14 +125,14 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <Text variant="subtitle" size="sm" className="text-white/70">
-                {t("powerUps.upgradeCost")}:
+                {t("features.powerUps.upgradeCost")}:
               </Text>
               <Text
                 variant="title"
                 size="lg"
                 className="text-yellow-300 font-bold drop-shadow-sm"
               >
-                {nextUpgrade?.riceCost} {t("powerUps.rice")}
+                {nextUpgrade?.riceCost} {t("features.powerUps.rice")}
               </Text>
             </div>
 
@@ -148,7 +156,7 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
                 </div>
               ) : (
                 <span className="text-sm font-medium">
-                  {t("powerUps.upgrade")} → Niveau {currentLevel + 1}
+                  {t("features.powerUps.upgrade")} → Niveau {currentLevel + 1}
                 </span>
               )}
             </Button>
@@ -159,7 +167,7 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
                 size="sm"
                 className="text-center text-red-700 font-medium drop-shadow-sm"
               >
-                {t("powerUps.insufficientRice")}
+                {t("features.powerUps.insufficientRice")}
               </Text>
             )}
           </div>
@@ -170,7 +178,7 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
               size="lg"
               className="text-green-300 font-bold drop-shadow-sm"
             >
-              {t("powerUps.maxLevelReached")}
+              {t("features.powerUps.maxLevelReached")}
             </Text>
             <Text variant="subtitle" size="sm" className="text-white/60 mt-1">
               Niveau maximum atteint !

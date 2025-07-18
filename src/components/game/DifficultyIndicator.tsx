@@ -23,7 +23,7 @@ export const DifficultyIndicator: React.FC<DifficultyIndicatorProps> = ({
         variant="bold"
         size="xs"
       >
-        {t("game.level")} {difficultyLevel.level}
+        {t("features.gameplay.level")} {difficultyLevel.level}
       </Text>
       <Text
         className="text-white text-center mt-0.5 opacity-80 text-xs"

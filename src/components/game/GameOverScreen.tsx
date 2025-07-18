@@ -58,7 +58,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
     <Modal size="sm">
       <div className="text-center">
         <h1 className="text-4xl font-bold text-white mb-6">
-          {t("game.gameOver")}
+          {t("scenes.game.gameOver")}
         </h1>
 
         <Text
@@ -66,7 +66,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           size="xl"
           className="mb-4 text-white font-semibold"
         >
-          {t("game.finalScore")}
+          {t("scenes.game.finalScore")}
         </Text>
 
         <div className="mb-6">
@@ -77,7 +77,8 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
             }}
           >
             <span className="text-3xl font-bold text-white">
-              {GameLogic.formatDistance(distance)} {t("game.meters")}
+              {GameLogic.formatDistance(distance)}{" "}
+              {t("features.gameplay.meters")}
             </span>
           </div>
         </div>
@@ -87,12 +88,14 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           size="lg"
           className="mb-6 text-white font-medium"
         >
-          {canRestart ? t("game.restartMessage") : "Sauvegarde en cours..."}
+          {canRestart
+            ? t("scenes.game.restartMessage")
+            : t("scenes.game.savingInProgress")}
         </Text>
 
         <div className="flex gap-3 justify-center">
           <Button onClick={() => setShowScoreBoard(true)} variant="success">
-            {t("blockchain.saveScore")}
+            {t("features.blockchain.saveScore")}
           </Button>
           <Button
             onClick={onRestart}
@@ -100,7 +103,9 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
             disabled={!canRestart}
             className={!canRestart ? "opacity-50 cursor-not-allowed" : ""}
           >
-            {canRestart ? t("game.restart") : "Patientez..."}
+            {canRestart
+              ? t("scenes.game.restart")
+              : t("scenes.game.pleaseWait")}
           </Button>
         </div>
       </div>

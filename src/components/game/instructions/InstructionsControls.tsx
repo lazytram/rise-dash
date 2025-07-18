@@ -13,7 +13,7 @@ export const InstructionsControls: React.FC = () => {
           <span className="text-white font-bold text-sm">🎮</span>
         </div>
         <h2 className="text-xl font-semibold text-white">
-          {t("instructions.controls.title")}
+          {t("scenes.instructions.controls.title")}
         </h2>
       </div>
       <div className="space-y-4">
@@ -23,7 +23,7 @@ export const InstructionsControls: React.FC = () => {
               <span className="text-white text-xs font-bold">↑</span>
             </div>
             <Text variant="bold" className="font-medium text-white">
-              {t("instructions.controls.jump")}
+              {t("scenes.instructions.controls.jump")}
             </Text>
           </div>
           <span className="bg-gradient-to-r from-green-400 to-emerald-500 px-4 py-2 rounded-lg text-white font-mono font-bold shadow-lg">
@@ -36,7 +36,7 @@ export const InstructionsControls: React.FC = () => {
               <span className="text-white text-xs font-bold">🔥</span>
             </div>
             <Text variant="bold" className="font-medium text-white">
-              {t("instructions.controls.shoot")}
+              {t("scenes.instructions.controls.shoot")}
             </Text>
           </div>
           <span className="bg-gradient-to-r from-red-400 to-pink-500 px-4 py-2 rounded-lg text-white font-mono font-bold shadow-lg">
@@ -49,7 +49,7 @@ export const InstructionsControls: React.FC = () => {
               <span className="text-white text-xs font-bold">▶</span>
             </div>
             <Text variant="bold" className="font-medium text-white">
-              {t("instructions.controls.start")}
+              {t("scenes.instructions.controls.start")}
             </Text>
           </div>
           <span className="bg-gradient-to-r from-yellow-400 to-orange-500 px-4 py-2 rounded-lg text-white font-mono font-bold shadow-lg">

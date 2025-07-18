@@ -27,8 +27,8 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
         <thead>
           <tr className="border-b border-gray-200">
             <TableHeader>#</TableHeader>
-            <TableHeader>{t("profile.score")}</TableHeader>
-            <TableHeader>{t("profile.player")}</TableHeader>
+            <TableHeader>{t("scenes.leaderboard.score")}</TableHeader>
+            <TableHeader>{t("scenes.leaderboard.player")}</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -55,7 +55,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                   </div>
                 </TableCell>
                 <TableCell className="font-semibold text-white/90">
-                  {entry.score.toString()} {t("game.meters")}
+                  {entry.score.toString()} {t("features.gameplay.meters")}
                 </TableCell>
                 <TableCell className="text-white/80">
                   <div className="flex items-center gap-2">

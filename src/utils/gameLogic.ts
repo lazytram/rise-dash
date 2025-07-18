@@ -23,6 +23,8 @@ import {
   POWERUP_COLORS,
 } from "@/constants/colors";
 import { player } from "@/entities/player";
+import { getPowerUpEffect, getMaxAmmo } from "@/services/powerUpService";
+import { PowerUpType } from "@/types/shop";
 
 export class GameLogic {
   // ================================
@@ -270,7 +272,8 @@ export class GameLogic {
       y: 300,
       velocityY: 0,
       isJumping: false,
-      riceRocketAmmo: GAME_CONSTANTS.MAX_RICE_ROCKET_AMMO,
+      riceRocketAmmo: getMaxAmmo(),
+      maxRiceRocketAmmo: getMaxAmmo(),
       lastAmmoRechargeTime: Date.now(),
       // Reset power-up states
       hasShield: false,
@@ -340,9 +343,19 @@ export class GameLogic {
   static makePlayerJump(player: Player): Player {
     if (!this.canJump(player)) return player;
 
+    // Apply speed boost effect to jump strength if active
+    let jumpStrength = GAME_CONSTANTS.JUMP_STRENGTH;
+    if (player.hasSpeedBoost) {
+      const speedEffect = getPowerUpEffect(PowerUpType.SPEED_BOOST);
+      if (speedEffect.speedMultiplier) {
+        jumpStrength =
+          GAME_CONSTANTS.JUMP_STRENGTH * speedEffect.speedMultiplier;
+      }
+    }
+
     return {
       ...player,
-      velocityY: GAME_CONSTANTS.JUMP_STRENGTH,
+      velocityY: jumpStrength,
       isJumping: true,
     };
   }
@@ -351,16 +364,33 @@ export class GameLogic {
   // RICE ROCKET MANAGEMENT
   // ================================
 
-  static createRiceRocket(player: Player): RiceRocket {
+  static createRiceRocket(player: Player, yOffset: number = 0): RiceRocket {
     return {
       id: Date.now().toString() + Math.random(),
       x: player.x + player.width,
-      y: player.y + player.height / 2,
+      y: player.y + player.height / 2 + yOffset,
       width: GAME_CONSTANTS.RICE_ROCKET_SIZE,
       height: GAME_CONSTANTS.RICE_ROCKET_SIZE,
       velocityX: GAME_CONSTANTS.RICE_ROCKET_SPEED,
       color: RICE_ROCKET_COLORS.BODY,
     };
+  }
+
+  static createMultiShotRockets(player: Player): RiceRocket[] {
+    if (!player.hasMultiShot) {
+      return [this.createRiceRocket(player)];
+    }
+
+    const multiShotEffect = getPowerUpEffect(PowerUpType.MULTI_SHOT);
+    const projectileCount = multiShotEffect.projectileCount || 2;
+    const rockets: RiceRocket[] = [];
+
+    for (let i = 0; i < projectileCount; i++) {
+      const offset = (i - (projectileCount - 1) / 2) * 10; // Spread rockets vertically
+      rockets.push(this.createRiceRocket(player, offset));
+    }
+
+    return rockets;
   }
 
   static updateRiceRockets(riceRockets: RiceRocket[]): RiceRocket[] {
@@ -381,7 +411,8 @@ export class GameLogic {
       return gameState; // Can't shoot without ammo
     }
 
-    const newRiceRocket = this.createRiceRocket(gameState.player);
+    // Create rockets based on multi-shot level
+    const newRockets = this.createMultiShotRockets(gameState.player);
     let updatedPlayer = gameState.player;
 
     // Reduce ammo only if not infinite
@@ -392,30 +423,9 @@ export class GameLogic {
       };
     }
 
-    // Handle multi-shot
-    if (gameState.player.hasMultiShot) {
-      const multiRocket1 = this.createRiceRocket(gameState.player);
-      const multiRocket2 = this.createRiceRocket(gameState.player);
-
-      // Adjust positions for multi-shot
-      multiRocket1.y = gameState.player.y + gameState.player.height / 2 - 10;
-      multiRocket2.y = gameState.player.y + gameState.player.height / 2 + 10;
-
-      return {
-        ...gameState,
-        riceRockets: [
-          ...gameState.riceRockets,
-          newRiceRocket,
-          multiRocket1,
-          multiRocket2,
-        ],
-        player: updatedPlayer,
-      };
-    }
-
     return {
       ...gameState,
-      riceRockets: [...gameState.riceRockets, newRiceRocket],
+      riceRockets: [...gameState.riceRockets, ...newRockets],
       player: updatedPlayer,
     };
   }
@@ -1150,7 +1160,6 @@ export class GameLogic {
 
   static collectPowerUp(player: Player, powerUp: PowerUp): Player {
     const currentTime = Date.now();
-    const endTime = currentTime + powerUp.duration;
 
     // Reset all power-up states first (only one power-up at a time)
     const resetPlayer = {
@@ -1167,7 +1176,29 @@ export class GameLogic {
       },
     };
 
-    // Apply the new power-up
+    // Get power-up effect based on current level
+    let powerUpType: PowerUpType;
+    switch (powerUp.type) {
+      case "shield":
+        powerUpType = PowerUpType.SHIELD;
+        break;
+      case "infinite_ammo":
+        powerUpType = PowerUpType.INFINITE_AMMO;
+        break;
+      case "speed_boost":
+        powerUpType = PowerUpType.SPEED_BOOST;
+        break;
+      case "multi_shot":
+        powerUpType = PowerUpType.MULTI_SHOT;
+        break;
+      default:
+        return resetPlayer;
+    }
+
+    const effect = getPowerUpEffect(powerUpType);
+    const endTime = currentTime + effect.duration;
+
+    // Apply the new power-up with level-based effects
     switch (powerUp.type) {
       case "shield":
         return {

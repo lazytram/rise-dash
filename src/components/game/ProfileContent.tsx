@@ -13,6 +13,7 @@ import {
   ProfileAchievements,
 } from "./profile";
 import { SceneHeader } from "@/components/ui/SceneHeader";
+import { SceneType } from "@/types/scenes";
 
 interface PlayerScore {
   score: bigint;
@@ -26,7 +27,6 @@ export const ProfileContent: React.FC = () => {
   const { address, isConnected } = useAccount();
   const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [achievementsLoading, setAchievementsLoading] = useState(false);
   const [achievementsError, setAchievementsError] = useState<string | null>(
     null
@@ -51,7 +51,6 @@ export const ProfileContent: React.FC = () => {
       try {
         loadingRef.current = true;
         setLoading(true);
-        setError(null);
 
         const scores = await blockchainService.getPlayerScores(address!);
 
@@ -66,9 +65,7 @@ export const ProfileContent: React.FC = () => {
         setPlayerScores(sortedScores);
       } catch (err) {
         console.error("Error loading player scores:", err);
-        const errorMessage =
-          err instanceof Error ? err.message : "Error loading player scores";
-        setError(errorMessage);
+        // TODO: Handle error display if needed
       } finally {
         setLoading(false);
         loadingRef.current = false;
@@ -97,7 +94,6 @@ export const ProfileContent: React.FC = () => {
     } else {
       setPlayerScores([]);
       setLoading(false);
-      setError(null);
     }
 
     // Cleanup timeout on unmount
@@ -114,7 +110,7 @@ export const ProfileContent: React.FC = () => {
         <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
           <ProfileHeader />
           <Text variant="error" className="mb-4">
-            {t("blockchain.connectWalletToView")}
+            {t("scenes.profile.connectWalletToView")}
           </Text>
         </Card>
       </Container>
@@ -126,9 +122,9 @@ export const ProfileContent: React.FC = () => {
       <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
         {/* Enhanced Header */}
         <SceneHeader
-          title={t("profile.title")}
-          subtitle={t("profile.subtitle")}
-          menuColorKey="profile"
+          title={t("scenes.profile.title")}
+          subtitle={t("scenes.profile.subtitle")}
+          menuColorKey={SceneType.PROFILE}
         />
         <ProfileStats playerScores={playerScores} />
 
@@ -137,19 +133,17 @@ export const ProfileContent: React.FC = () => {
           tabs={[
             {
               id: "gameHistory",
-              label: t("profile.gameHistory"),
+              label: t("scenes.profile.gameHistory"),
               content: (
                 <ProfileGameHistory
                   playerScores={playerScores}
                   loading={loading}
-                  error={error}
-                  onRetry={loadPlayerScores}
                 />
               ),
             },
             {
               id: "achievements",
-              label: t("profile.achievements"),
+              label: t("scenes.profile.achievements"),
               content: (
                 <ProfileAchievements
                   loading={achievementsLoading}

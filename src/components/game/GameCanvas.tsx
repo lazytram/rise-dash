@@ -12,9 +12,12 @@ export const GameCanvas = ({ canvasRef }: GameCanvasProps) => {
         className="border-2 border-white/20 rounded-lg"
         style={{
           display: "block",
+          imageRendering: "pixelated", // Better for pixel art
         }}
         width={GAME_CONSTANTS.CANVAS_WIDTH}
         height={GAME_CONSTANTS.CANVAS_HEIGHT}
+        // Performance attributes
+        data-performance="optimized"
       />
     </div>
   );

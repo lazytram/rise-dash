@@ -12,6 +12,7 @@ import {
   InstructionsTips,
   InstructionsActions,
 } from "./instructions";
+import { SceneType } from "@/types/scenes";
 
 export const InstructionsContent: React.FC = () => {
   const { t } = useTranslations();
@@ -20,25 +21,25 @@ export const InstructionsContent: React.FC = () => {
   const slides = [
     {
       id: "controls",
-      title: t("instructions.controls.title"),
+      title: t("scenes.instructions.controls.title"),
       icon: "🎮",
       component: <InstructionsControls />,
     },
     {
       id: "gameplay",
-      title: t("instructions.gameplay.title"),
+      title: t("scenes.instructions.gameplay.title"),
       icon: "🎯",
       component: <InstructionsGameplay />,
     },
     {
       id: "tips",
-      title: t("instructions.tips.title"),
+      title: t("scenes.instructions.tips.title"),
       icon: "💡",
       component: <InstructionsTips />,
     },
     {
       id: "actions",
-      title: t("instructions.actions.title"),
+      title: t("scenes.instructions.actions.title"),
       icon: "🚀",
       component: <InstructionsActions />,
     },
@@ -77,9 +78,9 @@ export const InstructionsContent: React.FC = () => {
       <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
         {/* Enhanced Header */}
         <SceneHeader
-          title={t("instructions.title")}
-          subtitle={t("instructions.subtitle")}
-          menuColorKey="instructions"
+          title={t("scenes.instructions.title")}
+          subtitle={t("scenes.instructions.subtitle")}
+          menuColorKey={SceneType.INSTRUCTIONS}
         />
 
         {/* Slider Container */}

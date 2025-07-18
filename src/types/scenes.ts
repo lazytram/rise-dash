@@ -1,10 +1,11 @@
-export type SceneType =
-  | "welcome"
-  | "game"
-  | "profile"
-  | "leaderboard"
-  | "instructions"
-  | "shop";
+export enum SceneType {
+  WELCOME = "welcome",
+  GAME = "game",
+  PROFILE = "profile",
+  LEADERBOARD = "leaderboard",
+  INSTRUCTIONS = "instructions",
+  SHOP = "shop",
+}
 
 export interface Scene {
   id: SceneType;

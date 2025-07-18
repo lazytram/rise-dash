@@ -4,7 +4,7 @@ export const GAME_CONSTANTS = {
   GRAVITY: 0.8,
   JUMP_STRENGTH: -15,
   GROUND_HEIGHT: 50,
-  FPS: 120, // Increased for smoother animations
+  FPS: 120, // Back to 120 for better performance
   RICE_ROCKET_SPEED: 8,
   RICE_ROCKET_SIZE: 4,
   SUSHI_SPEED: -4,

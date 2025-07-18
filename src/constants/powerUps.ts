@@ -5,7 +5,7 @@ export const POWERUP_UPGRADES: Record<string, PowerUpUpgradeData> = {
     type: PowerUpType.RICE_ROCKET_AMMO,
     name: "Rocket Ammo",
     description: "Maximum ammunition capacity",
-    icon: "🎯",
+    icon: "🔫",
     color: "from-amber-600/80 to-orange-600/80",
     upgrades: [
       { level: 1, riceCost: 0, ammoCount: 3 },

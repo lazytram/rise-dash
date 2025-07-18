@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
@@ -9,11 +9,15 @@ import { SceneHeader } from "@/components/ui/SceneHeader";
 import { PowerUpCard } from "./PowerUpCard";
 import { POWERUP_UPGRADES, POWERUP_ORDER } from "@/constants/powerUps";
 import { useToastStore } from "@/store/toastStore";
+import {
+  getPowerUpService,
+  LocalPowerUpService,
+} from "@/services/powerUpService";
+import { SceneType } from "@/types/scenes";
 
 export const ShopContent: React.FC = () => {
   const { t } = useTranslations();
   const { showSuccess, showError } = useToastStore();
-  const [riceBalance, setRiceBalance] = useState(200);
   const [powerUpLevels, setPowerUpLevels] = useState({
     shield: 1,
     infiniteAmmo: 1,
@@ -21,9 +25,17 @@ export const ShopContent: React.FC = () => {
     multiShot: 1,
     riceRocketAmmo: 1,
   });
+  const [riceBalance, setRiceBalance] = useState(200);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
     {}
   );
+
+  // Sync with service on mount
+  useEffect(() => {
+    const service = getPowerUpService() as LocalPowerUpService;
+    setPowerUpLevels(service.getLevels());
+    setRiceBalance(service.getRiceBalance());
+  }, []);
 
   const handleUpgrade = async (powerUpType: string) => {
     setLoadingStates((prev) => ({ ...prev, [powerUpType]: true }));
@@ -32,6 +44,7 @@ export const ShopContent: React.FC = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      const service = getPowerUpService() as LocalPowerUpService;
       const powerUp = POWERUP_UPGRADES[powerUpType];
       const currentLevel =
         powerUpLevels[powerUpType as keyof typeof powerUpLevels];
@@ -39,7 +52,15 @@ export const ShopContent: React.FC = () => {
       const upgrade = powerUp.upgrades.find((u) => u.level === nextLevel);
 
       if (upgrade && riceBalance >= upgrade.riceCost) {
-        setRiceBalance((prev) => prev - upgrade.riceCost);
+        // Update service
+        service.setRiceBalance(riceBalance - upgrade.riceCost);
+        service.setLevels({
+          ...powerUpLevels,
+          [powerUpType]: nextLevel,
+        });
+
+        // Update local state
+        setRiceBalance(riceBalance - upgrade.riceCost);
         setPowerUpLevels((prev) => ({
           ...prev,
           [powerUpType]: nextLevel,
@@ -47,21 +68,28 @@ export const ShopContent: React.FC = () => {
 
         // Success toast
         showSuccess(
-          t("shop.upgradeSuccess"),
-          `${t(`powerUps.${powerUpType}`)} ${t("shop.upgradedToLevel", {
-            level: nextLevel,
-          })}`,
-          undefined,
-          undefined
+          t("scenes.shop.upgradeSuccess"),
+          `${t(`features.powerUps.${powerUpType}`)} ${t(
+            "scenes.shop.upgradedToLevel",
+            {
+              level: nextLevel,
+            }
+          )}`
         );
       } else {
         // Error toast for insufficient funds
-        showError(t("shop.upgradeFailed"), t("powerUps.insufficientRice"));
+        showError(
+          t("scenes.shop.upgradeFailed"),
+          t("features.powerUps.insufficientRice")
+        );
       }
     } catch (error) {
       // Error toast for general failure
       console.error("Upgrade failed:", error);
-      showError(t("shop.upgradeFailed"), t("shop.upgradeErrorDescription"));
+      showError(
+        t("scenes.shop.upgradeFailed"),
+        t("scenes.shop.upgradeErrorDescription")
+      );
     } finally {
       setLoadingStates((prev) => ({ ...prev, [powerUpType]: false }));
     }
@@ -72,9 +100,9 @@ export const ShopContent: React.FC = () => {
       <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
         {/* Enhanced Header */}
         <SceneHeader
-          title={t("shop.title")}
-          subtitle={t("shop.subtitle")}
-          menuColorKey="shop"
+          title={t("scenes.shop.title")}
+          subtitle={t("scenes.shop.subtitle")}
+          menuColorKey={SceneType.SHOP}
         />
 
         {/* RICE Balance Display */}
@@ -84,7 +112,7 @@ export const ShopContent: React.FC = () => {
               {riceBalance.toLocaleString()} RICE
             </Text>
             <Text variant="body" className="text-white/90 text-sm mt-1">
-              {t("shop.riceBalance")}
+              {t("scenes.shop.riceBalance")}
             </Text>
           </div>
         </div>

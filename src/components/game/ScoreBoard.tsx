@@ -27,7 +27,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   // Clear toasts when component mounts
   useEffect(() => {
     clearToasts();
-  }, []);
+  }, [clearToasts]);
 
   const { recordScore, checkNewPersonalBest, isRecording, isSuccess, error } =
     useBlockchainScore();
@@ -36,8 +36,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (isSubmitting || !isConnected) {
       if (!isConnected) {
         showInfo(
-          t("blockchain.connectWallet"),
-          t("blockchain.connectWalletMessage")
+          t("features.blockchain.connectWallet"),
+          t("features.blockchain.connectWalletMessage")
         );
         return;
       }
@@ -87,16 +87,16 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">
             {isNewPersonalBest
-              ? t("blockchain.newRecord")
-              : t("blockchain.scoreSaved")}
+              ? t("features.blockchain.newRecord")
+              : t("features.blockchain.scoreSaved")}
           </h2>
           <Text
             variant="subtitle"
             size="lg"
             className="mb-6 text-white font-medium"
           >
-            {t("blockchain.scoreRecorded")}:{" "}
-            {GameLogic.formatDistance(distance)} {t("game.meters")}
+            {t("features.blockchain.scoreRecorded")}:{" "}
+            {GameLogic.formatDistance(distance)} {t("features.gameplay.meters")}
           </Text>
           {onClose && (
             <Button onClick={onClose} variant="primary">
@@ -112,7 +112,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     <Modal size="sm">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white mb-6">
-          {t("blockchain.saveScore")}
+          {t("features.blockchain.saveScore")}
         </h2>
 
         <div className="mb-6">
@@ -121,7 +121,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
             size="lg"
             className="mb-2 text-white font-semibold"
           >
-            {t("blockchain.currentScore")}
+            {t("features.blockchain.currentScore")}
           </Text>
           <div className="mb-4">
             <div
@@ -131,7 +131,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
               }}
             >
               <span className="text-3xl font-bold text-white">
-                {GameLogic.formatDistance(distance)} {t("game.meters")}
+                {GameLogic.formatDistance(distance)}{" "}
+                {t("features.gameplay.meters")}
               </span>
             </div>
           </div>
@@ -140,7 +141,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
         {!isConnected ? (
           <div className="mb-6">
             <Text variant="error" className="mb-4">
-              {t("blockchain.connectWalletToSave")}
+              {t("features.blockchain.connectWalletToSave")}
             </Text>
             <Button onClick={onClose} variant="secondary">
               {t("common.cancel")}
@@ -154,8 +155,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
               variant="primary"
             >
               {isRecording || isSubmitting
-                ? t("blockchain.saving")
-                : t("blockchain.saveScore")}
+                ? t("features.blockchain.saving")
+                : t("features.blockchain.saveScore")}
             </Button>
             {onClose && (
               <Button onClick={onClose} variant="secondary">
@@ -167,7 +168,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
         {error && (
           <div className="mt-4 p-3 bg-red-500/20 border border-red-400/50 text-red-200 rounded">
-            {error?.message || t("blockchain.errorSaving")}
+            {error?.message || t("features.blockchain.errorSaving")}
           </div>
         )}
       </div>
