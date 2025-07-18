@@ -3,7 +3,6 @@ import { useAccount } from "wagmi";
 import Image from "next/image";
 import { useBlockchainScore } from "@/hooks/useBlockchainScore";
 import { useTranslations } from "@/hooks/useTranslations";
-import { UI_COLORS } from "@/constants/colors";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
@@ -86,12 +85,16 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
               className="mx-auto mb-4 animate-bounce"
             />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
             {isNewPersonalBest
               ? t("blockchain.newRecord")
               : t("blockchain.scoreSaved")}
           </h2>
-          <Text variant="subtitle" size="lg" className="mb-6">
+          <Text
+            variant="subtitle"
+            size="lg"
+            className="mb-6 text-white font-medium"
+          >
             {t("blockchain.scoreRecorded")}:{" "}
             {GameLogic.formatDistance(distance)} {t("game.meters")}
           </Text>
@@ -108,19 +111,29 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   return (
     <Modal size="sm">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        <h2 className="text-2xl font-bold text-white mb-6">
           {t("blockchain.saveScore")}
         </h2>
 
         <div className="mb-6">
-          <Text variant="subtitle" size="lg" className="mb-2">
+          <Text
+            variant="subtitle"
+            size="lg"
+            className="mb-2 text-white font-semibold"
+          >
             {t("blockchain.currentScore")}
           </Text>
-          <div
-            className="text-3xl font-bold mb-4"
-            style={{ color: UI_COLORS.GRADIENT_FROM }}
-          >
-            {GameLogic.formatDistance(distance)} {t("game.meters")}
+          <div className="mb-4">
+            <div
+              className="inline-block px-6 py-3 rounded-lg border-2 border-white/20 shadow-lg"
+              style={{
+                background: `linear-gradient(to bottom right, #4ade80, #16a34a)`,
+              }}
+            >
+              <span className="text-3xl font-bold text-white">
+                {GameLogic.formatDistance(distance)} {t("game.meters")}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -153,7 +166,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
         )}
 
         {error && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mt-4 p-3 bg-red-500/20 border border-red-400/50 text-red-200 rounded">
             {error?.message || t("blockchain.errorSaving")}
           </div>
         )}
