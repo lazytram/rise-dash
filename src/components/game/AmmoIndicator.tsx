@@ -25,21 +25,13 @@ export const AmmoIndicator: React.FC<AmmoIndicatorProps> = ({ player }) => {
 
   return (
     <div className="absolute top-5 left-5 bg-black/70 p-2 rounded-lg border-2 border-orange-500 min-w-[120px]">
-      <Text
-        className="text-orange-500 font-bold text-center m-0 text-xs"
-        variant="bold"
-        size="xs"
-      >
-        {t("game.riceRockets")}
+      <Text variant="caption" className="text-white/60">
+        {t("features.gameplay.riceRockets")}
       </Text>
 
       {isInfiniteAmmo ? (
-        <Text
-          className="text-green-400 text-center mt-0.5 opacity-80 text-xs"
-          variant="muted"
-          size="xs"
-        >
-          {t("game.infiniteAmmoActive")}
+        <Text variant="caption" className="text-white/60">
+          {t("features.gameplay.infiniteAmmoActive")}
         </Text>
       ) : (
         <Text

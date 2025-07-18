@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { GameLogic } from "@/utils/gameLogic";
-import { UI_COLORS } from "@/constants/colors";
 import { useTranslations } from "@/hooks/useTranslations";
 import { ScoreBoard } from "./ScoreBoard";
 import { Button } from "@/components/ui/Button";
@@ -58,28 +57,45 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
   return (
     <Modal size="sm">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-6">
-          {t("game.gameOver")}
+        <h1 className="text-4xl font-bold text-white mb-6">
+          {t("scenes.game.gameOver")}
         </h1>
 
-        <Text variant="subtitle" size="xl" className="mb-4">
-          {t("game.finalScore")}
+        <Text
+          variant="subtitle"
+          size="xl"
+          className="mb-4 text-white font-semibold"
+        >
+          {t("scenes.game.finalScore")}
         </Text>
 
-        <div
-          className="text-3xl font-bold mb-6"
-          style={{ color: UI_COLORS.GRADIENT_FROM }}
-        >
-          {GameLogic.formatDistance(distance)} {t("game.meters")}
+        <div className="mb-6">
+          <div
+            className="inline-block px-6 py-3 rounded-lg border-2 border-white/20 shadow-lg"
+            style={{
+              background: `linear-gradient(to bottom right, #4ade80, #16a34a)`,
+            }}
+          >
+            <span className="text-3xl font-bold text-white">
+              {GameLogic.formatDistance(distance)}{" "}
+              {t("features.gameplay.meters")}
+            </span>
+          </div>
         </div>
 
-        <Text variant="subtitle" size="lg" className="mb-6">
-          {canRestart ? t("game.restartMessage") : "Sauvegarde en cours..."}
+        <Text
+          variant="subtitle"
+          size="lg"
+          className="mb-6 text-white font-medium"
+        >
+          {canRestart
+            ? t("scenes.game.restartMessage")
+            : t("scenes.game.savingInProgress")}
         </Text>
 
         <div className="flex gap-3 justify-center">
           <Button onClick={() => setShowScoreBoard(true)} variant="success">
-            {t("blockchain.saveScore")}
+            {t("features.blockchain.saveScore")}
           </Button>
           <Button
             onClick={onRestart}
@@ -87,7 +103,9 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
             disabled={!canRestart}
             className={!canRestart ? "opacity-50 cursor-not-allowed" : ""}
           >
-            {canRestart ? t("game.restart") : "Patientez..."}
+            {canRestart
+              ? t("scenes.game.restart")
+              : t("scenes.game.pleaseWait")}
           </Button>
         </div>
       </div>

@@ -1,17 +1,9 @@
-import React, { useMemo } from "react";
+"use client";
+
+import React, { useState } from "react";
 import { useTranslations } from "@/hooks/useTranslations";
-import { Button } from "@/components/ui/Button";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Box } from "@/components/ui/Box";
 import { Text } from "@/components/ui/Text";
-import { ProfileSection } from "./ProfileSection";
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  flexRender,
-  createColumnHelper,
-} from "@tanstack/react-table";
+import { Pagination } from "@/components/ui/Pagination";
 
 interface PlayerScore {
   score: bigint;
@@ -23,201 +15,143 @@ interface PlayerScore {
 interface ProfileGameHistoryProps {
   playerScores: PlayerScore[];
   loading: boolean;
-  error: string | null;
-  onRetry: () => void;
 }
+
+const ITEMS_PER_PAGE = 5;
 
 export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
   playerScores,
   loading,
-  error,
-  onRetry,
 }) => {
   const { t } = useTranslations();
-
-  const formatScore = (score: bigint) => {
-    return score.toString();
-  };
-
-  const formatDate = (timestamp: bigint) => {
-    const date = new Date(Number(timestamp) * 1000);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-  };
-
-  // Table configuration with @tanstack/react-table
-  const columnHelper = createColumnHelper<PlayerScore>();
-
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor("score", {
-        id: "index",
-        header: "#",
-        cell: ({ row }) => (
-          <span className="font-semibold text-white/90 text-sm">
-            {row.index + 1}
-          </span>
-        ),
-      }),
-      columnHelper.accessor("score", {
-        id: "score",
-        header: t("profile.score"),
-        cell: ({ getValue }) => (
-          <span className="font-bold text-lg text-white">
-            {formatScore(getValue())} {t("game.meters")}
-          </span>
-        ),
-      }),
-      columnHelper.accessor("timestamp", {
-        id: "date",
-        header: t("profile.date"),
-        cell: ({ getValue }) => (
-          <span className="text-white/80 font-medium text-sm">
-            {formatDate(getValue())}
-          </span>
-        ),
-      }),
-      columnHelper.accessor("score", {
-        id: "status",
-        header: t("profile.status"),
-        cell: ({ row }) => (
-          <span
-            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
-              row.index === 0
-                ? "bg-gradient-to-r from-green-400 to-green-500 text-white"
-                : "bg-white/20 text-white/90 border border-white/30"
-            }`}
-          >
-            {row.index === 0
-              ? t("profile.personalBest")
-              : t("profile.completed")}
-          </span>
-        ),
-      }),
-    ],
-    [t, columnHelper]
-  );
-
-  const table = useReactTable({
-    data: playerScores,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 5,
-      },
-    },
-  });
+  const [currentPage, setCurrentPage] = useState(1);
 
   if (loading) {
     return (
-      <ProfileSection>
-        <Box variant="centered" className="flex-1">
-          <LoadingSpinner className="mx-auto mb-4" />
-          <Text variant="subtitle">{t("blockchain.loadingScores")}</Text>
-        </Box>
-      </ProfileSection>
-    );
-  }
-
-  if (error) {
-    return (
-      <ProfileSection>
-        <Box variant="centered" className="flex-1">
-          <Text variant="error" className="mb-4">
-            {error}
-          </Text>
-          <Button onClick={onRetry} variant="primary">
-            {t("common.retry")}
-          </Button>
-        </Box>
-      </ProfileSection>
+      <div className="flex items-center justify-center py-8">
+        <Text variant="subtitle">{t("scenes.profile.loadingScores")}</Text>
+      </div>
     );
   }
 
   if (playerScores.length === 0) {
     return (
-      <ProfileSection>
-        <Box variant="centered" className="flex-1">
-          <Text variant="subtitle" className="mb-4">
-            {t("blockchain.noScoresYet")}
-          </Text>
-          <Text variant="caption">{t("blockchain.playGameToSeeScores")}</Text>
-        </Box>
-      </ProfileSection>
+      <div className="text-center py-8">
+        <div className="text-4xl mb-4">📊</div>
+        <Text variant="subtitle" className="text-white mb-2">
+          {t("scenes.profile.noScoresYet")}
+        </Text>
+        <Text variant="caption">{t("scenes.profile.playGameToSeeScores")}</Text>
+      </div>
     );
   }
 
+  // Pagination logic
+  const totalPages = Math.ceil(playerScores.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentScores = playerScores.slice(startIndex, endIndex);
+
   return (
-    <ProfileSection className="overflow-x-auto">
-      <div className="flex-1">
-        <table className="w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="px-4 py-2 text-left text-sm font-semibold text-white/90 border-b border-white/20"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
+    <div className="space-y-6">
+      {/* Table with improved styling like leaderboard */}
+      <div className="bg-white/5 rounded-lg border border-white/20 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-white/10">
+                <th className="px-6 py-4 text-center text-sm font-semibold text-white/90 border-b border-white/20">
+                  {t("scenes.profile.score")}
+                </th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-white/90 border-b border-white/20">
+                  {t("scenes.profile.date")}
+                </th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-white/90 border-b border-white/20">
+                  {t("scenes.profile.status")}
+                </th>
               </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="hover:bg-white/5 transition-all duration-200 cursor-pointer"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="px-4 py-3 border-b border-white/10"
+            </thead>
+            <tbody>
+              {currentScores.map((score, index) => {
+                const globalIndex = startIndex + index;
+                const isPersonalBest = globalIndex === 0;
+
+                return (
+                  <tr
+                    key={globalIndex}
+                    className={`hover:bg-white/10 transition-all duration-200 ${
+                      isPersonalBest ? "bg-blue-500/20 border-blue-400/30" : ""
+                    }`}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <td className="px-6 py-4 border-b border-white/10">
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="text-center">
+                          <Text variant="bold" className="text-white text-lg">
+                            {score.score.toString()}
+                          </Text>
+                          <Text variant="caption" className="text-white/60">
+                            {t("features.gameplay.meters")}
+                          </Text>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-b border-white/10">
+                      <div className="text-center">
+                        <Text variant="body" className="text-white/80">
+                          {new Date(
+                            Number(score.timestamp) * 1000
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          })}
+                        </Text>
+                        <Text variant="caption" className="text-white/60">
+                          {new Date(
+                            Number(score.timestamp) * 1000
+                          ).toLocaleTimeString("en-GB", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </Text>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-b border-white/10">
+                      <div className="flex items-center justify-center">
+                        <span className="text-2xl">
+                          {isPersonalBest ? "🏆" : "✅"}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Pagination */}
-      {table.getPageCount() > 1 && (
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {t("common.previous")}
-            </Button>
-            <span className="text-sm text-gray-600">
-              {t("common.page")} {table.getState().pagination.pageIndex + 1}{" "}
-              {t("common.of")} {table.getPageCount()}
-            </span>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {t("common.next")}
-            </Button>
-          </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       )}
-    </ProfileSection>
+
+      {/* Page info */}
+      <div className="text-center">
+        <Text variant="caption" className="text-white/60">
+          {t("scenes.profile.showingResults", {
+            start: startIndex + 1,
+            end: Math.min(endIndex, playerScores.length),
+            total: playerScores.length,
+          })}
+        </Text>
+      </div>
+    </div>
   );
 };

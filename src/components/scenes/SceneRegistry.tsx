@@ -1,39 +1,46 @@
-import { SceneType, Scene } from "@/types/scenes";
-import { WelcomeScene } from "@/components/scenes/WelcomeScene";
-import { GameScene } from "@/components/scenes/GameScene";
-import { ProfileScene } from "@/components/scenes/ProfileScene";
-import { LeaderboardScene } from "@/components/scenes/LeaderboardScene";
-import { InstructionsScene } from "@/components/scenes/InstructionsScene";
+import { Scene, SceneType } from "../../types/scenes";
+import { WelcomeScene } from "./WelcomeScene";
+import { GameScene } from "./GameScene";
+import { ProfileScene } from "./ProfileScene";
+import { LeaderboardScene } from "./LeaderboardScene";
+import { InstructionsScene } from "./InstructionsScene";
+import { ShopScene } from "./ShopScene";
 
-export const SceneRegistry: Record<SceneType, Scene> = {
-  welcome: {
-    id: "welcome",
+export const scenes: Scene[] = [
+  {
+    id: SceneType.WELCOME,
     component: WelcomeScene,
     title: "Welcome",
     showHeader: false,
   },
-  game: {
-    id: "game",
+  {
+    id: SceneType.GAME,
     component: GameScene,
     title: "Game",
     showHeader: true,
   },
-  profile: {
-    id: "profile",
+  {
+    id: SceneType.PROFILE,
     component: ProfileScene,
     title: "Profile",
     showHeader: true,
   },
-  leaderboard: {
-    id: "leaderboard",
+  {
+    id: SceneType.LEADERBOARD,
     component: LeaderboardScene,
     title: "Leaderboard",
     showHeader: true,
   },
-  instructions: {
-    id: "instructions",
+  {
+    id: SceneType.INSTRUCTIONS,
     component: InstructionsScene,
     title: "Instructions",
     showHeader: true,
   },
-};
+  {
+    id: SceneType.SHOP,
+    component: ShopScene,
+    title: "Shop",
+    showHeader: true,
+  },
+];

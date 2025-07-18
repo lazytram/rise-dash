@@ -49,6 +49,9 @@ export class GameRenderer {
     // Optimize text rendering
     this.ctx.textBaseline = "top";
     this.ctx.font = "16px Arial";
+
+    // Disable image smoothing for pixel art style
+    this.ctx.imageSmoothingEnabled = false;
   }
 
   render(

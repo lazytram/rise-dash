@@ -4,7 +4,6 @@ import { cn } from "@/utils/cn";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "success" | "danger" | "ghost";
   size?: "sm" | "md" | "lg";
-  children: React.ReactNode;
 }
 
 const buttonVariants = {

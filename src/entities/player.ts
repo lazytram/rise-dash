@@ -1,6 +1,6 @@
 import { PLAYER_COLORS } from "@/constants/colors";
 import { Player } from "@/types/game";
-import { GAME_CONSTANTS } from "@/constants/game";
+import { getMaxAmmo } from "@/services/powerUpService";
 
 export const player: Player = {
   x: 100,
@@ -10,8 +10,8 @@ export const player: Player = {
   velocityY: 0,
   isJumping: false,
   color: PLAYER_COLORS.BODY,
-  riceRocketAmmo: GAME_CONSTANTS.MAX_RICE_ROCKET_AMMO,
-  maxRiceRocketAmmo: GAME_CONSTANTS.MAX_RICE_ROCKET_AMMO,
+  riceRocketAmmo: getMaxAmmo(),
+  maxRiceRocketAmmo: getMaxAmmo(),
   lastAmmoRechargeTime: Date.now(),
   // Power-up states
   hasShield: false,
@@ -23,5 +23,13 @@ export const player: Player = {
     infiniteAmmo: 0,
     speedBoost: 0,
     multiShot: 0,
+  },
+  // Power-up levels
+  powerUpLevels: {
+    shield: 1,
+    infiniteAmmo: 1,
+    speedBoost: 1,
+    multiShot: 1,
+    riceRocketAmmo: 1,
   },
 };

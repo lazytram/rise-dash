@@ -6,15 +6,18 @@ interface GameCanvasProps {
 
 export const GameCanvas = ({ canvasRef }: GameCanvasProps) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg">
+    <div className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6 rounded-lg">
       <canvas
         ref={canvasRef}
-        className="border-2 border-gray-300 rounded"
+        className="border-2 border-white/20 rounded-lg"
         style={{
           display: "block",
+          imageRendering: "pixelated", // Better for pixel art
         }}
         width={GAME_CONSTANTS.CANVAS_WIDTH}
         height={GAME_CONSTANTS.CANVAS_HEIGHT}
+        // Performance attributes
+        data-performance="optimized"
       />
     </div>
   );

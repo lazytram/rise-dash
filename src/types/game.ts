@@ -20,6 +20,14 @@ export interface Player {
     speedBoost: number;
     multiShot: number;
   };
+  // Power-up levels
+  powerUpLevels: {
+    shield: number;
+    infiniteAmmo: number;
+    speedBoost: number;
+    multiShot: number;
+    riceRocketAmmo: number;
+  };
 }
 
 export interface MovableEntity {

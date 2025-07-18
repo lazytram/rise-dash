@@ -2,10 +2,13 @@
 
 import { memo } from "react";
 import { useSceneStore } from "@/store/sceneStore";
-import { SceneRegistry } from "@/components/scenes/SceneRegistry";
+import { scenes } from "@/components/scenes/SceneRegistry";
+import { AuthGuard } from "@/components/auth/AuthGuard";
+
 export const SceneManager = memo(function SceneManager() {
   const { currentScene } = useSceneStore();
-  const SceneComponent = SceneRegistry[currentScene]?.component;
+  const scene = scenes.find((s) => s.id === currentScene);
+  const SceneComponent = scene?.component;
 
   if (!SceneComponent) {
     console.error(`Scene component not found for: ${currentScene}`);
@@ -13,8 +16,8 @@ export const SceneManager = memo(function SceneManager() {
   }
 
   return (
-    <div className="w-full h-full">
+    <AuthGuard title={scene.title}>
       <SceneComponent />
-    </div>
+    </AuthGuard>
   );
 });

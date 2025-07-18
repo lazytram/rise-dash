@@ -3,7 +3,6 @@ import { useAccount } from "wagmi";
 import Image from "next/image";
 import { useBlockchainScore } from "@/hooks/useBlockchainScore";
 import { useTranslations } from "@/hooks/useTranslations";
-import { UI_COLORS } from "@/constants/colors";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
@@ -28,7 +27,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   // Clear toasts when component mounts
   useEffect(() => {
     clearToasts();
-  }, []);
+  }, [clearToasts]);
 
   const { recordScore, checkNewPersonalBest, isRecording, isSuccess, error } =
     useBlockchainScore();
@@ -37,8 +36,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (isSubmitting || !isConnected) {
       if (!isConnected) {
         showInfo(
-          t("blockchain.connectWallet"),
-          t("blockchain.connectWalletMessage")
+          t("features.blockchain.connectWallet"),
+          t("features.blockchain.connectWalletMessage")
         );
         return;
       }
@@ -86,14 +85,18 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
               className="mx-auto mb-4 animate-bounce"
             />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
             {isNewPersonalBest
-              ? t("blockchain.newRecord")
-              : t("blockchain.scoreSaved")}
+              ? t("features.blockchain.newRecord")
+              : t("features.blockchain.scoreSaved")}
           </h2>
-          <Text variant="subtitle" size="lg" className="mb-6">
-            {t("blockchain.scoreRecorded")}:{" "}
-            {GameLogic.formatDistance(distance)} {t("game.meters")}
+          <Text
+            variant="subtitle"
+            size="lg"
+            className="mb-6 text-white font-medium"
+          >
+            {t("features.blockchain.scoreRecorded")}:{" "}
+            {GameLogic.formatDistance(distance)} {t("features.gameplay.meters")}
           </Text>
           {onClose && (
             <Button onClick={onClose} variant="primary">
@@ -108,26 +111,37 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   return (
     <Modal size="sm">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          {t("blockchain.saveScore")}
+        <h2 className="text-2xl font-bold text-white mb-6">
+          {t("features.blockchain.saveScore")}
         </h2>
 
         <div className="mb-6">
-          <Text variant="subtitle" size="lg" className="mb-2">
-            {t("blockchain.currentScore")}
-          </Text>
-          <div
-            className="text-3xl font-bold mb-4"
-            style={{ color: UI_COLORS.GRADIENT_FROM }}
+          <Text
+            variant="subtitle"
+            size="lg"
+            className="mb-2 text-white font-semibold"
           >
-            {GameLogic.formatDistance(distance)} {t("game.meters")}
+            {t("features.blockchain.currentScore")}
+          </Text>
+          <div className="mb-4">
+            <div
+              className="inline-block px-6 py-3 rounded-lg border-2 border-white/20 shadow-lg"
+              style={{
+                background: `linear-gradient(to bottom right, #4ade80, #16a34a)`,
+              }}
+            >
+              <span className="text-3xl font-bold text-white">
+                {GameLogic.formatDistance(distance)}{" "}
+                {t("features.gameplay.meters")}
+              </span>
+            </div>
           </div>
         </div>
 
         {!isConnected ? (
           <div className="mb-6">
             <Text variant="error" className="mb-4">
-              {t("blockchain.connectWalletToSave")}
+              {t("features.blockchain.connectWalletToSave")}
             </Text>
             <Button onClick={onClose} variant="secondary">
               {t("common.cancel")}
@@ -141,8 +155,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
               variant="primary"
             >
               {isRecording || isSubmitting
-                ? t("blockchain.saving")
-                : t("blockchain.saveScore")}
+                ? t("features.blockchain.saving")
+                : t("features.blockchain.saveScore")}
             </Button>
             {onClose && (
               <Button onClick={onClose} variant="secondary">
@@ -153,8 +167,8 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
         )}
 
         {error && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-            {error?.message || t("blockchain.errorSaving")}
+          <div className="mt-4 p-3 bg-red-500/20 border border-red-400/50 text-red-200 rounded">
+            {error?.message || t("features.blockchain.errorSaving")}
           </div>
         )}
       </div>

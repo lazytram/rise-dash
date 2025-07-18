@@ -24,7 +24,9 @@ export const ProfileAchievements: React.FC<ProfileAchievementsProps> = ({
       <ProfileSection>
         <Box variant="centered" className="flex-1">
           <LoadingSpinner className="mx-auto mb-4" />
-          <Text variant="subtitle">{t("blockchain.loadingAchievements")}</Text>
+          <Text variant="subtitle">
+            {t("scenes.profile.loadingAchievements")}
+          </Text>
         </Box>
       </ProfileSection>
     );
@@ -51,10 +53,13 @@ export const ProfileAchievements: React.FC<ProfileAchievementsProps> = ({
     <ProfileSection>
       <Box variant="centered" className="flex-1">
         <Text variant="title" size="2xl" className="mb-4">
-          {t("profile.achievements")}
+          {t("scenes.profile.achievements")}
         </Text>
-        <Text variant="subtitle" size="lg">
-          {t("profile.comingSoon")}
+        <Text variant="subtitle" className="text-white mb-2">
+          {t("scenes.profile.achievements")}
+        </Text>
+        <Text variant="caption" className="text-white/60">
+          {t("scenes.profile.comingSoon")}
         </Text>
       </Box>
     </ProfileSection>

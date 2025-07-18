@@ -1,18 +1,17 @@
-import React from "react";
+"use client";
+
 import { useTranslations } from "@/hooks/useTranslations";
 import { SceneHeader } from "@/components/ui/SceneHeader";
-import { SCENE_COLORS } from "@/constants/colors";
+import { SceneType } from "@/types/scenes";
 
 export const ProfileHeader: React.FC = () => {
   const { t } = useTranslations();
 
   return (
     <SceneHeader
-      title={t("profile.title")}
-      subtitle={t("profile.subtitle")}
-      gradientFrom={SCENE_COLORS.PROFILE.GRADIENT_FROM}
-      gradientVia={SCENE_COLORS.PROFILE.GRADIENT_VIA}
-      gradientTo={SCENE_COLORS.PROFILE.GRADIENT_TO}
+      title={t("scenes.profile.title")}
+      subtitle={t("scenes.profile.subtitle")}
+      menuColorKey={SceneType.PROFILE}
     />
   );
 };

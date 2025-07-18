@@ -13,7 +13,7 @@ export const InstructionsTips: React.FC = () => {
           <span className="text-white font-bold text-sm">💡</span>
         </div>
         <h2 className="text-xl font-semibold text-white">
-          {t("instructions.tips.title")}
+          {t("scenes.instructions.tips.title")}
         </h2>
       </div>
       <ul className="space-y-3">
@@ -21,32 +21,32 @@ export const InstructionsTips: React.FC = () => {
           <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
             <span className="text-white text-xs font-bold">1</span>
           </div>
-          <Text variant="body" className="text-white/90 leading-relaxed">
-            {t("instructions.tips.tip1")}
+          <Text variant="body" className="text-white/90">
+            {t("scenes.instructions.tips.tip1")}
           </Text>
         </li>
         <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
           <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
             <span className="text-white text-xs font-bold">2</span>
           </div>
-          <Text variant="body" className="text-white/90 leading-relaxed">
-            {t("instructions.tips.tip2")}
+          <Text variant="body" className="text-white/90">
+            {t("scenes.instructions.tips.tip2")}
           </Text>
         </li>
         <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
           <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
             <span className="text-white text-xs font-bold">3</span>
           </div>
-          <Text variant="body" className="text-white/90 leading-relaxed">
-            {t("instructions.tips.tip3")}
+          <Text variant="body" className="text-white/90">
+            {t("scenes.instructions.tips.tip3")}
           </Text>
         </li>
         <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
           <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
             <span className="text-white text-xs font-bold">4</span>
           </div>
-          <Text variant="body" className="text-white/90 leading-relaxed">
-            {t("instructions.tips.tip4")}
+          <Text variant="body" className="text-white/90">
+            {t("scenes.instructions.tips.tip4")}
           </Text>
         </li>
       </ul>
