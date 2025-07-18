@@ -79,9 +79,7 @@ export const InstructionsContent: React.FC = () => {
         <SceneHeader
           title={t("instructions.title")}
           subtitle={t("instructions.subtitle")}
-          gradientFrom="#fbbf24"
-          gradientVia="#f59e0b"
-          gradientTo="#dc2626"
+          menuColorKey="instructions"
         />
 
         {/* Slider Container */}

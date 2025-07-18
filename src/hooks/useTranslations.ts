@@ -12,7 +12,7 @@ const languages = {
 export const useTranslations = () => {
   const locale = useLanguageStore((state) => state.locale);
 
-  const t = (key: string): string => {
+  const t = (key: string, params?: Record<string, string | number>): string => {
     const keys = key.split(".");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let value: any = languages[locale];
@@ -34,7 +34,21 @@ export const useTranslations = () => {
       }
     }
 
-    return typeof value === "string" ? value : key;
+    if (typeof value !== "string") {
+      return key;
+    }
+
+    // Handle interpolation if params are provided
+    if (params) {
+      return value.replace(
+        /\{\{\s*(\w+)\s*\}\}/g,
+        (match: string, paramKey: string) => {
+          return params[paramKey]?.toString() || match;
+        }
+      );
+    }
+
+    return value;
   };
 
   return { t, locale };

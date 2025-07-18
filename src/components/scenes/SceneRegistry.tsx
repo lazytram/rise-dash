@@ -4,6 +4,7 @@ import { GameScene } from "@/components/scenes/GameScene";
 import { ProfileScene } from "@/components/scenes/ProfileScene";
 import { LeaderboardScene } from "@/components/scenes/LeaderboardScene";
 import { InstructionsScene } from "@/components/scenes/InstructionsScene";
+import { ShopScene } from "@/components/scenes/ShopScene";
 
 export const SceneRegistry: Record<SceneType, Scene> = {
   welcome: {
@@ -34,6 +35,12 @@ export const SceneRegistry: Record<SceneType, Scene> = {
     id: "instructions",
     component: InstructionsScene,
     title: "Instructions",
+    showHeader: true,
+  },
+  shop: {
+    id: "shop",
+    component: ShopScene,
+    title: "Shop",
     showHeader: true,
   },
 };

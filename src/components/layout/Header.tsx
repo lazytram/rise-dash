@@ -8,6 +8,7 @@ import { ProfileButton } from "@/components/auth/ProfileButton";
 import { LeaderboardButton } from "@/components/auth/LeaderboardButton";
 import { GameButton } from "@/components/auth/GameButton";
 import { InstructionsButton } from "@/components/auth/InstructionsButton";
+import { ShopButton } from "@/components/auth/ShopButton";
 import { LanguageSelector } from "@/components/LanguageSelector";
 
 const MenuButtons = memo(function MenuButtons() {
@@ -16,6 +17,7 @@ const MenuButtons = memo(function MenuButtons() {
       <GameButton />
       <ProfileButton />
       <LeaderboardButton />
+      <ShopButton />
       <InstructionsButton />
     </div>
   );

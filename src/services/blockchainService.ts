@@ -257,28 +257,44 @@ export class BlockchainService {
    * Gets the best score of a player
    */
   async getPlayerBestScore(playerAddress: Address): Promise<bigint> {
-    const result = await this.publicClient.readContract({
-      address: SCOREBOARD_CONTRACT_ADDRESS,
-      abi: SCOREBOARD_ABI,
-      functionName: "getPlayerBestScore",
-      args: [playerAddress],
-    });
+    try {
+      const result = await this.publicClient.readContract({
+        address: SCOREBOARD_CONTRACT_ADDRESS,
+        abi: SCOREBOARD_ABI,
+        functionName: "getPlayerBestScore",
+        args: [playerAddress],
+      });
 
-    return result;
+      return result;
+    } catch (error) {
+      console.error("Error getting player best score:", error);
+      if (error instanceof Error && error.message.includes("429")) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
+      throw error;
+    }
   }
 
   /**
    * Gets all scores of a player
    */
   async getPlayerScores(playerAddress: Address): Promise<Score[]> {
-    const result = await this.publicClient.readContract({
-      address: SCOREBOARD_CONTRACT_ADDRESS,
-      abi: SCOREBOARD_ABI,
-      functionName: "getPlayerScores",
-      args: [playerAddress],
-    });
+    try {
+      const result = await this.publicClient.readContract({
+        address: SCOREBOARD_CONTRACT_ADDRESS,
+        abi: SCOREBOARD_ABI,
+        functionName: "getPlayerScores",
+        args: [playerAddress],
+      });
 
-    return result as Score[];
+      return result as Score[];
+    } catch (error) {
+      console.error("Error getting player scores:", error);
+      if (error instanceof Error && error.message.includes("429")) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
+      throw error;
+    }
   }
 
   /**
@@ -288,45 +304,69 @@ export class BlockchainService {
     offset: number,
     limit: number
   ): Promise<LeaderboardEntry[]> {
-    const result = await this.publicClient.readContract({
-      address: SCOREBOARD_CONTRACT_ADDRESS,
-      abi: SCOREBOARD_ABI,
-      functionName: "getLeaderboard",
-      args: [BigInt(offset), BigInt(limit)],
-    });
+    try {
+      const result = await this.publicClient.readContract({
+        address: SCOREBOARD_CONTRACT_ADDRESS,
+        abi: SCOREBOARD_ABI,
+        functionName: "getLeaderboard",
+        args: [BigInt(offset), BigInt(limit)],
+      });
 
-    return result as LeaderboardEntry[];
+      return result as LeaderboardEntry[];
+    } catch (error) {
+      console.error("Error getting leaderboard:", error);
+      if (error instanceof Error && error.message.includes("429")) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
+      throw error;
+    }
   }
 
   /**
    * Gets the total number of scores in the leaderboard
    */
   async getTotalScores(): Promise<bigint> {
-    const result = await this.publicClient.readContract({
-      address: SCOREBOARD_CONTRACT_ADDRESS,
-      abi: SCOREBOARD_ABI,
-      functionName: "getTotalScores",
-    });
+    try {
+      const result = await this.publicClient.readContract({
+        address: SCOREBOARD_CONTRACT_ADDRESS,
+        abi: SCOREBOARD_ABI,
+        functionName: "getTotalScores",
+      });
 
-    return result;
+      return result;
+    } catch (error) {
+      console.error("Error getting total scores:", error);
+      if (error instanceof Error && error.message.includes("429")) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
+      throw error;
+    }
   }
 
   /**
    * Gets contract information
    */
   async getContractInfo(): Promise<ContractInfo> {
-    const result = await this.publicClient.readContract({
-      address: SCOREBOARD_CONTRACT_ADDRESS,
-      abi: SCOREBOARD_ABI,
-      functionName: "getContractInfo",
-    });
+    try {
+      const result = await this.publicClient.readContract({
+        address: SCOREBOARD_CONTRACT_ADDRESS,
+        abi: SCOREBOARD_ABI,
+        functionName: "getContractInfo",
+      });
 
-    return {
-      gameOwner: result[0],
-      paused: result[1],
-      minTimeBetweenScores: result[2],
-      securityKeySet: result[3],
-    };
+      return {
+        gameOwner: result[0],
+        paused: result[1],
+        minTimeBetweenScores: result[2],
+        securityKeySet: result[3],
+      };
+    } catch (error) {
+      console.error("Error getting contract info:", error);
+      if (error instanceof Error && error.message.includes("429")) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
+      throw error;
+    }
   }
 
   /**
@@ -341,6 +381,9 @@ export class BlockchainService {
       return BigInt(score) > currentBest;
     } catch (error) {
       console.error("Error checking best score:", error);
+      if (error instanceof Error && error.message.includes("429")) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
       return true; // In case of error, we consider it's a new record
     }
   }

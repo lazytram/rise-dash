@@ -1,18 +1,18 @@
 {
   "game": {
     "title": "Rise Dash",
-    "startGame": "Commencer le jeu",
+    "startGame": "Commencer le Jeu",
     "restart": "Recommencer",
     "distance": "Distance parcourue",
     "meters": "mètres",
-    "instructions": "Utilisez FLÈCHE HAUT pour sauter et BARRE D'ESPACE pour tirer des roquettes de riz !",
+    "instructions": "Utilisez FLÈCHE HAUT pour sauter et BARRE D'ESPACE pour tirer des fusées de riz !",
     "startMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour commencer",
     "jumpMessage": "FLÈCHE HAUT pour sauter, ESPACE pour tirer des RiceRockets",
     "enemyMessage": "Les samouraïs apparaissent tous les 50m - tirez 3 fois pour les vaincre !",
-    "gameOver": "Partie terminée !",
+    "gameOver": "Partie Terminée !",
     "finalScore": "Score Final",
     "restartMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour recommencer",
-    "riceRockets": "Roquettes de Riz",
+    "riceRockets": "Fusées de Riz",
     "ammoCount": "munitions",
     "difficulty": "Difficulté",
     "level": "Niveau",
@@ -23,8 +23,8 @@
     "bossUnlocked": "Un Boss approche !",
     "powerUpCollected": "Power-up collecté !",
     "shieldActive": "Bouclier actif",
-    "infiniteAmmoActive": "Munitions illimitées",
-    "speedBoostActive": "Vitesse augmentée",
+    "infiniteAmmoActive": "Munitions infinies",
+    "speedBoostActive": "Boost de vitesse",
     "multiShotActive": "Tirs multiples"
   },
   "enemies": {
@@ -36,20 +36,45 @@
   },
   "powerUps": {
     "shield": "Bouclier",
-    "infiniteAmmo": "Munitions Illimitées",
+    "infiniteAmmo": "Munitions Infinies",
     "speedBoost": "Boost de Vitesse",
     "multiShot": "Tirs Multiples",
+    "riceRocketAmmo": "Munitions de Fusées",
     "description": {
       "shield": "Protection contre les collisions",
-      "infiniteAmmo": "Tirs sans limite",
+      "infiniteAmmo": "Tirs illimités",
       "speedBoost": "Mouvement plus rapide",
-      "multiShot": "Plusieurs projectiles"
+      "multiShot": "Projectiles multiples",
+      "riceRocketAmmo": "Capacité maximale de munitions"
     },
     "duration": "Durée",
     "seconds": "secondes",
     "active": "Actif",
     "expired": "Expiré",
-    "remaining": "restant"
+    "remaining": "restant",
+    "ammo": "munitions",
+    "maxLevel": "Niveau Maximum",
+    "currentLevel": "Niveau Actuel",
+    "upgradeCost": "Coût d'Amélioration",
+    "rice": "RICE",
+    "upgrade": "Améliorer",
+    "maxLevelReached": "Niveau Maximum Atteint !",
+    "insufficientRice": "RICE Insuffisant"
+  },
+  "shop": {
+    "title": "Boutique de Power-Ups",
+    "subtitle": "Améliorez vos power-ups avec des tokens RICE",
+    "riceBalance": "Solde RICE",
+    "totalUpgrades": "Améliorations Totales",
+    "upgradeProgress": "Progrès d'Amélioration",
+    "insufficientFunds": "RICE Insuffisant",
+    "upgradeSuccess": "Amélioration Réussie !",
+    "upgradeFailed": "Amélioration Échouée",
+    "upgradedToLevel": "amélioré au niveau {{ level }}",
+    "confirmUpgrade": "Confirmer l'Amélioration",
+    "upgradeMessage": "Êtes-vous sûr de vouloir améliorer ce power-up ?",
+    "cancel": "Annuler",
+    "confirm": "Confirmer"
   },
   "difficulty": {
     "beginner": "Débutant",
@@ -65,14 +90,14 @@
   },
   "ui": {
     "language": "Langue",
-    "selectLanguage": "Choisir la langue"
+    "selectLanguage": "Sélectionner la langue"
   },
   "auth": {
     "welcomeTitle": "Rise Dash",
     "welcomeSubtitle": "Le jeu d'arcade où chaque saut compte !",
-    "connectWallet": "Connecte ton wallet et prouve que tu es le vrai joueur.",
+    "connectWallet": "Connectez votre wallet et prouvez que vous êtes le vrai joueur.",
     "secureConnection": "Connexion sécurisée via RainbowKit & SIWE",
-    "siweStatement": "Connecte-toi à Rise Dash pour prouver que tu possèdes ce wallet."
+    "siweStatement": "Connectez-vous à Rise Dash pour prouver que vous possédez cette wallet."
   },
   "blockchain": {
     "saveScore": "Sauvegarder le Score",
@@ -89,12 +114,13 @@
     "saving": "Sauvegarde...",
     "errorSaving": "Erreur lors de la sauvegarde du score",
     "leaderboard": "Classement",
+    "leaderboardSubtitle": "Affrontez les meilleurs joueurs et grimpez au classement",
     "bestScores": "Meilleurs Scores",
     "yourScores": "Vos Scores",
     "connectWalletToView": "Connectez votre wallet pour accéder aux scores",
     "loadingScores": "Chargement des scores...",
     "loadingAchievements": "Chargement des succès...",
-    "noScoresYet": "Aucun score encore",
+    "noScoresYet": "Aucun score pour le moment",
     "playToEarnScores": "Jouez pour grimper au classement !",
     "scoresOnBlockchain": "Tous les scores sont stockés sur la blockchain RISE",
     "bestScoreLabel": "Meilleur score",
@@ -104,12 +130,16 @@
     "transactionSuccessMessage": "Votre score a été sauvegardé avec succès !",
     "transactionFailed": "Transaction Échouée",
     "transactionFailedMessage": "Échec de la sauvegarde de votre score. Veuillez réessayer.",
-    "viewTransaction": "Voir la transaction",
+    "viewTransaction": "Voir la Transaction",
     "contractPaused": "Le contrat est en pause",
     "securityKeyNotConfigured": "Clé de sécurité non configurée",
     "onlyGameOwnerCanUseEmergency": "Seul le propriétaire du jeu peut utiliser la fonction d'urgence",
     "leaderboardError": "Impossible de charger le classement",
-    "leaderboardErrorDescription": "Il y a eu un problème de connexion à la blockchain. Veuillez réessayer plus tard."
+    "leaderboardErrorDescription": "Il y a eu un problème de connexion avec la blockchain. Veuillez réessayer plus tard.",
+    "rateLimitExceeded": "Limite de débit dépassée",
+    "rateLimitExceededDescription": "Trop de requêtes. Veuillez attendre un moment et réessayer.",
+    "securityKeyNotConfigured": "Clé de sécurité non configurée",
+    "securityKeyNotConfiguredDescription": "Le contrat de jeu n'est pas correctement configuré. Veuillez contacter le support."
   },
   "common": {
     "continue": "Continuer",
@@ -121,7 +151,7 @@
     "of": "sur",
     "backToWelcome": "Retour à l'Accueil",
     "playNow": "Jouer Maintenant",
-    "readyToPlay": "Prêt à jouer ?",
+    "readyToPlay": "Prêt à Jouer ?",
     "error": "Erreur",
     "success": "Succès",
     "previous": "Précédent",
@@ -131,8 +161,9 @@
   },
   "profile": {
     "title": "Profil",
+    "subtitle": "Consultez vos succès et statistiques de jeu",
     "bestScore": "Meilleur Score",
-    "totalGames": "Total de Parties",
+    "totalGames": "Total des Parties",
     "averageScore": "Score Moyen",
     "gameHistory": "Historique des Parties",
     "score": "Score",
@@ -150,7 +181,7 @@
     "controls": {
       "title": "Contrôles",
       "jump": "Sauter",
-      "shoot": "Tirer des Roquettes de Riz",
+      "shoot": "Tirer des Fusées de Riz",
       "start": "Commencer le Jeu"
     },
     "gameplay": {
@@ -160,13 +191,13 @@
       "enemies": "Ennemis",
       "enemiesDesc": "Les samouraïs apparaissent tous les 50m et tirent des shurikens. Tirez 3 fois pour les vaincre. Les ninjas et boss apparaissent à des distances plus élevées.",
       "powerUps": "Power-ups",
-      "powerUpsDesc": "Collectez des power-ups pour obtenir des avantages temporaires : Bouclier (protection), Munitions Illimitées (tirs sans limite), Boost de Vitesse (mouvement plus rapide), Tirs Multiples (plusieurs projectiles)."
+      "powerUpsDesc": "Collectez des power-ups pour obtenir des avantages temporaires : Bouclier (protection), Munitions Infinies (tirs illimités), Boost de Vitesse (mouvement plus rapide), Tirs Multiples (projectiles multiples)."
     },
     "tips": {
       "title": "Conseils",
-      "tip1": "Chronométrez vos sauts avec soin pour éviter les ennemis et les obstacles",
-      "tip2": "Gardez vos roquettes de riz pour les situations difficiles",
-      "tip3": "Collectez les power-ups dès que possible pour augmenter vos chances de survie",
+      "tip1": "Chronométrez vos sauts avec soin pour éviter les ennemis et obstacles",
+      "tip2": "Gardez vos fusées de riz pour les situations difficiles",
+      "tip3": "Collectez des power-ups dès que possible pour augmenter vos chances de survie",
       "tip4": "La difficulté augmente tous les 1000m - soyez prêt pour des ennemis plus difficiles"
     },
     "playNow": "Jouer Maintenant"

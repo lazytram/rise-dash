@@ -39,17 +39,43 @@
     "infiniteAmmo": "Infinite Ammo",
     "speedBoost": "Speed Boost",
     "multiShot": "Multi Shot",
+    "riceRocketAmmo": "Rocket Ammo",
     "description": {
       "shield": "Protection against collisions",
       "infiniteAmmo": "Unlimited shots",
       "speedBoost": "Faster movement",
-      "multiShot": "Multiple projectiles"
+      "multiShot": "Multiple projectiles",
+      "riceRocketAmmo": "Maximum ammunition capacity"
     },
     "duration": "Duration",
     "seconds": "seconds",
     "active": "Active",
     "expired": "Expired",
-    "remaining": "remaining"
+    "remaining": "remaining",
+    "ammo": "ammo",
+    "maxLevel": "Max Level",
+    "currentLevel": "Current Level",
+    "upgradeCost": "Upgrade Cost",
+    "rice": "RICE",
+    "upgrade": "Upgrade",
+    "maxLevelReached": "Max Level Reached!",
+    "insufficientRice": "Insufficient RICE"
+  },
+  "shop": {
+    "title": "Power-Up Shop",
+    "subtitle": "Upgrade your power-ups with RICE tokens",
+    "riceBalance": "RICE Balance",
+    "totalUpgrades": "Total Upgrades",
+    "upgradeProgress": "Upgrade Progress",
+    "insufficientFunds": "Insufficient RICE",
+    "upgradeSuccess": "Upgrade Successful!",
+    "upgradeFailed": "Upgrade Failed",
+    "upgradedToLevel": "upgraded to level {{ level }}",
+    "upgradeErrorDescription": "An error occurred during the upgrade. Please try again.",
+    "confirmUpgrade": "Confirm Upgrade",
+    "upgradeMessage": "Are you sure you want to upgrade this power-up?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "difficulty": {
     "beginner": "Beginner",
@@ -110,7 +136,11 @@
     "securityKeyNotConfigured": "Security key not configured",
     "onlyGameOwnerCanUseEmergency": "Only game owner can use emergency function",
     "leaderboardError": "Unable to load leaderboard",
-    "leaderboardErrorDescription": "There was an issue connecting to the blockchain. Please try again later."
+    "leaderboardErrorDescription": "There was an issue connecting to the blockchain. Please try again later.",
+    "rateLimitExceeded": "Rate limit exceeded",
+    "rateLimitExceededDescription": "Too many requests. Please wait a moment and try again.",
+    "securityKeyNotConfigured": "Security key not configured",
+    "securityKeyNotConfiguredDescription": "The game contract is not properly configured. Please contact support."
   },
   "common": {
     "continue": "Continue",

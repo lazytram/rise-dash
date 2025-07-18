@@ -91,7 +91,7 @@ export const Toaster: React.FC = () => {
             </div>
             <button
               onClick={() => handleRemoveToast(toast.id)}
-              className="ml-2 text-white/70 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
+              className="ml-2 text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10 cursor-pointer flex items-center justify-center w-8 h-8"
             >
               ✕
             </button>

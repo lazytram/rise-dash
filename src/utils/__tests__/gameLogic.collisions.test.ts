@@ -103,6 +103,27 @@ const createTestSamuraiBullet = (
   ...overrides,
 });
 
+const createTestSushi = (
+  overrides: Partial<{
+    id: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    velocityX: number;
+    color: string;
+  }> = {}
+) => ({
+  id: "test-sushi",
+  x: 150,
+  y: 300,
+  width: 30, // Default sushi width
+  height: 30, // Default sushi height
+  velocityX: GAME_CONSTANTS.BASE_SUSHI_SPEED,
+  color: "#FF6B6B",
+  ...overrides,
+});
+
 describe("GameLogic - Collisions and Power-ups", () => {
   let initialGameState: GameState;
   let testPlayer: Player;
@@ -530,15 +551,7 @@ describe("GameLogic - Collisions and Power-ups", () => {
   describe("Game over conditions", () => {
     describe("checkGameOverConditions", () => {
       it("should return true when player collides with sushi", () => {
-        const sushi = {
-          id: "test",
-          x: 100,
-          y: 300,
-          width: 30,
-          height: 30,
-          velocityX: -4,
-          color: "#FF6B6B",
-        };
+        const sushi = createTestSushi({ x: 100, y: 300 });
         const playerAtSushi = { ...testPlayer, x: 100, y: 300 };
 
         const gameState = {
@@ -564,15 +577,7 @@ describe("GameLogic - Collisions and Power-ups", () => {
       });
 
       it("should return false when no collisions occur", () => {
-        const sushi = {
-          id: "test",
-          x: 200,
-          y: 300,
-          width: 30,
-          height: 30,
-          velocityX: -4,
-          color: "#FF6B6B",
-        };
+        const sushi = createTestSushi({ x: 200, y: 300 });
         const samurai = createTestSamurai({ x: 200, y: 300 });
         const playerAway = { ...testPlayer, x: 100, y: 300 };
 
@@ -627,6 +632,156 @@ describe("GameLogic - Collisions and Power-ups", () => {
 
       expect(result.isGameOver).toBe(true);
       expect(result.isGameRunning).toBe(false);
+    });
+  });
+
+  describe("Shield power-up functionality", () => {
+    it("should prevent game over when player has shield and collides with sushi", () => {
+      const playerWithShield = {
+        ...testPlayer,
+        hasShield: true,
+        powerUpEndTimes: {
+          ...testPlayer.powerUpEndTimes,
+          shield: Date.now() + 10000,
+        },
+      };
+      const sushi = createTestSushi();
+
+      const gameState = {
+        ...initialGameState,
+        player: playerWithShield,
+        sushis: [sushi],
+        isGameRunning: true,
+      };
+
+      expect(GameLogic.checkGameOverConditions(gameState)).toBe(false);
+    });
+
+    it("should prevent game over when player has shield and collides with samurai", () => {
+      const playerWithShield = {
+        ...testPlayer,
+        hasShield: true,
+        powerUpEndTimes: {
+          ...testPlayer.powerUpEndTimes,
+          shield: Date.now() + 10000,
+        },
+      };
+      const samurai = createTestSamurai({ x: 100, y: 300 });
+
+      const gameState = {
+        ...initialGameState,
+        player: playerWithShield,
+        samurais: [samurai],
+        isGameRunning: true,
+      };
+
+      expect(GameLogic.checkGameOverConditions(gameState)).toBe(false);
+    });
+
+    it("should prevent game over when player has shield and collides with ninja", () => {
+      const playerWithShield = {
+        ...testPlayer,
+        hasShield: true,
+        powerUpEndTimes: {
+          ...testPlayer.powerUpEndTimes,
+          shield: Date.now() + 10000,
+        },
+      };
+      const ninja = createTestNinja({ x: 100, y: 300 });
+
+      const gameState = {
+        ...initialGameState,
+        player: playerWithShield,
+        ninjas: [ninja],
+        isGameRunning: true,
+      };
+
+      expect(GameLogic.checkGameOverConditions(gameState)).toBe(false);
+    });
+
+    it("should prevent game over when player has shield and collides with boss", () => {
+      const playerWithShield = {
+        ...testPlayer,
+        hasShield: true,
+        powerUpEndTimes: {
+          ...testPlayer.powerUpEndTimes,
+          shield: Date.now() + 10000,
+        },
+      };
+      const boss = createTestBoss({ x: 100, y: 300 });
+
+      const gameState = {
+        ...initialGameState,
+        player: playerWithShield,
+        bosses: [boss],
+        isGameRunning: true,
+      };
+
+      expect(GameLogic.checkGameOverConditions(gameState)).toBe(false);
+    });
+
+    it("should remove bullet but not trigger game over when player with shield is hit by bullet", () => {
+      const playerWithShield = {
+        ...testPlayer,
+        hasShield: true,
+        powerUpEndTimes: {
+          ...testPlayer.powerUpEndTimes,
+          shield: Date.now() + 10000,
+        },
+      };
+      const bullet = createTestSamuraiBullet({ x: 100, y: 300 });
+
+      const gameState = {
+        ...initialGameState,
+        player: playerWithShield,
+        samuraiBullets: [bullet],
+        isGameRunning: true,
+      };
+
+      const result = GameLogic.checkPlayerSamuraiBulletCollisions(gameState);
+
+      expect(result.samuraiBullets).toHaveLength(0); // Bullet should be removed
+      expect(result.isGameOver).toBe(false); // Should not trigger game over
+      expect(result.isGameRunning).toBe(true); // Game should continue
+    });
+
+    it("should trigger game over when player without shield is hit by bullet", () => {
+      const bullet = createTestSamuraiBullet({ x: 100, y: 300 });
+      const playerAtBullet = { ...testPlayer, x: 100, y: 300 };
+
+      const gameState = {
+        ...initialGameState,
+        player: playerAtBullet,
+        samuraiBullets: [bullet],
+        isGameRunning: true,
+      };
+
+      const result = GameLogic.checkPlayerSamuraiBulletCollisions(gameState);
+
+      expect(result.samuraiBullets).toHaveLength(0); // Bullet should be removed
+      expect(result.isGameOver).toBe(true); // Should trigger game over
+      expect(result.isGameRunning).toBe(false); // Game should stop
+    });
+
+    it("should allow game over when shield expires", () => {
+      const playerWithExpiredShield = {
+        ...testPlayer,
+        hasShield: false, // Shield expired
+        powerUpEndTimes: {
+          ...testPlayer.powerUpEndTimes,
+          shield: Date.now() - 1000,
+        }, // Expired
+      };
+      const sushi = createTestSushi({ x: 100, y: 300 });
+
+      const gameState = {
+        ...initialGameState,
+        player: { ...playerWithExpiredShield, x: 100, y: 300 },
+        sushis: [sushi],
+        isGameRunning: true,
+      };
+
+      expect(GameLogic.checkGameOverConditions(gameState)).toBe(true);
     });
   });
 });

@@ -818,8 +818,19 @@ export class GameLogic {
     for (let i = newSamuraiBullets.length - 1; i >= 0; i--) {
       const bullet = newSamuraiBullets[i];
       if (this.checkCollision(player, bullet)) {
-        // Remove the bullet immediately (like sushi collision)
-        newSamuraiBullets.splice(i, 1);
+        // If player has shield, just remove the bullet without game over
+        if (player.hasShield) {
+          newSamuraiBullets.splice(i, 1);
+        } else {
+          // Remove the bullet and trigger game over
+          newSamuraiBullets.splice(i, 1);
+          return {
+            ...gameState,
+            samuraiBullets: newSamuraiBullets,
+            isGameOver: true,
+            isGameRunning: false,
+          };
+        }
       }
     }
 
@@ -884,7 +895,26 @@ export class GameLogic {
     );
   }
 
+  static checkPlayerNinjaCollisions(gameState: GameState): boolean {
+    return gameState.ninjas.some((ninja) =>
+      this.checkCollision(gameState.player, ninja)
+    );
+  }
+
+  static checkPlayerBossCollisions(gameState: GameState): boolean {
+    return gameState.bosses.some((boss) =>
+      this.checkCollision(gameState.player, boss)
+    );
+  }
+
   static checkGameOverConditions(gameState: GameState): boolean {
+    const { player } = gameState;
+
+    // If player has shield active, no game over from collisions
+    if (player.hasShield) {
+      return false;
+    }
+
     // Check if player collides with sushi
     if (this.checkPlayerSushiCollisions(gameState)) {
       return true;
@@ -892,6 +922,16 @@ export class GameLogic {
 
     // Check if player collides with samurai
     if (this.checkPlayerSamuraiCollisions(gameState)) {
+      return true;
+    }
+
+    // Check if player collides with ninja
+    if (this.checkPlayerNinjaCollisions(gameState)) {
+      return true;
+    }
+
+    // Check if player collides with boss
+    if (this.checkPlayerBossCollisions(gameState)) {
       return true;
     }
 

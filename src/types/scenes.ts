@@ -3,7 +3,8 @@ export type SceneType =
   | "game"
   | "profile"
   | "leaderboard"
-  | "instructions";
+  | "instructions"
+  | "shop";
 
 export interface Scene {
   id: SceneType;
