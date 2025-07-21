@@ -99,6 +99,62 @@
         "tip4": "La dificultad aumenta cada 1000m - prepárate para enemigos más desafiantes"
       }
     },
+    "tutorial": {
+      "title": "¡Bienvenido a Rise Dash!",
+      "subtitle": "Aprende los conceptos básicos del juego en unos pasos",
+      "objective": {
+        "title": "🎯 Objetivo del Juego",
+        "description": "¡Sobrevive el mayor tiempo posible evitando obstáculos y eliminando enemigos. Tu distancia recorrida se convierte en tu puntuación!"
+      },
+      "controls": {
+        "title": "🎮 Controles",
+        "movement": "Movimiento",
+        "jump": "Saltar",
+        "shoot": "Disparar",
+        "start": "Comenzar",
+        "space": "Espacio"
+      },
+      "enemies": {
+        "title": "⚔️ Enemigos",
+        "samurai": "Samuráis",
+        "samuraiDesc": "Aparecen cada 50m, disparan shurikens. 3 disparos para derrotarlos.",
+        "ninja": "Ninjas",
+        "ninjaDesc": "Más rápidos y difíciles de golpear.",
+        "boss": "Jefes",
+        "bossDesc": "Enemigos poderosos que aparecen a grandes distancias."
+      },
+      "powerUps": {
+        "title": "💎 Power-ups",
+        "shield": "Escudo",
+        "shieldDesc": "Protección temporal contra daños.",
+        "infiniteAmmo": "Munición Infinita",
+        "infiniteAmmoDesc": "Disparos ilimitados durante 10 segundos.",
+        "jumpBoost": "Boost de Salto",
+        "jumpBoostDesc": "Saltos más altos durante 15 segundos.",
+        "slowMotion": "Cámara Lenta",
+        "slowMotionDesc": "Ralentiza enemigos durante 8 segundos.",
+        "multiShot": "Disparos Múltiples",
+        "multiShotDesc": "Dispara múltiples proyectiles a la vez."
+      },
+      "scoring": {
+        "title": "🏆 Sistema de Puntuación",
+        "distance": "Distancia recorrida = Puntuación principal",
+        "enemies": "Enemigos eliminados = Bonus",
+        "powerUps": "Power-ups recolectados = Bonus",
+        "survival": "Tiempo de supervivencia = Bonus"
+      },
+      "tips": {
+        "title": "💡 Consejos Pro",
+        "tip1": "Calcula tus saltos con precisión para evitar obstáculos",
+        "tip2": "Guarda tu munición para situaciones difíciles",
+        "tip3": "Recolecta power-ups lo antes posible",
+        "tip4": "La dificultad aumenta progresivamente - ¡mantén la concentración!"
+      },
+      "buttons": {
+        "understood": "¡Entendido! 🚀",
+        "close": "Cerrar"
+      }
+    },
     "dailyStreak": {
       "title": "Revelación Diaria",
       "subtitle": "¡Revela una carta una vez al día para ganar RICE!",
