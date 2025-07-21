@@ -99,7 +99,7 @@ export const AuthButton = memo(function AuthButton() {
   }, [isConnected, address, session]);
 
   return (
-    <div className="rainbow-kit-wrapper">
+    <div className="rainbow-kit-wrapper pointer-events-auto">
       <ConnectButton />
     </div>
   );

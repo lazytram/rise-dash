@@ -44,15 +44,22 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
         return `${(current.duration || 0) / 1000}s → ${
           (next?.duration || 0) / 1000
         }s ${t("features.powerUps.duration")}`;
-      case "speedBoost":
-        const currentSpeed = (
-          ((current.speedMultiplier || 1) - 1) *
-          100
-        ).toFixed(0);
-        const nextSpeed = (((next?.speedMultiplier || 1) - 1) * 100).toFixed(0);
+      case "jumpBoost":
+        const currentJump = (((current.jumpMultiplier || 1) - 1) * 100).toFixed(
+          0
+        );
+        const nextJump = (((next?.jumpMultiplier || 1) - 1) * 100).toFixed(0);
         return `${
           (current.duration || 0) / 1000
-        }s, +${currentSpeed}% → +${nextSpeed}%`;
+        }s, +${currentJump}% → +${nextJump}%`;
+      case "slowMotion":
+        const currentSlow = ((1 - (current.slowMultiplier || 1)) * 100).toFixed(
+          0
+        );
+        const nextSlow = ((1 - (next?.slowMultiplier || 1)) * 100).toFixed(0);
+        return `${
+          (current.duration || 0) / 1000
+        }s, -${currentSlow}% → -${nextSlow}%`;
       case "multiShot":
         return `${(current.duration || 0) / 1000}s, ${
           current.projectileCount

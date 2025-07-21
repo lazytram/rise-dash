@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { SceneType } from "@/types/scenes";
 import { SceneContainer } from "@/components/ui/SceneContainer";
+import { DailyStreakHomeButton } from "@/components/auth/DailyStreakHomeButton";
 
 export const WelcomeScene = memo(function WelcomeScene() {
   const { data: session, status } = useSession();
@@ -93,6 +94,7 @@ export const WelcomeScene = memo(function WelcomeScene() {
           >
             {t("scenes.instructions.title")}
           </Button>
+          <DailyStreakHomeButton />
         </div>
       )}
     </SceneContainer>

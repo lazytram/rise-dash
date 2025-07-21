@@ -16,7 +16,6 @@ import {
   EmptyLeaderboard,
 } from "./leaderboard";
 import { SceneHeader } from "@/components/ui/SceneHeader";
-import { SceneType } from "@/types/scenes";
 
 interface LeaderboardEntryWithRank extends LeaderboardEntry {
   rank: number;
@@ -129,7 +128,6 @@ export const LeaderboardContent: React.FC = () => {
         <SceneHeader
           title={t("scenes.leaderboard.title")}
           subtitle={t("scenes.leaderboard.subtitle")}
-          menuColorKey={SceneType.LEADERBOARD}
         />
 
         {isLoading ? (

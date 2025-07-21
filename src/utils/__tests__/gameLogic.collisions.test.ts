@@ -172,7 +172,8 @@ describe("GameLogic - Collisions and Power-ups", () => {
         expect([
           "shield",
           "infinite_ammo",
-          "speed_boost",
+          "jump_boost",
+          "slow_motion",
           "multi_shot",
         ]).toContain(powerUp.type);
 
@@ -243,7 +244,8 @@ describe("GameLogic - Collisions and Power-ups", () => {
           currentTime + powerUp.duration + 100
         ); // Allow small timing variance
         expect(updatedPlayer.hasInfiniteAmmo).toBe(false);
-        expect(updatedPlayer.hasSpeedBoost).toBe(false);
+        expect(updatedPlayer.hasJumpBoost).toBe(false);
+        expect(updatedPlayer.hasSlowMotion).toBe(false);
         expect(updatedPlayer.hasMultiShot).toBe(false);
       });
 
@@ -263,17 +265,33 @@ describe("GameLogic - Collisions and Power-ups", () => {
         expect(updatedPlayer.hasShield).toBe(false);
       });
 
-      it("should apply speed_boost power-up correctly", () => {
-        const powerUp = createTestPowerUp({ type: "speed_boost" });
+      it("should apply jump_boost power-up correctly", () => {
+        const powerUp = createTestPowerUp({ type: "jump_boost" });
         const currentTime = Date.now();
 
         const updatedPlayer = GameLogic.collectPowerUp(testPlayer, powerUp);
 
-        expect(updatedPlayer.hasSpeedBoost).toBe(true);
-        expect(updatedPlayer.powerUpEndTimes.speedBoost).toBeGreaterThan(
+        expect(updatedPlayer.hasJumpBoost).toBe(true);
+        expect(updatedPlayer.powerUpEndTimes.jumpBoost).toBeGreaterThan(
           currentTime
         );
-        expect(updatedPlayer.powerUpEndTimes.speedBoost).toBeLessThanOrEqual(
+        expect(updatedPlayer.powerUpEndTimes.jumpBoost).toBeLessThanOrEqual(
+          currentTime + powerUp.duration + 100
+        ); // Allow small timing variance
+        expect(updatedPlayer.hasShield).toBe(false);
+      });
+
+      it("should apply slow_motion power-up correctly", () => {
+        const powerUp = createTestPowerUp({ type: "slow_motion" });
+        const currentTime = Date.now();
+
+        const updatedPlayer = GameLogic.collectPowerUp(testPlayer, powerUp);
+
+        expect(updatedPlayer.hasSlowMotion).toBe(true);
+        expect(updatedPlayer.powerUpEndTimes.slowMotion).toBeGreaterThan(
+          currentTime
+        );
+        expect(updatedPlayer.powerUpEndTimes.slowMotion).toBeLessThanOrEqual(
           currentTime + powerUp.duration + 100
         ); // Allow small timing variance
         expect(updatedPlayer.hasShield).toBe(false);
@@ -303,12 +321,13 @@ describe("GameLogic - Collisions and Power-ups", () => {
           powerUpEndTimes: {
             shield: Date.now() + 5000,
             infiniteAmmo: Date.now() + 5000,
-            speedBoost: 0,
+            jumpBoost: 0,
+            slowMotion: 0,
             multiShot: 0,
           },
         };
 
-        const newPowerUp = createTestPowerUp({ type: "speed_boost" });
+        const newPowerUp = createTestPowerUp({ type: "jump_boost" });
         const updatedPlayer = GameLogic.collectPowerUp(
           playerWithPowerUp,
           newPowerUp
@@ -316,7 +335,7 @@ describe("GameLogic - Collisions and Power-ups", () => {
 
         expect(updatedPlayer.hasShield).toBe(false);
         expect(updatedPlayer.hasInfiniteAmmo).toBe(false);
-        expect(updatedPlayer.hasSpeedBoost).toBe(true);
+        expect(updatedPlayer.hasJumpBoost).toBe(true);
       });
     });
 
@@ -329,7 +348,8 @@ describe("GameLogic - Collisions and Power-ups", () => {
           powerUpEndTimes: {
             shield: Date.now() - 1000, // Expired
             infiniteAmmo: Date.now() + 1000, // Still active
-            speedBoost: 0,
+            jumpBoost: 0,
+            slowMotion: 0,
             multiShot: 0,
           },
         };

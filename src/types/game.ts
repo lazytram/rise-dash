@@ -12,19 +12,22 @@ export interface Player {
   // Power-up states
   hasShield: boolean;
   hasInfiniteAmmo: boolean;
-  hasSpeedBoost: boolean;
+  hasJumpBoost: boolean; // Renamed from hasSpeedBoost
+  hasSlowMotion: boolean; // New power-up
   hasMultiShot: boolean;
   powerUpEndTimes: {
     shield: number;
     infiniteAmmo: number;
-    speedBoost: number;
+    jumpBoost: number; // Renamed from speedBoost
+    slowMotion: number; // New power-up
     multiShot: number;
   };
   // Power-up levels
   powerUpLevels: {
     shield: number;
     infiniteAmmo: number;
-    speedBoost: number;
+    jumpBoost: number; // Renamed from speedBoost
+    slowMotion: number; // New power-up
     multiShot: number;
     riceRocketAmmo: number;
   };
@@ -72,7 +75,12 @@ export interface SamuraiBullet extends MovableEntity {
 }
 
 export interface PowerUp extends MovableEntity {
-  type: "shield" | "infinite_ammo" | "speed_boost" | "multi_shot";
+  type:
+    | "shield"
+    | "infinite_ammo"
+    | "jump_boost"
+    | "slow_motion"
+    | "multi_shot";
   duration: number;
 }
 

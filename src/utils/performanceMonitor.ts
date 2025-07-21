@@ -33,10 +33,7 @@ export class PerformanceMonitor {
       this.frameCount = 0;
       this.lastTime = currentTime;
 
-      // Log performance metrics
-      console.log(
-        `FPS: ${this.fps}, Frame Time: ${this.frameTime.toFixed(2)}ms`
-      );
+      // Performance metrics calculated
     }
   }
 

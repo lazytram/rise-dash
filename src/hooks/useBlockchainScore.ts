@@ -33,11 +33,6 @@ const retryWithBackoff = async <T>(
       // Check if it's a rate limit error
       if (error instanceof Error && error.message.includes("429")) {
         const delay = baseDelay * Math.pow(2, attempt);
-        console.log(
-          `Rate limited, retrying in ${delay}ms (attempt ${attempt + 1}/${
-            maxRetries + 1
-          })`
-        );
         await new Promise((resolve) => setTimeout(resolve, delay));
       } else {
         // For other errors, don't retry
@@ -62,27 +57,9 @@ export const useBlockchainScore = () => {
     hash,
   });
 
-  // Debug logs for transaction status
-  useEffect(() => {
-    console.log("🔍 Transaction status:", {
-      hash,
-      isPending,
-      isConfirming,
-      isSuccess,
-      error: error?.message,
-    });
-  }, [hash, isPending, isConfirming, isSuccess, error]);
-
   const recordScore = useCallback(
     async (score: number, playerName: string) => {
-      console.log("🚀 Starting recordScore with:", {
-        score,
-        playerName,
-        address,
-      });
-
       if (!address) {
-        console.log("❌ No address found");
         showError(t("common.error"), t("features.blockchain.connectWallet"));
         return false;
       }
@@ -90,24 +67,19 @@ export const useBlockchainScore = () => {
       // Clear any existing toasts before starting
       clearToasts();
       setIsRecording(true);
-      console.log("📝 Setting isRecording to true");
 
       try {
         // Check if the contract is properly configured
-        console.log("🔍 Checking contract info...");
         const contractInfo = await retryWithBackoff(() =>
           blockchainService.getContractInfo()
         );
-        console.log("📊 Contract info:", contractInfo);
 
         if (contractInfo.paused) {
-          console.log("⏸️ Contract is paused");
           showError(t("common.error"), t("features.blockchain.contractPaused"));
           return false;
         }
 
         if (!contractInfo.securityKeySet) {
-          console.log("🔑 Security key not set");
           showError(
             t("common.error"),
             t("features.blockchain.securityKeyNotConfigured")
@@ -121,7 +93,6 @@ export const useBlockchainScore = () => {
           playerName,
           address
         ) as `0x${string}`;
-        console.log("🔑 Generated gameHash:", gameHash);
 
         // Appeler l'API pour obtenir la signature
         let signature: `0x${string}` | undefined = undefined;
@@ -146,7 +117,6 @@ export const useBlockchainScore = () => {
           const data = await response.json();
           signature = data.signature;
           if (!signature) throw new Error("No signature returned");
-          console.log("✍️ Received signature:", signature);
         } catch {
           showError(
             t("common.error"),
@@ -163,7 +133,6 @@ export const useBlockchainScore = () => {
             functionName: "recordScore",
             args: [BigInt(score), playerName, gameHash, signature],
           });
-          console.log("📤 writeContract called successfully");
         } catch (writeError) {
           console.error("❌ writeContract error:", writeError);
           showError(t("common.error"), t("features.blockchain.errorSaving"));
@@ -176,7 +145,6 @@ export const useBlockchainScore = () => {
         showError(t("common.error"), t("features.blockchain.errorSaving"));
         return false;
       } finally {
-        console.log("🏁 Setting isRecording to false");
         setIsRecording(false);
       }
     },
@@ -209,10 +177,6 @@ export const useBlockchainScore = () => {
   // Handle transaction status with useEffect to avoid infinite loops
   useEffect(() => {
     if (isSuccess && hash) {
-      console.log(
-        "🎉 Transaction successful, showing success toast with hash:",
-        hash
-      );
       showSuccess(
         "Transaction Successful",
         "Your score has been successfully saved!",
@@ -224,7 +188,6 @@ export const useBlockchainScore = () => {
 
   useEffect(() => {
     if (error && error.message) {
-      console.log("❌ Transaction failed, showing error toast:", error.message);
       showError(
         "Error",
         `Failed to save your score. Please try again.: ${error.message}`

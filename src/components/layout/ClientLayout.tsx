@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Header } from "./Header";
+import { ThreeColumnLayout } from "./ThreeColumnLayout";
 import { Toaster } from "@/components/ui/Toaster";
 
 interface ClientLayoutProps {
@@ -11,8 +11,7 @@ interface ClientLayoutProps {
 export function ClientLayout({ children }: ClientLayoutProps) {
   return (
     <>
-      <Header />
-      {children}
+      <ThreeColumnLayout>{children}</ThreeColumnLayout>
       <Toaster />
     </>
   );

@@ -29,7 +29,7 @@ export const LanguageSelector = memo(function LanguageSelector() {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative pointer-events-auto">
       <Button
         onClick={handleToggle}
         variant="ghost"

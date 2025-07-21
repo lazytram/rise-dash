@@ -4,6 +4,8 @@ import { PowerUpLevels, PowerUpType } from "@/types/shop";
 export interface PowerUpEffect {
   duration: number;
   speedMultiplier?: number;
+  jumpMultiplier?: number;
+  slowMultiplier?: number;
   projectileCount?: number;
   ammoCount?: number;
 }
@@ -26,7 +28,8 @@ export class LocalPowerUpService implements PowerUpService {
     this.levels = {
       shield: 1,
       infiniteAmmo: 1,
-      speedBoost: 1,
+      jumpBoost: 1, // Renamed from speedBoost
+      slowMotion: 1, // New power-up
       multiShot: 1,
       riceRocketAmmo: 1,
     };
@@ -50,6 +53,8 @@ export class LocalPowerUpService implements PowerUpService {
     return {
       duration: upgrade.duration || 3000,
       speedMultiplier: upgrade.speedMultiplier,
+      jumpMultiplier: upgrade.jumpMultiplier,
+      slowMultiplier: upgrade.slowMultiplier,
       projectileCount: upgrade.projectileCount,
       ammoCount: upgrade.ammoCount,
     };
@@ -96,7 +101,8 @@ export class LocalPowerUpService implements PowerUpService {
     this.levels = {
       shield: 1,
       infiniteAmmo: 1,
-      speedBoost: 1,
+      jumpBoost: 1, // Renamed from speedBoost
+      slowMotion: 1, // New power-up
       multiShot: 1,
       riceRocketAmmo: 1,
     };
