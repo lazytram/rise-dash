@@ -70,13 +70,23 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = ({
       });
     }
 
-    if (player.hasSpeedBoost) {
+    if (player.hasJumpBoost) {
       activePowerUps.push({
-        type: PowerUpType.SPEED_BOOST,
-        name: t("features.powerUps.speedBoost"),
-        icon: POWERUP_UPGRADES.speedBoost.icon,
-        color: "orange",
-        endTime: player.powerUpEndTimes.speedBoost,
+        type: PowerUpType.JUMP_BOOST,
+        name: t("features.powerUps.jumpBoost"),
+        icon: POWERUP_UPGRADES.jumpBoost.icon,
+        color: "purple",
+        endTime: player.powerUpEndTimes.jumpBoost,
+      });
+    }
+
+    if (player.hasSlowMotion) {
+      activePowerUps.push({
+        type: PowerUpType.SLOW_MOTION,
+        name: t("features.powerUps.slowMotion"),
+        icon: POWERUP_UPGRADES.slowMotion.icon,
+        color: "blue",
+        endTime: player.powerUpEndTimes.slowMotion,
       });
     }
 

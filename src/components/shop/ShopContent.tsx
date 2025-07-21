@@ -13,7 +13,6 @@ import {
   getPowerUpService,
   LocalPowerUpService,
 } from "@/services/powerUpService";
-import { SceneType } from "@/types/scenes";
 
 export const ShopContent: React.FC = () => {
   const { t } = useTranslations();
@@ -21,7 +20,8 @@ export const ShopContent: React.FC = () => {
   const [powerUpLevels, setPowerUpLevels] = useState({
     shield: 1,
     infiniteAmmo: 1,
-    speedBoost: 1,
+    jumpBoost: 1, // Renamed from speedBoost
+    slowMotion: 1, // New power-up
     multiShot: 1,
     riceRocketAmmo: 1,
   });
@@ -102,7 +102,6 @@ export const ShopContent: React.FC = () => {
         <SceneHeader
           title={t("scenes.shop.title")}
           subtitle={t("scenes.shop.subtitle")}
-          menuColorKey={SceneType.SHOP}
         />
 
         {/* RICE Balance Display */}

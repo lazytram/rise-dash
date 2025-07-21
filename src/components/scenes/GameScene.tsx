@@ -6,7 +6,7 @@ import { SceneContainer } from "@/components/ui/SceneContainer";
 
 export const GameScene = memo(function GameScene() {
   return (
-    <SceneContainer maxWidth="full" centered={false} className="relative">
+    <SceneContainer maxWidth="full" centered={true} className="relative">
       <Game />
     </SceneContainer>
   );

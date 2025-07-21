@@ -93,7 +93,8 @@ export const BOSS_COLORS = {
 export const POWERUP_COLORS = {
   SHIELD: "#00CED1", // Cyan
   INFINITE_AMMO: "#32CD32", // Lime green
-  SPEED_BOOST: "#FF69B4", // Hot pink
+  JUMP_BOOST: "#FF69B4", // Hot pink
+  SLOW_MOTION: "#4169E1", // Royal blue
   MULTI_SHOT: "#FF8C00", // Dark orange
 } as const;
 
@@ -227,6 +228,17 @@ export const MENU_COLORS = {
       from: "#f97316",
       via: "#ea580c",
       to: "#c2410c",
+    },
+  },
+  dailyStreak: {
+    name: "Daily Streak",
+    icon: "🎰",
+    gradientFrom: "#8b5cf6",
+    gradientTo: "#7c3aed",
+    titleGradient: {
+      from: "#8b5cf6",
+      via: "#7c3aed",
+      to: "#6d28d9",
     },
   },
 } as const;

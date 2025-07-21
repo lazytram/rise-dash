@@ -17,8 +17,11 @@ export class PowerUpRenderer extends BaseRenderer {
       case "infinite_ammo":
         this.drawInfiniteAmmoPowerUp(powerUp);
         break;
-      case "speed_boost":
-        this.drawSpeedBoostPowerUp(powerUp);
+      case "jump_boost":
+        this.drawJumpBoostPowerUp(powerUp);
+        break;
+      case "slow_motion":
+        this.drawSlowMotionPowerUp(powerUp);
         break;
       case "multi_shot":
         this.drawMultiShotPowerUp(powerUp);
@@ -89,8 +92,8 @@ export class PowerUpRenderer extends BaseRenderer {
     this.ctx.fillText("∞", centerX, centerY + 3);
   }
 
-  private drawSpeedBoostPowerUp(powerUp: PowerUp): void {
-    // Draw lightning bolt
+  private drawJumpBoostPowerUp(powerUp: PowerUp): void {
+    // Draw kangaroo/jump symbol
     this.ctx.fillStyle = powerUp.color;
     this.ctx.strokeStyle = "#ffffff";
     this.ctx.lineWidth = 2;
@@ -99,21 +102,50 @@ export class PowerUpRenderer extends BaseRenderer {
     const centerY = powerUp.y + powerUp.height / 2;
     const size = Math.min(powerUp.width, powerUp.height) / 2 - 2;
 
-    // Draw lightning shape
+    // Draw jump arrow
     this.ctx.beginPath();
+    this.ctx.moveTo(centerX, centerY + size);
+    this.ctx.lineTo(centerX, centerY - size);
+    this.ctx.lineTo(centerX - size / 3, centerY - size / 2);
     this.ctx.moveTo(centerX, centerY - size);
-    this.ctx.lineTo(centerX - size / 2, centerY - size / 3);
-    this.ctx.lineTo(centerX + size / 2, centerY + size / 3);
-    this.ctx.lineTo(centerX, centerY + size);
-    this.ctx.closePath();
-    this.ctx.fill();
+    this.ctx.lineTo(centerX + size / 3, centerY - size / 2);
     this.ctx.stroke();
 
-    // Draw speed symbol
+    // Draw jump symbol
     this.ctx.fillStyle = "#ffffff";
     this.ctx.font = "12px Arial";
     this.ctx.textAlign = "center";
-    this.ctx.fillText("⚡", centerX, centerY + 4);
+    this.ctx.fillText("🦘", centerX, centerY + 4);
+  }
+
+  private drawSlowMotionPowerUp(powerUp: PowerUp): void {
+    // Draw clock/slow motion symbol
+    this.ctx.fillStyle = powerUp.color;
+    this.ctx.strokeStyle = "#ffffff";
+    this.ctx.lineWidth = 2;
+
+    const centerX = powerUp.x + powerUp.width / 2;
+    const centerY = powerUp.y + powerUp.height / 2;
+    const size = Math.min(powerUp.width, powerUp.height) / 2 - 2;
+
+    // Draw clock circle
+    this.ctx.beginPath();
+    this.ctx.arc(centerX, centerY, size, 0, 2 * Math.PI);
+    this.ctx.stroke();
+
+    // Draw clock hands
+    this.ctx.beginPath();
+    this.ctx.moveTo(centerX, centerY);
+    this.ctx.lineTo(centerX, centerY - size / 2);
+    this.ctx.moveTo(centerX, centerY);
+    this.ctx.lineTo(centerX + size / 3, centerY);
+    this.ctx.stroke();
+
+    // Draw slow motion symbol
+    this.ctx.fillStyle = "#ffffff";
+    this.ctx.font = "12px Arial";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText("⏰", centerX, centerY + 4);
   }
 
   private drawMultiShotPowerUp(powerUp: PowerUp): void {

@@ -25,8 +25,8 @@ export const SceneContainer = ({
   centered = true,
 }: SceneContainerProps) => {
   const containerClasses = centered
-    ? "min-h-[calc(100vh-80px)] flex items-center justify-center p-4"
-    : "min-h-[calc(100vh-80px)] p-4";
+    ? "min-h-screen flex items-center justify-center p-4"
+    : "min-h-screen p-4";
 
   const contentClasses = `w-full ${maxWidthClasses[maxWidth]} ${className}`;
 

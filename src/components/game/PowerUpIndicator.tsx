@@ -48,14 +48,26 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = ({
       });
     }
 
-    if (player.hasSpeedBoost) {
+    if (player.hasJumpBoost) {
       powerUps.push({
-        type: "speed_boost",
-        name: t("features.powerUps.speedBoost"),
-        icon: "⚡",
+        type: "jump_boost",
+        name: t("features.powerUps.jumpBoost"),
+        icon: "🦘",
         remainingTime: Math.max(
           0,
-          Math.ceil((player.powerUpEndTimes.speedBoost - Date.now()) / 1000)
+          Math.ceil((player.powerUpEndTimes.jumpBoost - Date.now()) / 1000)
+        ),
+      });
+    }
+
+    if (player.hasSlowMotion) {
+      powerUps.push({
+        type: "slow_motion",
+        name: t("features.powerUps.slowMotion"),
+        icon: "⏰",
+        remainingTime: Math.max(
+          0,
+          Math.ceil((player.powerUpEndTimes.slowMotion - Date.now()) / 1000)
         ),
       });
     }

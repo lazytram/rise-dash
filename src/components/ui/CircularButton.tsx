@@ -35,7 +35,7 @@ export function CircularButton({
       </div>
 
       {/* Hover tooltip */}
-      <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-1 bg-black/80 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-20">
+      <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-1 bg-black/80 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-30">
         {tooltip}
         {/* Arrow pointing left */}
         <div className="absolute right-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-black/80"></div>
@@ -45,14 +45,14 @@ export function CircularButton({
 
   if (onClick) {
     return (
-      <button onClick={onClick} className="group">
+      <button onClick={onClick} className="group pointer-events-auto">
         {buttonContent}
       </button>
     );
   }
 
   return (
-    <Link href={href!} className="group">
+    <Link href={href!} className="group pointer-events-auto">
       {buttonContent}
     </Link>
   );

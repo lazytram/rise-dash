@@ -89,7 +89,7 @@
         "enemies": "Enemies",
         "enemiesDesc": "Samurais appear every 50m and shoot shurikens. Shoot them 3 times to defeat them. Ninjas and bosses appear at higher distances.",
         "powerUps": "Power-ups",
-        "powerUpsDesc": "Collect power-ups to gain temporary advantages: Shield (protection), Infinite Ammo (unlimited shots), Speed Boost (faster movement), Multi Shot (multiple projectiles)."
+        "powerUpsDesc": "Collect power-ups to gain temporary advantages: Shield (protection), Infinite Ammo (unlimited shots), Jump Boost (higher jumps), Slow Motion (slows enemies), Multi Shot (multiple projectiles)."
       },
       "tips": {
         "title": "Tips",
@@ -97,6 +97,39 @@
         "tip2": "Save your rice rockets for difficult situations",
         "tip3": "Collect power-ups whenever possible to increase your survival chances",
         "tip4": "The difficulty increases every 1000m - be prepared for more challenging enemies"
+      }
+    },
+    "dailyStreak": {
+      "title": "Daily Reveal",
+      "subtitle": "Reveal a card once a day to win RICE!",
+      "readyToReveal": "Ready to reveal!",
+      "nextRevealIn": "Next reveal in:",
+      "possibleRewards": "Possible rewards",
+      "congratulations": "Congratulations!",
+      "youWon": "You won {{amount}} RICE!",
+      "tooBad": "Too bad!",
+      "nothingWon": "You didn't win anything this time. Come back tomorrow!",
+      "error": "Error",
+      "revealError": "Failed to reveal card. Please try again.",
+      "riceCard": "RICE CARD",
+      "tapToReveal": "Tap to reveal",
+      "dailyReward": "Daily Reward",
+      "reveal": "REVEAL",
+      "completed": "COMPLETED",
+      "rarity": {
+        "common": "Common",
+        "uncommon": "Uncommon",
+        "rare": "Rare",
+        "epic": "Epic",
+        "legendary": "Legendary"
+      },
+      "cards": {
+        "rice_grain": "Rice Grain",
+        "rice_bowl": "Rice Bowl",
+        "onigiri": "Onigiri",
+        "sushi": "Sushi",
+        "rice_cracker": "Rice Cracker",
+        "bento_box": "Bento Box"
       }
     }
   },
@@ -122,20 +155,23 @@
       "title": "Power-ups",
       "shield": "Shield",
       "infiniteAmmo": "Infinite Ammo",
-      "speedBoost": "Speed Boost",
+      "jumpBoost": "Jump",
+      "slowMotion": "Slow Motion",
       "multiShot": "Multi Shot",
       "riceRocketAmmo": "Rocket Ammo",
       "shortNames": {
         "shield": "Shield",
-        "infiniteAmmo": "Infinite Ammo",
-        "speedBoost": "Speed Boost",
+        "infiniteAmmo": "Ammo ∞",
+        "jumpBoost": "Jump",
+        "slowMotion": "Slow Motion",
         "multiShot": "Multi Shot",
-        "riceRocketAmmo": "Rocket Ammo"
+        "riceRocketAmmo": "Ammo"
       },
       "description": {
         "shield": "Protection against collisions",
         "infiniteAmmo": "Unlimited shots",
-        "speedBoost": "Faster movement",
+        "jumpBoost": "Higher jumps",
+        "slowMotion": "Slows down enemies",
         "multiShot": "Multiple projectiles",
         "riceRocketAmmo": "Maximum ammunition capacity"
       },
@@ -152,7 +188,7 @@
       "upgrade": "Upgrade",
       "maxLevelReached": "Max Level Reached!",
       "insufficientRice": "Insufficient RICE",
-      "noActive": "No active power-up"
+      "noActive": "No active power-ups"
     },
     "difficulty": {
       "beginner": "Beginner",
@@ -217,6 +253,7 @@
     "next": "Next",
     "page": "Page",
     "you": "You",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "dailyReward": "Daily Reward"
   }
 }

@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text } from "./Text";
 import { Button } from "./Button";
 import { useToastStore, Toast } from "@/store/toastStore";
 
 export const Toaster: React.FC = () => {
-  const { toasts, removeToast } = useToastStore();
+  const { toasts, removeToast, clearToasts } = useToastStore();
   const [exitingToasts, setExitingToasts] = useState<Set<string>>(new Set());
+
+  // Clear any existing toasts when component mounts
+  useEffect(() => {
+    clearToasts();
+  }, [clearToasts]);
 
   const getToastStyles = (type: Toast["type"]) => {
     switch (type) {

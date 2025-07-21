@@ -6,7 +6,7 @@ interface GameCanvasProps {
 
 export const GameCanvas = ({ canvasRef }: GameCanvasProps) => {
   return (
-    <div className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6 rounded-lg">
+    <div className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6 rounded-lg flex items-center justify-center">
       <canvas
         ref={canvasRef}
         className="border-2 border-white/20 rounded-lg"

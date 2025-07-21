@@ -16,19 +16,22 @@ export const player: Player = {
   // Power-up states
   hasShield: false,
   hasInfiniteAmmo: false,
-  hasSpeedBoost: false,
+  hasJumpBoost: false, // Renamed from hasSpeedBoost
+  hasSlowMotion: false, // New power-up
   hasMultiShot: false,
   powerUpEndTimes: {
     shield: 0,
     infiniteAmmo: 0,
-    speedBoost: 0,
+    jumpBoost: 0, // Renamed from speedBoost
+    slowMotion: 0, // New power-up
     multiShot: 0,
   },
   // Power-up levels
   powerUpLevels: {
     shield: 1,
     infiniteAmmo: 1,
-    speedBoost: 1,
+    jumpBoost: 1, // Renamed from speedBoost
+    slowMotion: 1, // New power-up
     multiShot: 1,
     riceRocketAmmo: 1,
   },
