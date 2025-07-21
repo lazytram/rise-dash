@@ -99,6 +99,62 @@
         "tip4": "The difficulty increases every 1000m - be prepared for more challenging enemies"
       }
     },
+    "tutorial": {
+      "title": "Welcome to Rise Dash!",
+      "subtitle": "Learn the basics of the game in a few steps",
+      "objective": {
+        "title": "🎯 Game Objective",
+        "description": "Survive as long as possible by avoiding obstacles and eliminating enemies. Your distance traveled becomes your score!"
+      },
+      "controls": {
+        "title": "🎮 Controls",
+        "movement": "Movement",
+        "jump": "Jump",
+        "shoot": "Shoot",
+        "start": "Start",
+        "space": "Space"
+      },
+      "enemies": {
+        "title": "⚔️ Enemies",
+        "samurai": "Samurais",
+        "samuraiDesc": "Appear every 50m, shoot shurikens. 3 shots to defeat them.",
+        "ninja": "Ninjas",
+        "ninjaDesc": "Faster and harder to hit.",
+        "boss": "Bosses",
+        "bossDesc": "Powerful enemies that appear at great distances."
+      },
+      "powerUps": {
+        "title": "💎 Power-ups",
+        "shield": "Shield",
+        "shieldDesc": "Temporary protection against damage.",
+        "infiniteAmmo": "Infinite Ammo",
+        "infiniteAmmoDesc": "Unlimited shots for 10 seconds.",
+        "jumpBoost": "Jump Boost",
+        "jumpBoostDesc": "Higher jumps for 15 seconds.",
+        "slowMotion": "Slow Motion",
+        "slowMotionDesc": "Slows enemies for 8 seconds.",
+        "multiShot": "Multi Shot",
+        "multiShotDesc": "Shoots multiple projectiles at once."
+      },
+      "scoring": {
+        "title": "🏆 Scoring System",
+        "distance": "Distance traveled = Main score",
+        "enemies": "Enemies eliminated = Bonus",
+        "powerUps": "Power-ups collected = Bonus",
+        "survival": "Survival time = Bonus"
+      },
+      "tips": {
+        "title": "💡 Pro Tips",
+        "tip1": "Time your jumps precisely to avoid obstacles",
+        "tip2": "Save your ammo for difficult situations",
+        "tip3": "Collect power-ups as soon as possible",
+        "tip4": "Difficulty increases progressively - stay focused!"
+      },
+      "buttons": {
+        "understood": "Got it! 🚀",
+        "close": "Close"
+      }
+    },
     "dailyStreak": {
       "title": "Daily Reveal",
       "subtitle": "Reveal a card once a day to win RICE!",
@@ -255,5 +311,66 @@
     "you": "You",
     "confirm": "Confirm",
     "dailyReward": "Daily Reward"
+  },
+  "tutorial": {
+    "welcome": {
+      "title": "Welcome to Rise Dash! 🎮",
+      "description": "Get ready for an exciting adventure! Let's take a quick tour to help you get started."
+    },
+    "gameOverview": {
+      "title": "Game Overview 🎯",
+      "description": "Rise Dash is a fast-paced action game where you control a character jumping through obstacles, collecting power-ups, and defeating enemies to achieve the highest score possible."
+    },
+    "controls": {
+      "title": "Controls 🎮",
+      "description": "• SPACE or UP ARROW: Jump\n• LEFT/RIGHT ARROWS: Move horizontally\n• Mouse: Aim and shoot\n• Collect power-ups to enhance your abilities!"
+    },
+    "objectives": {
+      "title": "Objectives 🎯",
+      "description": "• Survive as long as possible\n• Collect sushi for points\n• Defeat enemies (samurai, ninjas, bosses)\n• Avoid obstacles and enemy projectiles\n• Complete daily challenges for rewards"
+    },
+    "powerUps": {
+      "title": "Power-Ups ⚡",
+      "description": "• 🛡️ Shield: Temporary invincibility\n• 🔫 Infinite Ammo: Unlimited shooting\n• 🦘 Jump Boost: Higher jumps\n• ⏰ Slow Motion: Slower enemies\n• 🎯 Multi Shot: Multiple projectiles"
+    },
+    "scoreSystem": {
+      "title": "Score System 📊",
+      "description": "• Sushi collection: +10 points each\n• Enemy defeats: +50 to +200 points\n• Survival time: +1 point per second\n• Power-up usage: Bonus multipliers\n• Daily streaks: Extra rewards!"
+    },
+    "navigation": {
+      "title": "Navigation 🧭",
+      "description": "Use the menu buttons at the top to navigate between different sections of the game. Each section has unique features and rewards!"
+    },
+    "profileSection": {
+      "title": "Profile Section 👤",
+      "description": "View your game statistics, achievements, and progress. Track your best scores, total playtime, and unlock special rewards as you improve!"
+    },
+    "leaderboardSection": {
+      "title": "Leaderboard 🏆",
+      "description": "Compete with other players! Check the global leaderboard to see how you rank and challenge yourself to reach the top positions."
+    },
+    "shopSection": {
+      "title": "Shop 🏪",
+      "description": "Purchase power-ups and upgrades using your earned points. Stock up on useful items to enhance your gameplay and achieve higher scores!"
+    },
+    "dailyStreakSection": {
+      "title": "Daily Streak 🎰",
+      "description": "Play daily to maintain your streak and earn special rewards! The longer your streak, the better the rewards. Don't break the chain!"
+    },
+    "complete": {
+      "title": "You're All Set! 🚀",
+      "description": "Congratulations! You now know everything you need to start your Rise Dash adventure. Jump in and start playing - good luck!"
+    },
+    "actions": {
+      "previous": "Previous",
+      "next": "Next",
+      "skip": "Skip",
+      "getStarted": "Get Started!",
+      "replayTutorial": "Replay Tutorial",
+      "startTutorial": "Start Tutorial"
+    },
+    "progress": "Progress",
+    "newUser": "New?",
+    "startTutorial": "Start Tutorial"
   }
 }
