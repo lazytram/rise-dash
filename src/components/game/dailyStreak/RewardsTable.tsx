@@ -48,7 +48,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = () => {
 
               <div className="text-center">
                 <div className="text-white font-semibold text-xs truncate max-w-full drop-shadow-sm">
-                  {reward.label}
+                  {t(`scenes.dailyStreak.cards.${reward.label}`)}
                 </div>
               </div>
 

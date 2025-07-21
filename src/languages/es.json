@@ -122,6 +122,14 @@
         "rare": "Raro",
         "epic": "Épico",
         "legendary": "Legendario"
+      },
+      "cards": {
+        "rice_grain": "Grano de Arroz",
+        "rice_bowl": "Tazón de Arroz",
+        "onigiri": "Onigiri",
+        "sushi": "Sushi",
+        "rice_cracker": "Galleta de Arroz",
+        "bento_box": "Caja Bento"
       }
     }
   },

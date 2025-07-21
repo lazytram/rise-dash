@@ -140,7 +140,9 @@ export const Card = memo<CardProps>(
                 textShadow: "0 1px 2px rgba(0,0,0,0.1)",
               }}
             >
-              {card.rarity.toUpperCase()}
+              {t(
+                `scenes.dailyStreak.rarity.${card.rarity.toLowerCase()}`
+              ).toUpperCase()}
             </div>
 
             {/* Enhanced emoji with better sizing and effects */}
@@ -150,7 +152,7 @@ export const Card = memo<CardProps>(
 
             {/* Enhanced card name with better typography */}
             <div className="text-2xl font-bold text-gray-800 mb-3 tracking-wide drop-shadow-sm">
-              {card.label}
+              {t(`scenes.dailyStreak.cards.${card.label}`)}
             </div>
 
             {/* Enhanced value with better visibility */}
