@@ -278,12 +278,14 @@ export class GameLogic {
       // Reset power-up states
       hasShield: false,
       hasInfiniteAmmo: false,
-      hasSpeedBoost: false,
+      hasJumpBoost: false,
+      hasSlowMotion: false,
       hasMultiShot: false,
       powerUpEndTimes: {
         shield: 0,
         infiniteAmmo: 0,
-        speedBoost: 0,
+        jumpBoost: 0,
+        slowMotion: 0,
         multiShot: 0,
       },
     };
@@ -343,13 +345,12 @@ export class GameLogic {
   static makePlayerJump(player: Player): Player {
     if (!this.canJump(player)) return player;
 
-    // Apply speed boost effect to jump strength if active
+    // Apply jump boost effect to jump strength if active
     let jumpStrength = GAME_CONSTANTS.JUMP_STRENGTH;
-    if (player.hasSpeedBoost) {
-      const speedEffect = getPowerUpEffect(PowerUpType.SPEED_BOOST);
-      if (speedEffect.speedMultiplier) {
-        jumpStrength =
-          GAME_CONSTANTS.JUMP_STRENGTH * speedEffect.speedMultiplier;
+    if (player.hasJumpBoost) {
+      const jumpEffect = getPowerUpEffect(PowerUpType.JUMP_BOOST);
+      if (jumpEffect.jumpMultiplier) {
+        jumpStrength = GAME_CONSTANTS.JUMP_STRENGTH * jumpEffect.jumpMultiplier;
       }
     }
 
@@ -434,17 +435,17 @@ export class GameLogic {
   // SUSHI MANAGEMENT
   // ================================
 
-  static createSushi(distance: number): Sushi {
+  static createSushi(distance: number, player?: Player): Sushi {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
-    const baseSpeed = this.getCurrentSushiSpeed(distance);
+    const baseSpeed = this.getCurrentSushiSpeed(distance, player);
     const speedVariation = this.calculateSushiSpeedVariation();
 
     return {
       id: this.generateEntityId(),
       x: GAME_CONSTANTS.CANVAS_WIDTH,
-      y: groundY - player.width,
-      width: player.width,
-      height: player.width,
+      y: groundY - 30, // Default sushi height
+      width: 30, // Default sushi width
+      height: 30, // Default sushi height
       velocityX: baseSpeed * speedVariation,
       color: SUSHI_COLORS.BASE,
     };
@@ -538,7 +539,7 @@ export class GameLogic {
   }
 
   static addSushi(gameState: GameState): GameState {
-    const newSushi = this.createSushi(gameState.distance);
+    const newSushi = this.createSushi(gameState.distance, gameState.player);
     return {
       ...gameState,
       sushis: [...gameState.sushis, newSushi],
@@ -549,7 +550,7 @@ export class GameLogic {
   // TORII MANAGEMENT
   // ================================
 
-  static createTorii(distance: number): Torii {
+  static createTorii(distance: number, player?: Player): Torii {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
     return {
@@ -558,7 +559,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.TORII_HEIGHT,
       width: GAME_CONSTANTS.TORII_WIDTH,
       height: GAME_CONSTANTS.TORII_HEIGHT,
-      velocityX: this.getCurrentSushiSpeed(distance), // Use same speed as sushi
+      velocityX: this.getCurrentSushiSpeed(distance, player), // Use same speed as sushi
       color: TORII_COLORS.PRIMARY,
     };
   }
@@ -583,7 +584,7 @@ export class GameLogic {
   }
 
   static addTorii(gameState: GameState): GameState {
-    const newTorii = this.createTorii(gameState.distance);
+    const newTorii = this.createTorii(gameState.distance, gameState.player);
     return {
       ...gameState,
       toriis: [...gameState.toriis, newTorii],
@@ -613,19 +614,52 @@ export class GameLogic {
     return Math.pow(1 + GAME_CONSTANTS.SPEED_INCREASE_PERCENTAGE, speedLevel);
   }
 
-  static getCurrentSushiSpeed(distance: number): number {
+  static getCurrentSushiSpeed(distance: number, player?: Player): number {
     const speedMultiplier = this.calculateSpeedMultiplier(distance);
-    return GAME_CONSTANTS.BASE_SUSHI_SPEED * speedMultiplier;
+    let speed = GAME_CONSTANTS.BASE_SUSHI_SPEED * speedMultiplier;
+
+    // Apply slow motion effect if active
+    if (player?.hasSlowMotion) {
+      const slowEffect = getPowerUpEffect(PowerUpType.SLOW_MOTION);
+      if (slowEffect.slowMultiplier) {
+        speed *= slowEffect.slowMultiplier;
+      }
+    }
+
+    return speed;
   }
 
-  static getCurrentSamuraiSpeed(distance: number): number {
+  static getCurrentSamuraiSpeed(distance: number, player?: Player): number {
     const speedMultiplier = this.calculateSpeedMultiplier(distance);
-    return GAME_CONSTANTS.BASE_SAMURAI_SPEED * speedMultiplier;
+    let speed = GAME_CONSTANTS.BASE_SAMURAI_SPEED * speedMultiplier;
+
+    // Apply slow motion effect if active
+    if (player?.hasSlowMotion) {
+      const slowEffect = getPowerUpEffect(PowerUpType.SLOW_MOTION);
+      if (slowEffect.slowMultiplier) {
+        speed *= slowEffect.slowMultiplier;
+      }
+    }
+
+    return speed;
   }
 
-  static getCurrentSamuraiBulletSpeed(distance: number): number {
+  static getCurrentSamuraiBulletSpeed(
+    distance: number,
+    player?: Player
+  ): number {
     const speedMultiplier = this.calculateSpeedMultiplier(distance);
-    return GAME_CONSTANTS.BASE_SAMURAI_BULLET_SPEED * speedMultiplier;
+    let speed = GAME_CONSTANTS.BASE_SAMURAI_BULLET_SPEED * speedMultiplier;
+
+    // Apply slow motion effect if active
+    if (player?.hasSlowMotion) {
+      const slowEffect = getPowerUpEffect(PowerUpType.SLOW_MOTION);
+      if (slowEffect.slowMultiplier) {
+        speed *= slowEffect.slowMultiplier;
+      }
+    }
+
+    return speed;
   }
 
   // ================================
@@ -634,7 +668,8 @@ export class GameLogic {
 
   static createSamurai(
     distance: number,
-    difficultyLevel: DifficultyLevel
+    difficultyLevel: DifficultyLevel,
+    player?: Player
   ): Samurai {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
@@ -644,7 +679,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.SAMURAI_HEIGHT,
       width: GAME_CONSTANTS.SAMURAI_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_HEIGHT,
-      velocityX: this.getCurrentSamuraiSpeed(distance),
+      velocityX: this.getCurrentSamuraiSpeed(distance, player),
       color: SAMURAI_COLORS.BODY,
       lives: difficultyLevel.samuraiLives,
       maxLives: difficultyLevel.samuraiLives,
@@ -687,7 +722,8 @@ export class GameLogic {
   static addSamurai(gameState: GameState): GameState {
     const newSamurai = this.createSamurai(
       gameState.distance,
-      gameState.difficultyLevel
+      gameState.difficultyLevel,
+      gameState.player
     );
     return {
       ...gameState,
@@ -698,7 +734,8 @@ export class GameLogic {
   static createSamuraiBullet(
     samurai: Samurai,
     distance: number,
-    difficultyLevel: DifficultyLevel
+    difficultyLevel: DifficultyLevel,
+    player?: Player
   ): SamuraiBullet {
     return {
       id: Date.now().toString() + Math.random(),
@@ -706,7 +743,7 @@ export class GameLogic {
       y: samurai.y + samurai.height / 2, // Same height as samurai center
       width: GAME_CONSTANTS.SAMURAI_BULLET_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_BULLET_HEIGHT,
-      velocityX: difficultyLevel.samuraiBulletSpeed, // Use difficulty-based speed
+      velocityX: this.getCurrentSamuraiBulletSpeed(distance, player), // Use difficulty-based speed
       velocityY: 0, // No vertical movement
       color: SAMURAI_BULLET_COLORS.BODY,
     };
@@ -727,11 +764,17 @@ export class GameLogic {
   static makeSamuraiShoot(
     samurai: Samurai,
     distance: number,
-    difficultyLevel: DifficultyLevel
+    difficultyLevel: DifficultyLevel,
+    player?: Player
   ): SamuraiBullet | null {
     const currentTime = Date.now();
     if (currentTime - samurai.lastShotTime >= samurai.shotCooldown) {
-      return this.createSamuraiBullet(samurai, distance, difficultyLevel);
+      return this.createSamuraiBullet(
+        samurai,
+        distance,
+        difficultyLevel,
+        player
+      );
     }
     return null;
   }
@@ -859,7 +902,8 @@ export class GameLogic {
       const bullet = this.makeSamuraiShoot(
         samurai,
         gameState.distance,
-        gameState.difficultyLevel
+        gameState.difficultyLevel,
+        gameState.player
       );
       if (bullet) {
         newSamuraiBullets.push(bullet);
@@ -954,7 +998,8 @@ export class GameLogic {
 
   static createNinja(
     distance: number,
-    difficultyLevel: DifficultyLevel
+    difficultyLevel: DifficultyLevel,
+    player?: Player
   ): Ninja {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
@@ -964,7 +1009,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.NINJA_HEIGHT,
       width: GAME_CONSTANTS.NINJA_WIDTH,
       height: GAME_CONSTANTS.NINJA_HEIGHT,
-      velocityX: GAME_CONSTANTS.NINJA_SPEED * difficultyLevel.speedMultiplier,
+      velocityX: this.getCurrentSamuraiSpeed(distance, player), // Use same speed calculation as samurai
       color: NINJA_COLORS.BODY,
       lives: difficultyLevel.ninjaLives,
       maxLives: difficultyLevel.ninjaLives,
@@ -1039,7 +1084,8 @@ export class GameLogic {
   static addNinja(gameState: GameState): GameState {
     const newNinja = this.createNinja(
       gameState.distance,
-      gameState.difficultyLevel
+      gameState.difficultyLevel,
+      gameState.player
     );
     return {
       ...gameState,
@@ -1051,7 +1097,11 @@ export class GameLogic {
   // BOSS MANAGEMENT
   // ================================
 
-  static createBoss(distance: number, difficultyLevel: DifficultyLevel): Boss {
+  static createBoss(
+    distance: number,
+    difficultyLevel: DifficultyLevel,
+    player?: Player
+  ): Boss {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
     return {
@@ -1060,7 +1110,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.BOSS_HEIGHT,
       width: GAME_CONSTANTS.BOSS_WIDTH,
       height: GAME_CONSTANTS.BOSS_HEIGHT,
-      velocityX: GAME_CONSTANTS.BOSS_SPEED * difficultyLevel.speedMultiplier,
+      velocityX: this.getCurrentSamuraiSpeed(distance, player), // Use same speed calculation as samurai
       color: BOSS_COLORS.BODY,
       lives: difficultyLevel.bossLives,
       maxLives: difficultyLevel.bossLives,
@@ -1095,7 +1145,8 @@ export class GameLogic {
   static addBoss(gameState: GameState): GameState {
     const newBoss = this.createBoss(
       gameState.distance,
-      gameState.difficultyLevel
+      gameState.difficultyLevel,
+      gameState.player
     );
     return {
       ...gameState,
@@ -1107,7 +1158,7 @@ export class GameLogic {
   // POWER-UP MANAGEMENT
   // ================================
 
-  static createPowerUp(distance: number): PowerUp {
+  static createPowerUp(distance: number, player?: Player): PowerUp {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
     const powerUpTypes = Object.values(GAME_CONSTANTS.POWERUP_TYPES);
     const randomType =
@@ -1119,7 +1170,7 @@ export class GameLogic {
       y: groundY - GAME_CONSTANTS.POWERUP_HEIGHT,
       width: GAME_CONSTANTS.POWERUP_WIDTH,
       height: GAME_CONSTANTS.POWERUP_HEIGHT,
-      velocityX: this.getCurrentSushiSpeed(distance),
+      velocityX: this.getCurrentSushiSpeed(distance, player),
       color:
         POWERUP_COLORS[randomType.toUpperCase() as keyof typeof POWERUP_COLORS],
       type: randomType,
@@ -1151,7 +1202,7 @@ export class GameLogic {
   }
 
   static addPowerUp(gameState: GameState): GameState {
-    const newPowerUp = this.createPowerUp(gameState.distance);
+    const newPowerUp = this.createPowerUp(gameState.distance, gameState.player);
     return {
       ...gameState,
       powerUps: [...gameState.powerUps, newPowerUp],
@@ -1166,12 +1217,14 @@ export class GameLogic {
       ...player,
       hasShield: false,
       hasInfiniteAmmo: false,
-      hasSpeedBoost: false,
+      hasJumpBoost: false,
+      hasSlowMotion: false,
       hasMultiShot: false,
       powerUpEndTimes: {
         shield: 0,
         infiniteAmmo: 0,
-        speedBoost: 0,
+        jumpBoost: 0,
+        slowMotion: 0,
         multiShot: 0,
       },
     };
@@ -1185,8 +1238,11 @@ export class GameLogic {
       case "infinite_ammo":
         powerUpType = PowerUpType.INFINITE_AMMO;
         break;
-      case "speed_boost":
-        powerUpType = PowerUpType.SPEED_BOOST;
+      case "jump_boost":
+        powerUpType = PowerUpType.JUMP_BOOST;
+        break;
+      case "slow_motion":
+        powerUpType = PowerUpType.SLOW_MOTION;
         break;
       case "multi_shot":
         powerUpType = PowerUpType.MULTI_SHOT;
@@ -1215,13 +1271,22 @@ export class GameLogic {
             infiniteAmmo: endTime,
           },
         };
-      case "speed_boost":
+      case "jump_boost":
         return {
           ...resetPlayer,
-          hasSpeedBoost: true,
+          hasJumpBoost: true,
           powerUpEndTimes: {
             ...resetPlayer.powerUpEndTimes,
-            speedBoost: endTime,
+            jumpBoost: endTime,
+          },
+        };
+      case "slow_motion":
+        return {
+          ...resetPlayer,
+          hasSlowMotion: true,
+          powerUpEndTimes: {
+            ...resetPlayer.powerUpEndTimes,
+            slowMotion: endTime,
           },
         };
       case "multi_shot":
@@ -1246,7 +1311,8 @@ export class GameLogic {
       ...player,
       hasShield: currentTime < powerUpEndTimes.shield,
       hasInfiniteAmmo: currentTime < powerUpEndTimes.infiniteAmmo,
-      hasSpeedBoost: currentTime < powerUpEndTimes.speedBoost,
+      hasJumpBoost: currentTime < powerUpEndTimes.jumpBoost,
+      hasSlowMotion: currentTime < powerUpEndTimes.slowMotion,
       hasMultiShot: currentTime < powerUpEndTimes.multiShot,
     };
   }
@@ -1370,7 +1436,8 @@ export class GameLogic {
       const bullet = this.makeSamuraiShoot(
         ninja,
         gameState.distance,
-        gameState.difficultyLevel
+        gameState.difficultyLevel,
+        gameState.player
       );
       if (bullet) {
         newSamuraiBullets.push(bullet);
@@ -1401,7 +1468,8 @@ export class GameLogic {
           const bullet = this.createSamuraiBullet(
             boss,
             gameState.distance,
-            gameState.difficultyLevel
+            gameState.difficultyLevel,
+            gameState.player
           );
           // Adjust bullet positions for spread
           bullet.y = boss.y + boss.height / 2 + (i - 1) * 20;

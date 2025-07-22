@@ -174,22 +174,24 @@ const Game = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="relative">
-          <GameCanvas canvasRef={canvasRef} />
-          {gameState.isGameOver && (
-            <GameOverScreen
-              distance={gameState.distance}
-              onRestart={startGame}
+        <div className="flex flex-col items-center justify-center flex-1">
+          <div className="relative">
+            <GameCanvas canvasRef={canvasRef} />
+            {gameState.isGameOver && (
+              <GameOverScreen
+                distance={gameState.distance}
+                onRestart={startGame}
+              />
+            )}
+          </div>
+          {/* Zone réservée pour les indicateurs avec hauteur responsive */}
+          <div className="mt-4 sm:mt-6 h-24 sm:h-28 md:h-32 flex items-center justify-center w-full px-4">
+            <GameIndicators
+              player={gameState.player}
+              difficultyLevel={gameState.difficultyLevel}
+              isGameStarted={gameState.isGameRunning}
             />
-          )}
-        </div>
-        {/* Zone réservée pour les indicateurs avec hauteur responsive */}
-        <div className="mt-4 sm:mt-6 h-24 sm:h-28 md:h-32 flex items-center justify-center w-full px-4">
-          <GameIndicators
-            player={gameState.player}
-            difficultyLevel={gameState.difficultyLevel}
-            isGameStarted={gameState.isGameRunning}
-          />
+          </div>
         </div>
       </div>
 

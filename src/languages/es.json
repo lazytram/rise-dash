@@ -89,7 +89,7 @@
         "enemies": "Enemigos",
         "enemiesDesc": "Los samuráis aparecen cada 50m y disparan shurikens. Dispara 3 veces para derrotarlos. Los ninjas y jefes aparecen a distancias mayores.",
         "powerUps": "Power-ups",
-        "powerUpsDesc": "Recolecta power-ups para obtener ventajas temporales: Escudo (protección), Munición Infinita (disparos ilimitados), Impulso de Velocidad (movimiento más rápido), Disparos Múltiples (múltiples proyectiles)."
+        "powerUpsDesc": "Recolecta power-ups para obtener ventajas temporales: Escudo (protección), Munición Infinita (disparos ilimitados), Boost de Salto (saltos más altos), Cámara Lenta (ralentiza enemigos), Disparos Múltiples (múltiples proyectiles)."
       },
       "tips": {
         "title": "Consejos",
@@ -97,6 +97,95 @@
         "tip2": "Guarda tus cohetes de arroz para situaciones difíciles",
         "tip3": "Recolecta power-ups siempre que sea posible para aumentar tus posibilidades de supervivencia",
         "tip4": "La dificultad aumenta cada 1000m - prepárate para enemigos más desafiantes"
+      }
+    },
+    "tutorial": {
+      "title": "¡Bienvenido a Rise Dash!",
+      "subtitle": "Aprende los conceptos básicos del juego en unos pasos",
+      "objective": {
+        "title": "🎯 Objetivo del Juego",
+        "description": "¡Sobrevive el mayor tiempo posible evitando obstáculos y eliminando enemigos. Tu distancia recorrida se convierte en tu puntuación!"
+      },
+      "controls": {
+        "title": "🎮 Controles",
+        "movement": "Movimiento",
+        "jump": "Saltar",
+        "shoot": "Disparar",
+        "start": "Comenzar",
+        "space": "Espacio"
+      },
+      "enemies": {
+        "title": "⚔️ Enemigos",
+        "samurai": "Samuráis",
+        "samuraiDesc": "Aparecen cada 50m, disparan shurikens. 3 disparos para derrotarlos.",
+        "ninja": "Ninjas",
+        "ninjaDesc": "Más rápidos y difíciles de golpear.",
+        "boss": "Jefes",
+        "bossDesc": "Enemigos poderosos que aparecen a grandes distancias."
+      },
+      "powerUps": {
+        "title": "💎 Power-ups",
+        "shield": "Escudo",
+        "shieldDesc": "Protección temporal contra daños.",
+        "infiniteAmmo": "Munición Infinita",
+        "infiniteAmmoDesc": "Disparos ilimitados durante 10 segundos.",
+        "jumpBoost": "Boost de Salto",
+        "jumpBoostDesc": "Saltos más altos durante 15 segundos.",
+        "slowMotion": "Cámara Lenta",
+        "slowMotionDesc": "Ralentiza enemigos durante 8 segundos.",
+        "multiShot": "Disparos Múltiples",
+        "multiShotDesc": "Dispara múltiples proyectiles a la vez."
+      },
+      "scoring": {
+        "title": "🏆 Sistema de Puntuación",
+        "distance": "Distancia recorrida = Puntuación principal",
+        "enemies": "Enemigos eliminados = Bonus",
+        "powerUps": "Power-ups recolectados = Bonus",
+        "survival": "Tiempo de supervivencia = Bonus"
+      },
+      "tips": {
+        "title": "💡 Consejos Pro",
+        "tip1": "Calcula tus saltos con precisión para evitar obstáculos",
+        "tip2": "Guarda tu munición para situaciones difíciles",
+        "tip3": "Recolecta power-ups lo antes posible",
+        "tip4": "La dificultad aumenta progresivamente - ¡mantén la concentración!"
+      },
+      "buttons": {
+        "understood": "¡Entendido! 🚀",
+        "close": "Cerrar"
+      }
+    },
+    "dailyStreak": {
+      "title": "Revelación Diaria",
+      "subtitle": "¡Revela una carta una vez al día para ganar RICE!",
+      "readyToReveal": "¡Listo para revelar!",
+      "nextRevealIn": "Próxima revelación en:",
+      "possibleRewards": "Recompensas posibles",
+      "congratulations": "¡Felicitaciones!",
+      "youWon": "¡Ganaste {{amount}} RICE!",
+      "tooBad": "¡Qué pena!",
+      "nothingWon": "No ganaste nada esta vez. ¡Vuelve mañana!",
+      "error": "Error",
+      "revealError": "Error al revelar la carta. Por favor, inténtalo de nuevo.",
+      "riceCard": "CARTA RICE",
+      "tapToReveal": "Toca para revelar",
+      "dailyReward": "Recompensa Diaria",
+      "reveal": "REVELAR",
+      "completed": "COMPLETADO",
+      "rarity": {
+        "common": "Común",
+        "uncommon": "Poco Común",
+        "rare": "Raro",
+        "epic": "Épico",
+        "legendary": "Legendario"
+      },
+      "cards": {
+        "rice_grain": "Grano de Arroz",
+        "rice_bowl": "Tazón de Arroz",
+        "onigiri": "Onigiri",
+        "sushi": "Sushi",
+        "rice_cracker": "Galleta de Arroz",
+        "bento_box": "Caja Bento"
       }
     }
   },
@@ -122,20 +211,23 @@
       "title": "Power-ups",
       "shield": "Escudo",
       "infiniteAmmo": "Munición Infinita",
-      "speedBoost": "Impulso de Velocidad",
+      "jumpBoost": "Salto",
+      "slowMotion": "Cámara Lenta",
       "multiShot": "Disparos Múltiples",
       "riceRocketAmmo": "Munición de Cohetes",
       "shortNames": {
         "shield": "Escudo",
         "infiniteAmmo": "Munición ∞",
-        "speedBoost": "Impulso Velocidad",
+        "jumpBoost": "Salto",
+        "slowMotion": "Cámara Lenta",
         "multiShot": "Disparos Múltiples",
         "riceRocketAmmo": "Munición"
       },
       "description": {
         "shield": "Protección contra colisiones",
         "infiniteAmmo": "Disparos ilimitados",
-        "speedBoost": "Movimiento más rápido",
+        "jumpBoost": "Saltos más altos",
+        "slowMotion": "Ralentiza enemigos",
         "multiShot": "Proyectiles múltiples",
         "riceRocketAmmo": "Capacidad máxima de munición"
       },
@@ -191,7 +283,7 @@
       "onlyGameOwnerCanUseEmergency": "Solo el propietario del juego puede usar la función de emergencia",
       "rateLimitExceeded": "Límite de velocidad excedido",
       "rateLimitExceededDescription": "Demasiadas solicitudes. Por favor espera un momento e intenta de nuevo.",
-      "securityKeyNotConfigured": "Clé de seguridad no configurada",
+      "securityKeyNotConfigured": "Clave de seguridad no configurada",
       "securityKeyNotConfiguredDescription": "El contrato del juego no está configurado correctamente. Por favor contacta soporte."
     }
   },
@@ -208,15 +300,16 @@
     "back": "Atrás",
     "showing": "Mostrando",
     "of": "de",
-    "backToWelcome": "Volver al Inicio",
-    "playNow": "Jugar Ahora",
-    "readyToPlay": "¿Listo para Jugar?",
+    "backToWelcome": "Volver al inicio",
+    "playNow": "Jugar ahora",
+    "readyToPlay": "¿Listo para jugar?",
     "error": "Error",
     "success": "Éxito",
     "previous": "Anterior",
     "next": "Siguiente",
     "page": "Página",
     "you": "Tú",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "dailyReward": "Recompensa Diaria"
   }
 }

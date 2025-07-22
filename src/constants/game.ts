@@ -36,7 +36,7 @@ export const GAME_CONSTANTS = {
   SAMURAI_BULLET_HEIGHT: 6,
   SAMURAI_BULLET_SPEED: -2, // Reduced speed for easier dodging
   // Speed progression constants
-  SPEED_INCREASE_INTERVAL: 100, // Every 100 meters
+  SPEED_INCREASE_INTERVAL: 100, // Every 100 meters (changed from 50m)
   SPEED_INCREASE_PERCENTAGE: 0.025, // 2.5% increase
   BASE_SUSHI_SPEED: -4, // Reduced from -4 for slower, more predictable movement
   BASE_SAMURAI_SPEED: -2, // Base speed for samurai
@@ -89,7 +89,8 @@ export const GAME_CONSTANTS = {
   POWERUP_TYPES: {
     SHIELD: "shield",
     INFINITE_AMMO: "infinite_ammo",
-    SPEED_BOOST: "speed_boost",
+    JUMP_BOOST: "jump_boost",
+    SLOW_MOTION: "slow_motion",
     MULTI_SHOT: "multi_shot",
   } as const,
 } as const;

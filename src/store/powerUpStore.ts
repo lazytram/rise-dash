@@ -5,6 +5,7 @@ import {
   getPowerUpService,
   LocalPowerUpService,
 } from "@/services/powerUpService";
+import { StoreKeys } from "./storeKeys";
 
 interface PowerUpStore {
   powerUpLevels: PowerUpLevels;
@@ -18,7 +19,8 @@ interface PowerUpStore {
 const defaultPowerUpLevels: PowerUpLevels = {
   shield: 1,
   infiniteAmmo: 1,
-  speedBoost: 1,
+  jumpBoost: 1,
+  slowMotion: 1,
   multiShot: 1,
   riceRocketAmmo: 1,
 };
@@ -60,7 +62,7 @@ export const usePowerUpStore = create<PowerUpStore>()(
       },
     }),
     {
-      name: "powerup-store",
+      name: StoreKeys.PowerUpStore,
       onRehydrateStorage: () => (state) => {
         if (state) {
           // Sync service with restored state

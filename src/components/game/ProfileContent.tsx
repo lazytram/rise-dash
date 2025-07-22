@@ -13,7 +13,6 @@ import {
   ProfileAchievements,
 } from "./profile";
 import { SceneHeader } from "@/components/ui/SceneHeader";
-import { SceneType } from "@/types/scenes";
 
 interface PlayerScore {
   score: bigint;
@@ -124,7 +123,6 @@ export const ProfileContent: React.FC = () => {
         <SceneHeader
           title={t("scenes.profile.title")}
           subtitle={t("scenes.profile.subtitle")}
-          menuColorKey={SceneType.PROFILE}
         />
         <ProfileStats playerScores={playerScores} />
 

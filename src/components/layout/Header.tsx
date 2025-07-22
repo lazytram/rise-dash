@@ -9,6 +9,7 @@ import { LeaderboardButton } from "@/components/auth/LeaderboardButton";
 import { GameButton } from "@/components/auth/GameButton";
 import { InstructionsButton } from "@/components/auth/InstructionsButton";
 import { ShopButton } from "@/components/auth/ShopButton";
+import { DailyStreakButton } from "@/components/auth/DailyStreakButton";
 import { LanguageSelector } from "@/components/LanguageSelector";
 
 const MenuButtons = memo(function MenuButtons() {
@@ -18,6 +19,7 @@ const MenuButtons = memo(function MenuButtons() {
       <ProfileButton />
       <LeaderboardButton />
       <ShopButton />
+      <DailyStreakButton />
       <InstructionsButton />
     </div>
   );
@@ -41,7 +43,7 @@ export const Header = memo(function Header() {
   }, [isConnected, session, status]);
 
   const containerClassName = useMemo(() => {
-    return `flex items-start absolute top-4 left-4 right-4 z-10 ${
+    return `flex items-start absolute top-4 left-4 right-4 z-50 ${
       showMenu ? "justify-between" : "justify-end"
     }`;
   }, [showMenu]);

@@ -89,7 +89,7 @@
         "enemies": "Ennemis",
         "enemiesDesc": "Les samouraïs apparaissent tous les 50m et tirent des shurikens. Tirez 3 fois pour les vaincre. Les ninjas et boss apparaissent à des distances plus élevées.",
         "powerUps": "Power-ups",
-        "powerUpsDesc": "Collectez des power-ups pour obtenir des avantages temporaires : Bouclier (protection), Munitions Infinies (tirs illimités), Boost de Vitesse (mouvement plus rapide), Tirs Multiples (projectiles multiples)."
+        "powerUpsDesc": "Collectez des power-ups pour obtenir des avantages temporaires : Bouclier (protection), Munitions Infinies (tirs illimités), Boost de Saut (sauts plus hauts), Ralenti (ralentit les ennemis), Tirs Multiples (projectiles multiples)."
       },
       "tips": {
         "title": "Conseils",
@@ -97,6 +97,95 @@
         "tip2": "Gardez vos fusées de riz pour les situations difficiles",
         "tip3": "Collectez des power-ups dès que possible pour augmenter vos chances de survie",
         "tip4": "La difficulté augmente tous les 1000m - soyez prêt pour des ennemis plus difficiles"
+      }
+    },
+    "tutorial": {
+      "title": "Bienvenue dans Rise Dash !",
+      "subtitle": "Apprenez les bases du jeu en quelques étapes",
+      "objective": {
+        "title": "🎯 Objectif du Jeu",
+        "description": "Survivez le plus longtemps possible en évitant les obstacles et en éliminant les ennemis. Votre distance parcourue devient votre score !"
+      },
+      "controls": {
+        "title": "🎮 Contrôles",
+        "movement": "Mouvement",
+        "jump": "Sauter",
+        "shoot": "Tirer",
+        "start": "Commencer",
+        "space": "Espace"
+      },
+      "enemies": {
+        "title": "⚔️ Ennemis",
+        "samurai": "Samouraïs",
+        "samuraiDesc": "Apparaissent tous les 50m, tirent des shurikens. 3 tirs pour les vaincre.",
+        "ninja": "Ninjas",
+        "ninjaDesc": "Plus rapides et plus difficiles à toucher.",
+        "boss": "Boss",
+        "bossDesc": "Ennemis puissants qui apparaissent à de grandes distances."
+      },
+      "powerUps": {
+        "title": "💎 Power-ups",
+        "shield": "Bouclier",
+        "shieldDesc": "Protection temporaire contre les dégâts.",
+        "infiniteAmmo": "Munitions Infinies",
+        "infiniteAmmoDesc": "Tirs illimités pendant 10 secondes.",
+        "jumpBoost": "Boost de Saut",
+        "jumpBoostDesc": "Sauts plus hauts pendant 15 secondes.",
+        "slowMotion": "Ralenti",
+        "slowMotionDesc": "Ralentit les ennemis pendant 8 secondes.",
+        "multiShot": "Tirs Multiples",
+        "multiShotDesc": "Tire plusieurs projectiles à la fois."
+      },
+      "scoring": {
+        "title": "🏆 Système de Score",
+        "distance": "Distance parcourue = Score principal",
+        "enemies": "Ennemis éliminés = Bonus",
+        "powerUps": "Power-ups collectés = Bonus",
+        "survival": "Temps de survie = Bonus"
+      },
+      "tips": {
+        "title": "💡 Conseils Pro",
+        "tip1": "Chronométrez vos sauts avec précision pour éviter les obstacles",
+        "tip2": "Gardez vos munitions pour les situations difficiles",
+        "tip3": "Collectez les power-ups dès que possible",
+        "tip4": "La difficulté augmente progressivement - restez concentré !"
+      },
+      "buttons": {
+        "understood": "Compris ! 🚀",
+        "close": "Fermer"
+      }
+    },
+    "dailyStreak": {
+      "title": "Révélation Quotidienne",
+      "subtitle": "Révélez une carte une fois par jour pour gagner du RICE !",
+      "readyToReveal": "Prêt à révéler !",
+      "nextRevealIn": "Prochaine révélation dans :",
+      "possibleRewards": "Récompenses possibles",
+      "congratulations": "Félicitations !",
+      "youWon": "Vous avez gagné {{amount}} RICE !",
+      "tooBad": "Dommage !",
+      "nothingWon": "Vous n'avez rien gagné cette fois. Revenez demain !",
+      "error": "Erreur",
+      "revealError": "Échec de la révélation de la carte. Veuillez réessayer.",
+      "riceCard": "CARTE RICE",
+      "tapToReveal": "Appuyez pour révéler",
+      "dailyReward": "Récompense Quotidienne",
+      "reveal": "RÉVÉLER",
+      "completed": "TERMINÉ",
+      "rarity": {
+        "common": "Commun",
+        "uncommon": "Peu Commun",
+        "rare": "Rare",
+        "epic": "Épique",
+        "legendary": "Légendaire"
+      },
+      "cards": {
+        "rice_grain": "Grain de Riz",
+        "rice_bowl": "Bol de Riz",
+        "onigiri": "Onigiri",
+        "sushi": "Sushi",
+        "rice_cracker": "Cracker de Riz",
+        "bento_box": "Boîte Bento"
       }
     }
   },
@@ -122,20 +211,23 @@
       "title": "Power-ups",
       "shield": "Bouclier",
       "infiniteAmmo": "Munitions Infinies",
-      "speedBoost": "Boost de Vitesse",
+      "jumpBoost": "Saut",
+      "slowMotion": "Ralenti",
       "multiShot": "Tirs Multiples",
       "riceRocketAmmo": "Munitions de Base",
       "shortNames": {
         "shield": "Bouclier",
         "infiniteAmmo": "Munitions ∞",
-        "speedBoost": "Boost Vitesse",
+        "jumpBoost": "Saut",
+        "slowMotion": "Ralenti",
         "multiShot": "Tirs Multiples",
         "riceRocketAmmo": "Munitions"
       },
       "description": {
         "shield": "Protection contre les collisions",
         "infiniteAmmo": "Tirs illimités",
-        "speedBoost": "Mouvement plus rapide",
+        "jumpBoost": "Sauts plus hauts",
+        "slowMotion": "Ralentit les ennemis",
         "multiShot": "Projectiles multiples",
         "riceRocketAmmo": "Capacité maximale de munitions"
       },
@@ -151,7 +243,8 @@
       "rice": "RICE",
       "upgrade": "Améliorer",
       "maxLevelReached": "Niveau Maximum Atteint !",
-      "insufficientRice": "RICE Insuffisant"
+      "insufficientRice": "RICE Insuffisant",
+      "noActive": "Aucun power-up actif"
     },
     "difficulty": {
       "beginner": "Débutant",
@@ -207,15 +300,16 @@
     "back": "Retour",
     "showing": "Affichage",
     "of": "sur",
-    "backToWelcome": "Retour à l'Accueil",
-    "playNow": "Jouer Maintenant",
-    "readyToPlay": "Prêt à Jouer ?",
+    "backToWelcome": "Retour à l'accueil",
+    "playNow": "Jouer maintenant",
+    "readyToPlay": "Prêt à jouer ?",
     "error": "Erreur",
     "success": "Succès",
     "previous": "Précédent",
     "next": "Suivant",
     "page": "Page",
     "you": "Vous",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "dailyReward": "Récompense Quotidienne"
   }
 }

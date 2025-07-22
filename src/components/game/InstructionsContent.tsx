@@ -12,7 +12,6 @@ import {
   InstructionsTips,
   InstructionsActions,
 } from "./instructions";
-import { SceneType } from "@/types/scenes";
 
 export const InstructionsContent: React.FC = () => {
   const { t } = useTranslations();
@@ -80,7 +79,6 @@ export const InstructionsContent: React.FC = () => {
         <SceneHeader
           title={t("scenes.instructions.title")}
           subtitle={t("scenes.instructions.subtitle")}
-          menuColorKey={SceneType.INSTRUCTIONS}
         />
 
         {/* Slider Container */}

@@ -2,7 +2,8 @@
 export enum PowerUpType {
   SHIELD = "shield",
   INFINITE_AMMO = "infiniteAmmo",
-  SPEED_BOOST = "speedBoost",
+  JUMP_BOOST = "jumpBoost", // Renamed from speedBoost
+  SLOW_MOTION = "slowMotion", // New power-up
   MULTI_SHOT = "multiShot",
   RICE_ROCKET_AMMO = "riceRocketAmmo",
 }
@@ -13,13 +14,16 @@ export interface PowerUpUpgrade {
   duration?: number;
   ammoCount?: number;
   speedMultiplier?: number;
+  jumpMultiplier?: number;
+  slowMultiplier?: number;
   projectileCount?: number;
 }
 
 export interface PowerUpLevels {
   shield: number;
   infiniteAmmo: number;
-  speedBoost: number;
+  jumpBoost: number;
+  slowMotion: number;
   multiShot: number;
   riceRocketAmmo: number;
 }

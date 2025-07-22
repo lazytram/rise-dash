@@ -1,10 +1,11 @@
 export enum SceneType {
   WELCOME = "welcome",
   GAME = "game",
-  PROFILE = "profile",
-  LEADERBOARD = "leaderboard",
   INSTRUCTIONS = "instructions",
+  LEADERBOARD = "leaderboard",
+  PROFILE = "profile",
   SHOP = "shop",
+  DAILY_STREAK = "dailyStreak",
 }
 
 export interface Scene {

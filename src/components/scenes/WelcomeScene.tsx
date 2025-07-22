@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { SceneType } from "@/types/scenes";
 import { SceneContainer } from "@/components/ui/SceneContainer";
+import { DailyStreakHomeButton } from "@/components/auth/DailyStreakHomeButton";
+import { Tutorial } from "../tutorial";
 
 export const WelcomeScene = memo(function WelcomeScene() {
   const { data: session, status } = useSession();
@@ -93,6 +95,10 @@ export const WelcomeScene = memo(function WelcomeScene() {
           >
             {t("scenes.instructions.title")}
           </Button>
+          <div className="flex justify-center items-center w-full">
+            <DailyStreakHomeButton />
+          </div>
+          <Tutorial />
         </div>
       )}
     </SceneContainer>
