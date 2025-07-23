@@ -1,4 +1,4 @@
-import { CardRarity } from "@/types/dailyStreak";
+import { CardRarity } from "@/types/dailyReveal";
 
 export const getRarityStyles = (rarity: CardRarity) => {
   switch (rarity) {

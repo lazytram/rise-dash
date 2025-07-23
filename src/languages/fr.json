@@ -30,8 +30,7 @@
       "score": "Score",
       "date": "Date",
       "status": "Statut",
-      "personalBest": "Record Personnel",
-      "completed": "Terminé",
+
       "achievements": "Succès",
       "comingSoon": "Bientôt Disponible",
       "player": "Joueur",
@@ -46,14 +45,13 @@
       "title": "Tableau des Scores",
       "subtitle": "Affrontez les meilleurs joueurs et grimpez au classement",
       "bestScores": "Meilleurs Scores",
-      "yourScores": "Vos Scores",
+
       "connectWalletToView": "Connectez votre wallet pour accéder aux scores",
       "loadingScores": "Chargement des scores...",
-      "loadingAchievements": "Chargement des succès...",
       "noScoresYet": "Aucun score pour le moment",
       "playToEarnScores": "Jouez pour grimper au classement !",
       "scoresOnBlockchain": "Tous les scores sont stockés sur la blockchain RISE",
-      "bestScoreLabel": "Meilleur score",
+
       "leaderboardError": "Impossible de charger le classement",
       "leaderboardErrorDescription": "Il y a eu un problème de connexion à la blockchain. Veuillez réessayer plus tard.",
       "score": "Score",
@@ -108,10 +106,8 @@
       },
       "controls": {
         "title": "🎮 Contrôles",
-        "movement": "Mouvement",
         "jump": "Sauter",
         "shoot": "Tirer",
-        "start": "Commencer",
         "space": "Espace"
       },
       "enemies": {
@@ -151,11 +147,10 @@
         "tip4": "La difficulté augmente progressivement - restez concentré !"
       },
       "buttons": {
-        "understood": "Compris ! 🚀",
-        "close": "Fermer"
+        "understood": "Compris ! 🚀"
       }
     },
-    "dailyStreak": {
+    "dailyReveal": {
       "title": "Révélation Quotidienne",
       "subtitle": "Révélez une carte une fois par jour pour gagner du RICE !",
       "readyToReveal": "Prêt à révéler !",
@@ -203,9 +198,7 @@
     "enemies": {
       "samurai": "Samouraï",
       "ninja": "Ninja",
-      "boss": "Boss",
-      "lives": "vies",
-      "defeated": "vaincu"
+      "boss": "Boss"
     },
     "powerUps": {
       "title": "Power-ups",
@@ -232,13 +225,11 @@
         "riceRocketAmmo": "Capacité maximale de munitions"
       },
       "duration": "Durée",
-      "seconds": "secondes",
-      "active": "Actif",
-      "expired": "Expiré",
+
       "remaining": "restant",
       "ammo": "munitions",
       "maxLevel": "Niveau Maximum",
-      "currentLevel": "Niveau Actuel",
+
       "upgradeCost": "Coût d'Amélioration",
       "rice": "RICE",
       "upgrade": "Améliorer",
@@ -246,18 +237,7 @@
       "insufficientRice": "RICE Insuffisant",
       "noActive": "Aucun power-up actif"
     },
-    "difficulty": {
-      "beginner": "Débutant",
-      "novice": "Novice",
-      "apprentice": "Apprenti",
-      "intermediate": "Intermédiaire",
-      "advanced": "Avancé",
-      "expert": "Expert",
-      "master": "Maître",
-      "legend": "Légende",
-      "divine": "Divin",
-      "ultimate": "Ultime"
-    },
+    "difficulty": {},
     "blockchain": {
       "saveScore": "Sauvegarder le Score",
       "currentScore": "Score Actuel",
@@ -278,13 +258,10 @@
       "transactionSuccessMessage": "Votre score a été sauvegardé avec succès !",
       "transactionFailed": "Transaction Échouée",
       "transactionFailedMessage": "Échec de la sauvegarde de votre score. Veuillez réessayer.",
-      "viewTransaction": "Voir la Transaction",
+
       "contractPaused": "Le contrat est en pause",
-      "onlyGameOwnerCanUseEmergency": "Seul le propriétaire du jeu peut utiliser la fonction d'urgence",
-      "rateLimitExceeded": "Limite de débit dépassée",
-      "rateLimitExceededDescription": "Trop de requêtes. Veuillez attendre un moment et réessayer.",
-      "securityKeyNotConfigured": "Clé de sécurité non configurée",
-      "securityKeyNotConfiguredDescription": "Le contrat de jeu n'est pas correctement configuré. Veuillez contacter le support."
+
+      "securityKeyNotConfigured": "Clé de sécurité non configurée"
     }
   },
   "ui": {
@@ -302,14 +279,7 @@
     "of": "sur",
     "backToWelcome": "Retour à l'accueil",
     "playNow": "Jouer maintenant",
-    "readyToPlay": "Prêt à jouer ?",
     "error": "Erreur",
-    "success": "Succès",
-    "previous": "Précédent",
-    "next": "Suivant",
-    "page": "Page",
-    "you": "Vous",
-    "confirm": "Confirmer",
-    "dailyReward": "Récompense Quotidienne"
+    "you": "Vous"
   }
 }

@@ -30,8 +30,7 @@
       "score": "Score",
       "date": "Date",
       "status": "Status",
-      "personalBest": "Personal Best",
-      "completed": "Completed",
+
       "achievements": "Achievements",
       "comingSoon": "Coming Soon",
       "player": "Player",
@@ -46,14 +45,13 @@
       "title": "Leaderboard",
       "subtitle": "Compete with the best players and climb the ranks",
       "bestScores": "Best Scores",
-      "yourScores": "Your Scores",
+
       "connectWalletToView": "Connect your wallet to access scores",
       "loadingScores": "Loading scores...",
-      "loadingAchievements": "Loading achievements...",
       "noScoresYet": "No scores yet",
       "playToEarnScores": "Play to climb the leaderboard!",
       "scoresOnBlockchain": "All scores are stored on RISE blockchain",
-      "bestScoreLabel": "Best score",
+
       "leaderboardError": "Unable to load leaderboard",
       "leaderboardErrorDescription": "There was an issue connecting to the blockchain. Please try again later.",
       "score": "Score",
@@ -108,10 +106,8 @@
       },
       "controls": {
         "title": "🎮 Controls",
-        "movement": "Movement",
         "jump": "Jump",
         "shoot": "Shoot",
-        "start": "Start",
         "space": "Space"
       },
       "enemies": {
@@ -151,11 +147,10 @@
         "tip4": "Difficulty increases progressively - stay focused!"
       },
       "buttons": {
-        "understood": "Got it! 🚀",
-        "close": "Close"
+        "understood": "Got it! 🚀"
       }
     },
-    "dailyStreak": {
+    "dailyReveal": {
       "title": "Daily Reveal",
       "subtitle": "Reveal a card once a day to win RICE!",
       "readyToReveal": "Ready to reveal!",
@@ -203,9 +198,7 @@
     "enemies": {
       "samurai": "Samurai",
       "ninja": "Ninja",
-      "boss": "Boss",
-      "lives": "lives",
-      "defeated": "defeated"
+      "boss": "Boss"
     },
     "powerUps": {
       "title": "Power-ups",
@@ -232,13 +225,11 @@
         "riceRocketAmmo": "Maximum ammunition capacity"
       },
       "duration": "Duration",
-      "seconds": "seconds",
-      "active": "Active",
-      "expired": "Expired",
+
       "remaining": "remaining",
       "ammo": "ammo",
       "maxLevel": "Max Level",
-      "currentLevel": "Current Level",
+
       "upgradeCost": "Upgrade Cost",
       "rice": "RICE",
       "upgrade": "Upgrade",
@@ -246,18 +237,7 @@
       "insufficientRice": "Insufficient RICE",
       "noActive": "No active power-ups"
     },
-    "difficulty": {
-      "beginner": "Beginner",
-      "novice": "Novice",
-      "apprentice": "Apprentice",
-      "intermediate": "Intermediate",
-      "advanced": "Advanced",
-      "expert": "Expert",
-      "master": "Master",
-      "legend": "Legend",
-      "divine": "Divine",
-      "ultimate": "Ultimate"
-    },
+    "difficulty": {},
     "blockchain": {
       "saveScore": "Save Score",
       "currentScore": "Current Score",
@@ -278,13 +258,10 @@
       "transactionSuccessMessage": "Your score has been successfully saved!",
       "transactionFailed": "Transaction Failed",
       "transactionFailedMessage": "Failed to save your score. Please try again.",
-      "viewTransaction": "View Transaction",
+
       "contractPaused": "Contract is paused",
-      "onlyGameOwnerCanUseEmergency": "Only game owner can use emergency function",
-      "rateLimitExceeded": "Rate limit exceeded",
-      "rateLimitExceededDescription": "Too many requests. Please wait a moment and try again.",
-      "securityKeyNotConfigured": "Security key not configured",
-      "securityKeyNotConfiguredDescription": "The game contract is not properly configured. Please contact support."
+
+      "securityKeyNotConfigured": "Security key not configured"
     }
   },
   "ui": {
@@ -302,75 +279,7 @@
     "of": "of",
     "backToWelcome": "Back to Welcome",
     "playNow": "Play Now",
-    "readyToPlay": "Ready to Play?",
     "error": "Error",
-    "success": "Success",
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page",
-    "you": "You",
-    "confirm": "Confirm",
-    "dailyReward": "Daily Reward"
-  },
-  "tutorial": {
-    "welcome": {
-      "title": "Welcome to Rise Dash! 🎮",
-      "description": "Get ready for an exciting adventure! Let's take a quick tour to help you get started."
-    },
-    "gameOverview": {
-      "title": "Game Overview 🎯",
-      "description": "Rise Dash is a fast-paced action game where you control a character jumping through obstacles, collecting power-ups, and defeating enemies to achieve the highest score possible."
-    },
-    "controls": {
-      "title": "Controls 🎮",
-      "description": "• SPACE or UP ARROW: Jump\n• LEFT/RIGHT ARROWS: Move horizontally\n• Mouse: Aim and shoot\n• Collect power-ups to enhance your abilities!"
-    },
-    "objectives": {
-      "title": "Objectives 🎯",
-      "description": "• Survive as long as possible\n• Collect sushi for points\n• Defeat enemies (samurai, ninjas, bosses)\n• Avoid obstacles and enemy projectiles\n• Complete daily challenges for rewards"
-    },
-    "powerUps": {
-      "title": "Power-Ups ⚡",
-      "description": "• 🛡️ Shield: Temporary invincibility\n• 🔫 Infinite Ammo: Unlimited shooting\n• 🦘 Jump Boost: Higher jumps\n• ⏰ Slow Motion: Slower enemies\n• 🎯 Multi Shot: Multiple projectiles"
-    },
-    "scoreSystem": {
-      "title": "Score System 📊",
-      "description": "• Sushi collection: +10 points each\n• Enemy defeats: +50 to +200 points\n• Survival time: +1 point per second\n• Power-up usage: Bonus multipliers\n• Daily streaks: Extra rewards!"
-    },
-    "navigation": {
-      "title": "Navigation 🧭",
-      "description": "Use the menu buttons at the top to navigate between different sections of the game. Each section has unique features and rewards!"
-    },
-    "profileSection": {
-      "title": "Profile Section 👤",
-      "description": "View your game statistics, achievements, and progress. Track your best scores, total playtime, and unlock special rewards as you improve!"
-    },
-    "leaderboardSection": {
-      "title": "Leaderboard 🏆",
-      "description": "Compete with other players! Check the global leaderboard to see how you rank and challenge yourself to reach the top positions."
-    },
-    "shopSection": {
-      "title": "Shop 🏪",
-      "description": "Purchase power-ups and upgrades using your earned points. Stock up on useful items to enhance your gameplay and achieve higher scores!"
-    },
-    "dailyStreakSection": {
-      "title": "Daily Streak 🎰",
-      "description": "Play daily to maintain your streak and earn special rewards! The longer your streak, the better the rewards. Don't break the chain!"
-    },
-    "complete": {
-      "title": "You're All Set! 🚀",
-      "description": "Congratulations! You now know everything you need to start your Rise Dash adventure. Jump in and start playing - good luck!"
-    },
-    "actions": {
-      "previous": "Previous",
-      "next": "Next",
-      "skip": "Skip",
-      "getStarted": "Get Started!",
-      "replayTutorial": "Replay Tutorial",
-      "startTutorial": "Start Tutorial"
-    },
-    "progress": "Progress",
-    "newUser": "New?",
-    "startTutorial": "Start Tutorial"
+    "you": "You"
   }
 }

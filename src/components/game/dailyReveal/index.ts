@@ -1,6 +1,6 @@
 // Main components
-export { DailyStreakCard } from "./DailyStreakCard";
-export { DailyStreakContent } from "./DailyStreakContent";
+export { DailyRevealCard } from "./DailyRevealCard";
+export { DailyRevealContent } from "./DailyRevealContent";
 export { Card } from "./Card";
 export { RevealButton } from "./RevealButton";
 export { CountdownTimer } from "./CountdownTimer";

@@ -1,13 +1,13 @@
 "use client";
 
 import { memo } from "react";
-import { DailyStreakContent } from "@/components/game/dailyStreak";
+import { DailyRevealContent } from "@/components/game/dailyReveal";
 import { SceneContainer } from "@/components/ui/SceneContainer";
 
-export const DailyStreakScene = memo(function DailyStreakScene() {
+export const DailyRevealScene = memo(function DailyRevealScene() {
   return (
     <SceneContainer>
-      <DailyStreakContent />
+      <DailyRevealContent />
     </SceneContainer>
   );
 });

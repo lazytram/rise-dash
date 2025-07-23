@@ -1,6 +1,6 @@
-import { CardReward, CardType, CardRarity } from "@/types/dailyStreak";
+import { CardReward, CardType, CardRarity } from "@/types/dailyReveal";
 
-export class DailyStreakService {
+export class DailyRevealService {
   private static readonly CARD_REWARDS: CardReward[] = [
     {
       id: "rice-grain",
@@ -84,6 +84,6 @@ export class DailyStreakService {
     rarity: CardRarity,
     t: (key: string) => string
   ): string {
-    return t(`scenes.dailyStreak.rarity.${rarity.toLowerCase()}`);
+    return t(`scenes.dailyReveal.rarity.${rarity.toLowerCase()}`);
   }
 }

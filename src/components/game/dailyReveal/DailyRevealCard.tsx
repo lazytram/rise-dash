@@ -6,11 +6,11 @@ import { useDailyRevealSelectors } from "@/store/dailyRevealStore";
 import { Card } from "./Card";
 import { RevealButton } from "./RevealButton";
 import { isDevelopmentMode } from "./utils";
-import { DailyStreakCardProps } from "./types";
+import { DailyRevealCardProps } from "./types";
 import { CountdownTimer } from "./CountdownTimer";
 import { useToastStore } from "@/store/toastStore";
 
-export const DailyStreakCard: React.FC<DailyStreakCardProps> = ({
+export const DailyRevealCard: React.FC<DailyRevealCardProps> = ({
   size = 300,
   className = "",
 }) => {
@@ -41,21 +41,21 @@ export const DailyStreakCard: React.FC<DailyStreakCardProps> = ({
       if (revealedCard) {
         if (revealedCard.value > 0) {
           showSuccess(
-            t("scenes.dailyStreak.congratulations"),
-            t("scenes.dailyStreak.youWon", { amount: revealedCard.value })
+            t("scenes.dailyReveal.congratulations"),
+            t("scenes.dailyReveal.youWon", { amount: revealedCard.value })
           );
         } else {
           showError(
-            t("scenes.dailyStreak.tooBad"),
-            t("scenes.dailyStreak.nothingWon")
+            t("scenes.dailyReveal.tooBad"),
+            t("scenes.dailyReveal.nothingWon")
           );
         }
       }
     } catch (error) {
       console.error("Error revealing card:", error);
       showError(
-        t("scenes.dailyStreak.error"),
-        t("scenes.dailyStreak.revealError")
+        t("scenes.dailyReveal.error"),
+        t("scenes.dailyReveal.revealError")
       );
     }
   };
