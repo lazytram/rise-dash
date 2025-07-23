@@ -5,7 +5,7 @@ export enum SceneType {
   LEADERBOARD = "leaderboard",
   PROFILE = "profile",
   SHOP = "shop",
-  DAILY_STREAK = "dailyStreak",
+  DAILY_REVEAL = "dailyReveal",
 }
 
 export interface Scene {

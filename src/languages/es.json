@@ -30,8 +30,7 @@
       "score": "Puntuación",
       "date": "Fecha",
       "status": "Estado",
-      "personalBest": "Mejor Personal",
-      "completed": "Completado",
+
       "achievements": "Logros",
       "comingSoon": "Próximamente",
       "player": "Jugador",
@@ -46,14 +45,13 @@
       "title": "Tabla de Posiciones",
       "subtitle": "Compite con los mejores jugadores y sube en el ranking",
       "bestScores": "Mejores Puntuaciones",
-      "yourScores": "Tus Puntuaciones",
+
       "connectWalletToView": "Conecta tu wallet para acceder a las puntuaciones",
       "loadingScores": "Cargando puntuaciones...",
-      "loadingAchievements": "Cargando logros...",
       "noScoresYet": "Aún no hay puntuaciones",
       "playToEarnScores": "¡Juega para subir en el ranking!",
       "scoresOnBlockchain": "Todas las puntuaciones se almacenan en la blockchain RISE",
-      "bestScoreLabel": "Mejor puntuación",
+
       "leaderboardError": "No se pudo cargar el ranking",
       "leaderboardErrorDescription": "Hubo un problema al conectar con la blockchain. Por favor, inténtalo de nuevo más tarde.",
       "score": "Puntuación",
@@ -108,10 +106,8 @@
       },
       "controls": {
         "title": "🎮 Controles",
-        "movement": "Movimiento",
         "jump": "Saltar",
         "shoot": "Disparar",
-        "start": "Comenzar",
         "space": "Espacio"
       },
       "enemies": {
@@ -151,11 +147,10 @@
         "tip4": "La dificultad aumenta progresivamente - ¡mantén la concentración!"
       },
       "buttons": {
-        "understood": "¡Entendido! 🚀",
-        "close": "Cerrar"
+        "understood": "¡Entendido! 🚀"
       }
     },
-    "dailyStreak": {
+    "dailyReveal": {
       "title": "Revelación Diaria",
       "subtitle": "¡Revela una carta una vez al día para ganar RICE!",
       "readyToReveal": "¡Listo para revelar!",
@@ -203,9 +198,7 @@
     "enemies": {
       "samurai": "Samurái",
       "ninja": "Ninja",
-      "boss": "Jefe",
-      "lives": "vidas",
-      "defeated": "derrotado"
+      "boss": "Jefe"
     },
     "powerUps": {
       "title": "Power-ups",
@@ -232,13 +225,11 @@
         "riceRocketAmmo": "Capacidad máxima de munición"
       },
       "duration": "Duración",
-      "seconds": "segundos",
-      "active": "Activo",
-      "expired": "Expirado",
+
       "remaining": "restante",
       "ammo": "munición",
       "maxLevel": "Nivel Máximo",
-      "currentLevel": "Nivel Actual",
+
       "upgradeCost": "Costo de Mejora",
       "rice": "RICE",
       "upgrade": "Mejorar",
@@ -246,18 +237,7 @@
       "insufficientRice": "RICE Insuficiente",
       "noActive": "Ningún power-up activo"
     },
-    "difficulty": {
-      "beginner": "Principiante",
-      "novice": "Novato",
-      "apprentice": "Aprendiz",
-      "intermediate": "Intermedio",
-      "advanced": "Avanzado",
-      "expert": "Experto",
-      "master": "Maestro",
-      "legend": "Leyenda",
-      "divine": "Divino",
-      "ultimate": "Último"
-    },
+    "difficulty": {},
     "blockchain": {
       "saveScore": "Guardar Puntuación",
       "currentScore": "Puntuación Actual",
@@ -278,13 +258,10 @@
       "transactionSuccessMessage": "¡Tu puntuación se ha guardado exitosamente!",
       "transactionFailed": "Transacción Fallida",
       "transactionFailedMessage": "Error al guardar tu puntuación. Por favor intenta de nuevo.",
-      "viewTransaction": "Ver Transacción",
+
       "contractPaused": "El contrato está pausado",
-      "onlyGameOwnerCanUseEmergency": "Solo el propietario del juego puede usar la función de emergencia",
-      "rateLimitExceeded": "Límite de velocidad excedido",
-      "rateLimitExceededDescription": "Demasiadas solicitudes. Por favor espera un momento e intenta de nuevo.",
-      "securityKeyNotConfigured": "Clave de seguridad no configurada",
-      "securityKeyNotConfiguredDescription": "El contrato del juego no está configurado correctamente. Por favor contacta soporte."
+
+      "securityKeyNotConfigured": "Clave de seguridad no configurada"
     }
   },
   "ui": {
@@ -302,14 +279,7 @@
     "of": "de",
     "backToWelcome": "Volver al inicio",
     "playNow": "Jugar ahora",
-    "readyToPlay": "¿Listo para jugar?",
     "error": "Error",
-    "success": "Éxito",
-    "previous": "Anterior",
-    "next": "Siguiente",
-    "page": "Página",
-    "you": "Tú",
-    "confirm": "Confirmar",
-    "dailyReward": "Recompensa Diaria"
+    "you": "Tú"
   }
 }

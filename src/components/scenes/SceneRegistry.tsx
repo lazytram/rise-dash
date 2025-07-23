@@ -5,7 +5,7 @@ import { ProfileScene } from "./ProfileScene";
 import { LeaderboardScene } from "./LeaderboardScene";
 import { InstructionsScene } from "./InstructionsScene";
 import { ShopScene } from "./ShopScene";
-import { DailyStreakScene } from "./DailyStreakScene";
+import { DailyRevealScene } from "./DailyRevealScene";
 
 export const scenes: Scene[] = [
   {
@@ -45,9 +45,9 @@ export const scenes: Scene[] = [
     showHeader: true,
   },
   {
-    id: SceneType.DAILY_STREAK,
-    component: DailyStreakScene,
-    title: "Daily Streak",
+    id: SceneType.DAILY_REVEAL,
+    component: DailyRevealScene,
+    title: "Daily Reveal",
     showHeader: true,
   },
 ];

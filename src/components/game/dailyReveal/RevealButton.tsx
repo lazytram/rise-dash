@@ -15,11 +15,11 @@ export const RevealButton: React.FC<RevealButtonProps> = ({
 
   const getButtonText = (): string => {
     if (isDevelopment) {
-      return t("scenes.dailyStreak.reveal");
+      return t("scenes.dailyReveal.reveal");
     }
     return disabled
-      ? t("scenes.dailyStreak.completed")
-      : t("scenes.dailyStreak.reveal");
+      ? t("scenes.dailyReveal.completed")
+      : t("scenes.dailyReveal.reveal");
   };
 
   return (

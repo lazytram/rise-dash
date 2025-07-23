@@ -34,7 +34,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
       >
         <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
         <Text className="text-green-400 font-medium">
-          {t("scenes.dailyStreak.readyToReveal")}
+          {t("scenes.dailyReveal.readyToReveal")}
         </Text>
       </div>
     );
@@ -46,7 +46,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
     >
       <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
       <Text className="text-amber-400 font-medium">
-        {t("scenes.dailyStreak.nextRevealIn")}: {formattedTime}
+        {t("scenes.dailyReveal.nextRevealIn")}: {formattedTime}
       </Text>
     </div>
   );

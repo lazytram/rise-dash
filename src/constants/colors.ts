@@ -230,9 +230,9 @@ export const MENU_COLORS = {
       to: "#c2410c",
     },
   },
-  dailyStreak: {
+  dailyReveal: {
     name: "Daily Streak",
-    icon: "🎰",
+    icon: "🎴",
     gradientFrom: "#8b5cf6",
     gradientTo: "#7c3aed",
     titleGradient: {

@@ -2,13 +2,13 @@
 
 import React from "react";
 import { useTranslations } from "@/hooks/useTranslations";
-import { DailyStreakService } from "@/services/dailyStreakService";
+import { DailyRevealService } from "@/services/dailyRevealService";
 import { getRarityStyles } from "./utils";
 import { RewardsTableProps } from "./types";
 
 export const RewardsTable: React.FC<RewardsTableProps> = () => {
   const { t } = useTranslations();
-  const rewards = DailyStreakService.getCardRewards();
+  const rewards = DailyRevealService.getCardRewards();
 
   // Sort rewards by value in ascending order
   const sortedRewards = [...rewards].sort((a, b) => a.value - b.value);
@@ -18,7 +18,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = () => {
       {/* Simple Header */}
       <div className="flex-shrink-0 mb-3">
         <h3 className="text-lg font-bold text-amber-300 text-center drop-shadow-sm">
-          {t("scenes.dailyStreak.possibleRewards")}
+          {t("scenes.dailyReveal.possibleRewards")}
         </h3>
       </div>
 
@@ -48,7 +48,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = () => {
 
               <div className="text-center">
                 <div className="text-white font-semibold text-xs truncate max-w-full drop-shadow-sm">
-                  {t(`scenes.dailyStreak.cards.${reward.label}`)}
+                  {t(`scenes.dailyReveal.cards.${reward.label}`)}
                 </div>
               </div>
 
@@ -61,7 +61,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = () => {
                   textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                 }}
               >
-                {DailyStreakService.getRarityLabel(reward.rarity, t)}
+                {DailyRevealService.getRarityLabel(reward.rarity, t)}
               </div>
             </div>
           );
@@ -71,7 +71,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = () => {
       {/* Simple Info Box */}
       <div className="mt-3 p-2 bg-white/5 rounded-lg border border-white/20 flex-shrink-0">
         <div className="text-white/95 text-xs text-center drop-shadow-sm">
-          {t("scenes.dailyStreak.subtitle")}
+          {t("scenes.dailyReveal.subtitle")}
         </div>
       </div>
     </div>

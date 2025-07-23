@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import { useTranslations } from "@/hooks/useTranslations";
-import { CardReward } from "@/types/dailyStreak";
+import { CardReward } from "@/types/dailyReveal";
 import { getRarityStyles } from "./utils";
 
 interface CardProps {
@@ -37,10 +37,10 @@ export const Card = memo<CardProps>(
             {/* Enhanced card header */}
             <div className="relative z-10 text-center p-6">
               <div className="text-3xl font-bold text-amber-900 mb-3 drop-shadow-sm tracking-wide">
-                {t("scenes.dailyStreak.riceCard")}
+                {t("scenes.dailyReveal.riceCard")}
               </div>
               <div className="text-xl text-amber-800 font-semibold">
-                {t("scenes.dailyStreak.tapToReveal")}
+                {t("scenes.dailyReveal.tapToReveal")}
               </div>
             </div>
 
@@ -141,7 +141,7 @@ export const Card = memo<CardProps>(
               }}
             >
               {t(
-                `scenes.dailyStreak.rarity.${card.rarity.toLowerCase()}`
+                `scenes.dailyReveal.rarity.${card.rarity.toLowerCase()}`
               ).toUpperCase()}
             </div>
 
@@ -152,7 +152,7 @@ export const Card = memo<CardProps>(
 
             {/* Enhanced card name with better typography */}
             <div className="text-2xl font-bold text-gray-800 mb-3 tracking-wide drop-shadow-sm">
-              {t(`scenes.dailyStreak.cards.${card.label}`)}
+              {t(`scenes.dailyReveal.cards.${card.label}`)}
             </div>
 
             {/* Enhanced value with better visibility */}
@@ -165,7 +165,7 @@ export const Card = memo<CardProps>(
 
             {/* Enhanced daily reward label */}
             <div className="text-sm font-semibold text-gray-700 bg-gray-200 px-3 py-2 rounded-lg inline-block border border-gray-300 shadow-sm">
-              {t("scenes.dailyStreak.dailyReward")}
+              {t("scenes.dailyReveal.dailyReward")}
             </div>
           </div>
 
@@ -228,10 +228,10 @@ export const Card = memo<CardProps>(
         <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl border-2 border-gray-300 shadow-md">
           <div className="relative z-10 text-center p-6">
             <div className="text-xl font-bold text-gray-600 mb-2">
-              {t("scenes.dailyStreak.riceCard")}
+              {t("scenes.dailyReveal.riceCard")}
             </div>
             <div className="text-base text-gray-500">
-              {t("scenes.dailyStreak.tapToReveal")}
+              {t("scenes.dailyReveal.tapToReveal")}
             </div>
           </div>
         </div>

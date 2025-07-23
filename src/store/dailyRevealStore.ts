@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { DailyRevealState, CardReward } from "@/types/dailyStreak";
-import { DailyStreakService } from "@/services/dailyStreakService";
+import { DailyRevealState, CardReward } from "@/types/dailyReveal";
+import { DailyRevealService } from "@/services/dailyRevealService";
 import { StoreKeys } from "./storeKeys";
 
 interface DailyRevealStore extends DailyRevealState {
@@ -43,7 +43,7 @@ export const useDailyRevealStore = create<DailyRevealStore>()(
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
         // Get random card
-        const selectedCard = DailyStreakService.getRandomCard();
+        const selectedCard = DailyRevealService.getRandomCard();
 
         set((state) => ({
           cardState: {

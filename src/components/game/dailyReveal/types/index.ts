@@ -1,4 +1,4 @@
-import { CardReward } from "@/types/dailyStreak";
+import { CardReward } from "@/types/dailyReveal";
 
 // Component Props
 export interface CardProps {
@@ -15,7 +15,7 @@ export interface RevealButtonProps {
   className?: string;
 }
 
-export interface DailyStreakCardProps {
+export interface DailyRevealCardProps {
   size?: number;
   className?: string;
 }
@@ -28,7 +28,7 @@ export interface RewardsTableProps {
   className?: string;
 }
 
-export interface DailyStreakContentProps {
+export interface DailyRevealContentProps {
   className?: string;
 }
 
