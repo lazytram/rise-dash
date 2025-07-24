@@ -1,22 +1,28 @@
-// Types
-export * from "./types/game";
+// Shared exports
+export * from "./shared/components";
+export * from "./shared/hooks";
+export * from "./shared/utils";
+export * from "./shared/constants";
+export * from "./shared/types";
+export * from "./shared/services";
 
-// Constants
-export * from "./constants/game";
+// Feature exports
+export * from "./features/auth";
+export * from "./features/game";
+export * from "./features/scenes";
+export * from "./features/leaderboard";
+export * from "./features/profile";
+export * from "./features/shop";
+export * from "./features/tutorial";
 
-// Utils
-export * from "./utils/gameLogic";
-export * from "./utils/gameRenderer";
+// Core exports
+export * from "./core/entities";
+export * from "./core/game-logic";
 
-// Hooks
-export * from "./hooks/useKeyboardControls";
-export * from "./hooks/useGameLoop";
+// Infrastructure exports
+export * from "./infrastructure/store";
+export * from "./infrastructure/blockchain";
+export * from "./infrastructure/config";
 
-// Components
-export { default as Game } from "./components/game/Game";
-export { GameCanvas } from "./components/game/GameCanvas";
-export { Box } from "./components/ui/Box";
-export { Modal } from "./components/ui/Modal";
-export { Card } from "./components/ui/Card";
-export { Container } from "./components/ui/Container";
-export { Text } from "./components/ui/Text";
+// i18n exports
+export * from "./i18n/languages";

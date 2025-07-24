@@ -1,6 +1,6 @@
 "use client";
 
-import { SceneManager } from "@/components/scenes/SceneManager";
+import { SceneManager } from "@/features/scenes/SceneManager";
 
 export default function Home() {
   return (

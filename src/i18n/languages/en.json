@@ -1,0 +1,285 @@
+{
+  "scenes": {
+    "welcome": {
+      "subtitle": "The arcade game where every jump counts!",
+      "connectWallet": "Connect your wallet and prove you're the real player.",
+      "secureConnection": "Secure connection via RainbowKit & SIWE",
+      "siweStatement": "Sign in to Rise Dash to prove you own this wallet."
+    },
+    "game": {
+      "startGame": "Start Game",
+      "restart": "Restart",
+      "gameOver": "Game Over!",
+      "finalScore": "Final Score",
+      "restartMessage": "Press SPACE or UP ARROW to restart",
+      "startMessage": "Press SPACE or UP ARROW to start",
+      "jumpMessage": "UP ARROW to jump, SPACE to shoot RiceRockets",
+      "enemyMessage": "Samurais appear every 50m - shoot 3 times to defeat them!",
+      "instructions": "Use UP ARROW to jump and SPACEBAR to shoot rice rockets!",
+      "performanceHint": "Press F3 to show performance",
+      "savingInProgress": "Saving in progress...",
+      "pleaseWait": "Please wait..."
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "View your achievements and game statistics",
+      "bestScore": "Best Score",
+      "totalGames": "Total Games",
+      "averageScore": "Average Score",
+      "gameHistory": "Game History",
+      "score": "Score",
+      "date": "Date",
+      "status": "Status",
+
+      "achievements": "Achievements",
+      "comingSoon": "Coming Soon",
+      "player": "Player",
+      "connectWalletToView": "Connect your wallet to view your profile",
+      "loadingScores": "Loading scores...",
+      "loadingAchievements": "Loading achievements...",
+      "noScoresYet": "No scores yet",
+      "playGameToSeeScores": "Play a game to see your scores",
+      "showingResults": "Showing {{start}}-{{end}} of {{total}} results"
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "subtitle": "Compete with the best players and climb the ranks",
+      "bestScores": "Best Scores",
+
+      "connectWalletToView": "Connect your wallet to access scores",
+      "loadingScores": "Loading scores...",
+      "noScoresYet": "No scores yet",
+      "playToEarnScores": "Play to climb the leaderboard!",
+      "scoresOnBlockchain": "All scores are stored on RISE blockchain",
+
+      "leaderboardError": "Unable to load leaderboard",
+      "leaderboardErrorDescription": "There was an issue connecting to the blockchain. Please try again later.",
+      "score": "Score",
+      "player": "Player"
+    },
+    "shop": {
+      "title": "Power-Up Shop",
+      "subtitle": "Upgrade your power-ups with RICE tokens",
+      "riceBalance": "RICE Balance",
+      "totalUpgrades": "Total Upgrades",
+      "upgradeProgress": "Upgrade Progress",
+      "insufficientFunds": "Insufficient RICE",
+      "upgradeSuccess": "Upgrade Successful!",
+      "upgradeFailed": "Upgrade Failed",
+      "upgradedToLevel": "upgraded to level {{ level }}",
+      "upgradeErrorDescription": "An error occurred during the upgrade. Please try again.",
+      "confirmUpgrade": "Confirm Upgrade",
+      "upgradeMessage": "Are you sure you want to upgrade this power-up?"
+    },
+    "instructions": {
+      "title": "Instructions",
+      "subtitle": "Learn how to play Rise Dash",
+      "controls": {
+        "title": "Controls",
+        "jump": "Jump",
+        "shoot": "Shoot Rice Rockets",
+        "start": "Start Game"
+      },
+      "gameplay": {
+        "title": "Gameplay",
+        "objective": "Objective",
+        "objectiveDesc": "Run as far as possible while avoiding enemies and collecting power-ups. Your distance traveled is your score.",
+        "enemies": "Enemies",
+        "enemiesDesc": "Samurais appear every 50m and shoot shurikens. Shoot them 3 times to defeat them. Ninjas and bosses appear at higher distances.",
+        "powerUps": "Power-ups",
+        "powerUpsDesc": "Collect power-ups to gain temporary advantages: Shield (protection), Infinite Ammo (unlimited shots), Jump Boost (higher jumps), Slow Motion (slows enemies), Multi Shot (multiple projectiles)."
+      },
+      "tips": {
+        "title": "Tips",
+        "tip1": "Time your jumps carefully to avoid enemies and obstacles",
+        "tip2": "Save your rice rockets for difficult situations",
+        "tip3": "Collect power-ups whenever possible to increase your survival chances",
+        "tip4": "The difficulty increases every 1000m - be prepared for more challenging enemies"
+      }
+    },
+    "tutorial": {
+      "title": "Welcome to Rise Dash!",
+      "subtitle": "Learn the basics of the game in a few steps",
+      "objective": {
+        "title": "🎯 Game Objective",
+        "description": "Survive as long as possible by avoiding obstacles and eliminating enemies. Your distance traveled becomes your score!"
+      },
+      "controls": {
+        "title": "🎮 Controls",
+        "jump": "Jump",
+        "shoot": "Shoot",
+        "space": "Space"
+      },
+      "enemies": {
+        "title": "⚔️ Enemies",
+        "samurai": "Samurais",
+        "samuraiDesc": "Appear every 50m, shoot shurikens. 3 shots to defeat them.",
+        "ninja": "Ninjas",
+        "ninjaDesc": "Faster and harder to hit.",
+        "boss": "Bosses",
+        "bossDesc": "Powerful enemies that appear at great distances."
+      },
+      "powerUps": {
+        "title": "💎 Power-ups",
+        "shield": "Shield",
+        "shieldDesc": "Temporary protection against damage.",
+        "infinite_ammo": "Infinite Ammo",
+        "infinite_ammoDesc": "Unlimited shots for 10 seconds.",
+        "jump_boost": "Jump Boost",
+        "jump_boostDesc": "Higher jumps for 15 seconds.",
+        "slow_motion": "Slow Motion",
+        "slow_motionDesc": "Slows enemies for 8 seconds.",
+        "multi_shot": "Multi Shot",
+        "multi_shotDesc": "Shoots multiple projectiles at once."
+      },
+      "scoring": {
+        "title": "🏆 Scoring System",
+        "distance": "Distance traveled = Main score",
+        "enemies": "Enemies eliminated = Bonus",
+        "powerUps": "Power-ups collected = Bonus",
+        "survival": "Survival time = Bonus"
+      },
+      "tips": {
+        "title": "💡 Pro Tips",
+        "tip1": "Time your jumps precisely to avoid obstacles",
+        "tip2": "Save your ammo for difficult situations",
+        "tip3": "Collect power-ups as soon as possible",
+        "tip4": "Difficulty increases progressively - stay focused!"
+      },
+      "buttons": {
+        "understood": "Got it! 🚀"
+      }
+    },
+    "dailyReveal": {
+      "title": "Daily Reveal",
+      "subtitle": "Reveal a card once a day to win RICE!",
+      "readyToReveal": "Ready to reveal!",
+      "nextRevealIn": "Next reveal in:",
+      "possibleRewards": "Possible rewards",
+      "congratulations": "Congratulations!",
+      "youWon": "You won {{amount}} RICE!",
+      "tooBad": "Too bad!",
+      "nothingWon": "You didn't win anything this time. Come back tomorrow!",
+      "error": "Error",
+      "revealError": "Failed to reveal card. Please try again.",
+      "riceCard": "RICE CARD",
+      "tapToReveal": "Tap to reveal",
+      "dailyReward": "Daily Reward",
+      "reveal": "REVEAL",
+      "completed": "COMPLETED",
+      "rarity": {
+        "common": "Common",
+        "uncommon": "Uncommon",
+        "rare": "Rare",
+        "epic": "Epic",
+        "legendary": "Legendary"
+      },
+      "cards": {
+        "rice_grain": "Rice Grain",
+        "rice_bowl": "Rice Bowl",
+        "onigiri": "Onigiri",
+        "sushi": "Sushi",
+        "rice_cracker": "Rice Cracker",
+        "bento_box": "Bento Box"
+      }
+    }
+  },
+  "features": {
+    "gameplay": {
+      "distance": "Distance traveled",
+      "meters": "meters",
+      "ammoCount": "Ammo",
+      "riceRockets": "RiceRockets",
+      "infinite_ammoActive": "Infinite Ammo Active",
+      "level": "Level",
+      "speed": "Speed",
+      "difficulty": "Difficulty"
+    },
+    "enemies": {
+      "samurai": "Samurai",
+      "ninja": "Ninja",
+      "boss": "Boss"
+    },
+    "powerUps": {
+      "title": "Power-ups",
+      "shield": "Shield",
+      "infinite_ammo": "Infinite Ammo",
+      "jump_boost": "Jump",
+      "slow_motion": "Slow Motion",
+      "multi_shot": "Multi Shot",
+      "rice_rocket_ammo": "Rocket Ammo",
+      "shortNames": {
+        "shield": "Shield",
+        "infinite_ammo": "Ammo ∞",
+        "jump_boost": "Jump",
+        "slow_motion": "Slow Motion",
+        "multi_shot": "Multi Shot",
+        "rice_rocket_ammo": "Ammo"
+      },
+      "description": {
+        "shield": "Protection against collisions",
+        "infinite_ammo": "Unlimited shots",
+        "jump_boost": "Higher jumps",
+        "slow_motion": "Slows down enemies",
+        "multi_shot": "Multiple projectiles",
+        "rice_rocket_ammo": "Maximum ammunition capacity"
+      },
+      "duration": "Duration",
+
+      "remaining": "remaining",
+      "ammo": "ammo",
+      "maxLevel": "Max Level",
+
+      "upgradeCost": "Upgrade Cost",
+      "rice": "RICE",
+      "upgrade": "Upgrade",
+      "maxLevelReached": "Max Level Reached!",
+      "insufficientRice": "Insufficient RICE",
+      "noActive": "No active power-ups"
+    },
+    "difficulty": {},
+    "blockchain": {
+      "saveScore": "Save Score",
+      "currentScore": "Current Score",
+      "bestScore": "Best Score",
+      "scoreSaved": "Score Saved!",
+      "newRecord": "New Personal Record!",
+      "scoreRecorded": "Score recorded on RISE blockchain",
+      "connectWallet": "Please connect your wallet first",
+      "connectWalletMessage": "Please connect your wallet to access this feature",
+      "connectWalletToSave": "Connect your wallet to save your score on the blockchain",
+      "namePlaceholder": "Your name (max 20 characters)",
+      "save": "Save",
+      "saving": "Saving...",
+      "errorSaving": "Error saving score",
+      "transactionPending": "Transaction Pending",
+      "transactionPendingMessage": "Your score is being saved to the blockchain...",
+      "transactionSuccess": "Transaction Successful",
+      "transactionSuccessMessage": "Your score has been successfully saved!",
+      "transactionFailed": "Transaction Failed",
+      "transactionFailedMessage": "Failed to save your score. Please try again.",
+
+      "contractPaused": "Contract is paused",
+
+      "securityKeyNotConfigured": "Security key not configured"
+    }
+  },
+  "ui": {
+    "language": "Language",
+    "selectLanguage": "Select language"
+  },
+  "common": {
+    "title": "Rise Dash",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "close": "Close",
+    "retry": "Retry",
+    "back": "Back",
+    "showing": "Showing",
+    "of": "of",
+    "backToWelcome": "Back to Welcome",
+    "playNow": "Play Now",
+    "error": "Error",
+    "you": "You"
+  }
+}

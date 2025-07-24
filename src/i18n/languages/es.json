@@ -1,0 +1,285 @@
+{
+  "scenes": {
+    "welcome": {
+      "subtitle": "¡El juego de arcade donde cada salto cuenta!",
+      "connectWallet": "Conecta tu wallet y demuestra que eres el verdadero jugador.",
+      "secureConnection": "Conexión segura vía RainbowKit & SIWE",
+      "siweStatement": "Inicia sesión en Rise Dash para demostrar que posees esta wallet."
+    },
+    "game": {
+      "startGame": "Comenzar Juego",
+      "restart": "Reiniciar",
+      "gameOver": "¡Juego Terminado!",
+      "finalScore": "Puntuación Final",
+      "restartMessage": "Presiona ESPACIO o FLECHA ARRIBA para reiniciar",
+      "startMessage": "Presiona ESPACIO o FLECHA ARRIBA para comenzar",
+      "jumpMessage": "FLECHA ARRIBA para saltar, ESPACIO para disparar RiceRockets",
+      "enemyMessage": "¡Los samuráis aparecen cada 50m - dispara 3 veces para derrotarlos!",
+      "instructions": "¡Usa FLECHA ARRIBA para saltar y BARRA ESPACIADORA para disparar cohetes de arroz!",
+      "performanceHint": "Presiona F3 para mostrar rendimiento",
+      "savingInProgress": "Guardando en progreso...",
+      "pleaseWait": "Por favor espera..."
+    },
+    "profile": {
+      "title": "Perfil",
+      "subtitle": "Ve tus logros y estadísticas del juego",
+      "bestScore": "Mejor Puntuación",
+      "totalGames": "Total de Juegos",
+      "averageScore": "Puntuación Promedio",
+      "gameHistory": "Historial de Juegos",
+      "score": "Puntuación",
+      "date": "Fecha",
+      "status": "Estado",
+
+      "achievements": "Logros",
+      "comingSoon": "Próximamente",
+      "player": "Jugador",
+      "connectWalletToView": "Conecta tu wallet para ver tu perfil",
+      "loadingScores": "Cargando puntuaciones...",
+      "loadingAchievements": "Cargando logros...",
+      "noScoresYet": "Aún no hay puntuaciones",
+      "playGameToSeeScores": "Juega una partida para ver tus puntuaciones",
+      "showingResults": "Mostrando {{start}}-{{end}} de {{total}} resultados"
+    },
+    "leaderboard": {
+      "title": "Tabla de Posiciones",
+      "subtitle": "Compite con los mejores jugadores y sube en el ranking",
+      "bestScores": "Mejores Puntuaciones",
+
+      "connectWalletToView": "Conecta tu wallet para acceder a las puntuaciones",
+      "loadingScores": "Cargando puntuaciones...",
+      "noScoresYet": "Aún no hay puntuaciones",
+      "playToEarnScores": "¡Juega para subir en el ranking!",
+      "scoresOnBlockchain": "Todas las puntuaciones se almacenan en la blockchain RISE",
+
+      "leaderboardError": "No se pudo cargar el ranking",
+      "leaderboardErrorDescription": "Hubo un problema al conectar con la blockchain. Por favor, inténtalo de nuevo más tarde.",
+      "score": "Puntuación",
+      "player": "Jugador"
+    },
+    "shop": {
+      "title": "Tienda de Power-Ups",
+      "subtitle": "Mejora tus power-ups con tokens RICE",
+      "riceBalance": "Balance RICE",
+      "totalUpgrades": "Mejoras Totales",
+      "upgradeProgress": "Progreso de Mejoras",
+      "insufficientFunds": "RICE Insuficiente",
+      "upgradeSuccess": "¡Mejora Exitosa!",
+      "upgradeFailed": "Mejora Fallida",
+      "upgradedToLevel": "mejorado al nivel {{ level }}",
+      "upgradeErrorDescription": "Ocurrió un error durante la mejora. Por favor intenta de nuevo.",
+      "confirmUpgrade": "Confirmar Mejora",
+      "upgradeMessage": "¿Estás seguro de que quieres mejorar este power-up?"
+    },
+    "instructions": {
+      "title": "Instrucciones",
+      "subtitle": "Aprende cómo jugar Rise Dash",
+      "controls": {
+        "title": "Controles",
+        "jump": "Saltar",
+        "shoot": "Disparar Cohetes de Arroz",
+        "start": "Comenzar Juego"
+      },
+      "gameplay": {
+        "title": "Jugabilidad",
+        "objective": "Objetivo",
+        "objectiveDesc": "Corre lo más lejos posible mientras evitas enemigos y recolectas power-ups. Tu distancia recorrida es tu puntuación.",
+        "enemies": "Enemigos",
+        "enemiesDesc": "Los samuráis aparecen cada 50m y disparan shurikens. Dispara 3 veces para derrotarlos. Los ninjas y jefes aparecen a distancias mayores.",
+        "powerUps": "Power-ups",
+        "powerUpsDesc": "Recolecta power-ups para obtener ventajas temporales: Escudo (protección), Munición Infinita (disparos ilimitados), Boost de Salto (saltos más altos), Cámara Lenta (ralentiza enemigos), Disparos Múltiples (múltiples proyectiles)."
+      },
+      "tips": {
+        "title": "Consejos",
+        "tip1": "Calcula bien tus saltos para evitar enemigos y obstáculos",
+        "tip2": "Guarda tus cohetes de arroz para situaciones difíciles",
+        "tip3": "Recolecta power-ups siempre que sea posible para aumentar tus posibilidades de supervivencia",
+        "tip4": "La dificultad aumenta cada 1000m - prepárate para enemigos más desafiantes"
+      }
+    },
+    "tutorial": {
+      "title": "¡Bienvenido a Rise Dash!",
+      "subtitle": "Aprende los conceptos básicos del juego en unos pasos",
+      "objective": {
+        "title": "🎯 Objetivo del Juego",
+        "description": "¡Sobrevive el mayor tiempo posible evitando obstáculos y eliminando enemigos. Tu distancia recorrida se convierte en tu puntuación!"
+      },
+      "controls": {
+        "title": "🎮 Controles",
+        "jump": "Saltar",
+        "shoot": "Disparar",
+        "space": "Espacio"
+      },
+      "enemies": {
+        "title": "⚔️ Enemigos",
+        "samurai": "Samuráis",
+        "samuraiDesc": "Aparecen cada 50m, disparan shurikens. 3 disparos para derrotarlos.",
+        "ninja": "Ninjas",
+        "ninjaDesc": "Más rápidos y difíciles de golpear.",
+        "boss": "Jefes",
+        "bossDesc": "Enemigos poderosos que aparecen a grandes distancias."
+      },
+      "powerUps": {
+        "title": "💎 Power-ups",
+        "shield": "Escudo",
+        "shieldDesc": "Protección temporal contra daños.",
+        "infinite_ammo": "Munición Infinita",
+        "infinite_ammoDesc": "Disparos ilimitados durante 10 segundos.",
+        "jump_boost": "Boost de Salto",
+        "jump_boostDesc": "Saltos más altos durante 15 segundos.",
+        "slow_motion": "Cámara Lenta",
+        "slow_motionDesc": "Ralentiza enemigos durante 8 segundos.",
+        "multi_shot": "Disparos Múltiples",
+        "multi_shotDesc": "Dispara múltiples proyectiles a la vez."
+      },
+      "scoring": {
+        "title": "🏆 Sistema de Puntuación",
+        "distance": "Distancia recorrida = Puntuación principal",
+        "enemies": "Enemigos eliminados = Bonus",
+        "powerUps": "Power-ups recolectados = Bonus",
+        "survival": "Tiempo de supervivencia = Bonus"
+      },
+      "tips": {
+        "title": "💡 Consejos Pro",
+        "tip1": "Calcula tus saltos con precisión para evitar obstáculos",
+        "tip2": "Guarda tu munición para situaciones difíciles",
+        "tip3": "Recolecta power-ups lo antes posible",
+        "tip4": "La dificultad aumenta progresivamente - ¡mantén la concentración!"
+      },
+      "buttons": {
+        "understood": "¡Entendido! 🚀"
+      }
+    },
+    "dailyReveal": {
+      "title": "Revelación Diaria",
+      "subtitle": "¡Revela una carta una vez al día para ganar RICE!",
+      "readyToReveal": "¡Listo para revelar!",
+      "nextRevealIn": "Próxima revelación en:",
+      "possibleRewards": "Recompensas posibles",
+      "congratulations": "¡Felicitaciones!",
+      "youWon": "¡Ganaste {{amount}} RICE!",
+      "tooBad": "¡Qué pena!",
+      "nothingWon": "No ganaste nada esta vez. ¡Vuelve mañana!",
+      "error": "Error",
+      "revealError": "Error al revelar la carta. Por favor, inténtalo de nuevo.",
+      "riceCard": "CARTA RICE",
+      "tapToReveal": "Toca para revelar",
+      "dailyReward": "Recompensa Diaria",
+      "reveal": "REVELAR",
+      "completed": "COMPLETADO",
+      "rarity": {
+        "common": "Común",
+        "uncommon": "Poco Común",
+        "rare": "Raro",
+        "epic": "Épico",
+        "legendary": "Legendario"
+      },
+      "cards": {
+        "rice_grain": "Grano de Arroz",
+        "rice_bowl": "Tazón de Arroz",
+        "onigiri": "Onigiri",
+        "sushi": "Sushi",
+        "rice_cracker": "Galleta de Arroz",
+        "bento_box": "Caja Bento"
+      }
+    }
+  },
+  "features": {
+    "gameplay": {
+      "distance": "Distancia recorrida",
+      "meters": "metros",
+      "ammoCount": "Munición",
+      "riceRockets": "RiceRockets",
+      "infinite_ammoActive": "Munición Infinita Activa",
+      "level": "Nivel",
+      "speed": "Velocidad",
+      "difficulty": "Dificultad"
+    },
+    "enemies": {
+      "samurai": "Samurái",
+      "ninja": "Ninja",
+      "boss": "Jefe"
+    },
+    "powerUps": {
+      "title": "Power-ups",
+      "shield": "Escudo",
+      "infinite_ammo": "Munición Infinita",
+      "jump_boost": "Salto",
+      "slow_motion": "Cámara Lenta",
+      "multi_shot": "Disparos Múltiples",
+      "rice_rocket_ammo": "Munición de Cohetes",
+      "shortNames": {
+        "shield": "Escudo",
+        "infinite_ammo": "Munición ∞",
+        "jump_boost": "Salto",
+        "slow_motion": "Cámara Lenta",
+        "multi_shot": "Disparos Múltiples",
+        "rice_rocket_ammo": "Munición"
+      },
+      "description": {
+        "shield": "Protección contra colisiones",
+        "infinite_ammo": "Disparos ilimitados",
+        "jump_boost": "Saltos más altos",
+        "slow_motion": "Ralentiza enemigos",
+        "multi_shot": "Proyectiles múltiples",
+        "rice_rocket_ammo": "Capacidad máxima de munición"
+      },
+      "duration": "Duración",
+
+      "remaining": "restante",
+      "ammo": "munición",
+      "maxLevel": "Nivel Máximo",
+
+      "upgradeCost": "Costo de Mejora",
+      "rice": "RICE",
+      "upgrade": "Mejorar",
+      "maxLevelReached": "¡Nivel Máximo Alcanzado!",
+      "insufficientRice": "RICE Insuficiente",
+      "noActive": "Ningún power-up activo"
+    },
+    "difficulty": {},
+    "blockchain": {
+      "saveScore": "Guardar Puntuación",
+      "currentScore": "Puntuación Actual",
+      "bestScore": "Mejor Puntuación",
+      "scoreSaved": "¡Puntuación Guardada!",
+      "newRecord": "¡Nuevo Récord Personal!",
+      "scoreRecorded": "Puntuación registrada en la blockchain RISE",
+      "connectWallet": "Por favor conecta tu wallet primero",
+      "connectWalletMessage": "Por favor conecta tu wallet para acceder a esta función",
+      "connectWalletToSave": "Conecta tu wallet para guardar tu puntuación en la blockchain",
+      "namePlaceholder": "Tu nombre (máx 20 caracteres)",
+      "save": "Guardar",
+      "saving": "Guardando...",
+      "errorSaving": "Error al guardar puntuación",
+      "transactionPending": "Transacción Pendiente",
+      "transactionPendingMessage": "Tu puntuación se está guardando en la blockchain...",
+      "transactionSuccess": "Transacción Exitosa",
+      "transactionSuccessMessage": "¡Tu puntuación se ha guardado exitosamente!",
+      "transactionFailed": "Transacción Fallida",
+      "transactionFailedMessage": "Error al guardar tu puntuación. Por favor intenta de nuevo.",
+
+      "contractPaused": "El contrato está pausado",
+
+      "securityKeyNotConfigured": "Clave de seguridad no configurada"
+    }
+  },
+  "ui": {
+    "language": "Idioma",
+    "selectLanguage": "Seleccionar idioma"
+  },
+  "common": {
+    "title": "Rise Dash",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "retry": "Reintentar",
+    "back": "Atrás",
+    "showing": "Mostrando",
+    "of": "de",
+    "backToWelcome": "Volver al inicio",
+    "playNow": "Jugar ahora",
+    "error": "Error",
+    "you": "Tú"
+  }
+}
