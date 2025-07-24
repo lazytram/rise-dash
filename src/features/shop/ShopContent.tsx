@@ -6,6 +6,7 @@ import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
 import { Text } from "@/shared/components/Text";
 import { SceneHeader } from "@/shared/components/SceneHeader";
+import { RiceLogo } from "@/shared/components/RiceLogo";
 import { PowerUpCard } from "./PowerUpCard";
 import { POWERUP_UPGRADES, POWERUP_ORDER } from "@/shared/constants/powerUps";
 import { PowerUpType } from "@/shared/types/powerUps";
@@ -96,8 +97,8 @@ export const ShopContent: React.FC = () => {
   };
 
   return (
-    <Container className="py-8">
-      <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
+    <Container className="py-6">
+      <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-xl p-5">
         {/* Enhanced Header */}
         <SceneHeader
           title={t("scenes.shop.title")}
@@ -105,14 +106,37 @@ export const ShopContent: React.FC = () => {
         />
 
         {/* RICE Balance Display */}
-        <div className="text-center mb-8">
-          <div className="inline-block bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl p-4 shadow-lg">
-            <Text variant="title" size="3xl" className="text-white font-bold">
-              {riceBalance.toLocaleString()} RICE
-            </Text>
-            <Text variant="body" className="text-white/90 text-sm mt-1">
-              {t("scenes.shop.riceBalance")}
-            </Text>
+        <div className="text-center mb-6">
+          <div className="inline-block bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-500 rounded-xl p-4 shadow-lg border border-violet-500/30 backdrop-blur-sm">
+            <div className="flex flex-col items-center space-y-2">
+              {/* Amount and Logo */}
+              <div className="flex items-center justify-center space-x-2">
+                <Text
+                  variant="title"
+                  size="3xl"
+                  className="text-white font-bold tracking-wide drop-shadow-lg"
+                >
+                  {riceBalance.toLocaleString()}
+                </Text>
+                <div className="w-10 h-10 flex-shrink-0 relative">
+                  <RiceLogo className="w-full h-full" size={40} />
+                  {/* Glow effect around logo */}
+                  <div className="absolute inset-0 bg-violet-400/20 rounded-full blur-md -z-10"></div>
+                </div>
+              </div>
+
+              {/* Rice Balance Label */}
+              <Text
+                variant="body"
+                className="text-white/90 font-medium tracking-wide drop-shadow-sm uppercase text-sm"
+              >
+                {t("scenes.shop.riceBalance")}
+              </Text>
+            </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-white/30 rounded-full" />
+            <div className="absolute bottom-1 left-1 w-1 h-1 bg-white/20 rounded-full" />
           </div>
         </div>
 

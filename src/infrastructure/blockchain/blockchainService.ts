@@ -7,6 +7,7 @@ import {
   toHex,
 } from "viem";
 import { riseTestnet } from "wagmi/chains";
+import { getScoreBoardAddress } from "@/infrastructure/config";
 
 // ScoreBoard contract ABI
 export const SCOREBOARD_ABI = [
@@ -107,8 +108,8 @@ export const SCOREBOARD_ABI = [
   },
 ] as const;
 
-export const SCOREBOARD_CONTRACT_ADDRESS =
-  "0xaf483B1DcE4FEfcDd929D0dc17bbfe5B34e5Bd0a" as Address;
+// Contract address is now managed centrally
+const SCOREBOARD_CONTRACT_ADDRESS = getScoreBoardAddress();
 
 // Game Owner Private Key (replace with your private key)
 const GAME_AUTH_PRIVATE_KEY =

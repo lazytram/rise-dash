@@ -46,7 +46,7 @@ async function main() {
 
   console.log("\n📋 Important information:");
   console.log(
-    "1. Update the contract address in src/services/blockchainService.ts"
+    "1. Update the contract address in src/infrastructure/config/contracts.ts"
   );
   console.log("2. Make sure your wallet has RISE funds for transactions");
   console.log("3. Test the contract with a small transaction first");

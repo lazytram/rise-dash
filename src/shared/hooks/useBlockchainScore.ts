@@ -6,9 +6,9 @@ import {
 } from "wagmi";
 import {
   blockchainService,
-  SCOREBOARD_CONTRACT_ADDRESS,
   SCOREBOARD_ABI,
 } from "@/infrastructure/blockchain/blockchainService";
+import { getScoreBoardAddress } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 
@@ -128,7 +128,7 @@ export const useBlockchainScore = () => {
         // Appeler le smart contract avec la signature
         try {
           writeContract({
-            address: SCOREBOARD_CONTRACT_ADDRESS,
+            address: getScoreBoardAddress(),
             abi: SCOREBOARD_ABI,
             functionName: "recordScore",
             args: [BigInt(score), playerName, gameHash, signature],
