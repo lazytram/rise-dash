@@ -19,8 +19,8 @@ describe("RewardsService", () => {
       const rewards = RewardsService.calculateDistanceRewards(250);
 
       expect(rewards.totalDistance).toBe(250);
-      expect(rewards.totalRice).toBe(20); // 2 full milestones (200m) = 20 rice
-      expect(rewards.distanceRewards).toHaveLength(2);
+      expect(rewards.totalRice).toBe(25); // 2 full milestones (200m) = 20 rice + 50m partial = 5 rice = 25 total
+      expect(rewards.distanceRewards).toHaveLength(3);
       expect(rewards.distanceRewards[0]).toEqual({
         distance: 100,
         riceReward: 10,
@@ -31,18 +31,28 @@ describe("RewardsService", () => {
         riceReward: 10,
         description: "200m milestone",
       });
+      expect(rewards.distanceRewards[2]).toEqual({
+        distance: 250,
+        riceReward: 5,
+        description: "Partial reward for 50m",
+      });
     });
 
     it("should calculate rewards for 350m", () => {
       const rewards = RewardsService.calculateDistanceRewards(350);
 
       expect(rewards.totalDistance).toBe(350);
-      expect(rewards.totalRice).toBe(30); // 3 full milestones (300m) = 30 rice
-      expect(rewards.distanceRewards).toHaveLength(3);
+      expect(rewards.totalRice).toBe(35); // 3 full milestones (300m) = 30 rice + 50m partial = 5 rice = 35 total
+      expect(rewards.distanceRewards).toHaveLength(4);
       expect(rewards.distanceRewards[2]).toEqual({
         distance: 300,
         riceReward: 10,
         description: "300m milestone",
+      });
+      expect(rewards.distanceRewards[3]).toEqual({
+        distance: 350,
+        riceReward: 5,
+        description: "Partial reward for 50m",
       });
     });
 

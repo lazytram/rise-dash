@@ -364,8 +364,8 @@ describe("useBlockchainScore", () => {
       renderHook(() => useBlockchainScore());
 
       expect(mockShowError).toHaveBeenCalledWith(
-        "Error",
-        `Failed to save your score. Please try again.: ${mockError.message}`
+        "common.error",
+        "features.blockchain.saveScoreError. Transaction failed"
       );
     });
   });
