@@ -139,6 +139,54 @@
         "rice_cracker": "Rice Cracker",
         "bento_box": "Bento Box"
       }
+    },
+    "tutorial": {
+      "title": "Tutorial",
+      "subtitle": "Learn the basics of the game",
+      "objective": {
+        "title": "Objective",
+        "description": "Run as far as possible while avoiding enemies and collecting power-ups. Your distance traveled is your score."
+      },
+      "controls": {
+        "title": "Controls",
+        "jump": "Jump",
+        "space": "SPACE",
+        "shoot": "Shoot"
+      },
+      "enemies": {
+        "title": "Enemies",
+        "samurai": "Samurai",
+        "samuraiDesc": "Appears every 50m, shoot 3 times to defeat",
+        "ninja": "Ninja",
+        "ninjaDesc": "Faster and harder to defeat"
+      },
+      "powerUps": {
+        "title": "Power-ups",
+        "shield": "Shield",
+        "shieldDesc": "Protection against collisions",
+        "infiniteAmmo": "Infinite Ammo",
+        "infiniteAmmoDesc": "Unlimited shots for a limited time",
+        "jumpBoost": "Jump Boost",
+        "jumpBoostDesc": "Higher and more powerful jumps",
+        "slowMotion": "Slow Motion",
+        "slowMotionDesc": "Slows down time for better control",
+        "multiShot": "Multi Shot",
+        "multiShotDesc": "Shoots multiple projectiles at once"
+      },
+      "scoring": {
+        "title": "Scoring System",
+        "description": "Your score is based on distance traveled. The further you go, the higher your score."
+      },
+      "tips": {
+        "title": "Tips",
+        "tip1": "Use power-ups strategically to survive longer",
+        "tip2": "The shield protects you from enemy collisions",
+        "tip3": "Infinite ammo is perfect for difficult battles",
+        "tip4": "Jump boost helps you avoid ground obstacles"
+      },
+      "buttons": {
+        "understood": "I understand"
+      }
     }
   },
   "features": {

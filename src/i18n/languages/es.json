@@ -139,6 +139,54 @@
         "rice_cracker": "Galleta de Arroz",
         "bento_box": "Caja Bento"
       }
+    },
+    "tutorial": {
+      "title": "Tutorial",
+      "subtitle": "Aprende los conceptos básicos del juego",
+      "objective": {
+        "title": "Objetivo",
+        "description": "Corre lo más lejos posible evitando enemigos y recolectando power-ups. Tu distancia recorrida es tu puntuación."
+      },
+      "controls": {
+        "title": "Controles",
+        "jump": "Saltar",
+        "space": "ESPACIO",
+        "shoot": "Disparar"
+      },
+      "enemies": {
+        "title": "Enemigos",
+        "samurai": "Samurái",
+        "samuraiDesc": "Aparece cada 50m, dispara 3 veces para derrotarlo",
+        "ninja": "Ninja",
+        "ninjaDesc": "Más rápido y difícil de derrotar"
+      },
+      "powerUps": {
+        "title": "Power-ups",
+        "shield": "Escudo",
+        "shieldDesc": "Protección contra colisiones",
+        "infiniteAmmo": "Munición Infinita",
+        "infiniteAmmoDesc": "Disparos ilimitados por tiempo limitado",
+        "jumpBoost": "Impulso de Salto",
+        "jumpBoostDesc": "Saltos más altos y poderosos",
+        "slowMotion": "Cámara Lenta",
+        "slowMotionDesc": "Ralentiza el tiempo para mejor control",
+        "multiShot": "Disparos Múltiples",
+        "multiShotDesc": "Dispara múltiples proyectiles a la vez"
+      },
+      "scoring": {
+        "title": "Sistema de Puntuación",
+        "description": "Tu puntuación se basa en la distancia recorrida. Mientras más lejos vayas, mayor será tu puntuación."
+      },
+      "tips": {
+        "title": "Consejos",
+        "tip1": "Usa los power-ups estratégicamente para sobrevivir más tiempo",
+        "tip2": "El escudo te protege de colisiones con enemigos",
+        "tip3": "La munición infinita es perfecta para batallas difíciles",
+        "tip4": "El impulso de salto te ayuda a evitar obstáculos terrestres"
+      },
+      "buttons": {
+        "understood": "Entiendo"
+      }
     }
   },
   "features": {

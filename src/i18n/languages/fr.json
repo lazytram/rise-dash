@@ -139,6 +139,54 @@
         "rice_cracker": "Cracker de Riz",
         "bento_box": "Boîte Bento"
       }
+    },
+    "tutorial": {
+      "title": "Tutoriel",
+      "subtitle": "Apprenez les bases du jeu",
+      "objective": {
+        "title": "Objectif",
+        "description": "Courez le plus loin possible en évitant les ennemis et en collectant des power-ups. Votre distance parcourue est votre score."
+      },
+      "controls": {
+        "title": "Contrôles",
+        "jump": "Sauter",
+        "space": "ESPACE",
+        "shoot": "Tirer"
+      },
+      "enemies": {
+        "title": "Ennemis",
+        "samurai": "Samouraï",
+        "samuraiDesc": "Apparaît tous les 50m, tire 3 fois pour le vaincre",
+        "ninja": "Ninja",
+        "ninjaDesc": "Plus rapide et plus difficile à vaincre"
+      },
+      "powerUps": {
+        "title": "Power-ups",
+        "shield": "Bouclier",
+        "shieldDesc": "Protection contre les collisions",
+        "infiniteAmmo": "Munitions Infinies",
+        "infiniteAmmoDesc": "Tirs illimités pendant un temps limité",
+        "jumpBoost": "Saut Boosté",
+        "jumpBoostDesc": "Sauts plus hauts et plus puissants",
+        "slowMotion": "Ralenti",
+        "slowMotionDesc": "Ralentit le temps pour un meilleur contrôle",
+        "multiShot": "Tirs Multiples",
+        "multiShotDesc": "Tire plusieurs projectiles en même temps"
+      },
+      "scoring": {
+        "title": "Système de Score",
+        "description": "Votre score est basé sur la distance parcourue. Plus vous allez loin, plus votre score est élevé."
+      },
+      "tips": {
+        "title": "Conseils",
+        "tip1": "Utilisez les power-ups stratégiquement pour survivre plus longtemps",
+        "tip2": "Le bouclier vous protège des collisions avec les ennemis",
+        "tip3": "Les munitions infinies sont parfaites pour les batailles difficiles",
+        "tip4": "Le saut boosté vous aide à éviter les obstacles terrestres"
+      },
+      "buttons": {
+        "understood": "J'ai compris"
+      }
     }
   },
   "features": {
