@@ -9,7 +9,7 @@ import { useGameLoop } from "@/shared/hooks/useGameLoop";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { usePowerUpSync } from "@/shared/hooks/usePowerUpSync";
 import { GameCanvas } from "./GameCanvas";
-import { GameOverScreen } from "./GameOverScreen";
+import { ScoreBoard } from "./ScoreBoard";
 import { GameIndicators } from "./GameIndicators";
 import { GameRenderer } from "@/core/game-logic/gameRenderer";
 import { PerformanceMonitor } from "@/shared/utils/performanceMonitor";
@@ -178,8 +178,8 @@ const Game = () => {
           <div className="relative">
             <GameCanvas canvasRef={canvasRef} />
             {gameState.isGameOver && (
-              <GameOverScreen
-                distance={gameState.distance}
+              <ScoreBoard
+                distance={GameLogic.formatDistance(gameState.distance)}
                 onRestart={startGame}
               />
             )}

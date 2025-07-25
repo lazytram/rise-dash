@@ -76,8 +76,12 @@ export const Toaster: React.FC = () => {
             <div className="flex items-start space-x-3 flex-1">
               <span className="text-lg">{getIcon(toast.type)}</span>
               <div className="flex-1">
-                <Text className="font-semibold mb-1">{toast.title}</Text>
-                <Text className="text-sm opacity-90">{toast.message}</Text>
+                <Text className="font-bold mb-1 text-base text-white">
+                  {toast.title}
+                </Text>
+                <Text className="text-sm font-medium text-white">
+                  {toast.message}
+                </Text>
                 {toast.transactionHash && (
                   <div className="mt-2">
                     <Button
@@ -96,7 +100,7 @@ export const Toaster: React.FC = () => {
             </div>
             <button
               onClick={() => handleRemoveToast(toast.id)}
-              className="ml-2 text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10 cursor-pointer flex items-center justify-center w-8 h-8"
+              className="ml-2 text-white/90 hover:text-white transition-colors p-2 rounded-full hover:bg-white/20 cursor-pointer flex items-center justify-center w-8 h-8 font-bold text-lg"
             >
               ✕
             </button>

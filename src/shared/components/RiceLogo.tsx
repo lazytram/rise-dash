@@ -53,7 +53,6 @@ export const RiceLogo: React.FC<RiceLogoProps> = ({
         </filter>
       </defs>
 
-      {/* Background circle with red gradient */}
       <circle
         cx="100"
         cy="100"

@@ -4,7 +4,7 @@ import React from "react";
 import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
 import { SceneHeader } from "@/shared/components/SceneHeader";
-import { Card as DailyRevealCard } from "./DailyRevealCard";
+import { DailyRevealCard } from "./index";
 import { RevealButton } from "./RevealButton";
 import { CountdownTimer } from "./CountdownTimer";
 import { RewardsTable } from "./RewardsTable";

@@ -5,12 +5,14 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   variant?: "default" | "gradient-purple" | "gradient-blue" | "gradient-green";
+  style?: React.CSSProperties;
 }
 
 export const Card: React.FC<CardProps> = ({
   children,
   className,
   variant = "default",
+  style,
 }) => {
   const variantClasses = {
     default: "bg-white rounded-lg p-8 shadow-2xl",
@@ -23,6 +25,8 @@ export const Card: React.FC<CardProps> = ({
   };
 
   return (
-    <div className={cn(variantClasses[variant], className)}>{children}</div>
+    <div className={cn(variantClasses[variant], className)} style={style}>
+      {children}
+    </div>
   );
 };
