@@ -197,3 +197,15 @@ export interface GameConstants {
   // Game start constants
   INITIAL_SUSHI_SPAWN_DISTANCE: number;
 }
+
+export interface DistanceReward {
+  distance: number;
+  riceReward: number;
+  description: string;
+}
+
+export interface GameRewards {
+  totalDistance: number;
+  totalRice: number;
+  distanceRewards: DistanceReward[];
+}

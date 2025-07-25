@@ -16,6 +16,7 @@ interface TextProps {
     | "bold";
   size?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
   as?: "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  style?: React.CSSProperties;
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -24,6 +25,7 @@ export const Text: React.FC<TextProps> = ({
   variant = "default",
   size = "base",
   as: Component = "p",
+  style,
 }) => {
   const variantClasses = {
     default: "text-gray-800",
@@ -52,6 +54,7 @@ export const Text: React.FC<TextProps> = ({
   return (
     <Component
       className={cn(variantClasses[variant], sizeClasses[size], className)}
+      style={style}
     >
       {children}
     </Component>

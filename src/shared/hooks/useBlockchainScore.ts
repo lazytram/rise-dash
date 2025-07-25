@@ -6,9 +6,9 @@ import {
 } from "wagmi";
 import {
   blockchainService,
-  SCOREBOARD_CONTRACT_ADDRESS,
   SCOREBOARD_ABI,
 } from "@/infrastructure/blockchain/blockchainService";
+import { getScoreBoardAddress } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 
@@ -128,7 +128,7 @@ export const useBlockchainScore = () => {
         // Appeler le smart contract avec la signature
         try {
           writeContract({
-            address: SCOREBOARD_CONTRACT_ADDRESS,
+            address: getScoreBoardAddress(),
             abi: SCOREBOARD_ABI,
             functionName: "recordScore",
             args: [BigInt(score), playerName, gameHash, signature],
@@ -188,9 +188,27 @@ export const useBlockchainScore = () => {
 
   useEffect(() => {
     if (error && error.message) {
+      // Extract a shorter, more readable error message
+      let shortMessage = error.message;
+
+      // If it's a user rejection, show a friendly message
+      if (error.message.includes("User rejected")) {
+        shortMessage = t("features.blockchain.userRejected");
+      } else if (error.message.includes("insufficient funds")) {
+        shortMessage = t("features.blockchain.insufficientFunds");
+      } else if (error.message.includes("network")) {
+        shortMessage = t("features.blockchain.networkError");
+      } else {
+        // Take only the first part of the error message
+        shortMessage = error.message.split(".")[0] || error.message;
+        if (shortMessage.length > 100) {
+          shortMessage = shortMessage.substring(0, 100) + "...";
+        }
+      }
+
       showError(
-        "Error",
-        `Failed to save your score. Please try again.: ${error.message}`
+        t("common.error"),
+        `${t("features.blockchain.saveScoreError")}. ${shortMessage}`
       );
     }
   }, [error, showError]);

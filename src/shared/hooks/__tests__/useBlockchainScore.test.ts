@@ -7,9 +7,9 @@ import {
 } from "wagmi";
 import {
   blockchainService,
-  SCOREBOARD_CONTRACT_ADDRESS,
   SCOREBOARD_ABI,
 } from "@/infrastructure/blockchain/blockchainService";
+import { getScoreBoardAddress } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 
 // Mock all dependencies
@@ -197,7 +197,7 @@ describe("useBlockchainScore", () => {
 
       expect(success).toBe(true);
       expect(mockWriteContract).toHaveBeenCalledWith({
-        address: SCOREBOARD_CONTRACT_ADDRESS,
+        address: getScoreBoardAddress(),
         abi: SCOREBOARD_ABI,
         functionName: "recordScore",
         args: [BigInt(1000), "Player1", "0xgamehash", mockSignature],
@@ -364,8 +364,8 @@ describe("useBlockchainScore", () => {
       renderHook(() => useBlockchainScore());
 
       expect(mockShowError).toHaveBeenCalledWith(
-        "Error",
-        `Failed to save your score. Please try again.: ${mockError.message}`
+        "common.error",
+        "features.blockchain.saveScoreError. Transaction failed"
       );
     });
   });

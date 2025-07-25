@@ -87,8 +87,8 @@ describe("languageStore", () => {
       expect(availableLocales).toHaveLength(3);
 
       const expectedLocales = [
-        { code: "en", name: "English", flag: "🇬🇧" },
         { code: "fr", name: "Français", flag: "🇫🇷" },
+        { code: "en", name: "English", flag: "🇬🇧" },
         { code: "es", name: "Español", flag: "🇪🇸" },
       ];
 

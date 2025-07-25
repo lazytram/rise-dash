@@ -26,3 +26,4 @@ export { ThreeColumnLayout } from "./ThreeColumnLayout";
 // Other Components
 export { LanguageSelector } from "./LanguageSelector";
 export { Providers } from "./Providers";
+export { RiceLogo } from "./RiceLogo";

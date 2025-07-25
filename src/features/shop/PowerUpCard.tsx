@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
 import { Text } from "@/shared/components/Text";
+import { RiceLogo } from "@/shared/components/RiceLogo";
 import { PowerUpUpgradeData, PowerUpType } from "@/shared/types/powerUps";
 
 interface PowerUpCardProps {
@@ -89,7 +90,7 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-6 border border-white/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+    <div className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 rounded-xl p-6 border border-white/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
       {/* Header */}
       <div className="flex items-start mb-4">
         <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-3 border border-white/30 flex-shrink-0">
@@ -145,13 +146,18 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
               <Text variant="subtitle" size="sm" className="text-white/70">
                 {t("features.powerUps.upgradeCost")}:
               </Text>
-              <Text
-                variant="title"
-                size="lg"
-                className="text-yellow-300 font-bold drop-shadow-sm"
-              >
-                {nextUpgrade?.riceCost} {t("features.powerUps.rice")}
-              </Text>
+              <div className="flex items-center space-x-1">
+                <Text
+                  variant="title"
+                  size="lg"
+                  className="text-white font-bold drop-shadow-lg"
+                >
+                  {nextUpgrade?.riceCost}
+                </Text>
+                <div className="w-5 h-5 flex-shrink-0">
+                  <RiceLogo className="w-full h-full" size={20} />
+                </div>
+              </div>
             </div>
 
             <Button
@@ -161,9 +167,9 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
               size="sm"
               className={`w-full h-10 transition-all duration-200 ${
                 isLoading
-                  ? "bg-gradient-to-r from-blue-500 to-blue-600 animate-pulse"
+                  ? "bg-gradient-to-r from-violet-500 to-violet-600 animate-pulse"
                   : canAfford
-                  ? "bg-gradient-to-r from-green-500/80 to-emerald-600/80 hover:from-green-600 hover:to-emerald-700 border border-green-400/30"
+                  ? "bg-gradient-to-r from-violet-500/80 to-violet-600/80 hover:from-violet-600 hover:to-violet-700 border border-violet-400/30"
                   : "bg-gradient-to-r from-gray-500/50 to-gray-600/50 border border-gray-400/30"
               }`}
             >
@@ -194,7 +200,7 @@ export const PowerUpCard: React.FC<PowerUpCardProps> = ({
             <Text
               variant="title"
               size="lg"
-              className="text-green-300 font-bold drop-shadow-sm"
+              className="text-violet-300 font-bold drop-shadow-sm"
             >
               {t("features.powerUps.maxLevelReached")}
             </Text>

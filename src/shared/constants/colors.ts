@@ -98,6 +98,16 @@ export const POWERUP_COLORS = {
   MULTI_SHOT: "#FF8C00", // Dark orange
 } as const;
 
+// Rice Logo Colors (based on the actual logo)
+export const RICE_LOGO_COLORS = {
+  PRIMARY: "#4C1D95", // Dark violet
+  SECONDARY: "#7C3AED", // Bright violet
+  TERTIARY: "#C7D2FE", // Light violet
+  ACCENT: "#FEF3C7", // Light yellow (corner accents)
+  BACKGROUND: "#FFFFFF", // White
+  INNER_BACKGROUND: "#F3F4F6", // Light gray
+} as const;
+
 // Common Colors
 export const COMMON_COLORS = {
   WHITE: "#FFFFFF",
