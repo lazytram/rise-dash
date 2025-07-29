@@ -1,17 +1,18 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "contracts/ScoreBoard.sol": {
-      "lastModificationDate": 1752604624623,
-      "contentHash": "665d62703fbe9bd53a078cc5825e024f",
-      "sourceName": "contracts/ScoreBoard.sol",
+    "/contracts/PowerUpManager.sol": {
+      "lastModificationDate": 1753800160170,
+      "contentHash": "d67b93db89faab30103644ba00af6604",
+      "sourceName": "contracts/PowerUpManager.sol",
       "solcConfig": {
-        "version": "0.8.19",
+        "version": "0.8.20",
         "settings": {
           "optimizer": {
             "enabled": true,
             "runs": 200
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -27,20 +28,51 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.19"],
-      "artifacts": ["ScoreBoard"]
+      "versionPragmas": ["^0.8.20"],
+      "artifacts": ["IRICEManager", "PowerUpManager"]
+    },
+    "/contracts/RICEManager.sol": {
+      "lastModificationDate": 1753776301629,
+      "contentHash": "2dd7cf2d10225d762f4552ab3bd28e24",
+      "sourceName": "contracts/RICEManager.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": ["ast"]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": ["^0.8.20"],
+      "artifacts": ["RICEManager"]
     },
     "/contracts/ScoreBoard.sol": {
-      "lastModificationDate": 1752782125398,
-      "contentHash": "f475d2e7c7b7b66dce72491d6d13aecc",
+      "lastModificationDate": 1753797215746,
+      "contentHash": "7e94541a0f4dcf07e4656c06969e8f9a",
       "sourceName": "contracts/ScoreBoard.sol",
       "solcConfig": {
-        "version": "0.8.19",
+        "version": "0.8.20",
         "settings": {
           "optimizer": {
             "enabled": true,
             "runs": 200
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -57,7 +89,7 @@
       },
       "imports": [],
       "versionPragmas": ["^0.8.19"],
-      "artifacts": ["ScoreBoard"]
+      "artifacts": ["IRICEManager", "ScoreBoard"]
     }
   }
 }

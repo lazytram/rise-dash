@@ -78,7 +78,29 @@
       "upgradedToLevel": "upgraded to level {{ level }}",
       "upgradeErrorDescription": "An error occurred during the upgrade. Please try again.",
       "confirmUpgrade": "Confirm Upgrade",
-      "upgradeMessage": "Are you sure you want to upgrade this power-up?"
+      "upgradeMessage": "Are you sure you want to upgrade this power-up?",
+      "refreshFailed": "Refresh Failed",
+      "tooManyRequests": "Too many requests. Please wait a moment before trying again."
+    },
+    "powerUps": {
+      "upgrading": "Upgrading Power-Up",
+      "upgradingMessage": "Processing your upgrade on the blockchain...",
+      "upgradeSuccess": "Power-Up Upgraded!",
+      "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
+      "maxLevelReached": "This power-up is already at maximum level.",
+      "insufficientRICE": "You don't have enough RICE to upgrade this power-up.",
+      "upgradeCost": "Upgrade Cost",
+      "currentLevel": "Current Level",
+      "maxLevel": "Max Level",
+      "upgrade": "Upgrade",
+      "loading": "Loading power-ups...",
+      "noPowerUps": "No power-ups available",
+      "connectWalletToView": "Connect your wallet to view power-ups",
+      "signatureError": "Failed to get signature from server",
+      "upgradeError": "Failed to upgrade power-up",
+      "insufficientRice": "Insufficient RICE balance",
+      "errorUpgrading": "Failed to upgrade power-up. Please try again.",
+      "signatureRejected": "Upgrade cancelled. You rejected the signature."
     },
     "instructions": {
       "title": "Instructions",
@@ -271,6 +293,7 @@
       "transactionPendingMessage": "Your score is being saved on the blockchain...",
       "transactionSuccess": "Transaction Successful",
       "transactionSuccessMessage": "Your score has been saved successfully!",
+      "scoreSavedSuccessfully": "Your score has been successfully saved!",
       "transactionFailed": "Transaction Failed",
       "transactionFailedMessage": "Failed to save your score. Please try again.",
       "contractPaused": "Contract is paused",
@@ -278,7 +301,21 @@
       "userRejected": "Transaction rejected by user",
       "insufficientFunds": "Insufficient funds for transaction",
       "networkError": "Network error - check your connection",
-      "saveScoreError": "Failed to save score"
+      "saveScoreError": "Failed to save score",
+      "errorAddingRICE": "Error adding RICE",
+      "errorSpendingRICE": "Error spending RICE",
+      "insufficientRICE": "Insufficient RICE balance",
+      "riceOperationError": "Failed to process RICE operation",
+      "riceAddedSuccess": "RICE added successfully",
+      "riceSpentSuccess": "RICE spent successfully",
+      "riceOperationSuccess": "RICE operation completed successfully",
+      "rewardsCalculated": "Rewards calculated",
+      "transactionConfirming": "Transaction confirming...",
+      "rewardsAvailable": "Rewards available",
+      "rewardsRetrieved": "Rewards retrieved",
+      "viewTransaction": "View transaction",
+      "viewOnExplorer": "View on explorer",
+      "calculatingRewards": "Calculating rewards..."
     }
   },
   "ui": {

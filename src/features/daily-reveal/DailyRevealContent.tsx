@@ -9,6 +9,7 @@ import { RevealButton } from "./RevealButton";
 import { CountdownTimer } from "./CountdownTimer";
 import { RewardsTable } from "./RewardsTable";
 import { useTranslations } from "@/shared/hooks/useTranslations";
+import { useRice } from "@/shared/hooks/useRice";
 import { useDailyRevealSelectors } from "@/infrastructure/store/dailyRevealStore";
 import { DailyRevealContentProps } from "./types";
 
@@ -16,6 +17,7 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
   className = "",
 }) => {
   const { t } = useTranslations();
+  const { addRICE } = useRice();
   const { canReveal, isSpinning, selectedCard, isRevealed, revealCard } =
     useDailyRevealSelectors();
 
@@ -24,6 +26,16 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
 
     try {
       await revealCard();
+
+      // Add RICE reward based on the revealed card value
+      if (selectedCard && selectedCard.value > 0) {
+        try {
+          await addRICE(selectedCard.value);
+        } catch (error) {
+          console.error("Failed to add daily RICE reward:", error);
+          // Don't show error to user as this is optional
+        }
+      }
     } catch (error) {
       console.error("Failed to reveal card:", error);
     }

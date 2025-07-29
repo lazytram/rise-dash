@@ -1,6 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+// Interface for RICEManager contract
+interface IRICEManager {
+    function addRICE(
+        address player,
+        uint256 amount,
+        bytes32 operationHash,
+        bytes memory signature
+    ) external;
+
+    function addRICEEmergency(
+        address player,
+        uint256 amount,
+        bytes32 operationHash
+    ) external;
+}
+
 contract ScoreBoard {
     struct Score {
         uint256 score;
@@ -25,10 +41,13 @@ contract ScoreBoard {
     mapping(address => bool) public playerExists;
     mapping(address => string) public playerNames; // Store player names
 
-    uint256 public constant MIN_TIME_BETWEEN_SCORES = 30 seconds; // Minimum time between scores
+    uint256 public constant MIN_TIME_BETWEEN_SCORES = 5 seconds; // Minimum time between scores
 
     address public gameOwner; // Address authorized to manage the contract
     bool public paused = false;
+
+    // RICEManager contract address
+    address public riceManagerAddress;
 
     // Security key for signing scores (set by game owner)
     bytes32 public securityKey;
@@ -37,6 +56,13 @@ contract ScoreBoard {
     event ScoreRecorded(
         address indexed player,
         uint256 score,
+        uint256 timestamp,
+        bytes32 gameHash
+    );
+    event ScoreRecordedWithRICE(
+        address indexed player,
+        uint256 score,
+        uint256 riceReward,
         uint256 timestamp,
         bytes32 gameHash
     );
@@ -60,6 +86,17 @@ contract ScoreBoard {
 
     constructor() {
         gameOwner = msg.sender;
+    }
+
+    /**
+     * @dev Sets the RICEManager contract address
+     * @param _riceManagerAddress The address of the RICEManager contract
+     */
+    function setRICEManagerAddress(
+        address _riceManagerAddress
+    ) public onlyGameOwner {
+        require(_riceManagerAddress != address(0), "Invalid address");
+        riceManagerAddress = _riceManagerAddress;
     }
 
     /**
@@ -125,6 +162,94 @@ contract ScoreBoard {
         }
 
         emit ScoreRecorded(msg.sender, _score, block.timestamp, _gameHash);
+    }
+
+    /**
+     * @dev Records a score and adds RICE rewards in a single transaction
+     * @param _score The score to record
+     * @param _playerName The player's name
+     * @param _riceReward The amount of RICE to add as reward
+     * @param _gameHash Unique game hash to verify authenticity
+     * @param _signature Signature created with the security key
+     */
+    function recordScoreWithRICE(
+        uint256 _score,
+        string memory _playerName,
+        uint256 _riceReward,
+        bytes32 _gameHash,
+        bytes memory _signature
+    ) public whenNotPaused {
+        require(_score > 0, "Score must be greater than 0");
+        require(_riceReward > 0, "RICE reward must be greater than 0");
+        require(!usedGameHashes[_gameHash], "Game hash already used");
+        require(
+            block.timestamp >=
+                lastScoreTimestamp[msg.sender] + MIN_TIME_BETWEEN_SCORES,
+            "Too soon since last score"
+        );
+        require(securityKeySet, "Security key not set");
+        require(riceManagerAddress != address(0), "RICEManager not configured");
+
+        // Verify the signature - using the same format as the API
+        bytes32 messageHash = keccak256(
+            abi.encodePacked(
+                _score,
+                _playerName,
+                _riceReward,
+                msg.sender,
+                _gameHash
+            )
+        );
+        bytes32 ethSignedMessageHash = keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", messageHash)
+        );
+
+        // Recover the signer from the signature
+        address signer = recoverSigner(ethSignedMessageHash, _signature);
+
+        // The signer should be the game owner (who has the security key)
+        require(signer == gameOwner, "Invalid signature");
+
+        // Mark hash as used
+        usedGameHashes[_gameHash] = true;
+
+        Score memory newScore = Score({
+            score: _score,
+            timestamp: block.timestamp,
+            playerName: _playerName,
+            gameHash: _gameHash
+        });
+
+        playerScores[msg.sender].push(newScore);
+        lastScoreTimestamp[msg.sender] = block.timestamp;
+
+        // Add player to global tracking if not already present
+        if (!playerExists[msg.sender]) {
+            allPlayers.push(msg.sender);
+            playerExists[msg.sender] = true;
+            playerNames[msg.sender] = _playerName;
+        }
+
+        // Update best score if this is higher
+        if (_score > playerBestScore[msg.sender]) {
+            playerBestScore[msg.sender] = _score;
+            emit BestScoreUpdated(msg.sender, _score);
+        }
+
+        // Add RICE rewards via RICEManager (using emergency function since we already verified the signature)
+        IRICEManager(riceManagerAddress).addRICEEmergency(
+            msg.sender,
+            _riceReward, // RICE reward in RICE units, not wei
+            _gameHash
+        );
+
+        emit ScoreRecordedWithRICE(
+            msg.sender,
+            _score,
+            _riceReward,
+            block.timestamp,
+            _gameHash
+        );
     }
 
     /**

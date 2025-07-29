@@ -1,5 +1,7 @@
 import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpLevels, PowerUpType } from "@/shared/types/powerUps";
+import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
+import { Address } from "viem";
 
 export interface PowerUpEffect {
   duration: number;
@@ -18,6 +20,16 @@ export interface PowerUpService {
   getUpgradeCost(type: PowerUpType): number;
   upgrade(type: PowerUpType): boolean;
   resetLevels(): void;
+  // New blockchain methods
+  loadLevelsFromBlockchain(playerAddress: Address): Promise<void>;
+  upgradePowerUpOnBlockchain(
+    playerAddress: Address,
+    powerUpId: number
+  ): Promise<boolean>;
+  getPowerUpLevelsFromBlockchain(playerAddress: Address): Promise<number[]>;
+  getPowerUpConfigFromBlockchain(
+    powerUpId: number
+  ): Promise<{ cost: number; maxLevel: number }>;
 }
 
 export class LocalPowerUpService implements PowerUpService {
@@ -124,6 +136,107 @@ export class LocalPowerUpService implements PowerUpService {
   setLevels(levels: PowerUpLevels): void {
     this.levels = { ...levels };
   }
+
+  // New blockchain methods
+  async loadLevelsFromBlockchain(playerAddress: Address): Promise<void> {
+    try {
+      const blockchainLevels = await this.getPowerUpLevelsFromBlockchain(
+        playerAddress
+      );
+
+      // Map blockchain levels to local levels
+      this.levels = {
+        [PowerUpType.SHIELD]: blockchainLevels[0] || 1,
+        [PowerUpType.INFINITE_AMMO]: blockchainLevels[1] || 1,
+        [PowerUpType.JUMP_BOOST]: blockchainLevels[2] || 1,
+        [PowerUpType.SLOW_MOTION]: blockchainLevels[3] || 1,
+        [PowerUpType.MULTI_SHOT]: blockchainLevels[4] || 1,
+        [PowerUpType.RICE_ROCKET_AMMO]: blockchainLevels[5] || 1,
+      };
+
+      console.log("✅ Power-up levels loaded from blockchain:", this.levels);
+    } catch (error) {
+      console.error("❌ Error loading power-up levels from blockchain:", error);
+      // Keep current levels if blockchain call fails
+    }
+  }
+
+  async upgradePowerUpOnBlockchain(
+    playerAddress: Address,
+    powerUpId: number
+  ): Promise<boolean> {
+    try {
+      // Generate upgrade hash
+      const upgradeHash = this.generateUpgradeHash(playerAddress, powerUpId);
+
+      // Call API to get signature
+      const response = await fetch("/api/sign-powerup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerAddress,
+          powerUpId,
+          upgradeHash,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get signature from API");
+      }
+
+      const data = await response.json();
+      const signature = data.signature;
+
+      if (!signature) {
+        throw new Error("No signature returned from API");
+      }
+
+      // Execute the transaction via blockchain service
+      // Note: This would typically be done through a wallet connection
+      // For now, we'll return true to indicate the signature was generated successfully
+      // The actual transaction execution should be handled by the frontend
+      return true;
+    } catch (error) {
+      console.error("❌ Error upgrading power-up on blockchain:", error);
+      return false;
+    }
+  }
+
+  async getPowerUpLevelsFromBlockchain(
+    playerAddress: Address
+  ): Promise<number[]> {
+    try {
+      return await blockchainService.getPowerUpLevels(playerAddress);
+    } catch (error) {
+      console.error("❌ Error getting power-up levels from blockchain:", error);
+      return Array(10).fill(1); // Default levels
+    }
+  }
+
+  async getPowerUpConfigFromBlockchain(
+    powerUpId: number
+  ): Promise<{ cost: number; maxLevel: number }> {
+    try {
+      return await blockchainService.getPowerUpConfig(powerUpId);
+    } catch (error) {
+      console.error("❌ Error getting power-up config from blockchain:", error);
+      // Return default config
+      const defaultCosts = [50, 75, 100, 125, 150, 200];
+      return {
+        cost: defaultCosts[powerUpId] || 100,
+        maxLevel: 10,
+      };
+    }
+  }
+
+  private generateUpgradeHash(
+    playerAddress: Address,
+    powerUpId: number
+  ): string {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const message = `UPGRADE_POWERUP-${playerAddress}-${powerUpId}-${timestamp}`;
+    return message; // This should be properly hashed in a real implementation
+  }
 }
 
 // Singleton instance
@@ -160,4 +273,30 @@ export const getUpgradeCost = (type: PowerUpType): number => {
 
 export const upgrade = (type: PowerUpType): boolean => {
   return powerUpService.upgrade(type);
+};
+
+// New blockchain convenience functions
+export const loadLevelsFromBlockchain = async (
+  playerAddress: Address
+): Promise<void> => {
+  return powerUpService.loadLevelsFromBlockchain(playerAddress);
+};
+
+export const upgradePowerUpOnBlockchain = async (
+  playerAddress: Address,
+  powerUpId: number
+): Promise<boolean> => {
+  return powerUpService.upgradePowerUpOnBlockchain(playerAddress, powerUpId);
+};
+
+export const getPowerUpLevelsFromBlockchain = async (
+  playerAddress: Address
+): Promise<number[]> => {
+  return powerUpService.getPowerUpLevelsFromBlockchain(playerAddress);
+};
+
+export const getPowerUpConfigFromBlockchain = async (
+  powerUpId: number
+): Promise<{ cost: number; maxLevel: number }> => {
+  return powerUpService.getPowerUpConfigFromBlockchain(powerUpId);
 };

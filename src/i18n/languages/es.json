@@ -78,7 +78,9 @@
       "upgradedToLevel": "mejorado al nivel {{ level }}",
       "upgradeErrorDescription": "Ocurrió un error durante la mejora. Por favor intenta de nuevo.",
       "confirmUpgrade": "Confirmar Mejora",
-      "upgradeMessage": "¿Estás seguro de que quieres mejorar este power-up?"
+      "upgradeMessage": "¿Estás seguro de que quieres mejorar este power-up?",
+      "refreshFailed": "Actualización Fallida",
+      "tooManyRequests": "Demasiadas solicitudes. Por favor espera un momento antes de intentar de nuevo."
     },
     "instructions": {
       "title": "Instrucciones",
@@ -251,7 +253,9 @@
       "upgrade": "Mejorar",
       "maxLevelReached": "¡Nivel Máximo Alcanzado!",
       "insufficientRice": "RICE Insuficiente",
-      "noActive": "Sin power-up activo"
+      "noActive": "Sin power-up activo",
+      "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
+      "signatureRejected": "Actualización cancelada. Has rechazado la firma."
     },
     "blockchain": {
       "saveScore": "Guardar Puntuación",
@@ -271,6 +275,7 @@
       "transactionPendingMessage": "Tu puntuación se está guardando en la blockchain...",
       "transactionSuccess": "Transacción Exitosa",
       "transactionSuccessMessage": "¡Tu puntuación ha sido guardada exitosamente!",
+      "scoreSavedSuccessfully": "¡Tu puntuación ha sido guardada exitosamente!",
       "transactionFailed": "Transacción Fallida",
       "transactionFailedMessage": "Falló al guardar tu puntuación. Por favor intenta de nuevo.",
       "contractPaused": "El contrato está pausado",
@@ -278,7 +283,21 @@
       "userRejected": "Transacción rechazada por el usuario",
       "insufficientFunds": "Fondos insuficientes para la transacción",
       "networkError": "Error de red - verifica tu conexión",
-      "saveScoreError": "Falló al guardar puntuación"
+      "saveScoreError": "Falló al guardar puntuación",
+      "errorAddingRICE": "Error agregando RICE",
+      "errorSpendingRICE": "Error gastando RICE",
+      "insufficientRICE": "Saldo de RICE insuficiente",
+      "riceOperationError": "Falló al procesar operación RICE",
+      "riceAddedSuccess": "RICE agregado exitosamente",
+      "riceSpentSuccess": "RICE gastado exitosamente",
+      "riceOperationSuccess": "Operación RICE completada exitosamente",
+      "rewardsCalculated": "Recompensas calculadas",
+      "transactionConfirming": "Transacción confirmando...",
+      "rewardsAvailable": "Recompensas disponibles",
+      "rewardsRetrieved": "Recompensas recuperadas",
+      "viewTransaction": "Ver transacción",
+      "viewOnExplorer": "Ver en explorador",
+      "calculatingRewards": "Calculando recompensas..."
     }
   },
   "ui": {

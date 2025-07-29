@@ -62,11 +62,11 @@ export const Toaster: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 space-y-2 flex flex-col-reverse">
+    <div className="fixed bottom-4 right-4 z-50 space-y-4 flex flex-col-reverse">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`min-w-80 max-w-md p-4 rounded-lg border shadow-lg transform transition-all duration-300 ease-in-out ${
+          className={`min-w-80 max-w-md p-4 rounded-lg border shadow-lg transform transition-all duration-300 ease-in-out my-1 ${
             exitingToasts.has(toast.id)
               ? "opacity-0 translate-x-full scale-95"
               : "opacity-100 translate-x-0 scale-100"

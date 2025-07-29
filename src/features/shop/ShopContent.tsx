@@ -2,97 +2,104 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
+import { useRice } from "@/shared/hooks/useRice";
+import { usePowerUps } from "@/shared/hooks/usePowerUps";
 import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
 import { Text } from "@/shared/components/Text";
 import { SceneHeader } from "@/shared/components/SceneHeader";
 import { RiceLogo } from "@/shared/components/RiceLogo";
-import { PowerUpCard } from "./PowerUpCard";
+import { PowerUpCardBlockchain } from "./PowerUpCardBlockchain";
 import { POWERUP_UPGRADES, POWERUP_ORDER } from "@/shared/constants/powerUps";
-import { PowerUpType } from "@/shared/types/powerUps";
 import { useToastStore } from "@/infrastructure/store/toastStore";
-import {
-  getPowerUpService,
-  LocalPowerUpService,
-} from "@/shared/services/powerUpService";
 
 export const ShopContent: React.FC = () => {
   const { t } = useTranslations();
   const { showSuccess, showError } = useToastStore();
-  const [powerUpLevels, setPowerUpLevels] = useState({
-    [PowerUpType.SHIELD]: 1,
-    [PowerUpType.INFINITE_AMMO]: 1,
-    [PowerUpType.JUMP_BOOST]: 1,
-    [PowerUpType.SLOW_MOTION]: 1,
-    [PowerUpType.MULTI_SHOT]: 1,
-    [PowerUpType.RICE_ROCKET_AMMO]: 1,
-  });
+  const { checkRICEBalance } = useRice();
+  const {
+    powerUpLevels,
+    powerUpConfigs,
+    isLoading: isLoadingPowerUps,
+    isUpgrading,
+    upgradePowerUp,
+    loadPowerUpLevels,
+    loadPowerUpConfig,
+    getUpgradeCost,
+  } = usePowerUps();
+
   const [riceBalance, setRiceBalance] = useState(200);
-  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
-    {}
-  );
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [upgradeCosts, setUpgradeCosts] = useState<Record<number, number>>({});
 
-  // Sync with service on mount
+  // Load RICE balance and power-up data on mount
   useEffect(() => {
-    const service = getPowerUpService() as LocalPowerUpService;
-    setPowerUpLevels(service.getLevels());
-    setRiceBalance(service.getRiceBalance());
-  }, []);
+    const loadData = async () => {
+      console.log("🔄 Loading shop data...");
+      setIsLoadingBalance(true);
+      try {
+        // Load RICE balance
+        const balance = await checkRICEBalance();
+        setRiceBalance(balance);
+        console.log("✅ RICE balance loaded:", balance);
 
-  const handleUpgrade = async (powerUpType: PowerUpType) => {
-    setLoadingStates((prev) => ({ ...prev, [powerUpType]: true }));
+        // Load power-up levels
+        const levels = await loadPowerUpLevels();
+        console.log("✅ Power-up levels loaded:", levels);
 
+        // Load power-up configs and costs
+        const costs: Record<number, number> = {};
+        for (let i = 0; i < 6; i++) {
+          try {
+            console.log(`🔍 Loading PowerUp ${i}...`);
+            const config = await loadPowerUpConfig(i);
+            console.log(`✅ PowerUp ${i} config:`, config);
+
+            const cost = await getUpgradeCost(i);
+            costs[i] = cost;
+            console.log(`✅ PowerUp ${i} upgrade cost:`, cost);
+          } catch (error) {
+            console.error(`❌ Failed to load power-up ${i} config:`, error);
+          }
+        }
+        setUpgradeCosts(costs);
+        console.log("✅ Shop data loaded successfully");
+      } catch (error) {
+        console.error("❌ Failed to load shop data:", error);
+      } finally {
+        setIsLoadingBalance(false);
+      }
+    };
+
+    loadData();
+  }, [checkRICEBalance, loadPowerUpLevels, loadPowerUpConfig, getUpgradeCost]);
+
+  const handleUpgrade = async (powerUpId: number) => {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const success = await upgradePowerUp(powerUpId);
 
-      const service = getPowerUpService() as LocalPowerUpService;
-      const powerUp = POWERUP_UPGRADES[powerUpType];
-      const currentLevel = powerUpLevels[powerUpType] || 1;
-      const nextLevel = currentLevel + 1;
-      const upgrade = powerUp.upgrades.find((u) => u.level === nextLevel);
+      if (success) {
+        // Refresh data after successful upgrade
+        const balance = await checkRICEBalance();
+        setRiceBalance(balance);
 
-      if (upgrade && riceBalance >= upgrade.riceCost) {
-        // Update service
-        service.setRiceBalance(riceBalance - upgrade.riceCost);
-        service.setLevels({
-          ...powerUpLevels,
-          [powerUpType]: nextLevel,
-        });
+        const newLevels = await loadPowerUpLevels();
+        const newCost = await getUpgradeCost(powerUpId);
+        setUpgradeCosts((prev) => ({ ...prev, [powerUpId]: newCost }));
 
-        // Update local state
-        setRiceBalance(riceBalance - upgrade.riceCost);
-        setPowerUpLevels((prev) => ({
-          ...prev,
-          [powerUpType]: nextLevel,
-        }));
-
-        // Success toast
         showSuccess(
           t("scenes.shop.upgradeSuccess"),
-          `${t(`features.powerUps.${powerUpType}`)} ${t(
-            "scenes.shop.upgradedToLevel",
-            {
-              level: nextLevel,
-            }
-          )}`
-        );
-      } else {
-        // Error toast for insufficient funds
-        showError(
-          t("scenes.shop.upgradeFailed"),
-          t("features.powerUps.insufficientRice")
+          t("scenes.shop.upgradedToLevel", {
+            level: newLevels[powerUpId] || 1,
+          })
         );
       }
     } catch (error) {
-      // Error toast for general failure
       console.error("Upgrade failed:", error);
       showError(
         t("scenes.shop.upgradeFailed"),
         t("scenes.shop.upgradeErrorDescription")
       );
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, [powerUpType]: false }));
     }
   };
 
@@ -116,7 +123,7 @@ export const ShopContent: React.FC = () => {
                   size="3xl"
                   className="text-white font-bold tracking-wide drop-shadow-lg"
                 >
-                  {riceBalance.toLocaleString()}
+                  {isLoadingBalance ? "..." : riceBalance.toLocaleString()}
                 </Text>
                 <div className="w-10 h-10 flex-shrink-0 relative">
                   <RiceLogo className="w-full h-full" size={40} />
@@ -142,19 +149,27 @@ export const ShopContent: React.FC = () => {
 
         {/* Power-up Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {POWERUP_ORDER.map((powerUpType) => {
+          {POWERUP_ORDER.map((powerUpType, index) => {
             const powerUp = POWERUP_UPGRADES[powerUpType];
-            const currentLevel = powerUpLevels[powerUpType] || 1;
-            const isLoading = loadingStates[powerUpType] || false;
+            const powerUpId = index; // Map PowerUpType to powerUpId
+            const currentLevel = powerUpLevels[powerUpId] || 0;
+            const upgradeCost = upgradeCosts[powerUpId] || 0;
+            const isMaxLevel = powerUpConfigs[powerUpId]
+              ? currentLevel >= powerUpConfigs[powerUpId].maxLevel
+              : false;
+            const canAfford = riceBalance >= upgradeCost;
+            const isLoading = isUpgrading(powerUpId) || isLoadingPowerUps;
 
             return (
-              <PowerUpCard
+              <PowerUpCardBlockchain
                 key={powerUpType}
                 powerUp={powerUp}
                 currentLevel={currentLevel}
-                riceBalance={riceBalance}
-                onUpgrade={() => handleUpgrade(powerUpType)}
+                onUpgrade={() => handleUpgrade(powerUpId)}
                 isLoading={isLoading}
+                upgradeCost={upgradeCost}
+                isMaxLevel={isMaxLevel}
+                canAfford={canAfford}
               />
             );
           })}
