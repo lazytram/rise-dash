@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-interface IRICEManager {
-    function spendRICEEmergencyForPowerUp(
-        address player,
-        uint256 amount,
-        bytes32 operationHash
-    ) external;
-}
+import "./interfaces/IRICEManager.sol";
+import "./interfaces/IPowerUpManager.sol";
 
-contract PowerUpManager {
+/**
+ * @title PowerUpManager
+ * @dev Manages power-up upgrades and configurations with signature verification
+ * Implements IPowerUpManager interface for modularity
+ */
+contract PowerUpManager is IPowerUpManager {
     // ================================
     // STORAGE
     // ================================
@@ -37,26 +37,7 @@ contract PowerUpManager {
     // Prevent upgrade reuse
     mapping(bytes32 => bool) public usedUpgradeHashes;
 
-    // Events
-    event PowerUpUpgraded(
-        address indexed player,
-        uint256 indexed powerUpId,
-        uint256 oldLevel,
-        uint256 newLevel,
-        uint256 cost,
-        bytes32 upgradeHash
-    );
-    event PowerUpConfigured(
-        uint256 indexed powerUpId,
-        uint256 baseCost,
-        uint256 maxLevel
-    );
-    event GameOwnerUpdated(address indexed oldOwner, address indexed newOwner);
-    event ContractPaused(bool paused);
-    event GameServerUpdated(
-        address indexed oldServer,
-        address indexed newServer
-    );
+    // Events are now defined in the interface
 
     modifier onlyGameOwner() {
         require(
@@ -128,7 +109,9 @@ contract PowerUpManager {
      */
     function setRiceManager(address _riceManager) external onlyGameOwner {
         require(_riceManager != address(0), "Invalid address");
+        address oldManager = riceManager;
         riceManager = _riceManager;
+        emit RICEManagerUpdated(oldManager, _riceManager);
     }
 
     /// @notice Set base cost and max level of a power-up (on-chain)

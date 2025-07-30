@@ -1,9 +1,193 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/contracts/PowerUpManager.sol": {
-      "lastModificationDate": 1753800160170,
-      "contentHash": "d67b93db89faab30103644ba00af6604",
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/AdminController.sol": {
+      "lastModificationDate": 1753861108196,
+      "contentHash": "5c11d4dbe56550861c355b9110851ac7",
+      "sourceName": "contracts/AdminController.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "AdminController"
+      ]
+    },
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/GameRegistry.sol": {
+      "lastModificationDate": 1753861382456,
+      "contentHash": "4b383586c8b6d44fa4de75263d02b06a",
+      "sourceName": "contracts/GameRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IRICEManager.sol",
+        "./interfaces/IScoreBoard.sol",
+        "./interfaces/IPowerUpManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "GameRegistry"
+      ]
+    },
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/interfaces/IRICEManager.sol": {
+      "lastModificationDate": 1753861104267,
+      "contentHash": "7e7821aa842b67fb1cca011aa646776a",
+      "sourceName": "contracts/interfaces/IRICEManager.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IRICEManager"
+      ]
+    },
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/interfaces/IScoreBoard.sol": {
+      "lastModificationDate": 1753861104332,
+      "contentHash": "59b3c2e49be0565ff3eb5161d2dda830",
+      "sourceName": "contracts/interfaces/IScoreBoard.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "IScoreBoard"
+      ]
+    },
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/interfaces/IPowerUpManager.sol": {
+      "lastModificationDate": 1753861104276,
+      "contentHash": "c979f6e1556b569e05390145b35bdd07",
+      "sourceName": "contracts/interfaces/IPowerUpManager.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IPowerUpManager"
+      ]
+    },
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/PowerUpManager.sol": {
+      "lastModificationDate": 1753861106009,
+      "contentHash": "7d1bbeac5e5cf91fc319836affd9aedf",
       "sourceName": "contracts/PowerUpManager.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -22,48 +206,27 @@
                 "evm.methodIdentifiers",
                 "metadata"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
       },
-      "imports": [],
-      "versionPragmas": ["^0.8.20"],
-      "artifacts": ["IRICEManager", "PowerUpManager"]
+      "imports": [
+        "./interfaces/IRICEManager.sol",
+        "./interfaces/IPowerUpManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "PowerUpManager"
+      ]
     },
-    "/contracts/RICEManager.sol": {
-      "lastModificationDate": 1753776301629,
-      "contentHash": "2dd7cf2d10225d762f4552ab3bd28e24",
-      "sourceName": "contracts/RICEManager.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": ["ast"]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": ["^0.8.20"],
-      "artifacts": ["RICEManager"]
-    },
-    "/contracts/ScoreBoard.sol": {
-      "lastModificationDate": 1753797215746,
-      "contentHash": "7e94541a0f4dcf07e4656c06969e8f9a",
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/ScoreBoard.sol": {
+      "lastModificationDate": 1753861108196,
+      "contentHash": "47756fce57e448186f9b9a656942a6d6",
       "sourceName": "contracts/ScoreBoard.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -82,14 +245,61 @@
                 "evm.methodIdentifiers",
                 "metadata"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
       },
-      "imports": [],
-      "versionPragmas": ["^0.8.19"],
-      "artifacts": ["IRICEManager", "ScoreBoard"]
+      "imports": [
+        "./interfaces/IRICEManager.sol",
+        "./interfaces/IScoreBoard.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "ScoreBoard"
+      ]
+    },
+    "/Users/martin.cayuelas/Desktop/rise-dash/contracts/RICEManager.sol": {
+      "lastModificationDate": 1753861414704,
+      "contentHash": "2443624a4d1a63a85c58247024f7b407",
+      "sourceName": "contracts/RICEManager.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IRICEManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "RICEManager"
+      ]
     }
   }
 }

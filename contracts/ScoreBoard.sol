@@ -1,36 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-// Interface for RICEManager contract
-interface IRICEManager {
-    function addRICE(
-        address player,
-        uint256 amount,
-        bytes32 operationHash,
-        bytes memory signature
-    ) external;
+import "./interfaces/IRICEManager.sol";
+import "./interfaces/IScoreBoard.sol";
 
-    function addRICEEmergency(
-        address player,
-        uint256 amount,
-        bytes32 operationHash
-    ) external;
-}
-
-contract ScoreBoard {
-    struct Score {
-        uint256 score;
-        uint256 timestamp;
-        string playerName;
-        bytes32 gameHash; // Hash to verify score authenticity
-    }
-
-    struct LeaderboardEntry {
-        uint256 score;
-        string playerName;
-        address playerAddress;
-    }
-
+/**
+ * @title ScoreBoard
+ * @dev Manages game scores and leaderboards with signature verification
+ * Implements IScoreBoard interface for modularity
+ */
+contract ScoreBoard is IScoreBoard {
     mapping(address => Score[]) public playerScores;
     mapping(address => uint256) public playerBestScore;
     mapping(address => uint256) public lastScoreTimestamp; // Anti-spam protection
@@ -52,24 +31,6 @@ contract ScoreBoard {
     // Security key for signing scores (set by game owner)
     bytes32 public securityKey;
     bool public securityKeySet = false;
-
-    event ScoreRecorded(
-        address indexed player,
-        uint256 score,
-        uint256 timestamp,
-        bytes32 gameHash
-    );
-    event ScoreRecordedWithRICE(
-        address indexed player,
-        uint256 score,
-        uint256 riceReward,
-        uint256 timestamp,
-        bytes32 gameHash
-    );
-    event BestScoreUpdated(address indexed player, uint256 newBestScore);
-    event GameOwnerUpdated(address indexed oldOwner, address indexed newOwner);
-    event ContractPaused(bool paused);
-    event SecurityKeyUpdated(bytes32 newKey);
 
     modifier onlyGameOwner() {
         require(
@@ -97,6 +58,7 @@ contract ScoreBoard {
     ) public onlyGameOwner {
         require(_riceManagerAddress != address(0), "Invalid address");
         riceManagerAddress = _riceManagerAddress;
+        emit RICEManagerAddressUpdated(_riceManagerAddress);
     }
 
     /**

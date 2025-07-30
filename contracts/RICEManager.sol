@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-contract RICEManager {
+import "./interfaces/IRICEManager.sol";
+
+/**
+ * @title RICEManager
+ * @dev Manages RICE token balances and operations with signature verification
+ * Implements IRICEManager interface for modularity
+ */
+contract RICEManager is IRICEManager {
     mapping(address => uint256) public balances;
 
     // Security and ownership
@@ -29,25 +36,7 @@ contract RICEManager {
     mapping(address => uint256) public lastDailyRevealTimestamp;
     uint256 public constant DAILY_REVEAL_COOLDOWN = 24 hours;
 
-    event RICEAdded(
-        address indexed player,
-        uint256 amount,
-        bytes32 operationHash
-    );
-    event RICESpent(
-        address indexed player,
-        uint256 amount,
-        bytes32 operationHash
-    );
-    event DailyRevealRICEAdded(
-        address indexed player,
-        uint256 amount,
-        bytes32 operationHash
-    );
-    event GameOwnerUpdated(address indexed oldOwner, address indexed newOwner);
-    event ContractPaused(bool paused);
-    event SecurityKeyUpdated(bytes32 newKey);
-    event ScoreBoardAddressUpdated(address indexed newAddress);
+    // Events are now defined in the interface
 
     modifier onlyGameOwner() {
         require(
@@ -405,6 +394,7 @@ contract RICEManager {
     ) public onlyGameOwner {
         require(_powerUpManagerAddress != address(0), "Invalid address");
         powerUpManagerAddress = _powerUpManagerAddress;
+        emit PowerUpManagerAddressUpdated(_powerUpManagerAddress);
     }
 
     function getContractInfo()

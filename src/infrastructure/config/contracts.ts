@@ -4,9 +4,9 @@ import { Address } from "viem";
 export const CONTRACT_ADDRESSES = {
   // Rise Testnet
   riseTestnet: {
-    scoreBoard: "0x16360957eF50d2a754c76a16B833d5A1D2c437Cb" as Address,
-    riceManager: "0xA19E2a7730bADf428601042b707E4727B26Cc726" as Address,
-    powerUpManager: "0xBc4E9C9549864b787dE83af33f86cDFff37C7Ff4" as Address,
+    scoreBoard: "0xCD6e99ee39882607F40da5d9f04E1b91F4c43df4" as Address,
+    riceManager: "0x408Bdc391CFC10F21e69FDF2Ff6340aC0A0E2dA9" as Address,
+    powerUpManager: "0x77e5734858b72689eA717bc9b16796da6C6841e0" as Address,
   },
   // Mainnet (when deployed)
   mainnet: {
@@ -45,3 +45,30 @@ export const getPowerUpManagerAddress = (): Address =>
 
 // Legacy export for backward compatibility
 export const SCOREBOARD_CONTRACT_ADDRESS = getScoreBoardAddress();
+
+// Configuration des contrats modulaires
+export const MODULAR_CONTRACTS = {
+  ADMIN_CONTROLLER: "0x78ee7dA36f5D32054781dAFCD06476636c093d4d",
+  GAME_REGISTRY: "0x7e6426Ce9bcB77a549F41b7965a7312b2e882773",
+  RICE_MANAGER: "0x408Bdc391CFC10F21e69FDF2Ff6340aC0A0E2dA9",
+  SCORE_BOARD: "0xCD6e99ee39882607F40da5d9f04E1b91F4c43df4",
+  POWER_UP_MANAGER: "0x77e5734858b72689eA717bc9b16796da6C6841e0",
+};
+
+// ⚠️ ATTENTION: Les clés de sécurité sont PRIVÉES et ne doivent JAMAIS être exposées côté client
+// Elles sont utilisées uniquement côté serveur pour signer les transactions
+//
+// Pour le frontend, on utilise seulement les adresses des contrats
+// Les signatures sont générées côté serveur via vos API endpoints
+
+// Configuration pour l'utilisation du registre
+export const USE_REGISTRY = true; // Utiliser le GameRegistry comme point d'entrée
+
+// Rôles admin
+export const ADMIN_ROLES = {
+  NONE: 0,
+  OPERATOR: 1,
+  MANAGER: 2,
+  ADMIN: 3,
+  OWNER: 4,
+};
