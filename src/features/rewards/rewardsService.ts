@@ -1,25 +1,25 @@
 import { DistanceReward, GameRewards } from "../../shared/types/game";
 
-// Configuration des récompenses
+// Rewards configuration
 export const REWARDS_CONFIG = {
   RICE_PER_100M: 10,
   MILESTONE_DISTANCE: 100,
 } as const;
 
 /**
- * Service pour gérer les récompenses basées sur la distance
+ * Service to manage distance-based rewards
  */
 export class RewardsService {
   /**
-   * Calcule les récompenses basées sur la distance parcourue
-   * @param distance - Distance en mètres
-   * @returns Objet contenant les récompenses calculées
+   * Calculates rewards based on distance traveled
+   * @param distance - Distance in meters
+   * @returns Object containing calculated rewards
    */
   static calculateDistanceRewards(distance: number): GameRewards {
     const distanceRewards: DistanceReward[] = [];
     let totalRice = 0;
 
-    // Calcul des récompenses pour chaque palier de 100m atteint
+    // Calculate rewards for each 100m milestone reached
     const milestones = Math.floor(distance / REWARDS_CONFIG.MILESTONE_DISTANCE);
 
     for (let i = 1; i <= milestones; i++) {
@@ -35,7 +35,7 @@ export class RewardsService {
       totalRice += riceReward;
     }
 
-    // Ajout d'une récompense partielle pour la distance restante
+    // Add partial reward for remaining distance
     const remainingDistance = distance % REWARDS_CONFIG.MILESTONE_DISTANCE;
     if (remainingDistance > 0) {
       const partialRice = Math.floor(
@@ -60,9 +60,9 @@ export class RewardsService {
   }
 
   /**
-   * Formate la distance pour l'affichage
-   * @param meters - Distance en mètres
-   * @returns Distance formatée (ex: "100m", "1.5km")
+   * Formats distance for display
+   * @param meters - Distance in meters
+   * @returns Formatted distance (e.g., "100m", "1.5km")
    */
   static formatDistance(meters: number): string {
     if (meters >= 1000) {
@@ -72,27 +72,27 @@ export class RewardsService {
   }
 
   /**
-   * Formate le montant de riz pour l'affichage
-   * @param amount - Quantité de riz
-   * @returns Montant formaté (ex: "10 Rice")
+   * Formats rice amount for display
+   * @param amount - Rice quantity
+   * @returns Formatted amount (e.g., "10 Rice")
    */
   static formatRice(amount: number): string {
     return `${amount} Rice`;
   }
 
   /**
-   * Vérifie si une distance atteint un nouveau palier
-   * @param distance - Distance actuelle
-   * @returns true si un nouveau palier est atteint
+   * Checks if a distance reaches a new milestone
+   * @param distance - Current distance
+   * @returns true if a new milestone is reached
    */
   static isNewMilestone(distance: number): boolean {
     return distance > 0 && distance % REWARDS_CONFIG.MILESTONE_DISTANCE === 0;
   }
 
   /**
-   * Obtient le prochain palier à atteindre
-   * @param currentDistance - Distance actuelle
-   * @returns Distance du prochain palier
+   * Gets the next milestone to reach
+   * @param currentDistance - Current distance
+   * @returns Distance of the next milestone
    */
   static getNextMilestone(currentDistance: number): number {
     const currentMilestone = Math.floor(
@@ -102,9 +102,9 @@ export class RewardsService {
   }
 
   /**
-   * Calcule le pourcentage de progression vers le prochain palier
-   * @param currentDistance - Distance actuelle
-   * @returns Pourcentage de progression (0-100)
+   * Calculates progress percentage towards the next milestone
+   * @param currentDistance - Current distance
+   * @returns Progress percentage (0-100)
    */
   static getProgressToNextMilestone(currentDistance: number): number {
     const remainingDistance =

@@ -17,7 +17,7 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
   className = "",
 }) => {
   const { t } = useTranslations();
-  const { addRICE } = useRice();
+  const { addRICE, addDailyRevealRICE } = useRice();
   const { canReveal, isSpinning, selectedCard, isRevealed, revealCard } =
     useDailyRevealSelectors();
 
@@ -25,12 +25,18 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
     if (!canReveal || isSpinning) return;
 
     try {
-      await revealCard();
+      // Reveal the card and get the selected card
+      const revealedCard = await revealCard();
 
       // Add RICE reward based on the revealed card value
-      if (selectedCard && selectedCard.value > 0) {
+      if (revealedCard && revealedCard.value > 0) {
         try {
-          await addRICE(selectedCard.value);
+          // In development mode, use addRICE (30s cooldown) for easier testing
+          // In production mode, use addDailyRevealRICE (24h cooldown)
+          const isDevelopment = process.env.NODE_ENV === "development";
+          const addRiceFunction = isDevelopment ? addRICE : addDailyRevealRICE;
+
+          await addRiceFunction(revealedCard.value);
         } catch (error) {
           console.error("Failed to add daily RICE reward:", error);
           // Don't show error to user as this is optional

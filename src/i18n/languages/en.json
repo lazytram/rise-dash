@@ -72,9 +72,9 @@
       "riceBalance": "RICE Balance",
       "totalUpgrades": "Total Upgrades",
       "upgradeProgress": "Upgrade Progress",
-      "insufficientFunds": "Insufficient RICE",
+      "insufficientFunds": "Insufficient funds",
       "upgradeSuccess": "Upgrade Successful!",
-      "upgradeFailed": "Upgrade Failed",
+
       "upgradedToLevel": "upgraded to level {{ level }}",
       "upgradeErrorDescription": "An error occurred during the upgrade. Please try again.",
       "confirmUpgrade": "Confirm Upgrade",
@@ -98,9 +98,10 @@
       "connectWalletToView": "Connect your wallet to view power-ups",
       "signatureError": "Failed to get signature from server",
       "upgradeError": "Failed to upgrade power-up",
-      "insufficientRice": "Insufficient RICE balance",
+      "insufficientRice": "Insufficient RICE",
       "errorUpgrading": "Failed to upgrade power-up. Please try again.",
-      "signatureRejected": "Upgrade cancelled. You rejected the signature."
+      "signatureRejected": "Upgrade cancelled. You rejected the signature.",
+      "powerUpNotInitialized": "Power-up not initialized on contract"
     },
     "instructions": {
       "title": "Instructions",
@@ -275,6 +276,17 @@
       "insufficientRice": "Insufficient RICE",
       "noActive": "No active power-up"
     },
+    "powerUp": {
+      "title": "Power-ups",
+      "upgrading": "Upgrading Power-up",
+      "upgradingMessage": "Processing your upgrade on the blockchain...",
+      "upgradeSuccess": "Power-up Upgraded!",
+      "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
+      "upgradeError": "Failed to upgrade power-up",
+      "failedToLoadLevels": "Failed to load power-up levels",
+      "failedToLoadConfigs": "Failed to load power-up configurations",
+      "invalidPowerUp": "Invalid power-up selected"
+    },
     "blockchain": {
       "saveScore": "Save Score",
       "currentScore": "Current Score",
@@ -283,8 +295,6 @@
       "newRecord": "New Personal Record!",
       "scoreRecorded": "Score recorded on RISE blockchain",
       "connectWallet": "Please connect your wallet first",
-      "connectWalletMessage": "Please connect your wallet to access this feature",
-      "connectWalletToSave": "Connect your wallet to save your score on the blockchain",
       "namePlaceholder": "Your name (max 20 characters)",
       "save": "Save",
       "saving": "Saving...",
@@ -301,10 +311,10 @@
       "userRejected": "Transaction rejected by user",
       "insufficientFunds": "Insufficient funds for transaction",
       "networkError": "Network error - check your connection",
-      "saveScoreError": "Failed to save score",
+
       "errorAddingRICE": "Error adding RICE",
       "errorSpendingRICE": "Error spending RICE",
-      "insufficientRICE": "Insufficient RICE balance",
+      "insufficientRICE": "Insufficient RICE",
       "riceOperationError": "Failed to process RICE operation",
       "riceAddedSuccess": "RICE added successfully",
       "riceSpentSuccess": "RICE spent successfully",

@@ -26,10 +26,10 @@ export const PowerUpCardBlockchain: React.FC<PowerUpCardBlockchainProps> = ({
 }) => {
   const { t } = useTranslations();
 
-  // Ensure currentLevel is valid (0-10) and handle NaN/undefined
+  // Ensure currentLevel is valid (1-10) and handle NaN/undefined
   const validCurrentLevel = Math.max(
-    0,
-    Math.min(10, Number(currentLevel) || 0)
+    1,
+    Math.min(10, Number(currentLevel) || 1)
   );
   const nextLevel = validCurrentLevel + 1;
 
@@ -38,8 +38,9 @@ export const PowerUpCardBlockchain: React.FC<PowerUpCardBlockchainProps> = ({
       return t("features.powerUps.maxLevelReached");
     }
 
-    const current = powerUp.upgrades[validCurrentLevel];
-    const next = powerUp.upgrades[nextLevel];
+    // Adjust for 1-based indexing: validCurrentLevel starts at 1, levels start at 1
+    const current = powerUp.upgrades[validCurrentLevel - 1];
+    const next = powerUp.upgrades[nextLevel - 1];
 
     // Safety check: if current upgrade is undefined, return empty string
     if (!current) {

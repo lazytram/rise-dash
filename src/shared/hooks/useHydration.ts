@@ -6,7 +6,7 @@ export const useHydration = () => {
 
   const handleHydration = useCallback(() => {
     setIsMounted(true);
-    // Délai pour s'assurer que l'hydratation est complète
+    // Delay to ensure hydration is complete
     const timer = setTimeout(() => {
       setIsHydrated(true);
     }, 100);

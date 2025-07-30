@@ -5,10 +5,8 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import {
-  blockchainService,
-  SCOREBOARD_ABI,
-} from "@/infrastructure/blockchain/blockchainService";
+import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
+import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
 import { getScoreBoardAddress } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 
@@ -23,6 +21,7 @@ jest.mock("@/infrastructure/blockchain/blockchainService", () => ({
   blockchainService: {
     getContractInfo: jest.fn(),
     generateGameHash: jest.fn(),
+    recordScore: jest.fn(),
     isNewPersonalBest: jest.fn(),
     getLeaderboard: jest.fn(),
     getTotalScores: jest.fn(),
@@ -103,7 +102,7 @@ describe("useBlockchainScore", () => {
     );
   });
 
-  describe("recordScore", () => {
+  describe("saveScore", () => {
     it("should return false when no address is connected", async () => {
       mockUseAccount.mockReturnValue({
         address: undefined,
@@ -112,7 +111,7 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const success = await act(async () => {
-        return await result.current.recordScore(1000, "Player1");
+        return await result.current.saveScore(1000, "Player1");
       });
 
       expect(success).toBe(false);
@@ -133,7 +132,7 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const success = await act(async () => {
-        return await result.current.recordScore(1000, "Player1");
+        return await result.current.saveScore(1000, "Player1");
       });
 
       expect(success).toBe(false);
@@ -154,7 +153,7 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const success = await act(async () => {
-        return await result.current.recordScore(1000, "Player1");
+        return await result.current.saveScore(1000, "Player1");
       });
 
       expect(success).toBe(false);
@@ -172,27 +171,26 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const success = await act(async () => {
-        return await result.current.recordScore(1000, "Player1");
+        return await result.current.saveScore(1000, "Player1");
       });
 
       expect(success).toBe(false);
       expect(mockShowError).toHaveBeenCalledWith(
         "common.error",
-        "features.blockchain.errorSaving (signature)"
+        "features.blockchain.errorSaving"
       );
     });
 
     it("should handle successful score recording", async () => {
-      const mockSignature = "0xsignature" as `0x${string}`;
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: true,
-        json: () => Promise.resolve({ signature: mockSignature }),
+      mockBlockchainService.recordScore.mockResolvedValue({
+        gameHash: "0xgamehash" as `0x${string}`,
+        signature: "0xsignature" as `0x${string}`,
       });
 
       const { result } = renderHook(() => useBlockchainScore());
 
       const success = await act(async () => {
-        return await result.current.recordScore(1000, "Player1");
+        return await result.current.saveScore(1000, "Player1");
       });
 
       expect(success).toBe(true);
@@ -200,7 +198,7 @@ describe("useBlockchainScore", () => {
         address: getScoreBoardAddress(),
         abi: SCOREBOARD_ABI,
         functionName: "recordScore",
-        args: [BigInt(1000), "Player1", "0xgamehash", mockSignature],
+        args: [BigInt(1000), "Player1", "0xgamehash", "0xsignature"],
       });
     });
 
@@ -218,7 +216,7 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const success = await act(async () => {
-        return await result.current.recordScore(1000, "Player1");
+        return await result.current.saveScore(1000, "Player1");
       });
 
       expect(success).toBe(false);
@@ -229,7 +227,7 @@ describe("useBlockchainScore", () => {
     });
   });
 
-  describe("checkNewPersonalBest", () => {
+  describe("isNewPersonalBest", () => {
     it("should return false when no address is connected", async () => {
       mockUseAccount.mockReturnValue({
         address: undefined,
@@ -238,7 +236,7 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
-        return await result.current.checkNewPersonalBest(1000);
+        return await result.current.isNewPersonalBest(1000);
       });
 
       expect(isNewBest).toBe(false);
@@ -250,7 +248,7 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
-        return await result.current.checkNewPersonalBest(1000);
+        return await result.current.isNewPersonalBest(1000);
       });
 
       expect(isNewBest).toBe(true);
@@ -266,13 +264,13 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
-        return await result.current.checkNewPersonalBest(1000);
+        return await result.current.isNewPersonalBest(1000);
       });
 
       expect(isNewBest).toBe(false);
     });
 
-    it("should handle errors and return false", async () => {
+    it("should handle errors and return true", async () => {
       mockBlockchainService.isNewPersonalBest.mockRejectedValue(
         new Error("Network error")
       );
@@ -280,10 +278,10 @@ describe("useBlockchainScore", () => {
       const { result } = renderHook(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
-        return await result.current.checkNewPersonalBest(1000);
+        return await result.current.isNewPersonalBest(1000);
       });
 
-      expect(isNewBest).toBe(false);
+      expect(isNewBest).toBe(true);
     });
   });
 
@@ -341,11 +339,16 @@ describe("useBlockchainScore", () => {
         isSuccess: true,
       } as unknown as ReturnType<typeof useWaitForTransactionReceipt>);
 
-      renderHook(() => useBlockchainScore());
+      const { result } = renderHook(() => useBlockchainScore());
+
+      // Call the transaction success handler manually
+      act(() => {
+        result.current.handleTransactionSuccess();
+      });
 
       expect(mockShowSuccess).toHaveBeenCalledWith(
-        "Transaction Successful",
-        "Your score has been successfully saved!",
+        "features.blockchain.transactionSuccess",
+        "features.blockchain.scoreSavedSuccess",
         mockHash,
         "View Transaction"
       );
@@ -361,11 +364,16 @@ describe("useBlockchainScore", () => {
         error: mockError,
       } as unknown as ReturnType<typeof useWriteContract>);
 
-      renderHook(() => useBlockchainScore());
+      const { result } = renderHook(() => useBlockchainScore());
+
+      // Call the transaction error handler manually
+      act(() => {
+        result.current.handleTransactionError();
+      });
 
       expect(mockShowError).toHaveBeenCalledWith(
         "common.error",
-        "features.blockchain.saveScoreError. Transaction failed"
+        "features.blockchain.scoreSaveError. Transaction failed"
       );
     });
   });
@@ -381,7 +389,7 @@ describe("useBlockchainScore", () => {
 
       const { result } = renderHook(() => useBlockchainScore());
 
-      expect(result.current.isRecording).toBe(true);
+      expect(result.current.isSaving).toBe(true);
     });
 
     it("should return correct loading state when confirming", () => {
@@ -392,7 +400,7 @@ describe("useBlockchainScore", () => {
 
       const { result } = renderHook(() => useBlockchainScore());
 
-      expect(result.current.isRecording).toBe(true);
+      expect(result.current.isSaving).toBe(true);
     });
   });
 });

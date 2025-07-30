@@ -1,11 +1,9 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   useAccount,
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import { createPublicClient, http } from "viem";
-import { riseTestnet } from "@/infrastructure/config/riseTestnet";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
 import { getScoreBoardAddress } from "@/infrastructure/config";
@@ -76,7 +74,7 @@ export const useBlockchainScore = () => {
         return true;
       } catch (error) {
         console.error("❌ Error saving score:", error);
-        showError(t("common.error"), t("features.blockchain.errorSavingScore"));
+        showError(t("common.error"), t("features.blockchain.errorSaving"));
         return false;
       } finally {
         setIsSaving(false);
@@ -87,13 +85,6 @@ export const useBlockchainScore = () => {
 
   const saveScoreWithRICE = useCallback(
     async (score: number, playerName: string, riceReward: number) => {
-      console.log("🔍 saveScoreWithRICE called with:", {
-        score,
-        playerName,
-        riceReward,
-        address,
-      });
-
       if (!address) {
         showError(t("common.error"), t("features.blockchain.connectWallet"));
         return false;
@@ -136,23 +127,8 @@ export const useBlockchainScore = () => {
           t("features.blockchain.transactionPendingMessage")
         );
 
-        console.log("🔍 About to call writeContract with:", {
-          address: getScoreBoardAddress(),
-          functionName: "recordScoreWithRICE",
-          args: [
-            BigInt(score),
-            playerName,
-            BigInt(riceReward),
-            gameHash,
-            signature,
-          ],
-        });
-
-        console.log("🔍 Current address:", address);
-        console.log("🔍 Contract address:", getScoreBoardAddress());
-
         // Execute the transaction with RICE reward
-        const result = writeContract({
+        writeContract({
           address: getScoreBoardAddress(),
           abi: SCOREBOARD_ABI,
           functionName: "recordScoreWithRICE",
@@ -165,24 +141,10 @@ export const useBlockchainScore = () => {
           ],
         });
 
-        console.log("🔍 writeContract result:", result);
-        console.log("🔍 writeContract called successfully");
-        console.log(
-          "🔍 Current states - isPending:",
-          isPending,
-          "error:",
-          error,
-          "hash:",
-          hash
-        );
-
         return true;
       } catch (error) {
-        console.error("❌ Error saving score with RICE:", error);
-        showError(
-          t("common.error"),
-          t("features.blockchain.errorSavingScoreWithRICE")
-        );
+        console.error("Error saving score with RICE:", error);
+        showError(t("common.error"), t("features.blockchain.errorSaving"));
         return false;
       } finally {
         setIsSavingWithRICE(false);
@@ -201,7 +163,7 @@ export const useBlockchainScore = () => {
       setBestScore(score);
       return score;
     } catch (error) {
-      console.error("❌ Error loading best score:", error);
+      console.error("Error loading best score:", error);
       return BigInt(0);
     }
   }, [address]);
@@ -215,16 +177,16 @@ export const useBlockchainScore = () => {
           blockchainService.isNewPersonalBest(address, score)
         );
       } catch (error) {
-        console.error("❌ Error checking if new personal best:", error);
+        console.error("Error checking if new personal best:", error);
         return true; // In case of error, assume it's a new record
       }
     },
     [address]
   );
 
-  // Handle transaction success
+  // Handle transaction success (only when confirmed)
   const handleTransactionSuccess = useCallback(() => {
-    if (isSuccess && hash) {
+    if (isSuccess && hash && !isConfirming && !error) {
       showSuccess(
         t("features.blockchain.transactionSuccess"),
         t("features.blockchain.scoreSavedSuccess"),
@@ -234,12 +196,11 @@ export const useBlockchainScore = () => {
       // Reload best score after successful save
       loadBestScore();
     }
-  }, [isSuccess, hash, showSuccess, t, loadBestScore]);
+  }, [isSuccess, hash, isConfirming, error, showSuccess, t, loadBestScore]);
 
   // Handle transaction error
   const handleTransactionError = useCallback(() => {
     if (error) {
-      console.log("🔍 Transaction error detected:", error);
       let shortMessage = error.message;
 
       if (error.message.includes("User rejected")) {
@@ -262,65 +223,13 @@ export const useBlockchainScore = () => {
     }
   }, [error, showError, t]);
 
-  // Debug: Monitor transaction states
-  useEffect(() => {
-    console.log("🔍 Transaction state changed:", {
-      isPending,
-      isConfirming,
-      isSuccess,
-      error,
-      hash,
-    });
-
-    // If transaction failed (not pending, not confirming, not success, no error)
-    if (!isPending && !isConfirming && !isSuccess && !error && hash) {
-      console.log("🔍 Transaction seems to have failed silently. Hash:", hash);
-
-      // Try to get transaction details via RPC
-      console.log("🔍 Checking transaction details via RPC...");
-
-      // Use the public client to get transaction details
-      const publicClient = createPublicClient({
-        chain: riseTestnet,
-        transport: http(),
-      });
-
-      publicClient
-        .getTransactionReceipt({ hash: hash as `0x${string}` })
-        .then((receipt) => {
-          console.log("🔍 Transaction receipt:", receipt);
-
-          if (receipt.status === "success") {
-            console.log("✅ Transaction succeeded!");
-          } else {
-            console.log("❌ Transaction failed!");
-            console.log("🔍 Gas used:", receipt.cumulativeGasUsed.toString());
-            console.log("🔍 Logs:", receipt.logs);
-
-            // Try to get the revert reason
-            publicClient
-              .getTransaction({ hash: hash as `0x${string}` })
-              .then((tx) => {
-                console.log("🔍 Transaction details:", tx);
-              })
-              .catch((err) => {
-                console.log("🔍 Could not get transaction details:", err);
-              });
-          }
-        })
-        .catch((err) => {
-          console.log("🔍 Could not get transaction receipt:", err);
-        });
-    }
-  }, [isPending, isConfirming, isSuccess, error, hash]);
-
   const getLeaderboard = useCallback(async (offset: number, limit: number) => {
     try {
       return await retryWithBackoff(() =>
         blockchainService.getLeaderboard(offset, limit)
       );
     } catch (error) {
-      console.error("❌ Error loading leaderboard:", error);
+      console.error("Error loading leaderboard:", error);
       throw error;
     }
   }, []);
@@ -329,7 +238,7 @@ export const useBlockchainScore = () => {
     try {
       return await retryWithBackoff(() => blockchainService.getTotalScores());
     } catch (error) {
-      console.error("❌ Error getting total scores:", error);
+      console.error("Error getting total scores:", error);
       throw error;
     }
   }, []);
@@ -340,7 +249,7 @@ export const useBlockchainScore = () => {
         blockchainService.checkContractConfig()
       );
     } catch (error) {
-      console.error("❌ Error checking contract config:", error);
+      console.error("Error checking contract config:", error);
       throw error;
     }
   }, []);

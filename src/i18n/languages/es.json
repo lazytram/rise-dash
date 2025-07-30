@@ -72,7 +72,7 @@
       "riceBalance": "Saldo RICE",
       "totalUpgrades": "Mejoras Totales",
       "upgradeProgress": "Progreso de Mejora",
-      "insufficientFunds": "RICE Insuficiente",
+      "insufficientFunds": "Fondos insuficientes",
       "upgradeSuccess": "¡Mejora Exitosa!",
       "upgradeFailed": "Mejora Fallida",
       "upgradedToLevel": "mejorado al nivel {{ level }}",
@@ -255,7 +255,19 @@
       "insufficientRice": "RICE Insuficiente",
       "noActive": "Sin power-up activo",
       "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
-      "signatureRejected": "Actualización cancelada. Has rechazado la firma."
+      "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
+      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
+    },
+    "powerUp": {
+      "title": "Power-ups",
+      "upgrading": "Actualizando Power-up",
+      "upgradingMessage": "Procesando tu actualización en la blockchain...",
+      "upgradeSuccess": "¡Power-up Actualizado!",
+      "upgradeSuccessMessage": "¡Tu power-up ha sido actualizado exitosamente!",
+      "upgradeError": "Error al actualizar el power-up",
+      "failedToLoadLevels": "Error al cargar los niveles de power-up",
+      "failedToLoadConfigs": "Error al cargar las configuraciones de power-up",
+      "invalidPowerUp": "Power-up seleccionado inválido"
     },
     "blockchain": {
       "saveScore": "Guardar Puntuación",
@@ -265,8 +277,6 @@
       "newRecord": "¡Nuevo Récord Personal!",
       "scoreRecorded": "Puntuación registrada en la blockchain RISE",
       "connectWallet": "Por favor conecta tu wallet primero",
-      "connectWalletMessage": "Por favor conecta tu wallet para acceder a esta función",
-      "connectWalletToSave": "Conecta tu wallet para guardar tu puntuación en la blockchain",
       "namePlaceholder": "Tu nombre (máx 20 caracteres)",
       "save": "Guardar",
       "saving": "Guardando...",
@@ -283,10 +293,10 @@
       "userRejected": "Transacción rechazada por el usuario",
       "insufficientFunds": "Fondos insuficientes para la transacción",
       "networkError": "Error de red - verifica tu conexión",
-      "saveScoreError": "Falló al guardar puntuación",
+
       "errorAddingRICE": "Error agregando RICE",
       "errorSpendingRICE": "Error gastando RICE",
-      "insufficientRICE": "Saldo de RICE insuficiente",
+      "insufficientRICE": "RICE insuficiente",
       "riceOperationError": "Falló al procesar operación RICE",
       "riceAddedSuccess": "RICE agregado exitosamente",
       "riceSpentSuccess": "RICE gastado exitosamente",

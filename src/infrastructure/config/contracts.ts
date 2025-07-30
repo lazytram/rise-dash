@@ -4,9 +4,9 @@ import { Address } from "viem";
 export const CONTRACT_ADDRESSES = {
   // Rise Testnet
   riseTestnet: {
-    scoreBoard: "0xCD6e99ee39882607F40da5d9f04E1b91F4c43df4" as Address,
-    riceManager: "0x408Bdc391CFC10F21e69FDF2Ff6340aC0A0E2dA9" as Address,
-    powerUpManager: "0x77e5734858b72689eA717bc9b16796da6C6841e0" as Address,
+    scoreBoard: "0x86812187fac067E9DA844977161EcF9Df3225Ac0" as Address,
+    riceManager: "0x69FAcF1454e0F8a43561697767d956B8E5AA6F50" as Address,
+    powerUpManager: "0x77b6097670C4116136cE3270D691427D7b4eA9e7" as Address,
   },
   // Mainnet (when deployed)
   mainnet: {
@@ -46,25 +46,25 @@ export const getPowerUpManagerAddress = (): Address =>
 // Legacy export for backward compatibility
 export const SCOREBOARD_CONTRACT_ADDRESS = getScoreBoardAddress();
 
-// Configuration des contrats modulaires
+// Modular contracts configuration
 export const MODULAR_CONTRACTS = {
   ADMIN_CONTROLLER: "0x78ee7dA36f5D32054781dAFCD06476636c093d4d",
   GAME_REGISTRY: "0x7e6426Ce9bcB77a549F41b7965a7312b2e882773",
-  RICE_MANAGER: "0x408Bdc391CFC10F21e69FDF2Ff6340aC0A0E2dA9",
-  SCORE_BOARD: "0xCD6e99ee39882607F40da5d9f04E1b91F4c43df4",
-  POWER_UP_MANAGER: "0x77e5734858b72689eA717bc9b16796da6C6841e0",
+  RICE_MANAGER: getRICEManagerAddress(),
+  SCORE_BOARD: getScoreBoardAddress(),
+  POWER_UP_MANAGER: getPowerUpManagerAddress(),
 };
 
-// ⚠️ ATTENTION: Les clés de sécurité sont PRIVÉES et ne doivent JAMAIS être exposées côté client
-// Elles sont utilisées uniquement côté serveur pour signer les transactions
+// ⚠️ ATTENTION: Security keys are PRIVATE and should NEVER be exposed client-side
+// They are used only server-side to sign transactions
 //
-// Pour le frontend, on utilise seulement les adresses des contrats
-// Les signatures sont générées côté serveur via vos API endpoints
+// For the frontend, we only use contract addresses
+// Signatures are generated server-side via your API endpoints
 
-// Configuration pour l'utilisation du registre
-export const USE_REGISTRY = true; // Utiliser le GameRegistry comme point d'entrée
+// Configuration for registry usage
+export const USE_REGISTRY = true; // Use GameRegistry as entry point
 
-// Rôles admin
+// Admin roles
 export const ADMIN_ROLES = {
   NONE: 0,
   OPERATOR: 1,

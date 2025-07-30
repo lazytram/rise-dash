@@ -1,2 +1,0 @@
-npx hardhat run scripts/check-contract.cjs --network riseTestnet
-q

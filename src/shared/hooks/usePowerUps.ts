@@ -10,10 +10,9 @@ import { getPowerUpManagerAddress } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 import { retryWithBackoff } from "../utils/retryUtils";
+import { PowerUpType } from "@/shared/types/powerUps";
 
-export interface PowerUpLevels {
-  [powerUpId: number]: number;
-}
+export type PowerUpLevels = Partial<Record<PowerUpType, number>>;
 
 export interface PowerUpConfig {
   cost: number;
@@ -22,17 +21,25 @@ export interface PowerUpConfig {
 
 export const usePowerUps = () => {
   const { address } = useAccount();
-  const [upgradingPowerUps, setUpgradingPowerUps] = useState<Set<number>>(
-    new Set()
-  );
+  // Change from Set<number> to Record<PowerUpType, boolean> for individual loading states
+  const [upgradingPowerUps, setUpgradingPowerUps] = useState<
+    Record<PowerUpType, boolean>
+  >({
+    [PowerUpType.SHIELD]: false,
+    [PowerUpType.INFINITE_AMMO]: false,
+    [PowerUpType.JUMP_BOOST]: false,
+    [PowerUpType.SLOW_MOTION]: false,
+    [PowerUpType.MULTI_SHOT]: false,
+    [PowerUpType.RICE_ROCKET_AMMO]: false,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [powerUpLevels, setPowerUpLevels] = useState<PowerUpLevels>({});
   const [confirmedTransaction, setConfirmedTransaction] = useState<
     string | null
   >(null);
-  const [powerUpConfigs, setPowerUpConfigs] = useState<{
-    [powerUpId: number]: PowerUpConfig;
-  }>({});
+  const [powerUpConfigs, setPowerUpConfigs] = useState<
+    Partial<Record<PowerUpType, PowerUpConfig>>
+  >({});
   const { showError, showSuccess, showPending, clearToasts } = useToastStore();
   const { t } = useTranslations();
 
@@ -47,10 +54,10 @@ export const usePowerUps = () => {
     timestamp: number;
   } | null>(null);
   const configsCacheRef = useRef<{
-    configs: { [powerUpId: number]: PowerUpConfig };
+    configs: { [powerUpType in PowerUpType]?: PowerUpConfig };
     timestamp: number;
   } | null>(null);
-  const CACHE_DURATION = 0; // Disable cache for debugging
+  const CACHE_DURATION = 30000; // 30 seconds cache
 
   // Update refs when values change
   useEffect(() => {
@@ -65,6 +72,7 @@ export const usePowerUps = () => {
     isLoading: isConfirming,
     isSuccess,
     isError,
+    error: transactionError,
   } = useWaitForTransactionReceipt({
     hash,
   });
@@ -96,8 +104,19 @@ export const usePowerUps = () => {
       );
 
       const levelsMap: PowerUpLevels = {};
+      const powerUpTypeMap: Record<number, PowerUpType> = {
+        0: PowerUpType.SHIELD,
+        1: PowerUpType.INFINITE_AMMO,
+        2: PowerUpType.JUMP_BOOST,
+        3: PowerUpType.SLOW_MOTION,
+        4: PowerUpType.MULTI_SHOT,
+        5: PowerUpType.RICE_ROCKET_AMMO,
+      };
       levels.forEach((level, index) => {
-        levelsMap[index] = level;
+        const powerUpType = powerUpTypeMap[index];
+        if (powerUpType) {
+          levelsMap[powerUpType] = level;
+        }
       });
 
       // Cache the result
@@ -109,7 +128,6 @@ export const usePowerUps = () => {
       setPowerUpLevels(levelsMap);
       return levelsMap;
     } catch (error) {
-      console.error("Error loading power-up levels:", error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -118,37 +136,51 @@ export const usePowerUps = () => {
 
   // Load power-up configuration
   const loadPowerUpConfig = useCallback(
-    async (powerUpId: number): Promise<PowerUpConfig> => {
+    async (powerUpType: PowerUpType): Promise<PowerUpConfig> => {
+      // Temporarily disable cache for debugging
       // Check cache first
+      /*
       if (
         configsCacheRef.current &&
         Date.now() - configsCacheRef.current.timestamp < CACHE_DURATION
       ) {
         return (
-          configsCacheRef.current.configs[powerUpId] || { cost: 0, maxLevel: 0 }
+          configsCacheRef.current.configs[powerUpType] || {
+            cost: 0,
+            maxLevel: 0,
+          }
         );
       }
+      */
+
+      // Convert PowerUpType to powerUpId for blockchain calls
+      const powerUpIdMap: Record<PowerUpType, number> = {
+        [PowerUpType.SHIELD]: 0,
+        [PowerUpType.INFINITE_AMMO]: 1,
+        [PowerUpType.JUMP_BOOST]: 2,
+        [PowerUpType.SLOW_MOTION]: 3,
+        [PowerUpType.MULTI_SHOT]: 4,
+        [PowerUpType.RICE_ROCKET_AMMO]: 5,
+      };
+      const powerUpId = powerUpIdMap[powerUpType];
 
       try {
-        console.log(`🔍 Loading power-up config for ID ${powerUpId}...`);
-        const config = await retryWithBackoff(() =>
-          blockchainService.getPowerUpConfig(powerUpId)
-        );
-        console.log(`✅ Power-up config loaded:`, config);
+        // Call directly without retryWithBackoff to see the exact error
+        const config = await blockchainService.getPowerUpConfig(powerUpId);
 
         // Update cache
         const currentConfigs = configsCacheRef.current?.configs || {};
-        currentConfigs[powerUpId] = config;
+        currentConfigs[powerUpType] = config;
         configsCacheRef.current = {
           configs: currentConfigs,
           timestamp: Date.now(),
         };
 
-        setPowerUpConfigs((prev) => ({ ...prev, [powerUpId]: config }));
+        setPowerUpConfigs((prev) => ({ ...prev, [powerUpType]: config }));
         return config;
       } catch (error) {
         console.error(
-          `❌ Error loading power-up config for ID ${powerUpId}:`,
+          `❌ Error in loadPowerUpConfig for ${powerUpType}:`,
           error
         );
         throw error;
@@ -159,10 +191,21 @@ export const usePowerUps = () => {
 
   // Get upgrade cost for a specific power-up
   const getUpgradeCost = useCallback(
-    async (powerUpId: number): Promise<number> => {
+    async (powerUpType: PowerUpType): Promise<number> => {
       if (!address) {
         throw new Error("No wallet address");
       }
+
+      // Convert PowerUpType to powerUpId for blockchain calls
+      const powerUpIdMap: Record<PowerUpType, number> = {
+        [PowerUpType.SHIELD]: 0,
+        [PowerUpType.INFINITE_AMMO]: 1,
+        [PowerUpType.JUMP_BOOST]: 2,
+        [PowerUpType.SLOW_MOTION]: 3,
+        [PowerUpType.MULTI_SHOT]: 4,
+        [PowerUpType.RICE_ROCKET_AMMO]: 5,
+      };
+      const powerUpId = powerUpIdMap[powerUpType];
 
       try {
         const cost = await retryWithBackoff(() =>
@@ -170,16 +213,26 @@ export const usePowerUps = () => {
         );
         return cost;
       } catch (error) {
-        console.error("Error getting upgrade cost:", error);
         throw error;
       }
     },
     [address]
   );
 
+  // Optimistic update function
+  const updatePowerUpLevelOptimistically = useCallback(
+    (powerUpType: PowerUpType) => {
+      setPowerUpLevels((prev) => ({
+        ...prev,
+        [powerUpType]: (prev[powerUpType] || 0) + 1,
+      }));
+    },
+    []
+  );
+
   // Upgrade a power-up
   const upgradePowerUp = useCallback(
-    async (powerUpId: number) => {
+    async (powerUpType: PowerUpType) => {
       if (!address) {
         showErrorRef.current(
           tRef.current("common.error"),
@@ -188,22 +241,37 @@ export const usePowerUps = () => {
         return false;
       }
 
+      // Convert PowerUpType to powerUpId for blockchain calls
+      const powerUpIdMap: Record<PowerUpType, number> = {
+        [PowerUpType.SHIELD]: 0,
+        [PowerUpType.INFINITE_AMMO]: 1,
+        [PowerUpType.JUMP_BOOST]: 2,
+        [PowerUpType.SLOW_MOTION]: 3,
+        [PowerUpType.MULTI_SHOT]: 4,
+        [PowerUpType.RICE_ROCKET_AMMO]: 5,
+      };
+      const powerUpId = powerUpIdMap[powerUpType];
       // Clear any existing toasts before starting
       clearToasts();
-      setUpgradingPowerUps((prev) => new Set(prev).add(powerUpId));
+      // Set individual loading state for this power-up
+      setUpgradingPowerUps((prev) => ({ ...prev, [powerUpType]: true }));
 
       try {
         // Get current levels to check if upgrade is possible
+
         const currentLevels = await loadPowerUpLevels();
-        const currentLevel = currentLevels[powerUpId] || 0;
+        const currentLevel = currentLevels[powerUpType] || 0;
 
         // Get power-up config to check max level
-        const config = await loadPowerUpConfig(powerUpId);
-        console.log(`✅ Power-up config loaded:`, config);
+
+        const config = await loadPowerUpConfig(powerUpType);
 
         // Check if power-up is initialized (maxLevel > 0)
         if (config.maxLevel === 0) {
-          showError(t("common.error"), "Power-up not initialized on contract");
+          showError(
+            t("common.error"),
+            t("scenes.powerUps.powerUpNotInitialized")
+          );
           return false;
         }
 
@@ -213,9 +281,11 @@ export const usePowerUps = () => {
         }
 
         // Get upgrade cost
-        const cost = await getUpgradeCost(powerUpId);
+
+        const cost = await getUpgradeCost(powerUpType);
 
         // Check if player has enough RICE
+
         const riceBalance = await retryWithBackoff(() =>
           blockchainService.getRICEBalance(address)
         );
@@ -228,32 +298,33 @@ export const usePowerUps = () => {
           return false;
         }
 
-        // Get signature from server (like SaveScore)
-        console.log("🔍 Getting signature for power-up upgrade...");
+        // Generate unique upgrade hash using blockchainService
+
+        const upgradeHash = blockchainService.generatePowerUpHash(
+          address,
+          powerUpId,
+          cost
+        ) as `0x${string}`;
+        // Get signature from server
+
+        const requestBody = {
+          playerAddress: address,
+          powerUpId,
+          upgradeHash,
+          cost,
+        };
+
         const response = await fetch("/api/sign-powerup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            playerAddress: address,
-            powerUpId,
-            cost,
-          }),
+          body: JSON.stringify(requestBody),
         });
 
         if (!response.ok) {
           throw new Error("Failed to get signature");
         }
 
-        const { upgradeHash, signature } = await response.json();
-        console.log("✅ Got signature:", { upgradeHash, signature });
-
-        // Use the signed function (player will need to sign the transaction)
-        console.log("🚀 Calling upgradePowerUp with:", {
-          address,
-          powerUpId,
-          upgradeHash,
-          signature,
-        });
+        const { signature } = await response.json();
         writeContract({
           address: getPowerUpManagerAddress(),
           abi: POWERUPMANAGER_ABI,
@@ -262,19 +333,15 @@ export const usePowerUps = () => {
         });
 
         return true;
-      } catch (error) {
-        console.error("❌ Error upgrading power-up:", error);
+      } catch {
         showErrorRef.current(
           tRef.current("common.error"),
           tRef.current("scenes.powerUps.errorUpgrading")
         );
         return false;
       } finally {
-        setUpgradingPowerUps((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(powerUpId);
-          return newSet;
-        });
+        // Clear individual loading state for this power-up
+        setUpgradingPowerUps((prev) => ({ ...prev, [powerUpType]: false }));
       }
     },
     [
@@ -292,10 +359,9 @@ export const usePowerUps = () => {
   // Load power-up levels on mount
   useEffect(() => {
     if (address) {
-      console.log("🔄 Loading power-up levels for address:", address);
-      loadPowerUpLevels().catch(console.error);
+      loadPowerUpLevels().catch(() => {});
     }
-  }, [address]);
+  }, [address, loadPowerUpLevels]);
 
   // Handle transaction success (only when confirmed)
   useEffect(() => {
@@ -306,9 +372,9 @@ export const usePowerUps = () => {
       !isError &&
       confirmedTransaction !== hash
     ) {
-      console.log("✅ Transaction confirmed successfully!");
-      console.log("🔍 Transaction hash:", hash);
       setConfirmedTransaction(hash);
+
+      // Only show success toast after transaction is confirmed
       showSuccessRef.current(
         tRef.current("scenes.powerUps.upgradeSuccess"),
         tRef.current("scenes.powerUps.upgradeSuccessMessage"),
@@ -317,10 +383,16 @@ export const usePowerUps = () => {
       );
 
       // Refresh power-up levels after successful upgrade
-      console.log("🔄 Refreshing power-up levels after upgrade...");
-      loadPowerUpLevels().catch(console.error);
+      loadPowerUpLevels().catch(() => {});
     }
-  }, [isSuccess, hash, isConfirming, isError, confirmedTransaction]);
+  }, [
+    isSuccess,
+    hash,
+    isConfirming,
+    isError,
+    confirmedTransaction,
+    loadPowerUpLevels,
+  ]);
 
   // Handle transaction confirmation state
   useEffect(() => {
@@ -335,11 +407,11 @@ export const usePowerUps = () => {
   // Handle transaction errors
   useEffect(() => {
     if (isError || writeError) {
-      console.log("❌ Transaction error:", isError || writeError);
-      console.log("🔍 Error details:", { isError, writeError });
-
       // Check if it's a signature rejection
-      const errorMessage = String(isError || writeError || "");
+      const errorMessage = String(
+        isError || writeError || transactionError || ""
+      );
+
       if (
         errorMessage.includes("rejected") ||
         errorMessage.includes("cancelled") ||
@@ -356,17 +428,78 @@ export const usePowerUps = () => {
         );
       }
     }
-  }, [isError, writeError]);
+  }, [isError, writeError, transactionError]);
+
+  // Helper function to convert PowerUpType to powerUpId
+  const getPowerUpId = useCallback((powerUpType: PowerUpType): number => {
+    const powerUpIdMap: Record<PowerUpType, number> = {
+      [PowerUpType.SHIELD]: 0,
+      [PowerUpType.INFINITE_AMMO]: 1,
+      [PowerUpType.JUMP_BOOST]: 2,
+      [PowerUpType.SLOW_MOTION]: 3,
+      [PowerUpType.MULTI_SHOT]: 4,
+      [PowerUpType.RICE_ROCKET_AMMO]: 5,
+    };
+    return powerUpIdMap[powerUpType];
+  }, []);
+
+  // Wrapper functions that use PowerUpType
+  const getUpgradeCostByType = useCallback(
+    async (powerUpType: PowerUpType): Promise<number> => {
+      return getUpgradeCost(powerUpType);
+    },
+    [getUpgradeCost]
+  );
+
+  const upgradePowerUpByType = useCallback(
+    async (powerUpType: PowerUpType): Promise<boolean> => {
+      return upgradePowerUp(powerUpType);
+    },
+    [upgradePowerUp]
+  );
+
+  const loadPowerUpConfigByType = useCallback(
+    async (powerUpType: PowerUpType): Promise<PowerUpConfig> => {
+      return loadPowerUpConfig(powerUpType);
+    },
+    [loadPowerUpConfig]
+  );
+
+  const isUpgradingByType = useCallback(
+    (powerUpType: PowerUpType): boolean => {
+      return upgradingPowerUps[powerUpType] || false;
+    },
+    [upgradingPowerUps]
+  );
 
   return {
     powerUpLevels,
     powerUpConfigs,
     isLoading,
-    isUpgrading: (powerUpId: number) => upgradingPowerUps.has(powerUpId),
+    isUpgrading: (powerUpId: number) => {
+      // Convert powerUpId back to PowerUpType for checking
+      const powerUpTypeMap: Record<number, PowerUpType> = {
+        0: PowerUpType.SHIELD,
+        1: PowerUpType.INFINITE_AMMO,
+        2: PowerUpType.JUMP_BOOST,
+        3: PowerUpType.SLOW_MOTION,
+        4: PowerUpType.MULTI_SHOT,
+        5: PowerUpType.RICE_ROCKET_AMMO,
+      };
+      const powerUpType = powerUpTypeMap[powerUpId];
+      return powerUpType ? upgradingPowerUps[powerUpType] : false;
+    },
     isConfirming,
     upgradePowerUp,
     loadPowerUpLevels,
     loadPowerUpConfig,
     getUpgradeCost,
+    // New functions that use PowerUpType
+    getUpgradeCostByType,
+    upgradePowerUpByType,
+    loadPowerUpConfigByType,
+    isUpgradingByType,
+    getPowerUpId,
+    updatePowerUpLevelOptimistically,
   };
 };

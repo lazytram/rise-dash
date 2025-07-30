@@ -37,7 +37,6 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     isSuccess,
     error,
     hash,
-    checkContractConfig,
   } = useBlockchainScore();
 
   const rewards = RewardsService.calculateDistanceRewards(distance);
@@ -56,11 +55,6 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
     try {
       setIsSubmitting(true);
-
-      // Debug: Check contract configuration
-      console.log("🔍 Checking contract configuration...");
-      const config = await checkContractConfig();
-      console.log("🔍 Contract config:", config);
 
       const defaultName = `Player_${address?.slice(2, 8)}`;
       const isNewBest = await isNewPersonalBest(distance);
@@ -93,7 +87,6 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     distance,
     saveScoreWithRICE,
     rewards.totalRice,
-    checkContractConfig,
   ]);
 
   if (isSuccess) {

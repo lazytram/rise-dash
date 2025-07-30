@@ -36,7 +36,6 @@ export const usePowerUpSync = () => {
 
     // Prevent multiple simultaneous calls
     if (powerUpLevels.length > 0) {
-      console.log("⚠️ Power-up levels already loaded, skipping...");
       return;
     }
 
@@ -50,21 +49,17 @@ export const usePowerUpSync = () => {
       // Update local service with blockchain levels
       const service = getPowerUpService();
       await service.loadLevelsFromBlockchain(address);
-
-      console.log("✅ Power-up levels loaded from blockchain:", levels);
-    } catch (error) {
-      console.error("❌ Error loading power-up levels:", error);
+    } catch {
       showError(t("common.error"), t("features.powerUp.failedToLoadLevels"));
     } finally {
       setIsLoading(false);
     }
-  }, [address, showError, t]);
+  }, [address, showError, t, powerUpLevels.length]);
 
   // Load power-up configurations from blockchain
   const loadPowerUpConfigs = useCallback(async () => {
     // Prevent multiple simultaneous calls
     if (Object.keys(powerUpConfigs).length > 0) {
-      console.log("⚠️ Power-up configs already loaded, skipping...");
       return;
     }
 
@@ -79,22 +74,19 @@ export const usePowerUpSync = () => {
             getPowerUpConfigFromBlockchain(i)
           );
           configs[i] = config;
-        } catch (error) {
-          console.error(`❌ Error loading config for power-up ${i}:`, error);
+        } catch {
           // Use default config
           configs[i] = { cost: 100, maxLevel: 10 };
         }
       }
 
       setPowerUpConfigs(configs);
-      console.log("✅ Power-up configs loaded from blockchain:", configs);
-    } catch (error) {
-      console.error("❌ Error loading power-up configs:", error);
+    } catch {
       showError(t("common.error"), t("features.powerUp.failedToLoadConfigs"));
     } finally {
       setIsLoading(false);
     }
-  }, [showError, t]);
+  }, [showError, t, powerUpConfigs]);
 
   // Upgrade a power-up on blockchain
   const upgradePowerUp = useCallback(
@@ -158,9 +150,8 @@ export const usePowerUpSync = () => {
         });
 
         return true;
-      } catch (error) {
-        console.error("❌ Error upgrading power-up:", error);
-        showError(t("common.error"), t("features.powerUp.failedToUpgrade"));
+      } catch {
+        showError(t("common.error"), t("features.powerUp.upgradeError"));
         return false;
       } finally {
         setIsUpgrading(false);
@@ -222,7 +213,7 @@ export const usePowerUpSync = () => {
       loadPowerUpLevels();
       loadPowerUpConfigs();
     }
-  }, [address]); // Remove loadPowerUpLevels and loadPowerUpConfigs from dependencies
+  }, [address, loadPowerUpLevels, loadPowerUpConfigs]);
 
   // Handle transaction success
   useEffect(() => {

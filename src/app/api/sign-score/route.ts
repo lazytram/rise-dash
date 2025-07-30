@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     const account = privateKeyToAccount(GAME_AUTH_PRIVATE_KEY);
 
-    // Créer le message hash exactement comme dans le smart contract
+    // Create the message hash exactly like in the smart contract
     const { keccak256, encodePacked } = await import("viem");
     const messageHash = keccak256(
       encodePacked(

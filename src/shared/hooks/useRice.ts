@@ -150,13 +150,102 @@ export const useRice = () => {
         // Invalidate cache to force refresh on next check
         balanceCacheRef.current = null;
 
-        showSuccessRef.current(
-          t("features.blockchain.riceOperationSuccess"),
-          t("features.blockchain.riceAddedSuccess")
-        );
         return true;
       } catch (error) {
         console.error("❌ Error adding RICE:", error);
+        showError(t("common.error"), t("features.blockchain.errorAddingRICE"));
+        return false;
+      } finally {
+        setIsAdding(false);
+      }
+    },
+    [address, showError, showPending, clearToasts, t, writeContract]
+  );
+
+  const addDailyRevealRICE = useCallback(
+    async (amount: number) => {
+      if (!address) {
+        showError(t("common.error"), t("features.blockchain.connectWallet"));
+        return false;
+      }
+
+      // Clear any existing toasts before starting
+      clearToasts();
+      setIsAdding(true);
+
+      try {
+        // Check if the contract is properly configured
+        const contractInfo = await retryWithBackoff(() =>
+          blockchainService.getRICEManagerInfo()
+        );
+
+        if (contractInfo.paused) {
+          showError(t("common.error"), t("features.blockchain.contractPaused"));
+          return false;
+        }
+
+        if (!contractInfo.securityKeySet) {
+          showError(
+            t("common.error"),
+            t("features.blockchain.securityKeyNotConfigured")
+          );
+          return false;
+        }
+
+        // Generate operation hash for daily reveal
+        const operationHash = blockchainService.generateOperationHash(
+          "DAILY_REVEAL_RICE",
+          address,
+          amount
+        ) as `0x${string}`;
+
+        // Call API to get signature for daily reveal
+        let signature: `0x${string}` | undefined = undefined;
+        try {
+          showPending(
+            t("features.blockchain.transactionPending"),
+            t("features.blockchain.transactionPendingMessage")
+          );
+          const response = await fetch("/api/sign-daily-reveal", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              playerAddress: address,
+              amount,
+              operationHash,
+            }),
+          });
+          if (!response.ok) {
+            throw new Error("API signature error");
+          }
+          const data = await response.json();
+          signature = data.signature;
+          if (!signature) throw new Error("No signature returned");
+        } catch {
+          showError(
+            t("common.error"),
+            t("features.blockchain.errorAddingRICE") + ` (signature)`
+          );
+          return false;
+        }
+
+        // Execute the transaction using addDailyRevealRICE function
+        writeContract({
+          address: getRICEManagerAddress(),
+          abi: RICEMANAGER_ABI,
+          functionName: "addDailyRevealRICE",
+          args: [address, BigInt(amount), operationHash, signature],
+        });
+
+        // Use setTimeout to avoid blocking
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        // Invalidate cache to force refresh on next check
+        balanceCacheRef.current = null;
+
+        return true;
+      } catch (error) {
+        console.error("❌ Error adding daily reveal RICE:", error);
         showError(t("common.error"), t("features.blockchain.errorAddingRICE"));
         return false;
       } finally {
@@ -291,7 +380,6 @@ export const useRice = () => {
 
     // Throttle blockchain calls
     if (!throttleCall()) {
-      console.log("RICE balance check throttled");
       if (balanceCacheRef.current) {
         return balanceCacheRef.current.balance;
       }
@@ -360,10 +448,17 @@ export const useRice = () => {
     }
   }, [error]);
 
+  // Function to invalidate cache and force refresh
+  const invalidateBalanceCache = useCallback(() => {
+    balanceCacheRef.current = null;
+  }, []);
+
   return {
     addRICE,
+    addDailyRevealRICE,
     spendRICE,
     checkRICEBalance,
+    invalidateBalanceCache,
     isAdding: isAdding || isPending || isConfirming,
     isSpending: isSpending || isPending || isConfirming,
     isChecking,

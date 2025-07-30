@@ -9,6 +9,7 @@ interface SignPowerUpRequest {
   playerAddress: `0x${string}`;
   powerUpId: number;
   upgradeHash: string;
+  cost: number;
 }
 
 // Type definitions for response
@@ -22,10 +23,17 @@ interface ErrorResponse {
 
 export async function POST(request: NextRequest) {
   try {
-    const { playerAddress, powerUpId, upgradeHash }: SignPowerUpRequest =
-      await request.json();
+    const body = await request.json();
 
-    if (!playerAddress || powerUpId === undefined || !upgradeHash) {
+    const { playerAddress, powerUpId, upgradeHash, cost }: SignPowerUpRequest =
+      body;
+
+    if (
+      !playerAddress ||
+      powerUpId === undefined ||
+      !upgradeHash ||
+      cost === undefined
+    ) {
       return NextResponse.json<ErrorResponse>(
         { error: "Missing required parameters" },
         { status: 400 }
@@ -40,15 +48,6 @@ export async function POST(request: NextRequest) {
     }
 
     const account = privateKeyToAccount(GAME_AUTH_PRIVATE_KEY);
-
-    // Get the upgrade cost from blockchain
-    const { blockchainService } = await import(
-      "@/infrastructure/blockchain/blockchainService"
-    );
-    const cost = await blockchainService.getPowerUpUpgradeCost(
-      playerAddress,
-      powerUpId
-    );
 
     // Create message hash exactly as in the PowerUpManager smart contract
     const { keccak256, encodePacked } = await import("viem");

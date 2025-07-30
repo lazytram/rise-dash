@@ -1,28 +1,16 @@
-// Configuration de sécurité côté serveur
-// ⚠️ ATTENTION: Ces clés ne doivent JAMAIS être exposées côté client
+import { SERVER_CONTRACT_ADDRESSES } from "@/server/config/contracts";
+
+// Server-side security configuration
+// ⚠️ ATTENTION: These keys should NEVER be exposed client-side
 
 export const SERVER_SECURITY_CONFIG = {
-  // Clés de sécurité pour les contrats (à récupérer depuis les variables d'environnement)
-  RICE_MANAGER_KEY:
-    process.env.RICE_MANAGER_KEY ||
-    "0x80ddc7b2447c81e4e8cda5d6c473342ac484f3b33152ae6e082549712410a610",
-  SCORE_BOARD_KEY:
-    process.env.SCORE_BOARD_KEY ||
-    "0x190532addf1e1153886ddb2f3b9fe8376cc29efd15a91da5610c6ba191c7298b",
-  POWER_UP_MANAGER_KEY:
-    process.env.POWER_UP_MANAGER_KEY ||
-    "0xc83698e59ebb4416fdd7907ba49d1da1994f5be4bf5bddfd8f0b101008ebd872",
+  // Security keys for contracts (to be retrieved from environment variables)
+  RICE_MANAGER_KEY: process.env.RICE_MANAGER_KEY,
+  SCORE_BOARD_KEY: process.env.SCORE_BOARD_KEY,
+  POWER_UP_MANAGER_KEY: process.env.POWER_UP_MANAGER_KEY,
+  CONTRACT_ADDRESSES: SERVER_CONTRACT_ADDRESSES,
 
-  // Adresses des contrats déployés
-  CONTRACT_ADDRESSES: {
-    ADMIN_CONTROLLER: "0x78ee7dA36f5D32054781dAFCD06476636c093d4d",
-    GAME_REGISTRY: "0x7e6426Ce9bcB77a549F41b7965a7312b2e882773",
-    RICE_MANAGER: "0x408Bdc391CFC10F21e69FDF2Ff6340aC0A0E2dA9",
-    SCORE_BOARD: "0xCD6e99ee39882607F40da5d9f04E1b91F4c43df4",
-    POWER_UP_MANAGER: "0x77e5734858b72689eA717bc9b16796da6C6841e0",
-  },
-
-  // Validation des clés au démarrage
+  // Key validation at startup
   validateKeys() {
     const requiredKeys = [
       this.RICE_MANAGER_KEY,
@@ -46,15 +34,11 @@ export const SERVER_SECURITY_CONFIG = {
   },
 };
 
-// Fonction pour signer les messages côté serveur
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const signServerMessage = async (
-  _message: string,
-  _contractType: "rice" | "score" | "powerup"
-): Promise<string> => {
-  // Cette fonction doit être implémentée côté serveur
-  // Elle utilise les clés privées pour signer les messages
-  // Exemple d'implémentation avec ethers.js :
+// Function to sign messages server-side
+export const signServerMessage = async (): Promise<string> => {
+  // This function must be implemented server-side
+  // It uses private keys to sign messages
+  // Example implementation with ethers.js :
 
   /*
   import { ethers } from 'ethers';

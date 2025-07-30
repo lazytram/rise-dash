@@ -19,8 +19,7 @@ const SCOREBOARD_CONTRACT_ADDRESS = getScoreBoardAddress();
 const RICEMANAGER_CONTRACT_ADDRESS = getRICEManagerAddress();
 
 // Game Owner Private Key (replace with your private key)
-const GAME_AUTH_PRIVATE_KEY =
-  process.env.NEXT_PUBLIC_GAME_OWNER_PRIVATE_KEY || "";
+const GAME_AUTH_PRIVATE_KEY = process.env.GAME_AUTH_PRIVATE_KEY || "";
 
 // Security key for signing scores (should be kept secret on the server)
 const SECURITY_KEY =
@@ -214,13 +213,6 @@ export class BlockchainService {
     riceReward: number,
     playerAddress: Address
   ): Promise<{ gameHash: `0x${string}`; signature: `0x${string}` }> {
-    console.log("🔍 recordScoreWithRICE called with:", {
-      score,
-      playerName,
-      riceReward,
-      playerAddress,
-    });
-
     // Generate a unique hash for this game with RICE reward
     const gameHash = this.generateGameHashWithRICE(
       score,
@@ -228,8 +220,6 @@ export class BlockchainService {
       riceReward,
       playerAddress
     ) as `0x${string}`;
-
-    console.log("🔍 Generated gameHash:", gameHash);
 
     // Create the signature for score with RICE
     const signature = await this.createScoreWithRICESignature(
@@ -239,8 +229,6 @@ export class BlockchainService {
       playerAddress,
       gameHash
     );
-
-    console.log("🔍 Generated signature:", signature);
 
     return { gameHash, signature };
   }
@@ -474,6 +462,20 @@ export class BlockchainService {
   }
 
   /**
+   * Generates a unique hash for PowerUp operations
+   */
+  generatePowerUpHash(
+    playerAddress: Address,
+    powerUpId: number,
+    cost: number
+  ): string {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const nonce = Math.floor(Math.random() * 1000000);
+    const message = `UPGRADE_POWERUP-${playerAddress}-${powerUpId}-${cost}-${timestamp}-${nonce}`;
+    return hashMessage(message);
+  }
+
+  /**
    * Gets RICE balance for a player
    */
   async getRICEBalance(playerAddress: Address): Promise<number> {
@@ -485,7 +487,7 @@ export class BlockchainService {
         args: [playerAddress],
       });
 
-      return Number(result) / 1e18; // Convert from wei to RICE (RICEManager still uses wei)
+      return Number(result); // RICEManager now uses RICE units directly
     } catch (error) {
       console.error("Error getting RICE balance:", error);
       if (error instanceof Error && error.message.includes("429")) {
@@ -610,10 +612,6 @@ export class BlockchainService {
     powerUpId: number
   ): Promise<{ cost: number; maxLevel: number }> {
     try {
-      console.log(
-        `🔍 Calling getPowerUpConfig for powerUpId ${powerUpId} at address:`,
-        getPowerUpManagerAddress()
-      );
       const result = await this.publicClient.readContract({
         address: getPowerUpManagerAddress(),
         abi: POWERUPMANAGER_ABI,
@@ -632,37 +630,13 @@ export class BlockchainService {
         error
       );
 
-      // If the function returns empty data, it means the power-up is not initialized
-      if (
-        error instanceof Error &&
-        error.message.includes("could not decode result data")
-      ) {
-        // Return default config based on powerUpId
-        const defaultCosts = [50, 75, 100, 125, 150, 200];
-        return {
-          cost: defaultCosts[powerUpId] || 100,
-          maxLevel: 10,
-        };
-      }
+      // Log the actual error for debugging
+      console.error(
+        `❌ Error getting power-up config for ID ${powerUpId}:`,
+        error
+      );
 
-      // For CORS errors or network issues, return default config instead of throwing
-      if (
-        error instanceof Error &&
-        (error.message.includes("CORS") ||
-          error.message.includes("Failed to fetch") ||
-          error.message.includes("HTTP request failed") ||
-          error.message.includes("429"))
-      ) {
-        console.warn(
-          `⚠️ Network error for power-up ${powerUpId}, using default config`
-        );
-        const defaultCosts = [50, 75, 100, 125, 150, 200];
-        return {
-          cost: defaultCosts[powerUpId] || 100,
-          maxLevel: 10,
-        };
-      }
-
+      // Don't return default values, let the error propagate
       throw error;
     }
   }

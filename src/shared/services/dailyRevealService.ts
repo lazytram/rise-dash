@@ -110,15 +110,7 @@ export class DailyRevealService {
       // Add RICE to player's balance via blockchain
       const success = await this.addRICEToPlayer(playerAddress, card.value);
 
-      if (success) {
-        console.log(
-          `✅ Daily reveal reward claimed: ${card.value} RICE for card ${cardType}`
-        );
-        return true;
-      } else {
-        console.error("❌ Failed to add RICE for daily reveal reward");
-        return false;
-      }
+      return success;
     } catch (error) {
       console.error("❌ Error claiming daily reveal reward:", error);
       return false;

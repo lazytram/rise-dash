@@ -28,7 +28,7 @@ export interface PowerUpService {
   ): Promise<boolean>;
   getPowerUpLevelsFromBlockchain(playerAddress: Address): Promise<number[]>;
   getPowerUpConfigFromBlockchain(
-    powerUpId: number
+    powerUpType: PowerUpType
   ): Promise<{ cost: number; maxLevel: number }>;
 }
 
@@ -59,10 +59,13 @@ export class LocalPowerUpService implements PowerUpService {
     );
 
     if (!upgrade) {
+      console.warn(
+        `⚠️ No upgrade found for ${type} level ${level}, using default`
+      );
       return { duration: 3000 }; // Default fallback
     }
 
-    return {
+    const effect = {
       duration: upgrade.duration || 3000,
       speedMultiplier: upgrade.speedMultiplier,
       jumpMultiplier: upgrade.jumpMultiplier,
@@ -70,11 +73,15 @@ export class LocalPowerUpService implements PowerUpService {
       projectileCount: upgrade.projectileCount,
       ammoCount: upgrade.ammoCount,
     };
+
+    return effect;
   }
 
   getMaxAmmo(): number {
     const effect = this.getPowerUpEffect(PowerUpType.RICE_ROCKET_AMMO);
-    return effect.ammoCount || 3;
+    const maxAmmo = effect.ammoCount || 3;
+
+    return maxAmmo;
   }
 
   canUpgrade(type: PowerUpType, riceBalance: number): boolean {
@@ -153,10 +160,8 @@ export class LocalPowerUpService implements PowerUpService {
         [PowerUpType.MULTI_SHOT]: blockchainLevels[4] || 1,
         [PowerUpType.RICE_ROCKET_AMMO]: blockchainLevels[5] || 1,
       };
-
-      console.log("✅ Power-up levels loaded from blockchain:", this.levels);
     } catch (error) {
-      console.error("❌ Error loading power-up levels from blockchain:", error);
+      console.error("❌ Failed to load levels from blockchain:", error);
       // Keep current levels if blockchain call fails
     }
   }
@@ -196,8 +201,7 @@ export class LocalPowerUpService implements PowerUpService {
       // For now, we'll return true to indicate the signature was generated successfully
       // The actual transaction execution should be handled by the frontend
       return true;
-    } catch (error) {
-      console.error("❌ Error upgrading power-up on blockchain:", error);
+    } catch {
       return false;
     }
   }
@@ -207,23 +211,35 @@ export class LocalPowerUpService implements PowerUpService {
   ): Promise<number[]> {
     try {
       return await blockchainService.getPowerUpLevels(playerAddress);
-    } catch (error) {
-      console.error("❌ Error getting power-up levels from blockchain:", error);
+    } catch {
       return Array(10).fill(1); // Default levels
     }
   }
 
   async getPowerUpConfigFromBlockchain(
-    powerUpId: number
+    powerUpType: PowerUpType
   ): Promise<{ cost: number; maxLevel: number }> {
     try {
+      // Convert PowerUpType to powerUpId for blockchain calls
+      const powerUpIdMap: Record<PowerUpType, number> = {
+        [PowerUpType.SHIELD]: 0,
+        [PowerUpType.INFINITE_AMMO]: 1,
+        [PowerUpType.JUMP_BOOST]: 2,
+        [PowerUpType.SLOW_MOTION]: 3,
+        [PowerUpType.MULTI_SHOT]: 4,
+        [PowerUpType.RICE_ROCKET_AMMO]: 5,
+      };
+      const powerUpId = powerUpIdMap[powerUpType];
+
       return await blockchainService.getPowerUpConfig(powerUpId);
-    } catch (error) {
-      console.error("❌ Error getting power-up config from blockchain:", error);
-      // Return default config
-      const defaultCosts = [50, 75, 100, 125, 150, 200];
+    } catch {
+      // Use costs from POWERUP_UPGRADES for level 2
+      const powerUpConfig = POWERUP_UPGRADES[powerUpType];
+      const level2Upgrade = powerUpConfig?.upgrades.find((u) => u.level === 2);
+      const level2Cost = level2Upgrade?.riceCost || 100;
+
       return {
-        cost: defaultCosts[powerUpId] || 100,
+        cost: level2Cost,
         maxLevel: 10,
       };
     }
@@ -296,7 +312,7 @@ export const getPowerUpLevelsFromBlockchain = async (
 };
 
 export const getPowerUpConfigFromBlockchain = async (
-  powerUpId: number
+  powerUpType: PowerUpType
 ): Promise<{ cost: number; maxLevel: number }> => {
-  return powerUpService.getPowerUpConfigFromBlockchain(powerUpId);
+  return powerUpService.getPowerUpConfigFromBlockchain(powerUpType);
 };

@@ -23,6 +23,7 @@ interface IPowerUpManager {
         uint256 baseCost,
         uint256 maxLevel
     );
+    event PowerUpReset(address indexed player);
     event GameOwnerUpdated(address indexed oldOwner, address indexed newOwner);
     event ContractPaused(bool paused);
     event GameServerUpdated(
@@ -147,6 +148,12 @@ interface IPowerUpManager {
         address player,
         uint256 powerUpId
     ) external;
+
+    /**
+     * @dev Emergency function to reset all power-ups for a player (for testing)
+     * @param player The player's address
+     */
+    function resetPlayerPowerUps(address player) external;
 
     // ================================
     // ADMIN FUNCTIONS

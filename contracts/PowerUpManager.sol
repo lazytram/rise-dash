@@ -19,7 +19,7 @@ contract PowerUpManager is IPowerUpManager {
     mapping(uint256 => mapping(uint256 => uint256)) public powerUpLevelCosts; // powerUpId => level => cost
 
     // Security and ownership
-    address public gameOwner; // Address autorisée à gérer le contrat
+    address public gameOwner; // Address authorized to manage the contract
     bool public paused = false;
 
     // Security key for signing operations (set by game owner)
@@ -245,6 +245,16 @@ contract PowerUpManager is IPowerUpManager {
             cost,
             bytes32(0)
         );
+    }
+
+    /// @notice Emergency function to reset all power-ups for a player (for testing)
+    function resetPlayerPowerUps(
+        address player
+    ) external onlyGameOwner whenNotPaused {
+        for (uint256 i = 0; i < 6; i++) {
+            levels[player][i] = 0;
+        }
+        emit PowerUpReset(player);
     }
 
     /// @notice Return levels of the 10 first power-ups for a player

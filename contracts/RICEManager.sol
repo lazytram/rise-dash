@@ -12,7 +12,7 @@ contract RICEManager is IRICEManager {
     mapping(address => uint256) public balances;
 
     // Security and ownership
-    address public gameOwner; // Address autorisée à gérer le contrat
+    address public gameOwner; // Address authorized to manage the contract
     bool public paused = false;
 
     // Security key for signing operations (set by game owner)
