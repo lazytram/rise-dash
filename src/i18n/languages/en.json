@@ -185,7 +185,9 @@
         "samurai": "Samurai",
         "samuraiDesc": "Appears every 50m, shoot 3 times to defeat",
         "ninja": "Ninja",
-        "ninjaDesc": "Faster and harder to defeat"
+        "ninjaDesc": "Faster and harder to defeat",
+        "boss": "Boss",
+        "bossDesc": "Powerful enemy that appears at high distances"
       },
       "powerUps": {
         "title": "Power-ups",
@@ -322,7 +324,7 @@
       "riceOperationError": "Failed to process RICE operation",
       "riceAddedSuccess": "RICE added successfully",
       "riceSpentSuccess": "RICE spent successfully",
-      "riceOperationSuccess": "RICE operation completed successfully",
+      "riceOperationSuccess": "RICE received successfully!",
       "rewardsCalculated": "Rewards calculated",
       "transactionConfirming": "Transaction confirming...",
       "rewardsAvailable": "Rewards available",

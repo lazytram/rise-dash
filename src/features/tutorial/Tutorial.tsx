@@ -20,21 +20,24 @@ export const Tutorial: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    markTutorialAsSeen(); // Mark tutorial as seen when closed
+    markTutorialAsSeen();
   };
 
   const handleAutoClose = () => {
     closeTutorial();
-    markTutorialAsSeen(); // Mark tutorial as seen when closed
+    markTutorialAsSeen();
   };
 
   // Auto-show tutorial if user hasn't seen it
   const isModalVisible = isModalOpen || shouldShowTutorial;
 
-  return (
-    <TutorialModal
-      isOpen={isModalVisible}
-      onClose={shouldShowTutorial ? handleAutoClose : handleCloseModal}
-    />
-  );
+  const handleClose = () => {
+    if (shouldShowTutorial) {
+      handleAutoClose();
+    } else {
+      handleCloseModal();
+    }
+  };
+
+  return <TutorialModal isOpen={isModalVisible} onClose={handleClose} />;
 };

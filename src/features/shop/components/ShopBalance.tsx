@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Text } from "@/shared/components/Text";
 import { RiceLogo } from "@/shared/components/RiceLogo";
-import { LoadingSpinner } from "@/shared/components/LoadingSpinner";
+import { Loader } from "@/shared/components/Loader";
 
 interface ShopBalanceProps {
   riceBalance: number;
@@ -24,7 +24,7 @@ export const ShopBalance: React.FC<ShopBalanceProps> = memo(
             <div className="flex items-center space-x-2">
               {isLoadingBalance ? (
                 <div className="flex items-center space-x-2">
-                  <LoadingSpinner size="sm" />
+                  <Loader size="sm" />
                   <Text variant="subtitle" size="sm" className="text-white/70">
                     Loading...
                   </Text>

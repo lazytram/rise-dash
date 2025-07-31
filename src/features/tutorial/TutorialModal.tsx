@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
-import { useTutorialStore } from "@/infrastructure/store/tutorialStore";
 import { TutorialObjective } from "./TutorialObjective";
 import { TutorialControls } from "./TutorialControls";
 import { TutorialEnemies } from "./TutorialEnemies";
@@ -18,12 +17,10 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslations();
-  const { markTutorialAsSeen } = useTutorialStore();
 
   if (!isOpen) return null;
 
   const handleClose = () => {
-    markTutorialAsSeen();
     onClose();
   };
 

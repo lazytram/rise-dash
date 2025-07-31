@@ -350,7 +350,7 @@ describe("useBlockchainScore", () => {
         "features.blockchain.transactionSuccess",
         "features.blockchain.scoreSavedSuccess",
         mockHash,
-        "View Transaction"
+        "features.blockchain.viewTransaction"
       );
     });
 
