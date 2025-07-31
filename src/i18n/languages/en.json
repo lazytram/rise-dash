@@ -81,7 +81,10 @@
       "confirmUpgrade": "Confirm Upgrade",
       "upgradeMessage": "Are you sure you want to upgrade this power-up?",
       "refreshFailed": "Refresh Failed",
-      "tooManyRequests": "Too many requests. Please wait a moment before trying again."
+      "tooManyRequests": "Too many requests. Please wait a moment before trying again.",
+      "loadingCosts": "Loading power-up costs...",
+      "loadingData": "Loading shop data...",
+      "loadingBalance": "Loading RICE balance..."
     },
     "powerUps": {
       "upgrading": "Upgrading Power-Up",

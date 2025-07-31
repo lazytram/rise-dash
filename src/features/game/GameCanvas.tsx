@@ -13,11 +13,18 @@ export const GameCanvas = ({ canvasRef }: GameCanvasProps) => {
         style={{
           display: "block",
           imageRendering: "pixelated", // Better for pixel art
+          // Performance optimizations
+          willChange: "transform", // Hint to browser for GPU acceleration
+          transform: "translateZ(0)", // Force hardware acceleration
+          backfaceVisibility: "hidden", // Optimize for 2D rendering
         }}
         width={GAME_CONSTANTS.CANVAS_WIDTH}
         height={GAME_CONSTANTS.CANVAS_HEIGHT}
         // Performance attributes
         data-performance="optimized"
+        // Additional performance hints
+        data-render-mode="optimized"
+        data-hardware-accelerated="true"
       />
     </div>
   );

@@ -6,7 +6,7 @@ export const GAME_CONSTANTS = {
   GRAVITY: 0.8,
   JUMP_STRENGTH: -15,
   GROUND_HEIGHT: 50,
-  FPS: 120, // Back to 120 for better performance
+  FPS: 120, // Increased back to 120 for better fluidity
   RICE_ROCKET_SPEED: 8,
   RICE_ROCKET_SIZE: 4,
   SUSHI_SPEED: -4,
@@ -22,47 +22,47 @@ export const GAME_CONSTANTS = {
   // Sushi spawn constants
   SUSHI_MIN_SPAWN_DISTANCE: 600,
   SUSHI_MAX_SPAWN_DISTANCE: 900,
-  SUSHI_SPAWN_PROBABILITY: 0.7,
+  SUSHI_SPAWN_PROBABILITY: 0.7, // Back to original value
   // Game start constants
   INITIAL_SUSHI_SPAWN_DISTANCE: 100, // First Torii at 500 meters
   // Samurai constants
-  SAMURAI_SPAWN_DISTANCE: 50, // Spawn every 50 meters
+  SAMURAI_SPAWN_DISTANCE: 50, // Back to original value
   SAMURAI_MIN_SPAWN_DISTANCE: 15, // Don't spawn samurai before 15 meters
   SAMURAI_WIDTH: 40,
   SAMURAI_HEIGHT: 60,
   SAMURAI_SPEED: -2,
   SAMURAI_LIVES: 3,
-  SAMURAI_SHOT_COOLDOWN: 3000, // 3 seconds (increased from 2)
+  SAMURAI_SHOT_COOLDOWN: 3000, // Back to original value
   // Samurai bullet constants
   SAMURAI_BULLET_WIDTH: 6,
   SAMURAI_BULLET_HEIGHT: 6,
   SAMURAI_BULLET_SPEED: -2, // Reduced speed for easier dodging
   // Speed progression constants
-  SPEED_INCREASE_INTERVAL: 100, // Every 100 meters (changed from 50m)
-  SPEED_INCREASE_PERCENTAGE: 0.025, // 2.5% increase
+  SPEED_INCREASE_INTERVAL: 100, // Back to original value
+  SPEED_INCREASE_PERCENTAGE: 0.025, // Back to original value
   BASE_SUSHI_SPEED: -4, // Reduced from -4 for slower, more predictable movement
   BASE_SAMURAI_SPEED: -2, // Base speed for samurai
   BASE_SAMURAI_BULLET_SPEED: -7, // Increased base speed for samurai bullets (shurikens)
   // Enhanced sushi spacing constants
-  SUSHI_SPACING_VARIANCE: 0.4, // 40% variance in spacing
+  SUSHI_SPACING_VARIANCE: 0.4, // Back to original value
   // Rice rocket ammo constants
   MAX_RICE_ROCKET_AMMO: 10, // Maximum ammo capacity
   AMMO_RECHARGE_INTERVAL: 1000, // Recharge 1 ammo every 1 second
   // Difficulty system constants
-  DIFFICULTY_LEVEL_INTERVAL: 1000, // New difficulty level every 500 meters
-  MAX_DIFFICULTY_LEVEL: 15, // Maximum difficulty level
+  DIFFICULTY_LEVEL_INTERVAL: 1000, // Back to original value
+  MAX_DIFFICULTY_LEVEL: 15, // Back to original value
   // Enemy spawn rate progression
-  BASE_SAMURAI_SPAWN_DISTANCE: 50,
-  SAMURAI_SPAWN_DISTANCE_DECREASE: 5, // Decrease spawn distance by 5m per level
-  MIN_SAMURAI_SPAWN_DISTANCE: 20, // Minimum spawn distance
+  BASE_SAMURAI_SPAWN_DISTANCE: 50, // Back to original value
+  SAMURAI_SPAWN_DISTANCE_DECREASE: 5, // Back to original value
+  MIN_SAMURAI_SPAWN_DISTANCE: 20, // Back to original value
   // Sushi spawn rate progression
-  BASE_SUSHI_SPAWN_PROBABILITY: 0.7, // Reduced from 0.8
-  SUSHI_SPAWN_PROBABILITY_INCREASE: 0.03, // Reduced from 0.05 - slower increase
-  MAX_SUSHI_SPAWN_PROBABILITY: 0.9, // Reduced from 0.95 - lower maximum
+  BASE_SUSHI_SPAWN_PROBABILITY: 0.7, // Back to original value
+  SUSHI_SPAWN_PROBABILITY_INCREASE: 0.03, // Back to original value
+  MAX_SUSHI_SPAWN_PROBABILITY: 0.9, // Back to original value
   // Samurai behavior progression
-  BASE_SAMURAI_SHOT_COOLDOWN: 3000,
-  SAMURAI_SHOT_COOLDOWN_DECREASE: 200, // Decrease cooldown by 200ms per level
-  MIN_SAMURAI_SHOT_COOLDOWN: 1000, // Minimum cooldown
+  BASE_SAMURAI_SHOT_COOLDOWN: 3000, // Back to original value
+  SAMURAI_SHOT_COOLDOWN_DECREASE: 200, // Back to original value
+  MIN_SAMURAI_SHOT_COOLDOWN: 1000, // Back to original value
   // New enemy types (for future implementation)
   NINJA_UNLOCK_DISTANCE: 1000, // Ninjas appear after 1000m
   BOSS_UNLOCK_DISTANCE: 2000, // Boss appears after 2000m
@@ -71,7 +71,7 @@ export const GAME_CONSTANTS = {
   NINJA_HEIGHT: 50,
   NINJA_SPEED: -3, // Faster than samurai
   NINJA_LIVES: 2,
-  NINJA_SHOT_COOLDOWN: 2000, // Shoots more frequently
+  NINJA_SHOT_COOLDOWN: 2000, // Back to original value
   NINJA_JUMP_PROBABILITY: 0.3, // 30% chance to jump
   NINJA_JUMP_STRENGTH: -8,
   // Boss constants
@@ -79,13 +79,13 @@ export const GAME_CONSTANTS = {
   BOSS_HEIGHT: 100,
   BOSS_SPEED: -1, // Slower but more dangerous
   BOSS_LIVES: 8,
-  BOSS_SHOT_COOLDOWN: 1500, // Very frequent shots
+  BOSS_SHOT_COOLDOWN: 1500, // Back to original value
   BOSS_MULTI_SHOT_COUNT: 3, // Shoots 3 bullets at once
   // Power-up constants
   POWERUP_WIDTH: 30,
   POWERUP_HEIGHT: 30,
-  POWERUP_SPAWN_DISTANCE: 200, // Spawn every 200m
-  POWERUP_SPAWN_PROBABILITY: 0.3, // 30% chance to spawn
+  POWERUP_SPAWN_DISTANCE: 200, // Back to original value
+  POWERUP_SPAWN_PROBABILITY: 0.3, // Back to original value
   POWERUP_DURATION: 10000, // 10 seconds duration
   // Power-up types
   POWERUP_TYPES: {

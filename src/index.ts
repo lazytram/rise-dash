@@ -1,7 +1,6 @@
 // Shared exports
 export * from "./shared/components";
 export * from "./shared/hooks";
-export * from "./shared/utils";
 export * from "./shared/constants";
 export * from "./shared/types";
 export * from "./shared/services";

@@ -12,6 +12,16 @@ export const useRiceBalance = () => {
   const { showError } = useToastStore();
   const { t } = useTranslations();
 
+  // Use refs to avoid dependency issues
+  const showErrorRef = useRef(showError);
+  const tRef = useRef(t);
+
+  // Update refs when values change
+  useEffect(() => {
+    showErrorRef.current = showError;
+    tRef.current = t;
+  });
+
   // Cache for balance to avoid unnecessary calls
   const balanceCacheRef = useRef<{ balance: number; timestamp: number } | null>(
     null
@@ -54,15 +64,15 @@ export const useRiceBalance = () => {
       return riceBalance;
     } catch (error) {
       console.error("❌ Error loading RICE balance:", error);
-      showError(
-        t("common.error"),
-        t("features.blockchain.errorLoadingBalance")
+      showErrorRef.current(
+        tRef.current("common.error"),
+        tRef.current("features.blockchain.errorLoadingBalance")
       );
       return 0;
     } finally {
       setIsLoading(false);
     }
-  }, [address, isCacheValid, showError, t]);
+  }, [address, isCacheValid]);
 
   const refreshBalance = useCallback(async () => {
     // Clear cache to force refresh

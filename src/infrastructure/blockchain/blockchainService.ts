@@ -52,7 +52,7 @@ export interface RICEManagerInfo {
 export class BlockchainService {
   private publicClient = createPublicClient({
     chain: riseTestnet,
-    transport: http(),
+    transport: http("https://testnet.riselabs.xyz"),
   });
 
   /**
