@@ -13,6 +13,7 @@ import {
 } from "@/shared/types/game";
 import { PowerUpType } from "@/shared/types/powerUps";
 import { GAME_CONSTANTS } from "@/shared/constants/game";
+import { RICE_ROCKET_COLORS } from "@/shared/constants/colors";
 import { player } from "@/core/entities/player";
 
 // ============================================================================
@@ -130,7 +131,7 @@ export const createTestRiceRocket = (
   width: GAME_CONSTANTS.RICE_ROCKET_SIZE,
   height: GAME_CONSTANTS.RICE_ROCKET_SIZE,
   velocityX: GAME_CONSTANTS.RICE_ROCKET_SPEED,
-  color: "#FFA500",
+  color: RICE_ROCKET_COLORS.BODY,
   ...overrides,
 });
 

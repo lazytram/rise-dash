@@ -14,6 +14,7 @@ import { EnemyRenderer } from "./EnemyRenderer";
 import { DecorationRenderer } from "./DecorationRenderer";
 import { UIRenderer } from "./UIRenderer";
 import { PowerUpRenderer } from "./PowerUpRenderer";
+import { CullingSystem } from "@/shared/utils/cullingSystem";
 
 export class GameRenderer {
   private environmentRenderer: EnvironmentRenderer;
@@ -25,8 +26,16 @@ export class GameRenderer {
   private powerUpRenderer: PowerUpRenderer;
   private ctx: CanvasRenderingContext2D;
 
+  // Optimization systems
+  private cullingSystem: CullingSystem;
+
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
+
+    // Initialize optimization systems
+    this.cullingSystem = new CullingSystem(ctx.canvas.width, ctx.canvas.height);
+
+    // Initialize renderers
     this.environmentRenderer = new EnvironmentRenderer(ctx);
     this.playerRenderer = new PlayerRenderer(ctx);
     this.projectileRenderer = new ProjectileRenderer(ctx);
@@ -79,20 +88,51 @@ export class GameRenderer {
       ammoCount?: string;
     }
   ): void {
-    // Render environment
+    // Render environment (always rendered)
     this.environmentRenderer.clearCanvas();
     this.environmentRenderer.drawGround();
 
-    // Render game entities
-    this.playerRenderer.drawPlayer(player);
-    this.projectileRenderer.drawRiceRockets(riceRockets);
-    this.projectileRenderer.drawSamuraiBullets(samuraiBullets);
-    this.enemyRenderer.drawSushis(sushis);
-    this.enemyRenderer.drawSamurais(samurais);
-    this.decorationRenderer.drawToriis(toriis);
-    this.powerUpRenderer.drawPowerUps(powerUps);
+    // Use culling for better performance
+    const playerX = player.x;
 
-    // Render UI
+    // Filter visible entities
+    const visibleRiceRockets = this.cullingSystem.filterVisibleEntities(
+      riceRockets,
+      playerX
+    );
+    const visibleSamuraiBullets = this.cullingSystem.filterVisibleEntities(
+      samuraiBullets,
+      playerX
+    );
+    const visibleSushis = this.cullingSystem.filterVisibleEntities(
+      sushis,
+      playerX
+    );
+    const visibleSamurais = this.cullingSystem.filterVisibleEntities(
+      samurais,
+      playerX
+    );
+    const visibleToriis = this.cullingSystem.filterVisibleEntities(
+      toriis,
+      playerX
+    );
+    const visiblePowerUps = this.cullingSystem.filterVisibleEntities(
+      powerUps,
+      playerX
+    );
+
+    // Render visible entities
+    this.projectileRenderer.drawRiceRockets(visibleRiceRockets);
+    this.projectileRenderer.drawSamuraiBullets(visibleSamuraiBullets);
+    this.enemyRenderer.drawSushis(visibleSushis);
+    this.enemyRenderer.drawSamurais(visibleSamurais);
+    this.decorationRenderer.drawToriis(visibleToriis);
+    this.powerUpRenderer.drawPowerUps(visiblePowerUps);
+
+    // Render player (always rendered, no culling)
+    this.playerRenderer.drawPlayer(player);
+
+    // Render UI (always rendered, no culling)
     this.uiRenderer.drawDistance(
       distance,
       translations?.distance,
@@ -107,5 +147,19 @@ export class GameRenderer {
         translations?.enemyMessage
       );
     }
+  }
+
+  // Get optimization statistics
+  getOptimizationStats(): {
+    culling: {
+      viewportWidth: number;
+      viewportHeight: number;
+      cullingMargin: number;
+      renderDistance: number;
+    };
+  } {
+    return {
+      culling: this.cullingSystem.getStats(),
+    };
   }
 }

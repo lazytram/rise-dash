@@ -26,7 +26,7 @@ export const useRice = () => {
 
   // Throttling for blockchain calls
   const lastCallTimeRef = useRef(0);
-  const THROTTLE_DELAY = 100; // 100ms between calls
+  const THROTTLE_DELAY = 500; // 500ms between calls
 
   // Cache for RICE balance to avoid unnecessary calls
   const balanceCacheRef = useRef<{ balance: number; timestamp: number } | null>(
@@ -383,7 +383,8 @@ export const useRice = () => {
       if (balanceCacheRef.current) {
         return balanceCacheRef.current.balance;
       }
-      throw new Error("Throttled");
+      // Return 0 instead of throwing error when throttled and no cache
+      return 0;
     }
 
     setIsChecking(true);

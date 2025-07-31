@@ -75,13 +75,15 @@
       "upgradeProgress": "Progreso de Mejora",
       "insufficientFunds": "Fondos insuficientes",
       "upgradeSuccess": "¡Mejora Exitosa!",
-      "upgradeFailed": "Mejora Fallida",
       "upgradedToLevel": "mejorado al nivel {{ level }}",
       "upgradeErrorDescription": "Ocurrió un error durante la mejora. Por favor intenta de nuevo.",
       "confirmUpgrade": "Confirmar Mejora",
       "upgradeMessage": "¿Estás seguro de que quieres mejorar este power-up?",
       "refreshFailed": "Actualización Fallida",
-      "tooManyRequests": "Demasiadas solicitudes. Por favor espera un momento antes de intentar de nuevo."
+      "tooManyRequests": "Demasiadas solicitudes. Por favor espera un momento antes de intentar de nuevo.",
+      "loadingCosts": "Cargando costos de power-up...",
+      "loadingData": "Cargando datos de la tienda...",
+      "loadingBalance": "Cargando saldo RICE..."
     },
     "instructions": {
       "title": "Instrucciones",
@@ -190,6 +192,27 @@
       "buttons": {
         "understood": "Entiendo"
       }
+    },
+    "powerUps": {
+      "upgrading": "Actualizando Power-Up",
+      "upgradingMessage": "Procesando tu actualización en la blockchain...",
+      "upgradeSuccess": "¡Power-Up Actualizado!",
+      "upgradeSuccessMessage": "¡Tu power-up ha sido actualizado exitosamente!",
+      "maxLevelReached": "Este power-up ya está en el nivel máximo.",
+      "insufficientRICE": "No tienes suficiente RICE para actualizar este power-up.",
+      "upgradeCost": "Costo de Actualización",
+      "currentLevel": "Nivel Actual",
+      "maxLevel": "Nivel Máximo",
+      "upgrade": "Actualizar",
+      "loading": "Cargando power-ups...",
+      "noPowerUps": "No hay power-ups disponibles",
+      "connectWalletToView": "Conecta tu wallet para ver los power-ups",
+      "signatureError": "Error al obtener la firma del servidor",
+      "upgradeError": "Error al actualizar el power-up",
+      "insufficientRice": "RICE Insuficiente",
+      "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
+      "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
+      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
     }
   },
   "features": {

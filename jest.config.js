@@ -11,20 +11,20 @@ const customJestConfig = {
   testEnvironment: "jest-environment-jsdom",
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+    // Mock blockchain modules to prevent ES module issues
+    "^wagmi$": "<rootDir>/src/__mocks__/wagmi.ts",
+    "^viem$": "<rootDir>/src/__mocks__/viem.ts",
+    "^@rainbow-me/rainbowkit$": "<rootDir>/src/__mocks__/rainbowkit.ts",
+    "^viem/chains$": "<rootDir>/src/__mocks__/viem.ts",
+    "^wagmi/dist/esm/exports/chains$": "<rootDir>/src/__mocks__/wagmi.ts",
   },
   testMatch: [
     "**/__tests__/**/*.(js|jsx|ts|tsx)",
     "**/*.(test|spec).(js|jsx|ts|tsx)",
   ],
   transformIgnorePatterns: [
-    "node_modules/(?!(wagmi|@wagmi|@rainbow-me|viem|@viem|@noble|@scure|@tanstack)/)",
+    "node_modules/(?!(wagmi|@wagmi|@rainbow-me|viem|@viem|@noble|@scure|@tanstack|@blockchain|@ethers)/)",
   ],
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
-  globals: {
-    "ts-jest": {
-      useESM: true,
-    },
-  },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
 };
 

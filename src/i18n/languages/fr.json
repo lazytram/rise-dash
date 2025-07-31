@@ -75,13 +75,15 @@
       "upgradeProgress": "Progrès d'Amélioration",
       "insufficientFunds": "Fonds insuffisants",
       "upgradeSuccess": "Amélioration Réussie !",
-      "upgradeFailed": "Amélioration Échouée",
       "upgradedToLevel": "amélioré au niveau {{ level }}",
       "upgradeErrorDescription": "Une erreur s'est produite lors de l'amélioration. Veuillez réessayer.",
       "confirmUpgrade": "Confirmer l'Amélioration",
       "upgradeMessage": "Êtes-vous sûr de vouloir améliorer ce power-up ?",
       "refreshFailed": "Actualisation Échouée",
-      "tooManyRequests": "Trop de demandes. Veuillez attendre un moment avant de réessayer."
+      "tooManyRequests": "Trop de demandes. Veuillez attendre un moment avant de réessayer.",
+      "loadingCosts": "Chargement des coûts de power-up...",
+      "loadingData": "Chargement des données de la boutique...",
+      "loadingBalance": "Chargement du solde RICE..."
     },
     "instructions": {
       "title": "Instructions",
@@ -190,6 +192,27 @@
       "buttons": {
         "understood": "J'ai compris"
       }
+    },
+    "powerUps": {
+      "upgrading": "Amélioration du Power-Up",
+      "upgradingMessage": "Traitement de votre amélioration sur la blockchain...",
+      "upgradeSuccess": "Power-Up Amélioré !",
+      "upgradeSuccessMessage": "Votre power-up a été amélioré avec succès !",
+      "maxLevelReached": "Ce power-up est déjà au niveau maximum.",
+      "insufficientRICE": "Vous n'avez pas assez de RICE pour améliorer ce power-up.",
+      "upgradeCost": "Coût d'Amélioration",
+      "currentLevel": "Niveau Actuel",
+      "maxLevel": "Niveau Maximum",
+      "upgrade": "Améliorer",
+      "loading": "Chargement des power-ups...",
+      "noPowerUps": "Aucun power-up disponible",
+      "connectWalletToView": "Connectez votre wallet pour voir les power-ups",
+      "signatureError": "Échec de l'obtention de la signature du serveur",
+      "upgradeError": "Échec de l'amélioration du power-up",
+      "insufficientRice": "RICE Insuffisant",
+      "errorUpgrading": "Échec de l'amélioration du power-up. Veuillez réessayer.",
+      "signatureRejected": "Amélioration annulée. Vous avez rejeté la signature.",
+      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
     }
   },
   "features": {

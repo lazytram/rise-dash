@@ -14,18 +14,11 @@ import { GameCanvas } from "./GameCanvas";
 import { ScoreBoard } from "./ScoreBoard";
 import { GameIndicators } from "./GameIndicators";
 import { GameRenderer } from "@/core/game-logic/gameRenderer";
-import { PerformanceMonitor } from "@/shared/utils/performanceMonitor";
-import { PerformanceDisplay } from "./PerformanceDisplay";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<GameRenderer | null>(null);
-  const performanceMonitorRef = useRef<PerformanceMonitor | null>(null);
-  const [showPerformance, setShowPerformance] = useState(false);
   const { address } = useAccount();
-
-  // Check if we're in development mode
-  const isDevelopment = process.env.NODE_ENV === "development";
 
   // Translations
   const { t } = useTranslations();
@@ -33,20 +26,6 @@ const Game = () => {
   const [gameState, setGameState] = useState<GameState>(
     GameLogic.createInitialGameState()
   );
-
-  // Initialize performance monitor only in development
-  useEffect(() => {
-    if (isDevelopment) {
-      performanceMonitorRef.current = new PerformanceMonitor(true);
-      performanceMonitorRef.current.start();
-    }
-
-    return () => {
-      if (isDevelopment && performanceMonitorRef.current) {
-        performanceMonitorRef.current.stop();
-      }
-    };
-  }, [isDevelopment]);
 
   const startGame = useCallback(() => {
     setGameState((prev) => ({
@@ -111,8 +90,8 @@ const Game = () => {
     canvas.height = GAME_CONSTANTS.CANVAS_HEIGHT;
 
     const ctx = canvas.getContext("2d", {
-      alpha: false, // Disable alpha for better performance
-      desynchronized: true, // Reduce latency
+      alpha: false,
+      desynchronized: true,
     });
 
     if (ctx) {
@@ -124,17 +103,11 @@ const Game = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       handleKeyPress(event);
-
-      // Toggle performance display with F3 key only in development
-      if (isDevelopment && event.code === "F3") {
-        event.preventDefault();
-        setShowPerformance((prev) => !prev);
-      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyPress, isDevelopment]);
+  }, [handleKeyPress]);
 
   // Memoize translations to prevent unnecessary re-renders
   const translations = useMemo(
@@ -151,14 +124,9 @@ const Game = () => {
     [t]
   );
 
-  // Game rendering - simplified for better performance
+  // Game rendering
   useEffect(() => {
     if (!rendererRef.current) return;
-
-    // Update performance monitor only in development
-    if (isDevelopment) {
-      performanceMonitorRef.current?.update();
-    }
 
     rendererRef.current.render(
       gameState.player,
@@ -173,7 +141,19 @@ const Game = () => {
       gameState.isGameOver,
       translations
     );
-  }, [gameState, translations, isDevelopment]);
+  }, [
+    gameState.player,
+    gameState.riceRockets,
+    gameState.sushis,
+    gameState.toriis,
+    gameState.samurais,
+    gameState.samuraiBullets,
+    gameState.powerUps,
+    gameState.distance,
+    gameState.isGameRunning,
+    gameState.isGameOver,
+    translations,
+  ]);
 
   return (
     <>
@@ -198,21 +178,6 @@ const Game = () => {
           </div>
         </div>
       </div>
-
-      {/* Performance Display - Only in development */}
-      {isDevelopment && performanceMonitorRef.current && (
-        <PerformanceDisplay
-          performanceMonitor={performanceMonitorRef.current}
-          isVisible={showPerformance}
-        />
-      )}
-
-      {/* Performance Toggle Hint - Only in development */}
-      {isDevelopment && !showPerformance && (
-        <div className="fixed bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded text-xs">
-          {t("scenes.game.performanceHint")}
-        </div>
-      )}
     </>
   );
 };
