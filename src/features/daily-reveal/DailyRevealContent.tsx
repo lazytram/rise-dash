@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
 import { SceneHeader } from "@/shared/components/SceneHeader";
@@ -10,7 +10,10 @@ import { CountdownTimer } from "./CountdownTimer";
 import { RewardsTable } from "./RewardsTable";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { useRice } from "@/shared/hooks/useRice";
-import { useDailyRevealSelectors } from "@/infrastructure/store/dailyRevealStore";
+import {
+  useDailyRevealSelectors,
+  useDailyRevealStore,
+} from "@/infrastructure/store/dailyRevealStore";
 import { DailyRevealContentProps } from "./types";
 
 export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
@@ -20,6 +23,12 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
   const { addRICE, addDailyRevealRICE } = useRice();
   const { canReveal, isSpinning, selectedCard, isRevealed, revealCard } =
     useDailyRevealSelectors();
+  const { initializeStore } = useDailyRevealStore();
+
+  // Initialize store on component mount
+  useEffect(() => {
+    initializeStore();
+  }, [initializeStore]);
 
   const handleReveal = async () => {
     if (!canReveal || isSpinning) return;
