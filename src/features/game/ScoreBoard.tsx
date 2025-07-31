@@ -22,7 +22,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const { t } = useTranslations();
   const { isConnected, address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isNewPersonalBest, setIsNewPersonalBest] = useState(false);
+  const [isNewBestScore, setIsNewBestScore] = useState(false);
   const { showInfo, clearToasts } = useToastStore();
 
   // Clear toasts when component mounts
@@ -30,8 +30,16 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     clearToasts();
   }, [clearToasts]);
 
-  const { recordScore, checkNewPersonalBest, isRecording, isSuccess, error } =
-    useBlockchainScore();
+  const {
+    saveScoreWithRICE,
+    isNewPersonalBest,
+    isSavingWithRICE,
+    isSuccess,
+    error,
+    hash,
+  } = useBlockchainScore();
+
+  const rewards = RewardsService.calculateDistanceRewards(distance);
 
   const handleSaveScore = useCallback(async () => {
     if (isSubmitting || !isConnected) {
@@ -47,10 +55,23 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
     try {
       setIsSubmitting(true);
+
       const defaultName = `Player_${address?.slice(2, 8)}`;
-      const isNewBest = await checkNewPersonalBest(distance);
-      setIsNewPersonalBest(isNewBest);
-      await recordScore(distance, defaultName);
+      const isNewBest = await isNewPersonalBest(distance);
+      setIsNewBestScore(isNewBest);
+
+      // Record score with RICE rewards in a single transaction
+      const success = await saveScoreWithRICE(
+        distance,
+        defaultName,
+        rewards.totalRice
+      );
+
+      // If the transaction was initiated successfully, the hook will handle the rest
+      // (success/error states are managed by the hook via wagmi)
+      if (!success) {
+        console.error("Failed to initiate score recording");
+      }
     } catch (err) {
       console.error("Error saving score:", err);
     } finally {
@@ -62,23 +83,23 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
     showInfo,
     t,
     address,
-    checkNewPersonalBest,
-    recordScore,
+    isNewPersonalBest,
     distance,
+    saveScoreWithRICE,
+    rewards.totalRice,
   ]);
 
   if (isSuccess) {
     return (
       <ScoreSuccess
         distance={distance}
-        isNewPersonalBest={isNewPersonalBest}
+        isNewPersonalBest={isNewBestScore}
+        transactionHash={hash}
         onClose={onClose}
         onRestart={onRestart}
       />
     );
   }
-
-  const rewards = RewardsService.calculateDistanceRewards(distance);
 
   return (
     <Modal size="lg">
@@ -114,7 +135,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
           {/* Right Column - Rewards */}
           <div className="flex-1 flex flex-col items-center justify-start min-w-0">
-            <RewardBreakdown rewards={rewards} />
+            <RewardBreakdown rewards={rewards} isScoreSaved={isSuccess} />
           </div>
         </div>
 
@@ -123,7 +144,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <ScoreActions
             onSaveScore={handleSaveScore}
             onRestart={onRestart}
-            isRecording={isRecording}
+            isRecording={isSavingWithRICE}
             isSubmitting={isSubmitting}
             error={error}
           />

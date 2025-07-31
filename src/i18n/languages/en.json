@@ -70,15 +70,39 @@
       "title": "Power-Up Shop",
       "subtitle": "Upgrade your power-ups with RICE tokens",
       "riceBalance": "RICE Balance",
+      "progression": "Progression",
       "totalUpgrades": "Total Upgrades",
       "upgradeProgress": "Upgrade Progress",
-      "insufficientFunds": "Insufficient RICE",
+      "insufficientFunds": "Insufficient funds",
       "upgradeSuccess": "Upgrade Successful!",
-      "upgradeFailed": "Upgrade Failed",
+
       "upgradedToLevel": "upgraded to level {{ level }}",
       "upgradeErrorDescription": "An error occurred during the upgrade. Please try again.",
       "confirmUpgrade": "Confirm Upgrade",
-      "upgradeMessage": "Are you sure you want to upgrade this power-up?"
+      "upgradeMessage": "Are you sure you want to upgrade this power-up?",
+      "refreshFailed": "Refresh Failed",
+      "tooManyRequests": "Too many requests. Please wait a moment before trying again."
+    },
+    "powerUps": {
+      "upgrading": "Upgrading Power-Up",
+      "upgradingMessage": "Processing your upgrade on the blockchain...",
+      "upgradeSuccess": "Power-Up Upgraded!",
+      "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
+      "maxLevelReached": "This power-up is already at maximum level.",
+      "insufficientRICE": "You don't have enough RICE to upgrade this power-up.",
+      "upgradeCost": "Upgrade Cost",
+      "currentLevel": "Current Level",
+      "maxLevel": "Max Level",
+      "upgrade": "Upgrade",
+      "loading": "Loading power-ups...",
+      "noPowerUps": "No power-ups available",
+      "connectWalletToView": "Connect your wallet to view power-ups",
+      "signatureError": "Failed to get signature from server",
+      "upgradeError": "Failed to upgrade power-up",
+      "insufficientRice": "Insufficient RICE",
+      "errorUpgrading": "Failed to upgrade power-up. Please try again.",
+      "signatureRejected": "Upgrade cancelled. You rejected the signature.",
+      "powerUpNotInitialized": "Power-up not initialized on contract"
     },
     "instructions": {
       "title": "Instructions",
@@ -253,6 +277,17 @@
       "insufficientRice": "Insufficient RICE",
       "noActive": "No active power-up"
     },
+    "powerUp": {
+      "title": "Power-ups",
+      "upgrading": "Upgrading Power-up",
+      "upgradingMessage": "Processing your upgrade on the blockchain...",
+      "upgradeSuccess": "Power-up Upgraded!",
+      "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
+      "upgradeError": "Failed to upgrade power-up",
+      "failedToLoadLevels": "Failed to load power-up levels",
+      "failedToLoadConfigs": "Failed to load power-up configurations",
+      "invalidPowerUp": "Invalid power-up selected"
+    },
     "blockchain": {
       "saveScore": "Save Score",
       "currentScore": "Current Score",
@@ -261,8 +296,6 @@
       "newRecord": "New Personal Record!",
       "scoreRecorded": "Score recorded on RISE blockchain",
       "connectWallet": "Please connect your wallet first",
-      "connectWalletMessage": "Please connect your wallet to access this feature",
-      "connectWalletToSave": "Connect your wallet to save your score on the blockchain",
       "namePlaceholder": "Your name (max 20 characters)",
       "save": "Save",
       "saving": "Saving...",
@@ -271,6 +304,7 @@
       "transactionPendingMessage": "Your score is being saved on the blockchain...",
       "transactionSuccess": "Transaction Successful",
       "transactionSuccessMessage": "Your score has been saved successfully!",
+      "scoreSavedSuccessfully": "Your score has been successfully saved!",
       "transactionFailed": "Transaction Failed",
       "transactionFailedMessage": "Failed to save your score. Please try again.",
       "contractPaused": "Contract is paused",
@@ -278,7 +312,21 @@
       "userRejected": "Transaction rejected by user",
       "insufficientFunds": "Insufficient funds for transaction",
       "networkError": "Network error - check your connection",
-      "saveScoreError": "Failed to save score"
+
+      "errorAddingRICE": "Error adding RICE",
+      "errorSpendingRICE": "Error spending RICE",
+      "insufficientRICE": "Insufficient RICE",
+      "riceOperationError": "Failed to process RICE operation",
+      "riceAddedSuccess": "RICE added successfully",
+      "riceSpentSuccess": "RICE spent successfully",
+      "riceOperationSuccess": "RICE operation completed successfully",
+      "rewardsCalculated": "Rewards calculated",
+      "transactionConfirming": "Transaction confirming...",
+      "rewardsAvailable": "Rewards available",
+      "rewardsRetrieved": "Rewards retrieved",
+      "viewTransaction": "View transaction",
+      "viewOnExplorer": "View on explorer",
+      "calculatingRewards": "Calculating rewards..."
     }
   },
   "ui": {

@@ -23,7 +23,11 @@ import {
   POWERUP_COLORS,
 } from "@/shared/constants/colors";
 import { player } from "@/core/entities/player";
-import { getPowerUpEffect, getMaxAmmo } from "@/shared/services/powerUpService";
+import {
+  getPowerUpEffect,
+  getMaxAmmo,
+  getPowerUpService,
+} from "@/shared/services/powerUpService";
 import { PowerUpType } from "@/shared/types/powerUps";
 
 export class GameLogic {
@@ -266,6 +270,8 @@ export class GameLogic {
   // ================================
 
   static resetPlayer(player: Player): Player {
+    const powerUpService = getPowerUpService();
+
     return {
       ...player,
       x: 100,
@@ -287,6 +293,27 @@ export class GameLogic {
         jumpBoost: 0,
         slowMotion: 0,
         multiShot: 0,
+      },
+      // Update power-up levels from service
+      powerUpLevels: {
+        [PowerUpType.SHIELD]: powerUpService.getPowerUpLevel(
+          PowerUpType.SHIELD
+        ),
+        [PowerUpType.INFINITE_AMMO]: powerUpService.getPowerUpLevel(
+          PowerUpType.INFINITE_AMMO
+        ),
+        [PowerUpType.JUMP_BOOST]: powerUpService.getPowerUpLevel(
+          PowerUpType.JUMP_BOOST
+        ),
+        [PowerUpType.SLOW_MOTION]: powerUpService.getPowerUpLevel(
+          PowerUpType.SLOW_MOTION
+        ),
+        [PowerUpType.MULTI_SHOT]: powerUpService.getPowerUpLevel(
+          PowerUpType.MULTI_SHOT
+        ),
+        [PowerUpType.RICE_ROCKET_AMMO]: powerUpService.getPowerUpLevel(
+          PowerUpType.RICE_ROCKET_AMMO
+        ),
       },
     };
   }

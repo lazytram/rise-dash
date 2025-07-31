@@ -7,12 +7,12 @@ export function useAuthSync() {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    // Si le wallet se déconnecte mais qu'il y a encore une session NextAuth
+    // If wallet disconnects but there's still a NextAuth session
     if (!isConnected && session) {
       signOut();
     }
 
-    // Si le wallet est connecté mais avec une adresse différente de celle de la session
+    // If wallet is connected but with a different address than the session
     if (
       isConnected &&
       address &&

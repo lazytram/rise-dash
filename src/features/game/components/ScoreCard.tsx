@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Text } from "@/shared/components/Text";
+import { StatusIndicator } from "@/shared/components/StatusIndicator";
 
 interface ScoreCardProps {
   distance: number;
@@ -8,6 +9,7 @@ interface ScoreCardProps {
   subtitle?: string;
   variant?: "default" | "success";
   className?: string;
+  transactionHash?: string;
 }
 
 export const ScoreCard: React.FC<ScoreCardProps> = ({
@@ -16,6 +18,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
   subtitle,
   variant = "default",
   className = "",
+  transactionHash,
 }) => {
   const { t } = useTranslations();
 
@@ -120,6 +123,30 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
           className={`absolute inset-0 bg-gradient-to-br ${styles.glow} rounded-lg blur-lg -z-10 group-hover:blur-xl transition-all duration-500`}
         ></div>
       </div>
+
+      {/* Transaction Link */}
+      {transactionHash && (
+        <div className="mt-3 text-center">
+          <div className="relative group">
+            <a
+              href={`https://explorer.testnet.riselabs.xyz/tx/${transactionHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <StatusIndicator
+                status="info"
+                message={t("features.blockchain.viewTransaction")}
+                showPulse={false}
+                className="group-hover:scale-105 transition-transform duration-200"
+              />
+            </a>
+
+            {/* Hover glow effect */}
+            <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -12,6 +12,19 @@ jobs:
       contents: write
 
     steps:
+      - name: Debug information
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('=== DEBUG INFO ===');
+            console.log('Event type:', context.eventName);
+            console.log('PR merged:', context.payload.pull_request.merged);
+            console.log('Branch name:', context.payload.pull_request.head.ref);
+            console.log('Is from fork:', context.payload.pull_request.head.repo.full_name !== context.repo.owner + '/' + context.repo.repo);
+            console.log('Repo owner:', context.repo.owner);
+            console.log('Repo name:', context.repo.repo);
+            console.log('==================');
+
       - name: Delete merged branch
         uses: actions/github-script@v7
         with:
@@ -21,6 +34,10 @@ jobs:
 
             // Don't delete branches from forks or protected branches
             const protectedBranches = ['main', 'master', 'develop', 'development', 'staging', 'production'];
+
+            console.log(`Checking branch: ${branchName}`);
+            console.log(`Is from fork: ${isFromFork}`);
+            console.log(`Is protected: ${protectedBranches.includes(branchName)}`);
 
             if (isFromFork) {
               console.log('Branch is from a fork, skipping deletion');
@@ -33,6 +50,7 @@ jobs:
             }
 
             try {
+              console.log(`Attempting to delete branch: ${branchName}`);
               await github.rest.git.deleteRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -41,5 +59,6 @@ jobs:
               console.log(`Successfully deleted branch: ${branchName}`);
             } catch (error) {
               console.log(`Failed to delete branch ${branchName}: ${error.message}`);
+              console.log(`Error details:`, error);
               // Don't fail the workflow if branch deletion fails
             }

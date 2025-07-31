@@ -1,15 +1,18 @@
 import React from "react";
 import { Text } from "../../../shared/components/Text";
+import { StatusIndicator } from "../../../shared/components/StatusIndicator";
 import { GameRewards } from "../../../shared/types/game";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 import { RiceLogo } from "../../../shared/components/RiceLogo";
 
 interface RewardBreakdownProps {
   rewards: GameRewards;
+  isScoreSaved?: boolean;
 }
 
 export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
   rewards,
+  isScoreSaved = false,
 }) => {
   const { t } = useTranslations();
 
@@ -127,15 +130,14 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
 
       {/* Status indicator */}
       <div className="mt-auto text-center">
-        <div className="inline-flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-white/10 rounded-full border border-white/20 backdrop-blur-sm">
-          <div className="w-1 h-1 bg-orange-400 rounded-full animate-pulse"></div>
-          <Text
-            variant="body"
-            className="text-white/70 font-medium text-xs tracking-wide"
-          >
-            {t("features.gameplay.rewardsAvailable")}
-          </Text>
-        </div>
+        <StatusIndicator
+          status={isScoreSaved ? "success" : "warning"}
+          message={t(
+            isScoreSaved
+              ? "features.blockchain.rewardsRetrieved"
+              : "features.blockchain.rewardsAvailable"
+          )}
+        />
       </div>
     </div>
   );

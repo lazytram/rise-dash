@@ -1,0 +1,106 @@
+// RICEManager contract ABI
+export const RICEMANAGER_ABI = [
+  {
+    inputs: [
+      { name: "player", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "operationHash", type: "bytes32" },
+      { name: "signature", type: "bytes" },
+    ],
+    name: "addRICE",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "player", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "operationHash", type: "bytes32" },
+      { name: "signature", type: "bytes" },
+    ],
+    name: "addDailyRevealRICE",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "player", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "operationHash", type: "bytes32" },
+      { name: "signature", type: "bytes" },
+    ],
+    name: "spendRICE",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "player", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "operationHash", type: "bytes32" },
+    ],
+    name: "addRICEEmergency",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "player", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "operationHash", type: "bytes32" },
+    ],
+    name: "spendRICEEmergency",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "player", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "operationHash", type: "bytes32" },
+    ],
+    name: "spendRICEEmergencyForPowerUp",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ name: "player", type: "address" }],
+    name: "getBalance",
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ name: "player", type: "address" }],
+    name: "canClaimDailyReveal",
+    outputs: [{ name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ name: "player", type: "address" }],
+    name: "getTimeUntilNextDailyReveal",
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getContractInfo",
+    outputs: [
+      { name: "_gameOwner", type: "address" },
+      { name: "_paused", type: "bool" },
+      { name: "_minTimeBetweenOperations", type: "uint256" },
+      { name: "_securityKeySet", type: "bool" },
+      { name: "_dailyRevealCooldown", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+] as const;

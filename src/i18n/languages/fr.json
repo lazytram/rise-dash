@@ -70,15 +70,18 @@
       "title": "Boutique de Power-Ups",
       "subtitle": "Améliorez vos power-ups avec des tokens RICE",
       "riceBalance": "Solde RICE",
+      "progression": "Progression",
       "totalUpgrades": "Améliorations Totales",
       "upgradeProgress": "Progrès d'Amélioration",
-      "insufficientFunds": "RICE Insuffisant",
+      "insufficientFunds": "Fonds insuffisants",
       "upgradeSuccess": "Amélioration Réussie !",
       "upgradeFailed": "Amélioration Échouée",
       "upgradedToLevel": "amélioré au niveau {{ level }}",
       "upgradeErrorDescription": "Une erreur s'est produite lors de l'amélioration. Veuillez réessayer.",
       "confirmUpgrade": "Confirmer l'Amélioration",
-      "upgradeMessage": "Êtes-vous sûr de vouloir améliorer ce power-up ?"
+      "upgradeMessage": "Êtes-vous sûr de vouloir améliorer ce power-up ?",
+      "refreshFailed": "Actualisation Échouée",
+      "tooManyRequests": "Trop de demandes. Veuillez attendre un moment avant de réessayer."
     },
     "instructions": {
       "title": "Instructions",
@@ -251,7 +254,21 @@
       "upgrade": "Améliorer",
       "maxLevelReached": "Niveau Maximum Atteint !",
       "insufficientRice": "RICE Insuffisant",
-      "noActive": "Aucun power-up actif"
+      "noActive": "Aucun power-up actif",
+      "errorUpgrading": "Échec de la mise à niveau du power-up. Veuillez réessayer.",
+      "signatureRejected": "Mise à niveau annulée. Vous avez rejeté la signature.",
+      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+    },
+    "powerUp": {
+      "title": "Power-ups",
+      "upgrading": "Mise à niveau du Power-up",
+      "upgradingMessage": "Traitement de votre mise à niveau sur la blockchain...",
+      "upgradeSuccess": "Power-up mis à niveau !",
+      "upgradeSuccessMessage": "Votre power-up a été mis à niveau avec succès !",
+      "upgradeError": "Échec de la mise à niveau du power-up",
+      "failedToLoadLevels": "Échec du chargement des niveaux de power-up",
+      "failedToLoadConfigs": "Échec du chargement des configurations de power-up",
+      "invalidPowerUp": "Power-up sélectionné invalide"
     },
     "blockchain": {
       "saveScore": "Sauvegarder le Score",
@@ -261,8 +278,6 @@
       "newRecord": "Nouveau Record Personnel !",
       "scoreRecorded": "Score enregistré sur la blockchain RISE",
       "connectWallet": "Veuillez d'abord connecter votre wallet",
-      "connectWalletMessage": "Veuillez connecter votre wallet pour accéder à cette fonctionnalité",
-      "connectWalletToSave": "Connectez votre wallet pour sauvegarder votre score sur la blockchain",
       "namePlaceholder": "Votre nom (max 20 caractères)",
       "save": "Sauvegarder",
       "saving": "Sauvegarde...",
@@ -271,6 +286,7 @@
       "transactionPendingMessage": "Votre score est en cours de sauvegarde sur la blockchain...",
       "transactionSuccess": "Transaction Réussie",
       "transactionSuccessMessage": "Votre score a été sauvegardé avec succès !",
+      "scoreSavedSuccessfully": "Votre score a été sauvegardé avec succès !",
       "transactionFailed": "Transaction Échouée",
       "transactionFailedMessage": "Échec de la sauvegarde de votre score. Veuillez réessayer.",
       "contractPaused": "Le contrat est en pause",
@@ -278,7 +294,21 @@
       "userRejected": "Transaction annulée par l'utilisateur",
       "insufficientFunds": "Fonds insuffisants pour la transaction",
       "networkError": "Erreur de réseau - vérifiez votre connexion",
-      "saveScoreError": "Échec de la sauvegarde du score"
+
+      "errorAddingRICE": "Erreur lors de l'ajout de RICE",
+      "errorSpendingRICE": "Erreur lors de la dépense de RICE",
+      "insufficientRICE": "RICE insuffisant",
+      "riceOperationError": "Échec du traitement de l'opération RICE",
+      "riceAddedSuccess": "RICE ajouté avec succès",
+      "riceSpentSuccess": "RICE dépensé avec succès",
+      "riceOperationSuccess": "Opération RICE terminée avec succès",
+      "rewardsCalculated": "Récompenses calculées",
+      "transactionConfirming": "Transaction en cours de confirmation...",
+      "rewardsAvailable": "Récompenses disponibles",
+      "rewardsRetrieved": "Récompenses récupérées",
+      "viewTransaction": "Voir la transaction",
+      "viewOnExplorer": "Voir sur l'explorer",
+      "calculatingRewards": "Calcul des récompenses..."
     }
   },
   "ui": {

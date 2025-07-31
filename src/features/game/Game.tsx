@@ -7,7 +7,9 @@ import { GameLogic } from "@/core/game-logic/gameLogic";
 import { useKeyboardControls } from "@/shared/hooks/useKeyboardControls";
 import { useGameLoop } from "@/shared/hooks/useGameLoop";
 import { useTranslations } from "@/shared/hooks/useTranslations";
-import { usePowerUpSync } from "@/shared/hooks/usePowerUpSync";
+import { useAccount } from "wagmi";
+import { loadLevelsFromBlockchain } from "@/shared/services/powerUpService";
+
 import { GameCanvas } from "./GameCanvas";
 import { ScoreBoard } from "./ScoreBoard";
 import { GameIndicators } from "./GameIndicators";
@@ -20,6 +22,7 @@ const Game = () => {
   const rendererRef = useRef<GameRenderer | null>(null);
   const performanceMonitorRef = useRef<PerformanceMonitor | null>(null);
   const [showPerformance, setShowPerformance] = useState(false);
+  const { address } = useAccount();
 
   // Check if we're in development mode
   const isDevelopment = process.env.NODE_ENV === "development";
@@ -44,14 +47,6 @@ const Game = () => {
       }
     };
   }, [isDevelopment]);
-
-  // Sync power-up levels with service
-  usePowerUpSync(gameState.player, (updatedPlayer) => {
-    setGameState((prev) => ({
-      ...prev,
-      player: updatedPlayer,
-    }));
-  });
 
   const startGame = useCallback(() => {
     setGameState((prev) => ({
@@ -97,6 +92,15 @@ const Game = () => {
   );
 
   useGameLoop(gameState.isGameRunning, gameLoop);
+
+  // Load power-up levels from blockchain when address changes
+  useEffect(() => {
+    if (address) {
+      loadLevelsFromBlockchain(address).catch((error) => {
+        console.warn("Failed to load power-up levels from blockchain:", error);
+      });
+    }
+  }, [address]);
 
   // Game initialization
   useEffect(() => {

@@ -1,72 +1,38 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   useAccount,
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import {
-  blockchainService,
-  SCOREBOARD_ABI,
-} from "@/infrastructure/blockchain/blockchainService";
-import { getScoreBoardAddress } from "@/infrastructure/config";
+import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
+import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
-
-// Retry utility with exponential backoff
-const retryWithBackoff = async <T>(
-  fn: () => Promise<T>,
-  maxRetries: number = 3,
-  baseDelay: number = 1000
-): Promise<T> => {
-  let lastError: Error;
-
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fn();
-    } catch (error) {
-      lastError = error as Error;
-
-      if (attempt === maxRetries) {
-        throw lastError;
-      }
-
-      // Check if it's a rate limit error
-      if (error instanceof Error && error.message.includes("429")) {
-        const delay = baseDelay * Math.pow(2, attempt);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      } else {
-        // For other errors, don't retry
-        throw lastError;
-      }
-    }
-  }
-
-  throw lastError!;
-};
+import { retryWithBackoff } from "../utils/retryUtils";
 
 export const useBlockchainScore = () => {
   const { address } = useAccount();
-  const [isRecording, setIsRecording] = useState(false);
-  const [isChecking, setIsChecking] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSavingWithRICE, setIsSavingWithRICE] = useState(false);
+  const [bestScore, setBestScore] = useState<bigint>(BigInt(0));
   const { showError, showSuccess, showPending, clearToasts } = useToastStore();
   const { t } = useTranslations();
 
   const { writeContract, data: hash, isPending, error } = useWriteContract();
-
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
 
-  const recordScore = useCallback(
+  const saveScore = useCallback(
     async (score: number, playerName: string) => {
       if (!address) {
         showError(t("common.error"), t("features.blockchain.connectWallet"));
         return false;
       }
 
-      // Clear any existing toasts before starting
       clearToasts();
-      setIsRecording(true);
+      setIsSaving(true);
 
       try {
         // Check if the contract is properly configured
@@ -87,111 +53,156 @@ export const useBlockchainScore = () => {
           return false;
         }
 
-        // Générer le gameHash
-        const gameHash = blockchainService.generateGameHash(
-          score,
-          playerName,
-          address
-        ) as `0x${string}`;
+        // Generate game hash and signature
+        const { gameHash, signature } = await retryWithBackoff(() =>
+          blockchainService.recordScore(score, playerName, address)
+        );
 
-        // Appeler l'API pour obtenir la signature
-        let signature: `0x${string}` | undefined = undefined;
-        try {
-          showPending(
-            t("features.blockchain.transactionPending"),
-            t("features.blockchain.transactionPendingMessage")
-          );
-          const response = await fetch("/api/sign-score", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              score,
-              playerName,
-              playerAddress: address,
-              gameHash,
-            }),
-          });
-          if (!response.ok) {
-            throw new Error("API signature error");
-          }
-          const data = await response.json();
-          signature = data.signature;
-          if (!signature) throw new Error("No signature returned");
-        } catch {
-          showError(
-            t("common.error"),
-            t("features.blockchain.errorSaving") + ` (signature)`
-          );
-          return false;
-        }
+        showPending(
+          t("features.blockchain.transactionPending"),
+          t("features.blockchain.transactionPendingMessage")
+        );
 
-        // Appeler le smart contract avec la signature
-        try {
-          writeContract({
-            address: getScoreBoardAddress(),
-            abi: SCOREBOARD_ABI,
-            functionName: "recordScore",
-            args: [BigInt(score), playerName, gameHash, signature],
-          });
-        } catch (writeError) {
-          console.error("❌ writeContract error:", writeError);
-          showError(t("common.error"), t("features.blockchain.errorSaving"));
-          return false;
-        }
+        // Execute the transaction
+        writeContract({
+          address: CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD,
+          abi: SCOREBOARD_ABI,
+          functionName: "recordScore",
+          args: [BigInt(score), playerName, gameHash, signature],
+        });
 
         return true;
       } catch (error) {
-        console.error("❌ Error recording score:", error);
+        console.error("❌ Error saving score:", error);
         showError(t("common.error"), t("features.blockchain.errorSaving"));
         return false;
       } finally {
-        setIsRecording(false);
+        setIsSaving(false);
       }
     },
     [address, showError, showPending, clearToasts, t, writeContract]
   );
 
-  const checkNewPersonalBest = useCallback(
-    async (score: number): Promise<boolean> => {
+  const saveScoreWithRICE = useCallback(
+    async (score: number, playerName: string, riceReward: number) => {
       if (!address) {
+        showError(t("common.error"), t("features.blockchain.connectWallet"));
         return false;
       }
 
-      setIsChecking(true);
+      clearToasts();
+      setIsSavingWithRICE(true);
 
       try {
-        const isNewBest = await retryWithBackoff(() =>
-          blockchainService.isNewPersonalBest(address, score)
+        // Check if the contract is properly configured
+        const contractInfo = await retryWithBackoff(() =>
+          blockchainService.getContractInfo()
         );
-        return isNewBest;
+
+        if (contractInfo.paused) {
+          showError(t("common.error"), t("features.blockchain.contractPaused"));
+          return false;
+        }
+
+        if (!contractInfo.securityKeySet) {
+          showError(
+            t("common.error"),
+            t("features.blockchain.securityKeyNotConfigured")
+          );
+          return false;
+        }
+
+        // Generate game hash and signature with RICE reward
+        const { gameHash, signature } = await retryWithBackoff(() =>
+          blockchainService.recordScoreWithRICE(
+            score,
+            playerName,
+            riceReward,
+            address
+          )
+        );
+
+        showPending(
+          t("features.blockchain.transactionPending"),
+          t("features.blockchain.transactionPendingMessage")
+        );
+
+        // Execute the transaction with RICE reward
+        writeContract({
+          address: CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD,
+          abi: SCOREBOARD_ABI,
+          functionName: "recordScoreWithRICE",
+          args: [
+            BigInt(score),
+            playerName,
+            BigInt(riceReward),
+            gameHash,
+            signature,
+          ],
+        });
+
+        return true;
       } catch (error) {
-        console.error("Error checking personal best:", error);
+        console.error("Error saving score with RICE:", error);
+        showError(t("common.error"), t("features.blockchain.errorSaving"));
         return false;
       } finally {
-        setIsChecking(false);
+        setIsSavingWithRICE(false);
+      }
+    },
+    [address, showError, showPending, clearToasts, t, writeContract]
+  );
+
+  const loadBestScore = useCallback(async () => {
+    if (!address) return;
+
+    try {
+      const score = await retryWithBackoff(() =>
+        blockchainService.getPlayerBestScore(address)
+      );
+      setBestScore(score);
+      return score;
+    } catch (error) {
+      console.error("Error loading best score:", error);
+      return BigInt(0);
+    }
+  }, [address]);
+
+  const isNewPersonalBest = useCallback(
+    async (score: number): Promise<boolean> => {
+      if (!address) return false;
+
+      try {
+        return await retryWithBackoff(() =>
+          blockchainService.isNewPersonalBest(address, score)
+        );
+      } catch (error) {
+        console.error("Error checking if new personal best:", error);
+        return true; // In case of error, assume it's a new record
       }
     },
     [address]
   );
 
-  // Handle transaction status with useEffect to avoid infinite loops
-  useEffect(() => {
-    if (isSuccess && hash) {
+  // Handle transaction success (only when confirmed)
+  const handleTransactionSuccess = useCallback(() => {
+    if (isSuccess && hash && !isConfirming && !error) {
       showSuccess(
-        "Transaction Successful",
-        "Your score has been successfully saved!",
+        t("features.blockchain.transactionSuccess"),
+        t("features.blockchain.scoreSavedSuccess"),
         hash,
         "View Transaction"
       );
+      // Reload best score after successful save
+      loadBestScore();
     }
-  }, [isSuccess, hash, showSuccess]);
+  }, [isSuccess, hash, isConfirming, error, showSuccess, t, loadBestScore]);
 
-  useEffect(() => {
-    if (error && error.message) {
-      // Extract a shorter, more readable error message
+  // Handle transaction error
+  const handleTransactionError = useCallback(() => {
+    if (error) {
       let shortMessage = error.message;
 
-      // If it's a user rejection, show a friendly message
       if (error.message.includes("User rejected")) {
         shortMessage = t("features.blockchain.userRejected");
       } else if (error.message.includes("insufficient funds")) {
@@ -199,7 +210,6 @@ export const useBlockchainScore = () => {
       } else if (error.message.includes("network")) {
         shortMessage = t("features.blockchain.networkError");
       } else {
-        // Take only the first part of the error message
         shortMessage = error.message.split(".")[0] || error.message;
         if (shortMessage.length > 100) {
           shortMessage = shortMessage.substring(0, 100) + "...";
@@ -208,30 +218,57 @@ export const useBlockchainScore = () => {
 
       showError(
         t("common.error"),
-        `${t("features.blockchain.saveScoreError")}. ${shortMessage}`
+        `${t("features.blockchain.scoreSaveError")}. ${shortMessage}`
       );
     }
-  }, [error, showError]);
+  }, [error, showError, t]);
 
   const getLeaderboard = useCallback(async (offset: number, limit: number) => {
-    return await retryWithBackoff(() =>
-      blockchainService.getLeaderboard(offset, limit)
-    );
+    try {
+      return await retryWithBackoff(() =>
+        blockchainService.getLeaderboard(offset, limit)
+      );
+    } catch (error) {
+      console.error("Error loading leaderboard:", error);
+      throw error;
+    }
   }, []);
 
   const getTotalScores = useCallback(async () => {
-    return await retryWithBackoff(() => blockchainService.getTotalScores());
+    try {
+      return await retryWithBackoff(() => blockchainService.getTotalScores());
+    } catch (error) {
+      console.error("Error getting total scores:", error);
+      throw error;
+    }
+  }, []);
+
+  const checkContractConfig = useCallback(async () => {
+    try {
+      return await retryWithBackoff(() =>
+        blockchainService.checkContractConfig()
+      );
+    } catch (error) {
+      console.error("Error checking contract config:", error);
+      throw error;
+    }
   }, []);
 
   return {
-    recordScore,
-    checkNewPersonalBest,
+    saveScore,
+    saveScoreWithRICE,
+    loadBestScore,
+    isNewPersonalBest,
     getLeaderboard,
     getTotalScores,
-    isRecording: isRecording || isPending || isConfirming,
-    isChecking,
+    checkContractConfig,
+    bestScore,
+    isSaving: isSaving || isPending || isConfirming,
+    isSavingWithRICE: isSavingWithRICE || isPending || isConfirming,
     isSuccess,
     error,
     hash,
+    handleTransactionSuccess,
+    handleTransactionError,
   };
 };

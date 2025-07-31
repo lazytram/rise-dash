@@ -10,6 +10,7 @@ import { RewardsService } from "../../rewards/rewardsService";
 interface ScoreSuccessProps {
   distance: number;
   isNewPersonalBest: boolean;
+  transactionHash?: string;
   onClose?: () => void;
   onRestart?: () => void;
 }
@@ -17,6 +18,7 @@ interface ScoreSuccessProps {
 export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
   distance,
   isNewPersonalBest,
+  transactionHash,
   onClose,
   onRestart,
 }) => {
@@ -75,6 +77,7 @@ export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
                   : t("features.gameplay.scoreRecorded")
               }
               variant="success"
+              transactionHash={transactionHash}
             />
           </div>
 
@@ -82,6 +85,7 @@ export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
           <div className="flex-1 flex flex-col justify-center">
             <RewardBreakdown
               rewards={RewardsService.calculateDistanceRewards(distance)}
+              isScoreSaved
             />
           </div>
         </div>

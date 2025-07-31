@@ -1,25 +1,6 @@
 import { PowerUpUpgradeData, PowerUpType } from "@/shared/types/powerUps";
 
 export const POWERUP_UPGRADES: Record<PowerUpType, PowerUpUpgradeData> = {
-  [PowerUpType.RICE_ROCKET_AMMO]: {
-    type: PowerUpType.RICE_ROCKET_AMMO,
-    name: "Rocket Ammo",
-    description: "Maximum ammunition capacity",
-    icon: "🔫",
-    color: "from-amber-600/80 to-orange-600/80",
-    upgrades: [
-      { level: 1, riceCost: 0, ammoCount: 3 },
-      { level: 2, riceCost: 50, ammoCount: 4 },
-      { level: 3, riceCost: 150, ammoCount: 5 },
-      { level: 4, riceCost: 300, ammoCount: 6 },
-      { level: 5, riceCost: 500, ammoCount: 7 },
-      { level: 6, riceCost: 750, ammoCount: 8 },
-      { level: 7, riceCost: 1000, ammoCount: 9 },
-      { level: 8, riceCost: 1300, ammoCount: 10 },
-      { level: 9, riceCost: 1600, ammoCount: 12 },
-      { level: 10, riceCost: 2000, ammoCount: 15 },
-    ],
-  },
   [PowerUpType.SHIELD]: {
     type: PowerUpType.SHIELD,
     name: "Shield",
@@ -115,13 +96,32 @@ export const POWERUP_UPGRADES: Record<PowerUpType, PowerUpUpgradeData> = {
       { level: 10, riceCost: 3600, duration: 15000, projectileCount: 7 },
     ],
   },
+  [PowerUpType.RICE_ROCKET_AMMO]: {
+    type: PowerUpType.RICE_ROCKET_AMMO,
+    name: "Rocket Ammo",
+    description: "Maximum ammunition capacity",
+    icon: "🔫",
+    color: "from-amber-600/80 to-orange-600/80",
+    upgrades: [
+      { level: 1, riceCost: 0, ammoCount: 3 },
+      { level: 2, riceCost: 50, ammoCount: 4 },
+      { level: 3, riceCost: 150, ammoCount: 5 },
+      { level: 4, riceCost: 300, ammoCount: 6 },
+      { level: 5, riceCost: 500, ammoCount: 7 },
+      { level: 6, riceCost: 750, ammoCount: 8 },
+      { level: 7, riceCost: 1000, ammoCount: 9 },
+      { level: 8, riceCost: 1300, ammoCount: 10 },
+      { level: 9, riceCost: 1600, ammoCount: 12 },
+      { level: 10, riceCost: 2000, ammoCount: 15 },
+    ],
+  },
 };
 
 export const POWERUP_ORDER: PowerUpType[] = [
-  PowerUpType.RICE_ROCKET_AMMO,
   PowerUpType.SHIELD,
   PowerUpType.INFINITE_AMMO,
   PowerUpType.JUMP_BOOST,
   PowerUpType.SLOW_MOTION,
   PowerUpType.MULTI_SHOT,
+  PowerUpType.RICE_ROCKET_AMMO,
 ];

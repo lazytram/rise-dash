@@ -1,0 +1,19 @@
+name: Auto Delete Branch (Simple)
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete-branch:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    permissions:
+      contents: write
+
+    steps:
+      - name: Delete branch
+        uses: dawidd6/action-delete-branch@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branches: ${{ github.head_ref }}
