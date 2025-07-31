@@ -1,13 +1,26 @@
+// Mock blockchain modules before imports
+jest.mock("@/infrastructure/blockchain/blockchainService", () => ({
+  blockchainService: {
+    getPlayerBestScore: jest.fn(),
+    getPlayerScores: jest.fn(),
+    getLeaderboard: jest.fn(),
+    getTotalScores: jest.fn(),
+    getContractInfo: jest.fn(),
+  },
+}));
+
+jest.mock("@/shared/services/powerUpService", () => ({
+  PowerUpService: {
+    getPowerUpLevel: jest.fn(),
+    getUpgradeCost: jest.fn(),
+  },
+}));
+
 import { renderHook, act } from "@testing-library/react";
 import { usePowerUpSync } from "../usePowerUpSync";
 import { getPowerUpService } from "@/shared/services/powerUpService";
 import { Player } from "@/shared/types/game";
 import { PowerUpType } from "@/shared/types/powerUps";
-
-// Mock the power up service
-jest.mock("@/shared/services/powerUpService", () => ({
-  getPowerUpService: jest.fn(),
-}));
 
 const mockGetPowerUpService = getPowerUpService as jest.MockedFunction<
   typeof getPowerUpService

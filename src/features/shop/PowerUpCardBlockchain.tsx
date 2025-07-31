@@ -26,10 +26,10 @@ export const PowerUpCardBlockchain: React.FC<PowerUpCardBlockchainProps> = ({
 }) => {
   const { t } = useTranslations();
 
-  // Ensure currentLevel is valid (1-10) and handle NaN/undefined
+  // Ensure currentLevel is valid (0-10) and handle NaN/undefined
   const validCurrentLevel = Math.max(
-    1,
-    Math.min(10, Number(currentLevel) || 1)
+    0, // Allow level 0 (no upgrades)
+    Math.min(10, Number(currentLevel) || 0)
   );
   const nextLevel = validCurrentLevel + 1;
 
@@ -38,12 +38,19 @@ export const PowerUpCardBlockchain: React.FC<PowerUpCardBlockchainProps> = ({
       return t("features.powerUps.maxLevelReached");
     }
 
-    // Adjust for 1-based indexing: validCurrentLevel starts at 1, levels start at 1
-    const current = powerUp.upgrades[validCurrentLevel - 1];
+    // Use actual current level for correct upgrade display
+    const actualCurrentLevel = Math.max(
+      1,
+      Math.min(10, Number(currentLevel) || 1)
+    );
+    const nextLevel = actualCurrentLevel + 1;
+
+    // Get current and next upgrades based on actual current level
+    const current = powerUp.upgrades[actualCurrentLevel - 1]; // -1 because array is 0-indexed
     const next = powerUp.upgrades[nextLevel - 1];
 
     // Safety check: if current upgrade is undefined, return empty string
-    if (!current) {
+    if (!current || !next) {
       return "";
     }
 
@@ -83,7 +90,13 @@ export const PowerUpCardBlockchain: React.FC<PowerUpCardBlockchainProps> = ({
   };
 
   const getProgressPercentage = () => {
-    const percentage = (validCurrentLevel / 10) * 100;
+    // Level 1 = 0% progress, Level 10 = 100% progress
+    // Formula: ((level - 1) / 9) * 100
+    const actualCurrentLevel = Math.max(
+      1,
+      Math.min(10, Number(currentLevel) || 1)
+    );
+    const percentage = ((actualCurrentLevel - 1) / 9) * 100;
     return isNaN(percentage) ? 0 : Math.max(0, Math.min(100, percentage));
   };
 
@@ -112,7 +125,7 @@ export const PowerUpCardBlockchain: React.FC<PowerUpCardBlockchainProps> = ({
               size="lg"
               className="text-white font-bold ml-2 flex-shrink-0"
             >
-              {validCurrentLevel}/10
+              {Math.max(1, Math.min(10, Number(currentLevel) || 1))}/10
             </Text>
           </div>
           <Text

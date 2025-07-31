@@ -1,12 +1,15 @@
 // Server-side contract configuration
 // ⚠️ This file should ONLY be used server-side (API routes, server actions)
 
-export const SERVER_CONTRACT_ADDRESSES = {
-  ADMIN_CONTROLLER: "0x78ee7dA36f5D32054781dAFCD06476636c093d4d",
-  GAME_REGISTRY: "0x7e6426Ce9bcB77a549F41b7965a7312b2e882773",
-  RICE_MANAGER: "0x69FAcF1454e0F8a43561697767d956B8E5AA6F50",
-  SCORE_BOARD: "0x86812187fac067E9DA844977161EcF9Df3225Ac0",
-  POWER_UP_MANAGER: "0x77b6097670C4116136cE3270D691427D7b4eA9e7",
+import { Address } from "viem";
+
+export const CONTRACT_ADDRESSES = {
+  // Rise Testnet
+  riseTestnet: {
+    scoreBoard: "0xF2dC776b9b71DEC08df3a40861b7DbFb629C9F5a" as Address,
+    riceManager: "0xd74e64EcEFCC745845878C215C5BE9D3d368c8bA" as Address,
+    powerUpManager: "0xC12889D661c6BeE9930b00241FdAE913e64a5722" as Address,
+  },
 } as const;
 
-export type ServerContractAddresses = typeof SERVER_CONTRACT_ADDRESSES;
+export type ServerContractAddresses = typeof CONTRACT_ADDRESSES;

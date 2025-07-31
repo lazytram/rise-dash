@@ -4,7 +4,7 @@ export const POWERUPMANAGER_ABI = [
     inputs: [
       { name: "player", type: "address" },
       { name: "powerUpId", type: "uint256" },
-      { name: "upgradeHash", type: "bytes32" },
+      { name: "nonce", type: "uint256" },
       { name: "signature", type: "bytes" },
     ],
     name: "upgradePowerUp",
@@ -92,6 +92,13 @@ export const POWERUPMANAGER_ABI = [
     ],
     name: "getPowerUpLevelCost",
     outputs: [{ name: "cost", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ name: "", type: "address" }],
+    name: "playerNonces",
+    outputs: [{ name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },

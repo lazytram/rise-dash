@@ -8,7 +8,7 @@ const GAME_AUTH_PRIVATE_KEY = process.env
 interface SignPowerUpRequest {
   playerAddress: `0x${string}`;
   powerUpId: number;
-  upgradeHash: string;
+  nonce: number;
   cost: number;
 }
 
@@ -25,13 +25,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { playerAddress, powerUpId, upgradeHash, cost }: SignPowerUpRequest =
-      body;
+    const { playerAddress, powerUpId, nonce, cost }: SignPowerUpRequest = body;
 
     if (
       !playerAddress ||
       powerUpId === undefined ||
-      !upgradeHash ||
+      nonce === undefined ||
       cost === undefined
     ) {
       return NextResponse.json<ErrorResponse>(
@@ -53,13 +52,13 @@ export async function POST(request: NextRequest) {
     const { keccak256, encodePacked } = await import("viem");
     const messageHash = keccak256(
       encodePacked(
-        ["string", "address", "uint256", "uint256", "bytes32"],
+        ["string", "address", "uint256", "uint256", "uint256"],
         [
           "UPGRADE_POWERUP",
           playerAddress,
           BigInt(powerUpId),
           BigInt(cost),
-          upgradeHash as `0x${string}`,
+          BigInt(nonce),
         ]
       )
     );

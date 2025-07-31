@@ -1,4 +1,4 @@
-import { SERVER_CONTRACT_ADDRESSES } from "@/server/config/contracts";
+import { CONTRACT_ADDRESSES } from "@/server/config/contracts";
 
 // Server-side security configuration
 // ⚠️ ATTENTION: These keys should NEVER be exposed client-side
@@ -8,7 +8,7 @@ export const SERVER_SECURITY_CONFIG = {
   RICE_MANAGER_KEY: process.env.RICE_MANAGER_KEY,
   SCORE_BOARD_KEY: process.env.SCORE_BOARD_KEY,
   POWER_UP_MANAGER_KEY: process.env.POWER_UP_MANAGER_KEY,
-  CONTRACT_ADDRESSES: SERVER_CONTRACT_ADDRESSES,
+  CONTRACT_ADDRESSES: CONTRACT_ADDRESSES,
 
   // Key validation at startup
   validateKeys() {

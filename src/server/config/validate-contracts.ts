@@ -1,28 +1,22 @@
-import { SERVER_CONTRACT_ADDRESSES } from "./contracts";
-import { MODULAR_CONTRACTS } from "@/infrastructure/config/contracts";
+import { CONTRACT_ADDRESSES } from "./contracts";
+import { RISE_TESTNET_ADDRESSES as CLIENT_CONTRACT_ADDRESSES } from "@/infrastructure/config/contracts";
 
 // Validation to ensure contract addresses are synchronized
 export const validateContractAddresses = (): boolean => {
-  const serverAddresses = SERVER_CONTRACT_ADDRESSES;
-  const clientAddresses = MODULAR_CONTRACTS;
+  const serverAddresses = CONTRACT_ADDRESSES.riseTestnet;
+  const clientAddresses = CLIENT_CONTRACT_ADDRESSES;
 
   const mismatches: string[] = [];
 
   // Check each address
-  if (serverAddresses.ADMIN_CONTROLLER !== clientAddresses.ADMIN_CONTROLLER) {
-    mismatches.push("ADMIN_CONTROLLER");
+  if (serverAddresses.scoreBoard !== clientAddresses.SCORE_BOARD) {
+    mismatches.push("scoreBoard/SCORE_BOARD");
   }
-  if (serverAddresses.GAME_REGISTRY !== clientAddresses.GAME_REGISTRY) {
-    mismatches.push("GAME_REGISTRY");
+  if (serverAddresses.riceManager !== clientAddresses.RICE_MANAGER) {
+    mismatches.push("riceManager/RICE_MANAGER");
   }
-  if (serverAddresses.RICE_MANAGER !== clientAddresses.RICE_MANAGER) {
-    mismatches.push("RICE_MANAGER");
-  }
-  if (serverAddresses.SCORE_BOARD !== clientAddresses.SCORE_BOARD) {
-    mismatches.push("SCORE_BOARD");
-  }
-  if (serverAddresses.POWER_UP_MANAGER !== clientAddresses.POWER_UP_MANAGER) {
-    mismatches.push("POWER_UP_MANAGER");
+  if (serverAddresses.powerUpManager !== clientAddresses.POWER_UP_MANAGER) {
+    mismatches.push("powerUpManager/POWER_UP_MANAGER");
   }
 
   if (mismatches.length > 0) {
@@ -33,5 +27,6 @@ export const validateContractAddresses = (): boolean => {
     return false;
   }
 
+  console.log("✅ Contract addresses are synchronized");
   return true;
 };

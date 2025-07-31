@@ -17,7 +17,7 @@ import { POWERUP_ORDER, POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 export const ShopContent: React.FC = () => {
   const { t } = useTranslations();
   const { showError } = useToastStore();
-  const { checkRICEBalance, invalidateBalanceCache } = useRice();
+  const { checkRICEBalance } = useRice();
   const {
     powerUpLevels,
     powerUpConfigs,
@@ -70,6 +70,24 @@ export const ShopContent: React.FC = () => {
     loadData();
   }, [checkRICEBalance, loadPowerUpLevels, loadPowerUpConfig, getUpgradeCost]);
 
+  // Listen for balance refresh events
+  useEffect(() => {
+    const handleBalanceRefresh = async () => {
+      try {
+        const balance = await checkRICEBalance();
+        setRiceBalance(balance);
+      } catch (error) {
+        console.error("❌ Failed to refresh balance in shop:", error);
+      }
+    };
+
+    window.addEventListener("rice-balance-refresh", handleBalanceRefresh);
+
+    return () => {
+      window.removeEventListener("rice-balance-refresh", handleBalanceRefresh);
+    };
+  }, [checkRICEBalance]);
+
   const handleUpgrade = async (powerUpType: PowerUpType) => {
     try {
       // Get current cost for optimistic update
@@ -84,30 +102,8 @@ export const ShopContent: React.FC = () => {
       if (success) {
         // Don't show success toast here - it will be handled by the hook's useEffect
         // when the transaction is actually confirmed on the blockchain
-
-        // Refresh data after successful transaction
-        setTimeout(async () => {
-          try {
-            // Invalidate cache to force fresh balance check
-            invalidateBalanceCache();
-
-            // Refresh balance
-            const balance = await checkRICEBalance();
-            setRiceBalance(balance);
-
-            // Refresh power-up levels
-            await loadPowerUpLevels();
-
-            // Refresh upgrade costs
-            const newCost = await getUpgradeCost(powerUpType);
-            setUpgradeCosts((prev) => ({ ...prev, [powerUpType]: newCost }));
-          } catch (error) {
-            console.error(
-              `❌ Failed to refresh data for ${powerUpType}:`,
-              error
-            );
-          }
-        }, 2000); // Wait 2 seconds for transaction to be processed
+        // The balance and power-up levels will be refreshed automatically
+        // when the transaction is confirmed via the event system
       } else {
         // Revert optimistic updates on failure
         setRiceBalance((prev) => prev + currentCost);
@@ -153,15 +149,15 @@ export const ShopContent: React.FC = () => {
             </div>
             <div className="text-right">
               <Text variant="subtitle" size="sm" className="text-white/70 mb-1">
-                Progression
+                {t("scenes.shop.progression")}
               </Text>
               <Text variant="title" size="lg" className="text-white font-bold">
                 {Math.round(
                   (Object.values(powerUpLevels).reduce(
-                    (sum, level) => sum + (level || 0),
+                    (sum, level) => sum + Math.max(0, (level || 1) - 1),
                     0
                   ) /
-                    60) *
+                    (POWERUP_ORDER.length * 9)) * // POWERUP_ORDER.length power-ups × 9 levels (2-10)
                     100
                 )}
                 %

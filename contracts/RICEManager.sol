@@ -24,7 +24,7 @@ contract RICEManager is IRICEManager {
 
     // Anti-spam protection
     mapping(address => uint256) public lastOperationTimestamp;
-    uint256 public constant MIN_TIME_BETWEEN_OPERATIONS = 30 seconds;
+    uint256 public constant MIN_TIME_BETWEEN_OPERATIONS = 5 seconds;
 
     // Prevent operation reuse
     mapping(bytes32 => bool) public usedOperationHashes;
@@ -265,7 +265,7 @@ contract RICEManager is IRICEManager {
      * Only accessible by the PowerUpManager contract
      * @param player The player's address
      * @param amount The amount of RICE to spend (in RICE units, not wei)
-     * @param operationHash Unique operation hash
+     * @param operationHash Unique operation hash (not used for power-ups)
      */
     function spendRICEEmergencyForPowerUp(
         address player,
@@ -274,12 +274,8 @@ contract RICEManager is IRICEManager {
     ) external onlyPowerUpManager whenNotPaused {
         require(amount > 0, "Amount must be greater than 0");
         require(balances[player] >= amount, "Not enough RICE");
-        require(
-            !usedOperationHashes[operationHash],
-            "Operation hash already used"
-        );
+        // Removed operation hash check for power-ups to avoid conflicts
 
-        usedOperationHashes[operationHash] = true;
         balances[player] -= amount;
         emit RICESpent(player, amount, operationHash);
     }

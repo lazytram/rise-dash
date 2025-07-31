@@ -7,16 +7,12 @@ import {
   toHex,
 } from "viem";
 import { riseTestnet } from "wagmi/chains";
-import {
-  getScoreBoardAddress,
-  getRICEManagerAddress,
-  getPowerUpManagerAddress,
-} from "@/infrastructure/config";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { SCOREBOARD_ABI, RICEMANAGER_ABI, POWERUPMANAGER_ABI } from "./abis";
 
 // Contract addresses are now managed centrally
-const SCOREBOARD_CONTRACT_ADDRESS = getScoreBoardAddress();
-const RICEMANAGER_CONTRACT_ADDRESS = getRICEManagerAddress();
+const SCOREBOARD_CONTRACT_ADDRESS = CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD;
+const RICEMANAGER_CONTRACT_ADDRESS = CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER;
 
 // Game Owner Private Key (replace with your private key)
 const GAME_AUTH_PRIVATE_KEY = process.env.GAME_AUTH_PRIVATE_KEY || "";
@@ -464,15 +460,19 @@ export class BlockchainService {
   /**
    * Generates a unique hash for PowerUp operations
    */
-  generatePowerUpHash(
-    playerAddress: Address,
-    powerUpId: number,
-    cost: number
-  ): string {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const nonce = Math.floor(Math.random() * 1000000);
-    const message = `UPGRADE_POWERUP-${playerAddress}-${powerUpId}-${cost}-${timestamp}-${nonce}`;
-    return hashMessage(message);
+  async getPlayerNonce(playerAddress: Address): Promise<number> {
+    try {
+      const result = await this.publicClient.readContract({
+        address: CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER,
+        abi: POWERUPMANAGER_ABI,
+        functionName: "playerNonces",
+        args: [playerAddress],
+      });
+      return Number(result);
+    } catch (error) {
+      console.error("Error getting player nonce:", error);
+      return 0;
+    }
   }
 
   /**
@@ -568,7 +568,7 @@ export class BlockchainService {
   async getPowerUpLevels(playerAddress: Address): Promise<number[]> {
     try {
       const result = await this.publicClient.readContract({
-        address: getPowerUpManagerAddress(),
+        address: CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER,
         abi: POWERUPMANAGER_ABI,
         functionName: "getPowerUpLevels",
         args: [playerAddress],
@@ -613,7 +613,7 @@ export class BlockchainService {
   ): Promise<{ cost: number; maxLevel: number }> {
     try {
       const result = await this.publicClient.readContract({
-        address: getPowerUpManagerAddress(),
+        address: CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER,
         abi: POWERUPMANAGER_ABI,
         functionName: "getPowerUpConfig",
         args: [BigInt(powerUpId)],
@@ -650,7 +650,7 @@ export class BlockchainService {
   ): Promise<number> {
     try {
       const cost = await this.publicClient.readContract({
-        address: getPowerUpManagerAddress(),
+        address: CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER,
         abi: POWERUPMANAGER_ABI,
         functionName: "getPowerUpUpgradeCost",
         args: [playerAddress, BigInt(powerUpId)],
@@ -659,21 +659,29 @@ export class BlockchainService {
       // Cost is now directly in RICE (no conversion needed)
       return Number(cost);
     } catch (error) {
-      console.error("Error getting power-up upgrade cost:", error);
+      console.error(
+        `❌ Error getting power-up upgrade cost for powerUpId ${powerUpId}:`,
+        error
+      );
 
       // If the function returns empty data or 0, it means the power-up is not initialized
       if (
         error instanceof Error &&
         error.message.includes("could not decode result data")
       ) {
-        // Return default costs based on powerUpId
-        const defaultCosts = [50, 75, 100, 125, 150, 200];
-        return defaultCosts[powerUpId] || 100;
+        console.error(
+          `❌ Power-up ${powerUpId} is not initialized on blockchain`
+        );
+        throw new Error(
+          `Power-up ${powerUpId} is not initialized on blockchain`
+        );
       }
 
       if (error instanceof Error && error.message.includes("429")) {
         throw new Error("Rate limit exceeded. Please try again later.");
       }
+
+      // Don't return default costs - let the error propagate
       throw error;
     }
   }

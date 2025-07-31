@@ -6,7 +6,7 @@ import {
 } from "wagmi";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { POWERUPMANAGER_ABI } from "@/infrastructure/blockchain/abis";
-import { getPowerUpManagerAddress } from "@/infrastructure/config";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 import { retryWithBackoff } from "../utils/retryUtils";
@@ -137,22 +137,6 @@ export const usePowerUps = () => {
   // Load power-up configuration
   const loadPowerUpConfig = useCallback(
     async (powerUpType: PowerUpType): Promise<PowerUpConfig> => {
-      // Temporarily disable cache for debugging
-      // Check cache first
-      /*
-      if (
-        configsCacheRef.current &&
-        Date.now() - configsCacheRef.current.timestamp < CACHE_DURATION
-      ) {
-        return (
-          configsCacheRef.current.configs[powerUpType] || {
-            cost: 0,
-            maxLevel: 0,
-          }
-        );
-      }
-      */
-
       // Convert PowerUpType to powerUpId for blockchain calls
       const powerUpIdMap: Record<PowerUpType, number> = {
         [PowerUpType.SHIELD]: 0,
@@ -208,11 +192,25 @@ export const usePowerUps = () => {
       const powerUpId = powerUpIdMap[powerUpType];
 
       try {
+        // First, check if the power-up is configured
+        const config = await blockchainService.getPowerUpConfig(powerUpId);
+
+        if (config.maxLevel === 0) {
+          throw new Error(
+            `Power-up ${powerUpType} is not configured on blockchain`
+          );
+        }
+
         const cost = await retryWithBackoff(() =>
           blockchainService.getPowerUpUpgradeCost(address, powerUpId)
         );
+
         return cost;
       } catch (error) {
+        console.error(
+          `❌ Failed to get upgrade cost for ${powerUpType}:`,
+          error
+        );
         throw error;
       }
     },
@@ -234,6 +232,7 @@ export const usePowerUps = () => {
   const upgradePowerUp = useCallback(
     async (powerUpType: PowerUpType) => {
       if (!address) {
+        console.error("❌ No wallet address");
         showErrorRef.current(
           tRef.current("common.error"),
           tRef.current("features.blockchain.connectWallet")
@@ -251,6 +250,7 @@ export const usePowerUps = () => {
         [PowerUpType.RICE_ROCKET_AMMO]: 5,
       };
       const powerUpId = powerUpIdMap[powerUpType];
+
       // Clear any existing toasts before starting
       clearToasts();
       // Set individual loading state for this power-up
@@ -258,16 +258,36 @@ export const usePowerUps = () => {
 
       try {
         // Get current levels to check if upgrade is possible
-
         const currentLevels = await loadPowerUpLevels();
         const currentLevel = currentLevels[powerUpType] || 0;
 
         // Get power-up config to check max level
-
         const config = await loadPowerUpConfig(powerUpType);
+
+        // Also check if power-up is initialized on blockchain
+        try {
+          const blockchainConfig = await blockchainService.getPowerUpConfig(
+            powerUpId
+          );
+
+          // Check if power-up is initialized
+          if (blockchainConfig.maxLevel === 0) {
+            console.error("❌ Power-up not initialized on blockchain!");
+            showError(
+              t("common.error"),
+              "Power-up not initialized on blockchain"
+            );
+            return false;
+          }
+        } catch (error) {
+          console.error("❌ Error getting blockchain config:", error);
+          showError(t("common.error"), "Failed to get blockchain config");
+          return false;
+        }
 
         // Check if power-up is initialized (maxLevel > 0)
         if (config.maxLevel === 0) {
+          console.error("❌ Power-up not initialized");
           showError(
             t("common.error"),
             t("scenes.powerUps.powerUpNotInitialized")
@@ -276,21 +296,21 @@ export const usePowerUps = () => {
         }
 
         if (currentLevel >= config.maxLevel) {
+          console.error("❌ Max level reached");
           showError(t("common.error"), t("features.powerUps.maxLevelReached"));
           return false;
         }
 
         // Get upgrade cost
-
         const cost = await getUpgradeCost(powerUpType);
 
         // Check if player has enough RICE
-
         const riceBalance = await retryWithBackoff(() =>
           blockchainService.getRICEBalance(address)
         );
 
         if (riceBalance < cost) {
+          console.error("❌ Insufficient RICE");
           showErrorRef.current(
             tRef.current("common.error"),
             tRef.current("scenes.powerUps.insufficientRICE")
@@ -298,38 +318,12 @@ export const usePowerUps = () => {
           return false;
         }
 
-        // Generate unique upgrade hash using blockchainService
-
-        const upgradeHash = blockchainService.generatePowerUpHash(
-          address,
-          powerUpId,
-          cost
-        ) as `0x${string}`;
-        // Get signature from server
-
-        const requestBody = {
-          playerAddress: address,
-          powerUpId,
-          upgradeHash,
-          cost,
-        };
-
-        const response = await fetch("/api/sign-powerup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requestBody),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to get signature");
-        }
-
-        const { signature } = await response.json();
+        // Execute the transaction using emergency function (no signature required)
         writeContract({
-          address: getPowerUpManagerAddress(),
+          address: CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER,
           abi: POWERUPMANAGER_ABI,
-          functionName: "upgradePowerUp",
-          args: [address, BigInt(powerUpId), upgradeHash, signature],
+          functionName: "upgradePowerUpEmergency",
+          args: [address, BigInt(powerUpId)],
         });
 
         return true;
@@ -384,6 +378,11 @@ export const usePowerUps = () => {
 
       // Refresh power-up levels after successful upgrade
       loadPowerUpLevels().catch(() => {});
+
+      // Refresh RICE balance after successful upgrade
+      // This will trigger a re-render in components that use useRice
+      const event = new CustomEvent("rice-balance-refresh");
+      window.dispatchEvent(event);
     }
   }, [
     isSuccess,

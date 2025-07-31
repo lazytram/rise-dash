@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
-import { getScoreBoardAddress } from "@/infrastructure/config";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 
 // Mock all dependencies
@@ -195,7 +195,7 @@ describe("useBlockchainScore", () => {
 
       expect(success).toBe(true);
       expect(mockWriteContract).toHaveBeenCalledWith({
-        address: getScoreBoardAddress(),
+        address: CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD,
         abi: SCOREBOARD_ABI,
         functionName: "recordScore",
         args: [BigInt(1000), "Player1", "0xgamehash", "0xsignature"],

@@ -1,59 +1,48 @@
 import { Address } from "viem";
 
-// Contract addresses for different networks
-export const CONTRACT_ADDRESSES = {
-  // Rise Testnet
-  riseTestnet: {
-    scoreBoard: "0x86812187fac067E9DA844977161EcF9Df3225Ac0" as Address,
-    riceManager: "0x69FAcF1454e0F8a43561697767d956B8E5AA6F50" as Address,
-    powerUpManager: "0x77b6097670C4116136cE3270D691427D7b4eA9e7" as Address,
-  },
-  // Mainnet (when deployed)
-  mainnet: {
-    scoreBoard: "0x0000000000000000000000000000000000000000" as Address, // TODO: Update when deployed
-    riceManager: "0x0000000000000000000000000000000000000000" as Address, // TODO: Update when deployed
-    powerUpManager: "0x0000000000000000000000000000000000000000" as Address, // TODO: Update when deployed
-  },
-  // Local development
-  localhost: {
-    scoreBoard: "0x0000000000000000000000000000000000000000" as Address, // TODO: Update for local testing
-    riceManager: "0x0000000000000000000000000000000000000000" as Address, // TODO: Update for local testing
-    powerUpManager: "0x0000000000000000000000000000000000000000" as Address, // TODO: Update for local testing
-  },
+// Contract addresses for Rise Testnet
+export const RISE_TESTNET_ADDRESSES = {
+  SCORE_BOARD: "0xF2dC776b9b71DEC08df3a40861b7DbFb629C9F5a",
+  RICE_MANAGER: "0xd74e64EcEFCC745845878C215C5BE9D3d368c8bA",
+  POWER_UP_MANAGER: "0xC12889D661c6BeE9930b00241FdAE913e64a5722",
 } as const;
 
 // Get contract address based on current network
 export const getContractAddress = (
-  contractName: keyof typeof CONTRACT_ADDRESSES.riseTestnet
+  contractName: keyof typeof RISE_TESTNET_ADDRESSES
 ): Address => {
   // For now, always use riseTestnet since that's what we're using
   // In the future, this could be determined by the connected wallet's network
-  const addresses = CONTRACT_ADDRESSES.riseTestnet;
+  const addresses = RISE_TESTNET_ADDRESSES;
 
   return addresses[contractName];
 };
 
-// Convenience functions for specific contracts
+// Single source of truth for all contract addresses
+export const CONTRACT_ADDRESSES_CURRENT = {
+  SCORE_BOARD: getContractAddress("SCORE_BOARD"),
+  RICE_MANAGER: getContractAddress("RICE_MANAGER"),
+  POWER_UP_MANAGER: getContractAddress("POWER_UP_MANAGER"),
+} as const;
+
+// Convenience functions for specific contracts (kept for backward compatibility)
 export const getScoreBoardAddress = (): Address =>
-  getContractAddress("scoreBoard");
-
+  CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD;
 export const getRICEManagerAddress = (): Address =>
-  getContractAddress("riceManager");
-
+  CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER;
 export const getPowerUpManagerAddress = (): Address =>
-  getContractAddress("powerUpManager");
+  CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER;
 
-// Legacy export for backward compatibility
-export const SCOREBOARD_CONTRACT_ADDRESS = getScoreBoardAddress();
+// Legacy exports for backward compatibility
+export const SCOREBOARD_CONTRACT_ADDRESS =
+  CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD;
+export const RICEMANAGER_CONTRACT_ADDRESS =
+  CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER;
+export const POWERUPMANAGER_CONTRACT_ADDRESS =
+  CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER;
 
-// Modular contracts configuration
-export const MODULAR_CONTRACTS = {
-  ADMIN_CONTROLLER: "0x78ee7dA36f5D32054781dAFCD06476636c093d4d",
-  GAME_REGISTRY: "0x7e6426Ce9bcB77a549F41b7965a7312b2e882773",
-  RICE_MANAGER: getRICEManagerAddress(),
-  SCORE_BOARD: getScoreBoardAddress(),
-  POWER_UP_MANAGER: getPowerUpManagerAddress(),
-};
+// Modular contracts configuration (using the single source of truth)
+export const MODULAR_CONTRACTS = CONTRACT_ADDRESSES_CURRENT;
 
 // ⚠️ ATTENTION: Security keys are PRIVATE and should NEVER be exposed client-side
 // They are used only server-side to sign transactions

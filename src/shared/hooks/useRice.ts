@@ -6,7 +6,7 @@ import {
 } from "wagmi";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { RICEMANAGER_ABI } from "@/infrastructure/blockchain/abis";
-import { getRICEManagerAddress } from "@/infrastructure/config";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 import { retryWithBackoff } from "../utils/retryUtils";
@@ -138,7 +138,7 @@ export const useRice = () => {
 
         // Execute the transaction
         writeContract({
-          address: getRICEManagerAddress(),
+          address: CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER,
           abi: RICEMANAGER_ABI,
           functionName: "addRICE",
           args: [address, BigInt(amount), operationHash, signature],
@@ -231,7 +231,7 @@ export const useRice = () => {
 
         // Execute the transaction using addDailyRevealRICE function
         writeContract({
-          address: getRICEManagerAddress(),
+          address: CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER,
           abi: RICEMANAGER_ABI,
           functionName: "addDailyRevealRICE",
           args: [address, BigInt(amount), operationHash, signature],
@@ -339,7 +339,7 @@ export const useRice = () => {
         // Call smart contract with signature
         try {
           writeContract({
-            address: getRICEManagerAddress(),
+            address: CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER,
             abi: RICEMANAGER_ABI,
             functionName: "spendRICE",
             args: [address, BigInt(amount), operationHash, signature],
@@ -452,6 +452,19 @@ export const useRice = () => {
   const invalidateBalanceCache = useCallback(() => {
     balanceCacheRef.current = null;
   }, []);
+
+  // Listen for balance refresh events (e.g., after power-up upgrades)
+  useEffect(() => {
+    const handleBalanceRefresh = () => {
+      invalidateBalanceCache();
+    };
+
+    window.addEventListener("rice-balance-refresh", handleBalanceRefresh);
+
+    return () => {
+      window.removeEventListener("rice-balance-refresh", handleBalanceRefresh);
+    };
+  }, [invalidateBalanceCache]);
 
   return {
     addRICE,

@@ -70,6 +70,7 @@
       "title": "Power-Up Shop",
       "subtitle": "Upgrade your power-ups with RICE tokens",
       "riceBalance": "RICE Balance",
+      "progression": "Progression",
       "totalUpgrades": "Total Upgrades",
       "upgradeProgress": "Upgrade Progress",
       "insufficientFunds": "Insufficient funds",

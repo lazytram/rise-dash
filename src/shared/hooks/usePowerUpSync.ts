@@ -1,17 +1,16 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useAccount } from "wagmi";
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import {
-  getPowerUpLevelsFromBlockchain,
-  getPowerUpConfigFromBlockchain,
-  getPowerUpService,
-} from "@/shared/services/powerUpService";
-import { PowerUpType } from "@/shared/types/powerUps";
+  useAccount,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
+import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
+import { POWERUPMANAGER_ABI } from "@/infrastructure/blockchain/abis";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 import { retryWithBackoff } from "../utils/retryUtils";
-import { getPowerUpManagerAddress } from "@/infrastructure/config";
-import { POWERUPMANAGER_ABI } from "@/infrastructure/blockchain/abis";
+import { PowerUpType } from "@/shared/types/powerUps";
 
 export const usePowerUpSync = () => {
   const { address } = useAccount();
@@ -42,13 +41,11 @@ export const usePowerUpSync = () => {
     setIsLoading(true);
     try {
       const levels = await retryWithBackoff(() =>
-        getPowerUpLevelsFromBlockchain(address)
+        blockchainService.getPowerUpLevels(address)
       );
       setPowerUpLevels(levels);
 
-      // Update local service with blockchain levels
-      const service = getPowerUpService();
-      await service.loadLevelsFromBlockchain(address);
+      // Note: Removed the loadLevelsFromBlockchain call as it doesn't exist in blockchainService
     } catch {
       showError(t("common.error"), t("features.powerUp.failedToLoadLevels"));
     } finally {
@@ -67,21 +64,33 @@ export const usePowerUpSync = () => {
     try {
       const configs: Record<number, { cost: number; maxLevel: number }> = {};
 
-      // Load configs for first 6 power-ups
-      for (let i = 0; i < 6; i++) {
+      // Load configs for all power-up types
+      const powerUpTypes = [
+        PowerUpType.SHIELD,
+        PowerUpType.INFINITE_AMMO,
+        PowerUpType.JUMP_BOOST,
+        PowerUpType.SLOW_MOTION,
+        PowerUpType.MULTI_SHOT,
+        PowerUpType.RICE_ROCKET_AMMO,
+      ];
+
+      for (const powerUpType of powerUpTypes) {
         try {
+          const powerUpId = getPowerUpIdFromType(powerUpType);
           const config = await retryWithBackoff(() =>
-            getPowerUpConfigFromBlockchain(i)
+            blockchainService.getPowerUpConfig(powerUpId)
           );
-          configs[i] = config;
+          configs[powerUpId] = config;
         } catch {
           // Use default config
-          configs[i] = { cost: 100, maxLevel: 10 };
+          const powerUpId = getPowerUpIdFromType(powerUpType);
+          configs[powerUpId] = { cost: 100, maxLevel: 10 };
         }
       }
 
       setPowerUpConfigs(configs);
-    } catch {
+    } catch (error) {
+      console.error("❌ Error loading configs:", error);
       showError(t("common.error"), t("features.powerUp.failedToLoadConfigs"));
     } finally {
       setIsLoading(false);
@@ -90,11 +99,13 @@ export const usePowerUpSync = () => {
 
   // Upgrade a power-up on blockchain
   const upgradePowerUp = useCallback(
-    async (powerUpId: number) => {
+    async (powerUpType: PowerUpType) => {
       if (!address) {
         showError(t("common.error"), t("features.blockchain.connectWallet"));
         return false;
       }
+
+      const powerUpId = getPowerUpIdFromType(powerUpType);
 
       setIsUpgrading(true);
       showPending(
@@ -106,6 +117,7 @@ export const usePowerUpSync = () => {
         // Get current cost for this power-up
         const config = powerUpConfigs[powerUpId];
         if (!config) {
+          console.error("❌ No config found for powerUpId:", powerUpId);
           showError(t("common.error"), t("features.powerUp.invalidPowerUp"));
           return false;
         }
@@ -138,15 +150,10 @@ export const usePowerUpSync = () => {
 
         // Execute the transaction
         writeContract({
-          address: getPowerUpManagerAddress(),
+          address: CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER,
           abi: POWERUPMANAGER_ABI,
           functionName: "upgradePowerUp",
-          args: [
-            address,
-            BigInt(powerUpId),
-            upgradeHash as `0x${string}`,
-            signature,
-          ],
+          args: [address, BigInt(powerUpId), BigInt(timestamp), signature],
         });
 
         return true;

@@ -6,7 +6,7 @@ import {
 } from "wagmi";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
-import { getScoreBoardAddress } from "@/infrastructure/config";
+import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 import { retryWithBackoff } from "../utils/retryUtils";
@@ -65,7 +65,7 @@ export const useBlockchainScore = () => {
 
         // Execute the transaction
         writeContract({
-          address: getScoreBoardAddress(),
+          address: CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD,
           abi: SCOREBOARD_ABI,
           functionName: "recordScore",
           args: [BigInt(score), playerName, gameHash, signature],
@@ -129,7 +129,7 @@ export const useBlockchainScore = () => {
 
         // Execute the transaction with RICE reward
         writeContract({
-          address: getScoreBoardAddress(),
+          address: CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD,
           abi: SCOREBOARD_ABI,
           functionName: "recordScoreWithRICE",
           args: [

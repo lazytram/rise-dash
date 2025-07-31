@@ -70,6 +70,7 @@
       "title": "Boutique de Power-Ups",
       "subtitle": "Améliorez vos power-ups avec des tokens RICE",
       "riceBalance": "Solde RICE",
+      "progression": "Progression",
       "totalUpgrades": "Améliorations Totales",
       "upgradeProgress": "Progrès d'Amélioration",
       "insufficientFunds": "Fonds insuffisants",
