@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   useAccount,
   useWriteContract,
@@ -191,12 +191,19 @@ export const useBlockchainScore = () => {
         t("features.blockchain.transactionSuccess"),
         t("features.blockchain.scoreSavedSuccess"),
         hash,
-        "View Transaction"
+        t("features.blockchain.viewTransaction")
       );
       // Reload best score after successful save
       loadBestScore();
     }
   }, [isSuccess, hash, isConfirming, error, showSuccess, t, loadBestScore]);
+
+  // Auto-trigger success toast when transaction is confirmed
+  useEffect(() => {
+    if (isSuccess && hash && !isConfirming && !error) {
+      handleTransactionSuccess();
+    }
+  }, [isSuccess, hash, isConfirming, error, handleTransactionSuccess]);
 
   // Handle transaction error
   const handleTransactionError = useCallback(() => {
@@ -222,6 +229,13 @@ export const useBlockchainScore = () => {
       );
     }
   }, [error, showError, t]);
+
+  // Auto-trigger error toast when transaction fails
+  useEffect(() => {
+    if (error) {
+      handleTransactionError();
+    }
+  }, [error, handleTransactionError]);
 
   const getLeaderboard = useCallback(async (offset: number, limit: number) => {
     try {

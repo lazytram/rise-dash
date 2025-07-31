@@ -4,7 +4,9 @@ export { Button } from "./Button";
 export { Card } from "./Card";
 export { CircularButton } from "./CircularButton";
 export { Container } from "./Container";
-export { LoadingSpinner } from "./LoadingSpinner";
+
+export { Loader } from "./Loader";
+export { LoadingOverlay } from "./LoadingOverlay";
 export { Modal } from "./Modal";
 export { Pagination } from "./Pagination";
 export { SceneContainer } from "./SceneContainer";

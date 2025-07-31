@@ -7,7 +7,7 @@ import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
 import { Text } from "@/shared/components/Text";
 import { Pagination } from "@/shared/components/Pagination";
-import { LoadingSpinner } from "@/shared/components/LoadingSpinner";
+import { Loader } from "@/shared/components/Loader";
 import { useBlockchainScore } from "@/shared/hooks/useBlockchainScore";
 import { LeaderboardEntry } from "@/infrastructure/blockchain/blockchainService";
 import { LeaderboardTable, LeaderboardStats, EmptyLeaderboard } from "./index";
@@ -128,7 +128,7 @@ export const LeaderboardContent: React.FC = () => {
 
         {isLoading ? (
           <div className="flex justify-center items-center py-8">
-            <LoadingSpinner color="white" />
+            <Loader color="white" />
           </div>
         ) : hasError ? (
           <div className="text-center">

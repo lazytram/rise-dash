@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
-import { LoadingSpinner } from "@/shared/components/LoadingSpinner";
+import { Loader } from "@/shared/components/Loader";
 import { Box } from "@/shared/components/Box";
 import { Text } from "@/shared/components/Text";
 import { ProfileSection } from "./ProfileSection";
@@ -23,7 +23,7 @@ export const ProfileAchievements: React.FC<ProfileAchievementsProps> = ({
     return (
       <ProfileSection>
         <Box variant="centered" className="flex-1">
-          <LoadingSpinner className="mx-auto mb-4" />
+          <Loader className="mx-auto mb-4" />
           <Text variant="subtitle">
             {t("scenes.profile.loadingAchievements")}
           </Text>

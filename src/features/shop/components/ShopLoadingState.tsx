@@ -1,6 +1,5 @@
 import React from "react";
-import { LoadingSpinner } from "@/shared/components/LoadingSpinner";
-import { Text } from "@/shared/components/Text";
+import { Loader } from "@/shared/components/Loader";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 
 interface ShopLoadingStateProps {
@@ -18,16 +17,16 @@ export const ShopLoadingState: React.FC<ShopLoadingStateProps> = ({
     return null;
   }
 
+  const loadingText =
+    isLoadingBalance && isLoadingCosts
+      ? t("scenes.shop.loadingData")
+      : isLoadingBalance
+      ? t("scenes.shop.loadingBalance")
+      : t("scenes.shop.loadingCosts");
+
   return (
     <div className="flex flex-col items-center justify-center py-12">
-      <LoadingSpinner size="lg" color="gradient" />
-      <Text variant="subtitle" size="sm" className="text-white/70 mt-4">
-        {isLoadingBalance && isLoadingCosts
-          ? t("scenes.shop.loadingData")
-          : isLoadingBalance
-          ? t("scenes.shop.loadingBalance")
-          : t("scenes.shop.loadingCosts")}
-      </Text>
+      <Loader size="lg" color="gradient" text={loadingText} showText={true} />
     </div>
   );
 };

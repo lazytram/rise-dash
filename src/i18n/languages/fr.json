@@ -163,7 +163,9 @@
         "samurai": "Samouraï",
         "samuraiDesc": "Apparaît tous les 50m, tire 3 fois pour le vaincre",
         "ninja": "Ninja",
-        "ninjaDesc": "Plus rapide et plus difficile à vaincre"
+        "ninjaDesc": "Plus rapide et plus difficile à vaincre",
+        "boss": "Boss",
+        "bossDesc": "Ennemi puissant qui apparaît à de grandes distances"
       },
       "powerUps": {
         "title": "Power-ups",
@@ -324,7 +326,7 @@
       "riceOperationError": "Échec du traitement de l'opération RICE",
       "riceAddedSuccess": "RICE ajouté avec succès",
       "riceSpentSuccess": "RICE dépensé avec succès",
-      "riceOperationSuccess": "Opération RICE terminée avec succès",
+      "riceOperationSuccess": "RICE reçus avec succès !",
       "rewardsCalculated": "Récompenses calculées",
       "transactionConfirming": "Transaction en cours de confirmation...",
       "rewardsAvailable": "Récompenses disponibles",

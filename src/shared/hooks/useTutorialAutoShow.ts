@@ -14,6 +14,9 @@ export const useTutorialAutoShow = () => {
       }, 1000);
 
       return () => clearTimeout(timer);
+    } else {
+      // If user has seen tutorial, make sure it's hidden
+      setShouldShowTutorial(false);
     }
   }, [hasSeenTutorial]);
 
