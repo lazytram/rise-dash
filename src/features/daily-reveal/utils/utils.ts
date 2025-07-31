@@ -53,11 +53,16 @@ export const getRarityStyles = (rarity: CardRarity) => {
   }
 };
 
-export const formatTimeRemaining = (milliseconds: number): string => {
-  if (milliseconds <= 0) return "Ready!";
+export const formatTimeRemaining = (
+  milliseconds: number,
+  readyText: string = "Ready!"
+): string => {
+  if (milliseconds <= 0) return readyText;
+
   const hours = Math.floor(milliseconds / (1000 * 60 * 60));
   const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
+
   if (hours > 0) {
     return `${hours}h ${minutes.toString().padStart(2, "0")}m ${seconds
       .toString()

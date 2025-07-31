@@ -17,10 +17,10 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   if (isDevelopment) {
     return (
       <div
-        className={`flex items-center justify-center space-x-2 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20 ${className}`}
+        className={`flex items-center justify-center space-x-2 p-4 bg-blue-500/20 rounded-lg border-2 border-blue-500/40 ${className}`}
       >
-        <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-        <Text className="text-blue-400 font-medium">
+        <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse" />
+        <Text className="text-blue-300 font-semibold text-base">
           🚀 DEV Mode - Infinite Reveals!
         </Text>
       </div>
@@ -30,10 +30,10 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   if (canReveal) {
     return (
       <div
-        className={`flex items-center justify-center space-x-2 p-3 bg-green-500/10 rounded-lg border border-green-500/20 ${className}`}
+        className={`flex items-center justify-center space-x-3 p-4 bg-green-500/20 rounded-lg border-2 border-green-500/40 ${className}`}
       >
-        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-        <Text className="text-green-400 font-medium">
+        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+        <Text className="text-green-300 font-semibold text-base">
           {t("scenes.dailyReveal.readyToReveal")}
         </Text>
       </div>
@@ -42,12 +42,17 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-center space-x-2 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20 ${className}`}
+      className={`flex items-center justify-center space-x-3 p-4 bg-amber-500/20 rounded-lg border-2 border-amber-500/40 ${className}`}
     >
-      <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-      <Text className="text-amber-400 font-medium">
-        {t("scenes.dailyReveal.nextRevealIn")}: {formattedTime}
-      </Text>
+      <div className="w-3 h-3 bg-amber-400 rounded-full animate-pulse" />
+      <div className="flex flex-col items-center">
+        <Text className="text-amber-300 font-medium text-sm">
+          {t("scenes.dailyReveal.nextRevealIn")}:
+        </Text>
+        <Text className="text-amber-200 font-bold text-lg">
+          {formattedTime}
+        </Text>
+      </div>
     </div>
   );
 };

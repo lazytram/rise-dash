@@ -11,6 +11,7 @@ interface DailyRevealStore extends DailyRevealState {
   addRice: (amount: number) => void;
   checkRevealAvailability: () => void;
   setLastRevealTime: (time: number) => void;
+  initializeStore: () => void;
 }
 
 export const useDailyRevealStore = create<DailyRevealStore>()(
@@ -23,6 +24,11 @@ export const useDailyRevealStore = create<DailyRevealStore>()(
         isRevealing: false,
         selectedCard: null,
         isRevealed: false,
+      },
+
+      initializeStore: () => {
+        // Initialize the store and check availability on mount
+        get().checkRevealAvailability();
       },
 
       revealCard: async () => {
