@@ -10,6 +10,10 @@ import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useTranslations } from "./useTranslations";
 import { retryWithBackoff } from "../utils/retryUtils";
+import {
+  ApiErrorResponse,
+  isDailyRevealCooldownError,
+} from "@/shared/types/api";
 
 export const useRice = () => {
   const { address } = useAccount();
@@ -215,9 +219,28 @@ export const useRice = () => {
               operationHash,
             }),
           });
+
           if (!response.ok) {
+            const errorData = (await response.json()) as ApiErrorResponse;
+
+            // Handle cooldown error specifically with type safety
+            if (
+              response.status === 429 &&
+              isDailyRevealCooldownError(errorData)
+            ) {
+              showError(
+                t("common.error"),
+                `${t("features.blockchain.dailyRevealCooldown")}. ${t(
+                  "features.blockchain.nextRevealIn",
+                  { time: errorData.nextRevealIn }
+                )}`
+              );
+              return false;
+            }
+
             throw new Error("API signature error");
           }
+
           const data = await response.json();
           signature = data.signature;
           if (!signature) throw new Error("No signature returned");

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
 import { useDailyRevealSelectors } from "@/infrastructure/store/dailyRevealStore";
-import { formatTimeRemaining, getTimeUntilNextReveal } from "../utils";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { CountdownState } from "../types";
 
 export const useCountdown = (): CountdownState => {
-  const { lastRevealTime, canReveal } = useDailyRevealSelectors();
+  const { address } = useAccount();
+  const { timeUntilNextReveal, formattedTimeRemaining, canReveal } =
+    useDailyRevealSelectors(address);
   const { t } = useTranslations();
   const [, setCurrentTime] = useState(Date.now());
 
@@ -14,12 +16,14 @@ export const useCountdown = (): CountdownState => {
     return () => clearInterval(interval);
   }, []);
 
-  const timeRemaining = getTimeUntilNextReveal(lastRevealTime);
   const readyText = t("scenes.dailyReveal.readyToReveal");
-  const formattedTime = formatTimeRemaining(timeRemaining, readyText);
+  const formattedTime =
+    formattedTimeRemaining === "Ready to reveal"
+      ? readyText
+      : formattedTimeRemaining;
 
   return {
-    timeRemaining,
+    timeRemaining: timeUntilNextReveal,
     formattedTime,
     canReveal,
   };

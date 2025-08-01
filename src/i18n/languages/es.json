@@ -333,7 +333,9 @@
       "rewardsRetrieved": "Recompensas recuperadas",
       "viewTransaction": "Ver transacción",
       "viewOnExplorer": "Ver en explorador",
-      "calculatingRewards": "Calculando recompensas..."
+      "calculatingRewards": "Calculando recompensas...",
+      "dailyRevealCooldown": "Revelación diaria ya reclamada hoy",
+      "nextRevealIn": "Próxima revelación en {{time}}"
     }
   },
   "ui": {

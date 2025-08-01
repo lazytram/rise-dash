@@ -27,3 +27,13 @@ export * from "./shop";
 
 // NextAuth authentication types
 export * from "./next-auth";
+
+// ================================
+// API & SIGNATURE TYPES
+// ================================
+
+// API response and error types
+export * from "./api";
+
+// Generic signature types
+export * from "./signature";

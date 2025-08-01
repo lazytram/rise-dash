@@ -4,21 +4,11 @@ import { privateKeyToAccount } from "viem/accounts";
 const GAME_AUTH_PRIVATE_KEY = process.env
   .GAME_AUTH_PRIVATE_KEY as `0x${string}`;
 
-// Type definitions for request parameters
-interface SignDailyRevealRequest {
-  playerAddress: `0x${string}`;
-  amount: number;
-  operationHash: `0x${string}`;
-}
-
-// Type definitions for response
-interface SignDailyRevealResponse {
-  signature: `0x${string}`;
-}
-
-interface ErrorResponse {
-  error: string;
-}
+import { ApiErrorResponse } from "@/shared/types/api";
+import {
+  SignDailyRevealRequest,
+  SignDailyRevealResponse,
+} from "@/shared/types/api";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,14 +16,14 @@ export async function POST(request: NextRequest) {
       await request.json();
 
     if (!playerAddress || !amount || !operationHash) {
-      return NextResponse.json<ErrorResponse>(
+      return NextResponse.json<ApiErrorResponse>(
         { error: "Missing required parameters" },
         { status: 400 }
       );
     }
 
     if (!GAME_AUTH_PRIVATE_KEY) {
-      return NextResponse.json<ErrorResponse>(
+      return NextResponse.json<ApiErrorResponse>(
         { error: "Server misconfigured: missing GAME_AUTH_PRIVATE_KEY" },
         { status: 500 }
       );
@@ -58,7 +48,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json<SignDailyRevealResponse>({ signature });
   } catch (error) {
     console.error("Error signing daily reveal operation:", error);
-    return NextResponse.json<ErrorResponse>(
+    return NextResponse.json<ApiErrorResponse>(
       { error: "Failed to sign operation" },
       { status: 500 }
     );
