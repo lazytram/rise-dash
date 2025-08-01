@@ -26,7 +26,7 @@ export const ShopLoadingState: React.FC<ShopLoadingStateProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center py-12">
-      <Loader size="lg" color="gradient" text={loadingText} showText={true} />
+      <Loader size="lg" color="gradient" text={loadingText} />
     </div>
   );
 };

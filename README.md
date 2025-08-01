@@ -1,42 +1,109 @@
-# Rise Dash 🎮
+# 🌾 Rise Dash - The Ultimate Web3 Gaming Experience! 🎮
 
-A modern 2D platform game built with Next.js, TypeScript, and Web3 integration. Jump over sushi obstacles, shoot rice rockets, and compete on the blockchain leaderboard in this addictive endless runner!
+> **Jump into the future of gaming!** Rise Dash combines the thrill of endless runner gameplay with the power of blockchain technology. Dodge sushi, shoot rice rockets, and compete on the decentralized leaderboard in this addictive Web3 adventure!
 
-![Game Preview](public/pfp.png)
+<img src="public/pfp.png" alt="Game Preview" width="400" />
+
+## 🎯 What is Rise Dash?
+
+Rise Dash is a revolutionary **Web3-powered endless runner** that brings together:
+
+- **Addictive 2D gameplay** with smooth 60fps animations
+- **Blockchain integration** for true ownership and rewards
+- **Decentralized leaderboards** with verified scores
+- **RICE token economy** for in-game rewards and upgrades
+- **Beautiful Japanese aesthetic** with Torii gates and sushi enemies
+
+**The Concept:** You're a brave warrior running through a mystical Japanese landscape, dodging sushi enemies and shooting rice rockets. Your mission? Travel as far as possible while earning RICE tokens and climbing the global leaderboard!
+
+---
 
 ## ✨ Features
 
-### 🎮 **Core Gameplay**
+### Core Gameplay
 
-- **Canvas-based 2D gameplay** with smooth 60fps animations
-- **Physics system** with realistic gravity and jump mechanics
-- **Sushi obstacles** with dynamic collision detection
-- **Rice rocket shooting** system for combat and obstacle destruction
-- **Endless runner** gameplay with increasing difficulty
-- **Distance tracking** and real-time scoring system
+- **Smooth 60fps Canvas Rendering** - Buttery smooth animations that feel incredible
+- **Realistic Physics System** - Gravity, momentum, and collision detection that feels natural
+- **Endless Runner Mechanics** - Increasing difficulty keeps you on the edge of your seat
+- **Rice Rocket Combat** - Shoot enemies with rice rockets for points and survival
+- **Dynamic Collision Detection** - Pixel-perfect hit detection for fair gameplay
+- **Real-time Scoring** - Watch your score climb as you survive longer
 
-### 🌐 **Web3 Integration**
+### RICE Token Economy
 
-- **Wallet connection** with RainbowKit and Wagmi
-- **Blockchain authentication** using Sign-In with Ethereum (SIWE)
-- **On-chain leaderboard** with smart contract integration
-- **Score verification** and blockchain storage
-- **Rise Testnet** integration for decentralized features
+- **Earn RICE Tokens** - Complete daily challenges and achieve high scores
+- **Power-Up Shop** - Spend RICE to upgrade your abilities
+- **Daily Reveals** - Claim daily rewards with randomized card reveals
+- **Blockchain Storage** - All rewards stored securely on the RISE blockchain
+- **Signature Verification** - Secure, tamper-proof reward distribution
 
-### 🎨 **User Experience**
+### Daily Reveal System
 
-- **Multi-language support** (English, Spanish, French)
-- **Responsive design** optimized for desktop and mobile
-- **Dark theme** with gradient backgrounds
-- **Smooth animations** and visual feedback
-- **Accessibility features** with keyboard navigation
+- **Card Reveal Mechanics** - Exciting card-flipping animations
+- **24-Hour Cooldown** - Come back daily for fresh rewards
+- **Randomized Rewards** - Different RICE amounts each day
+- **Mobile-Friendly** - Perfect for quick daily check-ins
+- **Blockchain Verification** - Secure, tamper-proof daily claims
 
-### 🏆 **Social Features**
+### Power-Up System
 
-- **Global leaderboard** with blockchain-verified scores
-- **User profiles** with game statistics
-- **Achievement system** (coming soon)
-- **Social sharing** of high scores
+- **🛡️ Shield Protection** - Invincibility against enemy collisions
+- **♾️ Infinite Ammo** - Unlimited rice rocket shots
+- **🦘 Jump Boost** - Higher jumps to avoid obstacles
+- **⏰ Slow Motion** - Slow down enemies for easier targeting
+- **🎯 Multi-Shot** - Fire multiple projectiles simultaneously
+- **📈 10-Level Progression** - Each power-up has 10 upgrade levels
+- **💰 RICE-Based Upgrades** - Spend tokens to enhance your abilities
+
+### Power-Up Shop
+
+- **Interactive Shop Interface** - Beautiful, intuitive upgrade system
+- **Dynamic Pricing** - Costs increase with each level
+- **Progress Tracking** - See your upgrade progression
+- **Instant Upgrades** - Immediate effect after purchase
+- **Strategic Choices** - Choose which power-ups to prioritize
+
+### Interactive Tutorial
+
+- **Auto-Show Tutorial** - Automatically appears for new players
+- **Comprehensive Guide** - Covers all game mechanics
+- **Step-by-Step Instructions** - Easy to follow learning path
+- **Beautiful UI** - Engaging tutorial interface
+- **Manual Access** - Replay tutorial anytime
+
+### Enhanced Leaderboard
+
+- **Global Rankings** - Compete with players worldwide
+- **Real-time Updates** - Live leaderboard updates
+- **Player Profiles** - View detailed player statistics
+- **Score Verification** - Blockchain-verified scores only
+- **Pagination** - Browse through all players easily
+
+### Player Profiles
+
+- **Game Statistics** - Track your best scores and averages
+- **Game History** - Review all your past games
+- **Achievements** - Unlock achievements as you play
+- **Performance Analytics** - Detailed performance metrics
+- **Personal Leaderboard** - Your ranking and progress
+
+### Web3 Integration
+
+- **Wallet Connection** - Connect with MetaMask, RainbowKit, and more
+- **Sign-In with Ethereum** - Secure, decentralized authentication
+- **Blockchain Verification** - All scores verified on-chain
+- **RISE Testnet Integration** - Built on the RISE blockchain
+- **Smart Contract Security** - Audited, secure smart contracts
+
+### User Experience
+
+- **Dark Theme** - Easy on the eyes with gradient backgrounds
+- **Multi-Language Support** - English, Spanish, and French
+- **Responsive Design** - Works perfectly on desktop and mobile
+- **Accessibility Features** - Keyboard navigation and screen reader support
+- **Smooth Animations** - Polished, professional feel
+
+---
 
 ## 🚀 Quick Start
 
@@ -45,7 +112,7 @@ A modern 2D platform game built with Next.js, TypeScript, and Web3 integration. 
 - **Node.js** 18.0 or higher
 - **npm** or **yarn** package manager
 - **MetaMask** or any Web3 wallet
-- **Rise Testnet** configured in your wallet
+- **RISE Testnet** configured in your wallet
 
 ### Installation
 
@@ -65,7 +132,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to play!
+Open [http://localhost:3000](http://localhost:3000) and start your adventure!
 
 ### Environment Variables
 
@@ -81,35 +148,54 @@ NEXT_PUBLIC_RISE_TESTNET_RPC=https://rpc.testnet.rise.xyz
 NEXT_PUBLIC_CONTRACT_ADDRESS=your-contract-address
 ```
 
-## 🎯 How to Play
+---
 
-### **Getting Started**
+## 🎮 How to Play
 
-1. **Connect Wallet**: Click the "Connect Wallet" button and sign in with your Web3 wallet
-2. **Authenticate**: Sign the SIWE message to verify your wallet ownership
-3. **Start Game**: Press `ARROW UP` or `SPACEBAR` to begin
+### Getting Started
 
-### **Gameplay Controls**
+1. **Connect Wallet** - Click "Connect Wallet" and sign in with your Web3 wallet
+2. **Authenticate** - Sign the SIWE message to verify your wallet ownership
+3. **Start Game** - Press `ARROW UP` or `SPACEBAR` to begin your adventure!
 
-- **Jump**: Press `ARROW UP` to make your character jump over sushi obstacles
-- **Shoot**: Press `SPACEBAR` to fire rice rockets (during gameplay)
+### Gameplay Controls
+
+- **Jump**: Press `ARROW UP` to leap over sushi obstacles
+- **Shoot**: Press `SPACEBAR` to fire rice rockets at enemies
 - **Pause**: Press `ESC` to pause the game
 - **Restart**: Press `ARROW UP` or `SPACEBAR` after game over
 
-### **Objective**
+### Your Mission
 
-- **Avoid obstacles**: Stay away from sushi enemies - touching them ends the game!
-- **Shoot enemies**: Use rice rockets to destroy obstacles and earn points
 - **Survive**: Travel as far as possible to increase your distance score
+- **Destroy Enemies**: Use rice rockets to eliminate obstacles and earn points
+- **Use Power-Ups**: Collect and activate power-ups for temporary advantages
 - **Compete**: Submit your score to the blockchain leaderboard
+- **Earn RICE**: Complete daily challenges and achieve high scores
 
-### **Navigation**
+### Daily Rewards
 
-- **Game**: Main gameplay screen
-- **Profile**: View your statistics and achievements
-- **Leaderboard**: See global rankings and your position
-- **Instructions**: Learn game controls and tips
-- **Language**: Switch between English, Spanish, and French
+- **Daily Reveal**: Claim your daily reward with exciting card reveals
+- **24-Hour Cooldown**: Return daily for fresh rewards
+- **Randomized Rewards**: Different RICE amounts each day
+- **Secure Claims**: All rewards verified on the blockchain
+
+### Power-Up Strategy
+
+- **🛡️ Shield**: Perfect for beginners - protects against collisions
+- **♾️ Infinite Ammo**: Great for aggressive players who love shooting
+- **🦘 Jump Boost**: Essential for avoiding difficult obstacles
+- **⏰ Slow Motion**: Tactical advantage for precise targeting
+- **🎯 Multi-Shot**: Advanced players can eliminate multiple enemies
+
+### Shop Strategy
+
+- **Budget Wisely**: RICE is earned through gameplay - spend strategically
+- **Focus on Favorites**: Upgrade your preferred power-ups first
+- **Balance**: Don't neglect any power-up - they all have their uses
+- **Immediate Impact**: Upgrades take effect instantly
+
+---
 
 ## 🏗️ Project Architecture
 
@@ -118,40 +204,32 @@ src/
 ├── app/                    # Next.js App Router
 │   ├── layout.tsx         # Root layout with providers
 │   ├── page.tsx           # Home page with game
-│   ├── profil/            # User profile page
+│   └── api/               # API routes for blockchain integration
+├── features/              # Feature-based organization
+│   ├── game/              # Core game components
+│   ├── daily-reveal/      # Daily reward system
+│   ├── shop/              # Power-up shop interface
+│   ├── tutorial/          # Interactive tutorial
 │   ├── leaderboard/       # Global leaderboard
-│   ├── instructions/      # Game instructions
-│   └── api/               # API routes
-├── components/             # React components
-│   ├── game/              # Game-related components
-│   │   ├── Game.tsx       # Main game component
-│   │   ├── GameCanvas.tsx # Canvas rendering
-│   │   ├── GameScreen.tsx # Game UI wrapper
-│   │   └── ScoreBoard.tsx # Score display
-│   ├── auth/              # Authentication components
-│   │   ├── AuthButton.tsx # Wallet connection
-│   │   └── WelcomeScreen.tsx # Landing page
-│   ├── layout/            # Layout components
-│   │   ├── Header.tsx     # Navigation header
-│   │   └── PageLayout.tsx # Page wrapper
-│   └── ui/                # Reusable UI components
-├── hooks/                 # Custom React hooks
-│   ├── useGameLoop.ts     # Game loop management
-│   ├── useKeyboardControls.ts # Input handling
-│   ├── useAuthSync.ts     # Authentication sync
-│   └── useTranslations.ts # Internationalization
-├── services/              # External services
-│   └── blockchainService.ts # Smart contract interaction
-├── store/                 # State management (Zustand)
-│   └── languageStore.ts   # Language preferences
-├── utils/                 # Game logic and utilities
-│   ├── gameLogic.ts       # Core game mechanics
-│   ├── gameRenderer.ts    # Canvas rendering logic
-│   └── renderers/         # Specific renderers
-├── types/                 # TypeScript interfaces
-├── languages/             # Translation files
-└── constants/             # Game configuration
+│   ├── profile/           # Player profiles
+│   └── auth/              # Web3 authentication
+├── shared/                # Shared utilities and components
+│   ├── hooks/             # Custom React hooks
+│   ├── services/          # External services
+│   ├── store/             # State management (Zustand)
+│   └── utils/             # Game logic and utilities
+├── infrastructure/        # Infrastructure layer
+│   ├── blockchain/        # Smart contract integration
+│   ├── config/            # Configuration management
+│   └── store/             # Global state management
+└── contracts/             # Smart contracts
+    ├── GameRegistry.sol   # Main game contract
+    ├── RICEManager.sol    # RICE token management
+    ├── PowerUpManager.sol # Power-up system
+    └── ScoreBoard.sol     # Leaderboard management
 ```
+
+---
 
 ## 🛠️ Development
 
@@ -186,6 +264,8 @@ npm run test:coverage # Generate test coverage report
 - **[Jest](https://jestjs.io/)** - Testing framework
 - **Canvas API** - 2D graphics rendering
 
+---
+
 ## 🧪 Testing
 
 The project includes comprehensive test coverage:
@@ -202,6 +282,8 @@ npm run test:coverage
 ```
 
 Test files are located alongside their respective source files in `__tests__/` directories.
+
+---
 
 ## 🌐 Deployment
 
@@ -238,46 +320,71 @@ NEXT_PUBLIC_RISE_TESTNET_RPC=https://rpc.testnet.rise.xyz
 NEXT_PUBLIC_CONTRACT_ADDRESS=your-deployed-contract-address
 ```
 
+---
+
 ## 🎮 Game Features Deep Dive
 
-### **Physics System**
+### Physics System
 
-- Realistic gravity simulation
-- Smooth jump mechanics with variable height
-- Collision detection with pixel-perfect accuracy
-- Momentum and velocity calculations
+- **Realistic gravity simulation** with smooth acceleration
+- **Variable jump mechanics** based on power-up levels
+- **Pixel-perfect collision detection** for fair gameplay
+- **Momentum and velocity calculations** for natural movement
 
-### **Rendering Engine**
+### Rendering Engine
 
-- 60fps canvas rendering
-- Optimized sprite management
-- Smooth animations and transitions
-- Responsive scaling for all screen sizes
+- **60fps canvas rendering** for buttery smooth gameplay
+- **Optimized sprite management** for performance
+- **Smooth animations and transitions** throughout the UI
+- **Responsive scaling** for all screen sizes
 
-### **Blockchain Integration**
+### Blockchain Integration
 
-- Real-time score submission
-- Gas-optimized smart contracts
-- Decentralized leaderboard
-- Wallet-based authentication
+- **Real-time score submission** with gas optimization
+- **Decentralized leaderboard** with verified scores
+- **Wallet-based authentication** with SIWE
+- **Smart contract security** with comprehensive testing
+
+### Daily Reveal System
+
+- **Exciting card reveal animations** with suspense
+- **24-hour cooldown system** for daily engagement
+- **Randomized reward distribution** for variety
+- **Blockchain verification** for security
+
+### Power-Up System
+
+- **5 unique power-up types** with different strategies
+- **10-level progression system** for long-term engagement
+- **RICE-based economy** for sustainable progression
+- **Immediate effect system** for instant gratification
+
+---
 
 ## 🚧 Roadmap
 
-### **Phase 1 - Enhanced Gameplay** 🎯
+### Phase 1 - Enhanced Gameplay
 
 - [ ] Multiple obstacle types and patterns
-- [ ] Power-ups and special abilities
-- [ ] Different game modes (Time Attack, Survival)
 - [ ] Boss battles and mini-games
+- [ ] Different game modes (Time Attack, Survival)
+- [ ] Enhanced enemy AI and behaviors
 
-### **Phase 2 - Social Features** 🌐
+### Phase 2 - Social Features
 
 - [ ] Achievement system with NFTs
 - [ ] Tournament mode with prizes
 - [ ] Social sharing and challenges
 - [ ] Guild/clan system
 
-### **Phase 3 - \_\_\_\_ ** ⚡
+### Phase 3 - Advanced Features
+
+- [ ] Mobile app development
+- [ ] Cross-chain integration
+- [ ] Advanced power-up combinations
+- [ ] Seasonal events and themes
+
+---
 
 ## 🤝 Contributing
 
@@ -294,10 +401,15 @@ We welcome contributions! Here's how you can help:
 - Follow TypeScript best practices
 - Update documentation as needed
 - Follow the existing code style
+- Add tests for new features
+
+---
 
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+---
 
 ## 🙏 Acknowledgments
 
@@ -308,4 +420,12 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-**Ready to play?** 🎮 [Start your journey now!](http://localhost:3000)
+## 🎮 Ready to Play?
+
+**Jump into the future of gaming!**
+
+[Start your adventure now!](https://rise-dash.vercel.app)
+
+---
+
+_Built with ❤️ by the Rise Dash team_

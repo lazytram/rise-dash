@@ -6,7 +6,6 @@ export { CircularButton } from "./CircularButton";
 export { Container } from "./Container";
 
 export { Loader } from "./Loader";
-export { LoadingOverlay } from "./LoadingOverlay";
 export { Modal } from "./Modal";
 export { Pagination } from "./Pagination";
 export { SceneContainer } from "./SceneContainer";
