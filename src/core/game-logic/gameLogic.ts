@@ -323,16 +323,6 @@ export class GameLogic {
     const newY = player.y + newVelocityY;
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
 
-    // Check if player hit the ground
-    if (newY >= groundY - player.height) {
-      return {
-        ...player,
-        y: groundY - player.height,
-        velocityY: 0,
-        isJumping: false,
-      };
-    }
-
     // Update ammo recharge (skip if infinite ammo is active)
     const currentTime = Date.now();
     const timeSinceLastRecharge = currentTime - player.lastAmmoRechargeTime;
@@ -343,7 +333,17 @@ export class GameLogic {
       velocityY: newVelocityY,
     };
 
-    // Update power-ups
+    // Check if player hit the ground
+    if (newY >= groundY - player.height) {
+      updatedPlayer = {
+        ...updatedPlayer,
+        y: groundY - player.height,
+        velocityY: 0,
+        isJumping: false,
+      };
+    }
+
+    // Update power-ups (always call this)
     updatedPlayer = this.updatePlayerPowerUps(updatedPlayer);
 
     // Recharge ammo only if not infinite
@@ -816,24 +816,11 @@ export class GameLogic {
     // Check RiceRocket vs Enemy collisions
     newGameState = this.checkRiceRocketEnemyCollisions(newGameState);
 
-    // Check Player vs SamuraiBullet collisions
+    // Check Player vs SamuraiBullet collisions (handles shield protection)
     newGameState = this.checkPlayerSamuraiBulletCollisions(newGameState);
 
     // Check Player vs PowerUp collisions
     newGameState = this.checkPlayerPowerUpCollisions(newGameState);
-
-    // Check if player was hit by a samurai bullet (game over)
-    const originalBulletCount = gameState.samuraiBullets.length;
-    const newBulletCount = newGameState.samuraiBullets.length;
-    if (newBulletCount < originalBulletCount) {
-      // A bullet was removed, meaning player was hit
-      newGameState = {
-        ...newGameState,
-        isGameOver: true,
-        isGameRunning: false,
-      };
-      return newGameState;
-    }
 
     // Make enemies shoot
     newGameState = this.makeEnemiesShoot(newGameState);
@@ -1265,6 +1252,12 @@ export class GameLogic {
     // Apply the new power-up with level-based effects
     switch (powerUp.type) {
       case PowerUpType.SHIELD:
+        console.log(
+          "Shield collected! End time:",
+          endTime,
+          "Current time:",
+          currentTime
+        );
         return {
           ...resetPlayer,
           hasShield: true,
@@ -1314,14 +1307,24 @@ export class GameLogic {
   static updatePlayerPowerUps(player: Player): Player {
     const currentTime = Date.now();
     const { powerUpEndTimes } = player;
-
     return {
+      // Log simple pour vérifier que la fonction est appelée
+
       ...player,
-      hasShield: currentTime < powerUpEndTimes.shield,
-      hasInfiniteAmmo: currentTime < powerUpEndTimes.infiniteAmmo,
-      hasJumpBoost: currentTime < powerUpEndTimes.jumpBoost,
-      hasSlowMotion: currentTime < powerUpEndTimes.slowMotion,
-      hasMultiShot: currentTime < powerUpEndTimes.multiShot,
+      hasShield:
+        currentTime < powerUpEndTimes.shield && powerUpEndTimes.shield > 0,
+      hasInfiniteAmmo:
+        currentTime < powerUpEndTimes.infiniteAmmo &&
+        powerUpEndTimes.infiniteAmmo > 0,
+      hasJumpBoost:
+        currentTime < powerUpEndTimes.jumpBoost &&
+        powerUpEndTimes.jumpBoost > 0,
+      hasSlowMotion:
+        currentTime < powerUpEndTimes.slowMotion &&
+        powerUpEndTimes.slowMotion > 0,
+      hasMultiShot:
+        currentTime < powerUpEndTimes.multiShot &&
+        powerUpEndTimes.multiShot > 0,
     };
   }
 

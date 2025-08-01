@@ -38,8 +38,8 @@ export const GAME_CONSTANTS = {
   SAMURAI_BULLET_HEIGHT: 6,
   SAMURAI_BULLET_SPEED: -2, // Reduced speed for easier dodging
   // Speed progression constants
-  SPEED_INCREASE_INTERVAL: 100, // Back to original value
-  SPEED_INCREASE_PERCENTAGE: 0.025, // Back to original value
+  SPEED_INCREASE_INTERVAL: 150,
+  SPEED_INCREASE_PERCENTAGE: 0.015,
   BASE_SUSHI_SPEED: -4, // Reduced from -4 for slower, more predictable movement
   BASE_SAMURAI_SPEED: -2, // Base speed for samurai
   BASE_SAMURAI_BULLET_SPEED: -7, // Increased base speed for samurai bullets (shurikens)
