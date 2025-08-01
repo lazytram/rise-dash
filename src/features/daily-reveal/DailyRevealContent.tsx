@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { useAccount } from "wagmi";
 import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
 import { SceneHeader } from "@/shared/components/SceneHeader";
@@ -20,18 +21,21 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
   className = "",
 }) => {
   const { t } = useTranslations();
+  const { address } = useAccount();
   const { addRICE, addDailyRevealRICE } = useRice();
   const { canReveal, isSpinning, selectedCard, isRevealed, revealCard } =
-    useDailyRevealSelectors();
+    useDailyRevealSelectors(address);
   const { initializeStore } = useDailyRevealStore();
 
   // Initialize store on component mount
   useEffect(() => {
-    initializeStore();
-  }, [initializeStore]);
+    if (address) {
+      initializeStore(address);
+    }
+  }, [initializeStore, address]);
 
   const handleReveal = async () => {
-    if (!canReveal || isSpinning) return;
+    if (!canReveal || isSpinning || !address) return;
 
     try {
       // Reveal the card and get the selected card
@@ -77,7 +81,7 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
             />
             <RevealButton
               onClick={handleReveal}
-              disabled={!canReveal || isSpinning}
+              disabled={!canReveal || isSpinning || !address}
             />
             <CountdownTimer />
           </div>

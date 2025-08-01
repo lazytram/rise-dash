@@ -331,7 +331,9 @@
       "rewardsRetrieved": "Rewards retrieved",
       "viewTransaction": "View transaction",
       "viewOnExplorer": "View on explorer",
-      "calculatingRewards": "Calculating rewards..."
+      "calculatingRewards": "Calculating rewards...",
+      "dailyRevealCooldown": "Daily reveal already claimed today",
+      "nextRevealIn": "Next reveal in {{time}}"
     }
   },
   "ui": {
