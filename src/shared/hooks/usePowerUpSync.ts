@@ -234,7 +234,8 @@ export const usePowerUpSync = () => {
       // Reload levels after successful upgrade
       loadPowerUpLevels();
     }
-  }, [isSuccess, hash, showSuccess, t, loadPowerUpLevels]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, hash, showSuccess, t]);
 
   // Handle transaction error
   useEffect(() => {
