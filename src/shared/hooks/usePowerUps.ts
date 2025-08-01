@@ -384,14 +384,8 @@ export const usePowerUps = () => {
       const event = new CustomEvent("rice-balance-refresh");
       window.dispatchEvent(event);
     }
-  }, [
-    isSuccess,
-    hash,
-    isConfirming,
-    isError,
-    confirmedTransaction,
-    loadPowerUpLevels,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, hash, isConfirming, isError, confirmedTransaction]);
 
   // Handle transaction confirmation state
   useEffect(() => {

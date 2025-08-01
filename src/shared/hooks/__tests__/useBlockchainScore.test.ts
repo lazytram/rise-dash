@@ -339,16 +339,13 @@ describe("useBlockchainScore", () => {
         isSuccess: true,
       } as unknown as ReturnType<typeof useWaitForTransactionReceipt>);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      renderHook(() => useBlockchainScore());
 
-      // Call the transaction success handler manually
-      act(() => {
-        result.current.handleTransactionSuccess();
-      });
-
+      // The success toast should be shown automatically via useEffect
+      // when isSuccess becomes true
       expect(mockShowSuccess).toHaveBeenCalledWith(
         "features.blockchain.transactionSuccess",
-        "features.blockchain.scoreSavedSuccess",
+        "features.blockchain.scoreSavedSuccessfully",
         mockHash,
         "features.blockchain.viewTransaction"
       );

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   useAccount,
   useWriteContract,
@@ -18,6 +18,14 @@ export const useBlockchainScore = () => {
   const [bestScore, setBestScore] = useState<bigint>(BigInt(0));
   const { showError, showSuccess, showPending, clearToasts } = useToastStore();
   const { t } = useTranslations();
+  const loadBestScoreRef = useRef<(() => Promise<bigint | undefined>) | null>(
+    null
+  );
+
+  // Use refs to avoid dependency issues
+  const showSuccessRef = useRef(showSuccess);
+  const tRef = useRef(t);
+  const hasShownSuccessRef = useRef(false);
 
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
@@ -168,6 +176,18 @@ export const useBlockchainScore = () => {
     }
   }, [address]);
 
+  // Store the function in ref to avoid dependency issues
+  loadBestScoreRef.current = loadBestScore;
+
+  // Update refs directly to avoid useEffect dependency issues
+  showSuccessRef.current = showSuccess;
+  tRef.current = t;
+
+  // Reset success flag when transaction state changes
+  if (!isSuccess) {
+    hasShownSuccessRef.current = false;
+  }
+
   const isNewPersonalBest = useCallback(
     async (score: number): Promise<boolean> => {
       if (!address) return false;
@@ -184,26 +204,28 @@ export const useBlockchainScore = () => {
     [address]
   );
 
-  // Handle transaction success (only when confirmed)
-  const handleTransactionSuccess = useCallback(() => {
-    if (isSuccess && hash && !isConfirming && !error) {
-      showSuccess(
-        t("features.blockchain.transactionSuccess"),
-        t("features.blockchain.scoreSavedSuccess"),
-        hash,
-        t("features.blockchain.viewTransaction")
-      );
-      // Reload best score after successful save
-      loadBestScore();
-    }
-  }, [isSuccess, hash, isConfirming, error, showSuccess, t, loadBestScore]);
-
   // Auto-trigger success toast when transaction is confirmed
   useEffect(() => {
-    if (isSuccess && hash && !isConfirming && !error) {
-      handleTransactionSuccess();
+    if (
+      isSuccess &&
+      hash &&
+      !isConfirming &&
+      !error &&
+      !hasShownSuccessRef.current
+    ) {
+      hasShownSuccessRef.current = true;
+      showSuccessRef.current(
+        tRef.current("features.blockchain.transactionSuccess"),
+        tRef.current("features.blockchain.scoreSavedSuccessfully"),
+        hash,
+        tRef.current("features.blockchain.viewTransaction")
+      );
+      // Reload best score after successful save
+      if (loadBestScoreRef.current) {
+        loadBestScoreRef.current();
+      }
     }
-  }, [isSuccess, hash, isConfirming, error, handleTransactionSuccess]);
+  }, [isSuccess, hash, isConfirming, error]);
 
   // Handle transaction error
   const handleTransactionError = useCallback(() => {
@@ -282,7 +304,6 @@ export const useBlockchainScore = () => {
     isSuccess,
     error,
     hash,
-    handleTransactionSuccess,
     handleTransactionError,
   };
 };
