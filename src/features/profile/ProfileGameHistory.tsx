@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Text } from "@/shared/components/Text";
 import { Pagination } from "@/shared/components/Pagination";
+import { Loader } from "@/shared/components/Loader";
 
 interface PlayerScore {
   score: bigint;
@@ -26,10 +27,20 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
   const { t } = useTranslations();
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Pagination logic
+  const totalPages = Math.ceil(playerScores.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentScores = playerScores.slice(startIndex, endIndex);
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <Text variant="subtitle">{t("scenes.profile.loadingScores")}</Text>
+      <div className="flex flex-col items-center justify-center py-12">
+        <Loader
+          size="lg"
+          color="gradient"
+          text={t("scenes.profile.loadingScores")}
+        />
       </div>
     );
   }
@@ -45,12 +56,6 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
       </div>
     );
   }
-
-  // Pagination logic
-  const totalPages = Math.ceil(playerScores.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentScores = playerScores.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-6">

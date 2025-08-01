@@ -3,7 +3,6 @@ import { PowerUpCardBlockchain } from "../PowerUpCardBlockchain";
 import { POWERUP_ORDER, POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpType } from "@/shared/types/powerUps";
 import { Loader } from "@/shared/components/Loader";
-import { Text } from "@/shared/components/Text";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 
 interface PowerUpGridProps {
@@ -33,10 +32,7 @@ export const PowerUpGrid: React.FC<PowerUpGridProps> = memo(
     if (isLoadingCosts) {
       return (
         <div className="flex flex-col items-center justify-center py-12">
-          <Loader size="lg" />
-          <Text variant="subtitle" size="sm" className="text-white/70 mt-4">
-            {t("scenes.shop.loadingCosts")}
-          </Text>
+          <Loader size="lg" text={t("scenes.shop.loadingCosts")} />
         </div>
       );
     }

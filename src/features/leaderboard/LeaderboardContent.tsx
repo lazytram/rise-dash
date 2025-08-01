@@ -127,8 +127,12 @@ export const LeaderboardContent: React.FC = () => {
         />
 
         {isLoading ? (
-          <div className="flex justify-center items-center py-8">
-            <Loader color="white" />
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader
+              size="lg"
+              color="gradient"
+              text={t("scenes.leaderboard.loadingScores")}
+            />
           </div>
         ) : hasError ? (
           <div className="text-center">
