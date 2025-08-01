@@ -5,7 +5,7 @@ import { Text } from "@/shared/components/Text";
 import { Modal } from "@/shared/components/Modal";
 import { RewardBreakdown } from "./RewardBreakdown";
 import { ScoreCard } from "./ScoreCard";
-import { RewardsService } from "../../rewards/rewardsService";
+import { RewardsService } from "@/features/rewards/rewardsService";
 
 interface ScoreSuccessProps {
   distance: number;

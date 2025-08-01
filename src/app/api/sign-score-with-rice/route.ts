@@ -53,9 +53,6 @@ export async function POST(request: NextRequest) {
     const account = privateKeyToAccount(privateKey as `0x${string}`);
 
     // Create the message hash exactly as in the ScoreBoard contract
-    // The contract uses: abi.encodePacked(_score, _playerName, _riceReward, msg.sender, _gameHash)
-    // We need to use msg.sender (the address that will call the contract) in the signature
-    // This will be the player's address when they call the contract
     const messageHash = keccak256(
       encodePacked(
         ["uint256", "string", "uint256", "address", "bytes32"],
@@ -70,7 +67,6 @@ export async function POST(request: NextRequest) {
     );
 
     // Sign the message hash with the game owner's private key
-    // The contract expects a standard Ethereum signature
     const signature = await account.signMessage({
       message: { raw: messageHash },
     });

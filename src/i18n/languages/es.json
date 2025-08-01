@@ -355,5 +355,17 @@
     "playNow": "Jugar ahora",
     "error": "Error",
     "you": "Tú"
+  },
+  "errorBoundary": {
+    "title": "Algo salió mal",
+    "message": "Lo sentimos, pero algo inesperado ha ocurrido. Por favor intenta refrescar la página.",
+    "refreshPage": "Refrescar Página",
+    "tryAgain": "Intentar de Nuevo",
+    "errorDetails": "Detalles del Error (Desarrollo)",
+    "error": "Error",
+    "errorInfo": "Información del Error",
+    "file": "Archivo",
+    "line": "Línea",
+    "stack": "Traza de Pila"
   }
 }
