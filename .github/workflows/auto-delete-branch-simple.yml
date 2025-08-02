@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Delete branch
-        uses: dawidd6/action-delete-branch@v4
+        uses: dawidd6/action-delete-branch@v3.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branches: ${{ github.head_ref }}
