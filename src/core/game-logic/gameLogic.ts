@@ -162,7 +162,18 @@ export class GameLogic {
 
   static updateGameState(gameState: GameState): GameState {
     if (!gameState.isGameRunning || gameState.isGameOver) {
-      return gameState;
+      // Ensure projectiles are cleared when game is not running
+      return {
+        ...gameState,
+        samuraiBullets: [],
+        riceRockets: [],
+        sushis: [],
+        toriis: [],
+        samurais: [],
+        ninjas: [],
+        bosses: [],
+        powerUps: [],
+      };
     }
 
     // Pre-calculate common values for better performance
@@ -220,6 +231,15 @@ export class GameLogic {
         ...newGameState,
         isGameOver: true,
         isGameRunning: false,
+        // Clear ALL game entities when game over to prevent instant death on restart
+        samuraiBullets: [],
+        riceRockets: [],
+        sushis: [],
+        toriis: [],
+        samurais: [],
+        ninjas: [],
+        bosses: [],
+        powerUps: [],
       };
     }
 
@@ -470,7 +490,7 @@ export class GameLogic {
     return {
       id: this.generateEntityId(),
       x: GAME_CONSTANTS.CANVAS_WIDTH,
-      y: groundY - 30, // Default sushi height
+      y: groundY - 28, // Increased height to reduce collision chance
       width: 30, // Default sushi width
       height: 30, // Default sushi height
       velocityX: baseSpeed * speedVariation,
@@ -764,9 +784,12 @@ export class GameLogic {
     difficultyLevel: DifficultyLevel,
     player?: Player
   ): SamuraiBullet {
+    // Ensure bullet starts at a safe distance from the player
+    const bulletX = Math.max(samurai.x, 150); // Minimum 150px from left edge
+
     return {
       id: Date.now().toString() + Math.random(),
-      x: samurai.x, // Start from samurai position
+      x: bulletX, // Start from safe position
       y: samurai.y + samurai.height / 2, // Same height as samurai center
       width: GAME_CONSTANTS.SAMURAI_BULLET_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_BULLET_HEIGHT,
@@ -885,15 +908,31 @@ export class GameLogic {
     for (let i = newSamuraiBullets.length - 1; i >= 0; i--) {
       const bullet = newSamuraiBullets[i];
       if (this.checkCollision(player, bullet)) {
-        // If player has shield, just remove the bullet without game over
+        // Debug: Log bullet collision
+        const formattedDistance = this.formatDistance(gameState.distance);
+        console.log(
+          `Bullet collision at distance ${formattedDistance}, Player pos: (${player.x}, ${player.y}), Bullet pos: (${bullet.x}, ${bullet.y})`
+        );
+
+        // Always remove the bullet on collision
+        newSamuraiBullets.splice(i, 1);
+
+        // If player has shield, remove bullet and continue (shield protects from death)
         if (player.hasShield) {
-          newSamuraiBullets.splice(i, 1);
+          // Shield absorbs the bullet - player survives
+          // Continue checking other bullets
         } else {
-          // Remove the bullet and trigger game over
-          newSamuraiBullets.splice(i, 1);
+          // No shield - player dies, trigger game over and clear all projectiles
           return {
             ...gameState,
-            samuraiBullets: newSamuraiBullets,
+            samuraiBullets: [],
+            riceRockets: [],
+            sushis: [],
+            toriis: [],
+            samurais: [],
+            ninjas: [],
+            bosses: [],
+            powerUps: [],
             isGameOver: true,
             isGameRunning: false,
           };

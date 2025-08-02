@@ -116,11 +116,44 @@ describe("GameLogic - Simple Tests", () => {
       expect(result.distance).toBeGreaterThan(100);
     });
 
-    it("should not update when game is not running", () => {
-      const gameState = createTestGameState({ isGameRunning: false });
+    it("should clear entities when game is not running", () => {
+      const gameState = createTestGameState({
+        isGameRunning: false,
+        samuraiBullets: [
+          {
+            id: "test",
+            x: 100,
+            y: 100,
+            width: 10,
+            height: 10,
+            velocityX: -5,
+            velocityY: 0,
+            color: "red",
+          },
+        ],
+        riceRockets: [
+          {
+            id: "test",
+            x: 200,
+            y: 200,
+            width: 10,
+            height: 10,
+            velocityX: 5,
+            color: "blue",
+          },
+        ],
+      });
       const result = GameLogic.updateGameState(gameState);
 
-      expect(result).toBe(gameState);
+      // Should clear all entities when game is not running
+      expect(result.samuraiBullets).toEqual([]);
+      expect(result.riceRockets).toEqual([]);
+      expect(result.sushis).toEqual([]);
+      expect(result.toriis).toEqual([]);
+      expect(result.samurais).toEqual([]);
+      expect(result.ninjas).toEqual([]);
+      expect(result.bosses).toEqual([]);
+      expect(result.powerUps).toEqual([]);
     });
   });
 

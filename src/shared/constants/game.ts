@@ -56,7 +56,7 @@ export const GAME_CONSTANTS = {
   SAMURAI_SPAWN_DISTANCE_DECREASE: 5, // Back to original value
   MIN_SAMURAI_SPAWN_DISTANCE: 20, // Back to original value
   // Sushi spawn rate progression
-  BASE_SUSHI_SPAWN_PROBABILITY: 0.7, // Back to original value
+  BASE_SUSHI_SPAWN_PROBABILITY: 0.7, // Further reduced for better balance
   SUSHI_SPAWN_PROBABILITY_INCREASE: 0.03, // Back to original value
   MAX_SUSHI_SPAWN_PROBABILITY: 0.9, // Back to original value
   // Samurai behavior progression

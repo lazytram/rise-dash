@@ -38,6 +38,8 @@ const Game = () => {
       samurais: [],
       samuraiBullets: [],
       toriis: [],
+      ninjas: [],
+      bosses: [],
       powerUps: [],
       player: GameLogic.resetPlayer(prev.player),
     }));
