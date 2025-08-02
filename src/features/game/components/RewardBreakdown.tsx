@@ -1,9 +1,9 @@
 import React from "react";
 import { Text } from "../../../shared/components/Text";
-import { StatusIndicator } from "../../../shared/components/StatusIndicator";
 import { GameRewards } from "../../../shared/types/game";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 import { RiceLogo } from "../../../shared/components/RiceLogo";
+import { StatusIndicator } from "@/shared/components/StatusIndicator";
 
 interface RewardBreakdownProps {
   rewards: GameRewards;

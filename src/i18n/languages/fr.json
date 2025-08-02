@@ -355,5 +355,17 @@
     "playNow": "Jouer maintenant",
     "error": "Erreur",
     "you": "Vous"
+  },
+  "errorBoundary": {
+    "title": "Quelque chose s'est mal passé",
+    "message": "Nous sommes désolés, mais quelque chose d'inattendu s'est produit. Veuillez essayer de rafraîchir la page.",
+    "refreshPage": "Actualiser la Page",
+    "tryAgain": "Réessayer",
+    "errorDetails": "Détails de l'Erreur (Développement)",
+    "error": "Erreur",
+    "errorInfo": "Informations d'Erreur",
+    "file": "Fichier",
+    "line": "Ligne",
+    "stack": "Pile d'Appel"
   }
 }

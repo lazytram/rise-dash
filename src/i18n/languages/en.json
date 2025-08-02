@@ -353,5 +353,17 @@
     "playNow": "Play now",
     "error": "Error",
     "you": "You"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "message": "We're sorry, but something unexpected happened. Please try refreshing the page.",
+    "refreshPage": "Refresh Page",
+    "tryAgain": "Try Again",
+    "errorDetails": "Error Details (Development)",
+    "error": "Error",
+    "errorInfo": "Error Info",
+    "file": "File",
+    "line": "Line",
+    "stack": "Stack Trace"
   }
 }

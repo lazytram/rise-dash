@@ -28,3 +28,4 @@ export { ThreeColumnLayout } from "./ThreeColumnLayout";
 export { LanguageSelector } from "./LanguageSelector";
 export { Providers } from "./Providers";
 export { RiceLogo } from "./RiceLogo";
+export { ErrorBoundary } from "./ErrorBoundary";
