@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState } from "react";
 import { useAccount } from "wagmi";
-import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Container } from "@/shared/components/Container";
 import { Card } from "@/shared/components/Card";
@@ -13,95 +12,22 @@ import {
   ProfileAchievements,
 } from "./index";
 import { SceneHeader } from "@/shared/components/SceneHeader";
-
-interface PlayerScore {
-  score: bigint;
-  timestamp: bigint;
-  playerName: string;
-  gameHash: string;
-}
+import { usePlayerScores, useAchievements } from "./hooks";
 
 export const ProfileContent: React.FC = () => {
   const { t } = useTranslations();
-  const { address, isConnected } = useAccount();
-  const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [achievementsLoading, setAchievementsLoading] = useState(false);
-  const [achievementsError, setAchievementsError] = useState<string | null>(
-    null
-  );
+  const { isConnected } = useAccount();
   const [activeTab, setActiveTab] = useState("gameHistory");
-  const loadingRef = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  const loadPlayerScores = useCallback(async () => {
-    // Prevent multiple simultaneous calls
-    if (loadingRef.current) {
-      return;
-    }
+  // Use TanStack Query hooks
+  const { data: playerScores = [], isLoading: scoresLoading } =
+    usePlayerScores();
 
-    // Clear any existing timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // Debounce the call
-    timeoutRef.current = setTimeout(async () => {
-      try {
-        loadingRef.current = true;
-        setLoading(true);
-
-        const scores = await blockchainService.getPlayerScores(address!);
-
-        // Sort scores by score (descending) and then by timestamp (descending)
-        const sortedScores = scores.sort((a, b) => {
-          if (a.score !== b.score) {
-            return Number(b.score - a.score);
-          }
-          return Number(b.timestamp - a.timestamp);
-        });
-
-        setPlayerScores(sortedScores);
-      } catch (err) {
-        console.error("Error loading player scores:", err);
-        // TODO: Handle error display if needed
-      } finally {
-        setLoading(false);
-        loadingRef.current = false;
-      }
-    }, 300); // 300ms debounce
-  }, [address]);
-
-  const loadAchievements = useCallback(async () => {
-    try {
-      setAchievementsLoading(true);
-      // TODO: Implement achievements loading logic
-      // For now, just simulate loading
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setAchievementsError(null);
-    } catch (err) {
-      console.error("Error loading achievements:", err);
-      setAchievementsError("Error loading achievements");
-    } finally {
-      setAchievementsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isConnected && address) {
-      loadPlayerScores();
-    } else {
-      setPlayerScores([]);
-      setLoading(false);
-    }
-
-    // Cleanup timeout on unmount
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [isConnected, address, loadPlayerScores]);
+  const {
+    isLoading: achievementsLoading,
+    error: achievementsError,
+    refetch: refetchAchievements,
+  } = useAchievements();
 
   if (!isConnected) {
     return (
@@ -135,7 +61,7 @@ export const ProfileContent: React.FC = () => {
               content: (
                 <ProfileGameHistory
                   playerScores={playerScores}
-                  loading={loading}
+                  loading={scoresLoading}
                 />
               ),
             },
@@ -145,8 +71,8 @@ export const ProfileContent: React.FC = () => {
               content: (
                 <ProfileAchievements
                   loading={achievementsLoading}
-                  error={achievementsError}
-                  onRetry={loadAchievements}
+                  error={achievementsError?.message || null}
+                  onRetry={refetchAchievements}
                 />
               ),
             },

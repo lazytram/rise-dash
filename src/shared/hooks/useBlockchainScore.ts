@@ -4,6 +4,7 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
+import { useQueryClient } from "@tanstack/react-query";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
 import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
@@ -13,6 +14,7 @@ import { retryWithBackoff } from "../utils/retryUtils";
 
 export const useBlockchainScore = () => {
   const { address } = useAccount();
+  const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
   const [isSavingWithRICE, setIsSavingWithRICE] = useState(false);
   const [bestScore, setBestScore] = useState<bigint>(BigInt(0));
@@ -31,6 +33,13 @@ export const useBlockchainScore = () => {
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
+
+  // Invalidate player scores cache when transaction succeeds
+  const invalidatePlayerScores = useCallback(() => {
+    if (address) {
+      queryClient.invalidateQueries({ queryKey: ["playerScores", address] });
+    }
+  }, [queryClient, address]);
 
   const saveScore = useCallback(
     async (score: number, playerName: string) => {
@@ -224,8 +233,9 @@ export const useBlockchainScore = () => {
       if (loadBestScoreRef.current) {
         loadBestScoreRef.current();
       }
+      invalidatePlayerScores();
     }
-  }, [isSuccess, hash, isConfirming, error]);
+  }, [isSuccess, hash, isConfirming, error, invalidatePlayerScores]);
 
   // Handle transaction error
   const handleTransactionError = useCallback(() => {
@@ -298,6 +308,7 @@ export const useBlockchainScore = () => {
     getLeaderboard,
     getTotalScores,
     checkContractConfig,
+    invalidatePlayerScores,
     bestScore,
     isSaving: isSaving || isPending || isConfirming,
     isSavingWithRICE: isSavingWithRICE || isPending || isConfirming,
