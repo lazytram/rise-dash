@@ -50,7 +50,11 @@
       "loadingAchievements": "Loading achievements...",
       "noScoresYet": "No scores yet",
       "playGameToSeeScores": "Play a game to see your scores",
-      "showingResults": "Showing {{start}}-{{end}} of {{total}} results"
+      "showingResults": "Showing {{start}}-{{end}} of {{total}} results",
+      "gamesPlayed": "games played",
+      "average": "avg",
+      "personalBest": "Personal Best",
+      "newScore": "New Score"
     },
     "leaderboard": {
       "title": "Leaderboard",

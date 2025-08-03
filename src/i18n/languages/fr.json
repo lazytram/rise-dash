@@ -50,7 +50,11 @@
       "loadingAchievements": "Chargement des succès...",
       "noScoresYet": "Aucun score pour le moment",
       "playGameToSeeScores": "Jouez une partie pour voir vos scores",
-      "showingResults": "Affichage de {{start}}-{{end}} sur {{total}} résultats"
+      "showingResults": "Affichage de {{start}}-{{end}} sur {{total}} résultats",
+      "gamesPlayed": "parties jouées",
+      "average": "moy",
+      "personalBest": "Meilleur Personnel",
+      "newScore": "Nouveau Score"
     },
     "leaderboard": {
       "title": "Tableau des Scores",

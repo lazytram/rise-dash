@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
-import { Table, TableHeader, TableCell } from "@/shared/components/Table";
-import { getRankStyle } from "./utils";
+import { Text } from "@/shared/components/Text";
+import { DataTable } from "@/shared/components/DataTable";
+import { RankBadge } from "@/shared/components/RankBadge";
 
 interface LeaderboardEntryWithRank {
   rank: number;
@@ -21,57 +22,60 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
 }) => {
   const { t } = useTranslations();
 
+  const columns = [
+    {
+      key: "rank",
+      header: "#",
+      render: (entry: LeaderboardEntryWithRank) => (
+        <RankBadge rank={entry.rank} />
+      ),
+    },
+    {
+      key: "score",
+      header: t("scenes.leaderboard.score"),
+      render: (entry: LeaderboardEntryWithRank) => (
+        <div className="text-center group-hover:scale-110 transition-transform duration-200">
+          <Text variant="bold" className="text-white text-lg">
+            {entry.score.toString()}
+          </Text>
+          <Text variant="caption" className="text-white/60 mt-1">
+            {t("features.gameplay.meters")}
+          </Text>
+        </div>
+      ),
+    },
+    {
+      key: "player",
+      header: t("scenes.leaderboard.player"),
+      render: (entry: LeaderboardEntryWithRank) => (
+        <div className="text-center">
+          <Text variant="body" className="text-white/90 font-medium">
+            {entry.playerName}
+          </Text>
+          {userAddress &&
+            entry.playerAddress.toLowerCase() === userAddress.toLowerCase() && (
+              <div className="mt-1">
+                <span className="inline-flex items-center px-2 py-1 text-xs bg-blue-500/30 text-blue-200 rounded-full border border-blue-400/50">
+                  {t("common.you")}
+                </span>
+              </div>
+            )}
+        </div>
+      ),
+    },
+  ];
+
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <thead>
-          <tr className="border-b border-gray-200">
-            <TableHeader>#</TableHeader>
-            <TableHeader>{t("scenes.leaderboard.score")}</TableHeader>
-            <TableHeader>{t("scenes.leaderboard.player")}</TableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((entry) => {
-            const isUserRow =
-              userAddress &&
-              entry.playerAddress.toLowerCase() === userAddress.toLowerCase();
-            return (
-              <tr
-                key={`${entry.playerAddress}-${entry.rank}`}
-                className={`border-b border-white/10 hover:bg-white/5 transition-all duration-200 cursor-pointer ${
-                  isUserRow ? "bg-blue-500/20 border-blue-400/30 shadow-lg" : ""
-                }`}
-              >
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shadow-lg ${getRankStyle(
-                        entry.rank
-                      )}`}
-                    >
-                      {entry.rank}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="font-semibold text-white/90">
-                  {entry.score.toString()} {t("features.gameplay.meters")}
-                </TableCell>
-                <TableCell className="text-white/80">
-                  <div className="flex items-center gap-2">
-                    {entry.playerName}
-                    {isUserRow && (
-                      <span className="px-2 py-1 text-xs bg-blue-500/30 text-blue-200 rounded-full border border-blue-400/50">
-                        {t("common.you")}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-    </div>
+    <DataTable
+      data={data}
+      columns={columns}
+      highlightRow={(entry) =>
+        userAddress
+          ? entry.playerAddress.toLowerCase() === userAddress.toLowerCase()
+          : false
+      }
+      animationDelay={100}
+      rowDelay={50}
+    />
   );
 };
