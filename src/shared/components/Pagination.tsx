@@ -55,38 +55,45 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className={cn("flex items-center justify-center gap-2", className)}>
       <Button
-        variant="secondary"
+        variant="ghost"
         size="sm"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        className="w-10 h-10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
       >
-        ←
+        <span className="text-lg">←</span>
       </Button>
 
       {getVisiblePages().map((page, index) => (
         <React.Fragment key={index}>
           {page === "..." ? (
-            <span className="px-2 text-gray-500">...</span>
+            <span className="px-3 py-2 text-white/50 font-medium">...</span>
           ) : (
             <Button
-              variant={currentPage === page ? "primary" : "secondary"}
+              variant={currentPage === page ? "primary" : "ghost"}
               size="sm"
               onClick={() => onPageChange(page as number)}
-              className="min-w-[40px]"
+              className={cn(
+                "w-10 h-10 rounded-full transition-all duration-200 hover:scale-110",
+                currentPage === page
+                  ? "bg-gradient-to-br from-purple-500 to-blue-500 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/40"
+                  : "hover:bg-white/20"
+              )}
             >
-              {page}
+              <span className="font-semibold">{page}</span>
             </Button>
           )}
         </React.Fragment>
       ))}
 
       <Button
-        variant="secondary"
+        variant="ghost"
         size="sm"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        className="w-10 h-10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
       >
-        →
+        <span className="text-lg">→</span>
       </Button>
     </div>
   );

@@ -8,6 +8,7 @@ import { Card } from "@/shared/components/Card";
 import { Text } from "@/shared/components/Text";
 import { Pagination } from "@/shared/components/Pagination";
 import { Loader } from "@/shared/components/Loader";
+import { AnimatedContainer } from "@/shared/components/AnimatedContainer";
 import { useBlockchainScore } from "@/shared/hooks/useBlockchainScore";
 import { LeaderboardEntry } from "@/infrastructure/blockchain/blockchainService";
 import { LeaderboardTable, LeaderboardStats, EmptyLeaderboard } from "./index";
@@ -105,68 +106,80 @@ export const LeaderboardContent: React.FC = () => {
   if (!isConnected) {
     return (
       <Container className="py-8">
-        <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            {t("scenes.leaderboard.title")}
-          </h2>
-          <Text variant="error" className="mb-4">
-            {t("scenes.leaderboard.connectWalletToView")}
-          </Text>
-        </Card>
+        <AnimatedContainer animation="fadeIn" delay={100}>
+          <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              {t("scenes.leaderboard.title")}
+            </h2>
+            <Text variant="error" className="mb-4">
+              {t("scenes.leaderboard.connectWalletToView")}
+            </Text>
+          </Card>
+        </AnimatedContainer>
       </Container>
     );
   }
 
   return (
     <Container className="py-8">
-      <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
-        {/* Enhanced Header */}
-        <SceneHeader
-          title={t("scenes.leaderboard.title")}
-          subtitle={t("scenes.leaderboard.subtitle")}
-        />
+      <AnimatedContainer animation="scaleIn" delay={100}>
+        <Card className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6">
+          {/* Enhanced Header */}
+          <SceneHeader
+            title={t("scenes.leaderboard.title")}
+            subtitle={t("scenes.leaderboard.subtitle")}
+          />
 
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12">
-            <Loader
-              size="lg"
-              color="gradient"
-              text={t("scenes.leaderboard.loadingScores")}
-            />
-          </div>
-        ) : hasError ? (
-          <div className="text-center">
-            <Text variant="subtitle" className="text-red-400">
-              {errorMessage || t("scenes.leaderboard.leaderboardError")}
-            </Text>
-            <Text variant="caption" className="text-white/60">
-              {t("scenes.leaderboard.leaderboardErrorDescription")}
-            </Text>
-          </div>
-        ) : leaderboardData.length === 0 ? (
-          <EmptyLeaderboard />
-        ) : (
-          <>
-            <LeaderboardTable data={leaderboardData} userAddress={address} />
-
-            {totalPages > 1 && (
-              <div className="mt-6 flex justify-center">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader
+                size="lg"
+                color="gradient"
+                text={t("scenes.leaderboard.loadingScores")}
+              />
+            </div>
+          ) : hasError ? (
+            <AnimatedContainer animation="fadeIn" delay={200}>
+              <div className="text-center">
+                <Text variant="subtitle" className="text-red-400">
+                  {errorMessage || t("scenes.leaderboard.leaderboardError")}
+                </Text>
+                <Text variant="caption" className="text-white/60">
+                  {t("scenes.leaderboard.leaderboardErrorDescription")}
+                </Text>
               </div>
-            )}
+            </AnimatedContainer>
+          ) : leaderboardData.length === 0 ? (
+            <EmptyLeaderboard />
+          ) : (
+            <div className="space-y-8">
+              <LeaderboardTable data={leaderboardData} userAddress={address} />
 
-            <LeaderboardStats
-              currentPage={currentPage}
-              totalPages={totalPages}
-              totalScores={totalEntries}
-            />
-          </>
-        )}
-      </Card>
+              {/* Enhanced Pagination */}
+              {totalPages > 1 && (
+                <AnimatedContainer animation="slideUp" delay={600}>
+                  <div className="flex justify-center">
+                    <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/20 p-4">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                        className="gap-3"
+                      />
+                    </div>
+                  </div>
+                </AnimatedContainer>
+              )}
+
+              <LeaderboardStats
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalScores={totalEntries}
+              />
+            </div>
+          )}
+        </Card>
+      </AnimatedContainer>
     </Container>
   );
 };

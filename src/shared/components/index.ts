@@ -1,15 +1,18 @@
 // UI Components
+export { AnimatedContainer } from "./AnimatedContainer";
 export { Box } from "./Box";
 export { Button } from "./Button";
 export { Card } from "./Card";
 export { CircularButton } from "./CircularButton";
 export { Container } from "./Container";
-
+export { DataTable } from "./DataTable";
 export { Loader } from "./Loader";
 export { Modal } from "./Modal";
 export { Pagination } from "./Pagination";
+export { RankBadge } from "./RankBadge";
 export { SceneContainer } from "./SceneContainer";
 export { SceneHeader } from "./SceneHeader";
+export { StatusIndicator } from "./StatusIndicator";
 export { Table } from "./Table";
 export { Tabs } from "./Tabs";
 export { Text } from "./Text";

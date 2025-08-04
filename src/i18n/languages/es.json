@@ -50,7 +50,11 @@
       "loadingAchievements": "Cargando logros...",
       "noScoresYet": "Aún no hay puntuaciones",
       "playGameToSeeScores": "Juega una partida para ver tus puntuaciones",
-      "showingResults": "Mostrando {{start}}-{{end}} de {{total}} resultados"
+      "showingResults": "Mostrando {{start}}-{{end}} de {{total}} resultados",
+      "gamesPlayed": "juegos jugados",
+      "average": "prom",
+      "personalBest": "Mejor Personal",
+      "newScore": "Nueva Puntuación"
     },
     "leaderboard": {
       "title": "Tabla de Posiciones",

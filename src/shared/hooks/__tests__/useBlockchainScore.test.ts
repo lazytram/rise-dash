@@ -1,4 +1,3 @@
-import { renderHook, act } from "@testing-library/react";
 import { useBlockchainScore } from "../useBlockchainScore";
 import {
   useAccount,
@@ -9,6 +8,7 @@ import { blockchainService } from "@/infrastructure/blockchain/blockchainService
 import { SCOREBOARD_ABI } from "@/infrastructure/blockchain/abis";
 import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
+import { renderHookWithQueryClient, act } from "@/shared/utils/testUtils";
 
 // Mock all dependencies
 jest.mock("wagmi", () => ({
@@ -108,7 +108,7 @@ describe("useBlockchainScore", () => {
         address: undefined,
       } as unknown as ReturnType<typeof useAccount>);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const success = await act(async () => {
         return await result.current.saveScore(1000, "Player1");
@@ -129,7 +129,7 @@ describe("useBlockchainScore", () => {
         minTimeBetweenScores: BigInt(0),
       });
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const success = await act(async () => {
         return await result.current.saveScore(1000, "Player1");
@@ -150,7 +150,7 @@ describe("useBlockchainScore", () => {
         minTimeBetweenScores: BigInt(0),
       });
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const success = await act(async () => {
         return await result.current.saveScore(1000, "Player1");
@@ -168,7 +168,7 @@ describe("useBlockchainScore", () => {
         ok: false,
       });
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const success = await act(async () => {
         return await result.current.saveScore(1000, "Player1");
@@ -187,7 +187,7 @@ describe("useBlockchainScore", () => {
         signature: "0xsignature" as `0x${string}`,
       });
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const success = await act(async () => {
         return await result.current.saveScore(1000, "Player1");
@@ -213,7 +213,7 @@ describe("useBlockchainScore", () => {
         throw new Error("Write contract error");
       });
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const success = await act(async () => {
         return await result.current.saveScore(1000, "Player1");
@@ -233,7 +233,7 @@ describe("useBlockchainScore", () => {
         address: undefined,
       } as unknown as ReturnType<typeof useAccount>);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
         return await result.current.isNewPersonalBest(1000);
@@ -245,7 +245,7 @@ describe("useBlockchainScore", () => {
     it("should return true when it is a new personal best", async () => {
       mockBlockchainService.isNewPersonalBest.mockResolvedValue(true);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
         return await result.current.isNewPersonalBest(1000);
@@ -261,7 +261,7 @@ describe("useBlockchainScore", () => {
     it("should return false when it is not a new personal best", async () => {
       mockBlockchainService.isNewPersonalBest.mockResolvedValue(false);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
         return await result.current.isNewPersonalBest(1000);
@@ -275,7 +275,7 @@ describe("useBlockchainScore", () => {
         new Error("Network error")
       );
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const isNewBest = await act(async () => {
         return await result.current.isNewPersonalBest(1000);
@@ -296,7 +296,7 @@ describe("useBlockchainScore", () => {
       ];
       mockBlockchainService.getLeaderboard.mockResolvedValue(mockLeaderboard);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const leaderboard = await act(async () => {
         return await result.current.getLeaderboard(0, 10);
@@ -312,7 +312,7 @@ describe("useBlockchainScore", () => {
       const mockTotalScores = BigInt(100);
       mockBlockchainService.getTotalScores.mockResolvedValue(mockTotalScores);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       const totalScores = await act(async () => {
         return await result.current.getTotalScores();
@@ -339,7 +339,7 @@ describe("useBlockchainScore", () => {
         isSuccess: true,
       } as unknown as ReturnType<typeof useWaitForTransactionReceipt>);
 
-      renderHook(() => useBlockchainScore());
+      renderHookWithQueryClient(() => useBlockchainScore());
 
       // The success toast should be shown automatically via useEffect
       // when isSuccess becomes true
@@ -361,7 +361,7 @@ describe("useBlockchainScore", () => {
         error: mockError,
       } as unknown as ReturnType<typeof useWriteContract>);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       // Call the transaction error handler manually
       act(() => {
@@ -384,7 +384,7 @@ describe("useBlockchainScore", () => {
         error: null,
       } as unknown as ReturnType<typeof useWriteContract>);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       expect(result.current.isSaving).toBe(true);
     });
@@ -395,7 +395,7 @@ describe("useBlockchainScore", () => {
         isSuccess: false,
       } as unknown as ReturnType<typeof useWaitForTransactionReceipt>);
 
-      const { result } = renderHook(() => useBlockchainScore());
+      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
       expect(result.current.isSaving).toBe(true);
     });
