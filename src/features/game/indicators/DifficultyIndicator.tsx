@@ -13,26 +13,28 @@ export const DifficultyIndicator: React.FC<DifficultyIndicatorProps> = memo(
     const { t } = useTranslations();
 
     return (
-      <div className="bg-gradient-to-br from-orange-900/20 to-amber-800/30 backdrop-blur-sm border border-orange-400/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-16 sm:h-18 md:h-20 lg:h-22 flex flex-col justify-center shadow-lg">
-        <h3 className="text-orange-100 font-semibold mb-2 text-center text-xs">
+      <div className="bg-gradient-to-br from-orange-900/20 to-amber-800/30 backdrop-blur-sm border border-orange-400/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-20 sm:h-22 md:h-24 lg:h-26 flex flex-col shadow-lg">
+        <h3 className="text-orange-100 font-semibold text-center text-xs mb-2 flex-shrink-0">
           {t("features.gameplay.difficulty")}
         </h3>
-        <div className="flex flex-col space-y-1">
-          <div className="flex justify-between items-center">
-            <span className="text-orange-50 text-xs">
-              {t("features.gameplay.level")}
-            </span>
-            <span className="text-yellow-300 font-semibold text-xs">
-              {difficultyLevel.level}
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-orange-50 text-xs">
-              {t("features.gameplay.speed")}
-            </span>
-            <span className="text-emerald-300 font-semibold text-xs">
-              {difficultyLevel.speedMultiplier.toFixed(1)}x
-            </span>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col space-y-1 w-full">
+            <div className="flex justify-between items-center">
+              <span className="text-orange-50 text-xs">
+                {t("features.gameplay.level")}
+              </span>
+              <span className="text-yellow-300 font-semibold text-xs">
+                {difficultyLevel.level}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-orange-50 text-xs">
+                {t("features.gameplay.speed")}
+              </span>
+              <span className="text-emerald-300 font-semibold text-xs">
+                {difficultyLevel.speedMultiplier.toFixed(1)}x
+              </span>
+            </div>
           </div>
         </div>
       </div>

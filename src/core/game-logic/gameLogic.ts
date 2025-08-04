@@ -490,7 +490,7 @@ export class GameLogic {
     return {
       id: this.generateEntityId(),
       x: GAME_CONSTANTS.CANVAS_WIDTH,
-      y: groundY - 28, // Increased height to reduce collision chance
+      y: groundY - 25, // Increased height to reduce collision chance
       width: 30, // Default sushi width
       height: 30, // Default sushi height
       velocityX: baseSpeed * speedVariation,
@@ -952,18 +952,21 @@ export class GameLogic {
     const newSamurais = [...samurais];
 
     newSamurais.forEach((samurai, index) => {
-      const bullet = this.makeSamuraiShoot(
-        samurai,
-        gameState.distance,
-        gameState.difficultyLevel,
-        gameState.player
-      );
-      if (bullet) {
-        newSamuraiBullets.push(bullet);
-        newSamurais[index] = {
-          ...samurai,
-          lastShotTime: Date.now(),
-        };
+      // Only make samurai shoot if it still has lives
+      if (samurai.lives > 0) {
+        const bullet = this.makeSamuraiShoot(
+          samurai,
+          gameState.distance,
+          gameState.difficultyLevel,
+          gameState.player
+        );
+        if (bullet) {
+          newSamuraiBullets.push(bullet);
+          newSamurais[index] = {
+            ...samurai,
+            lastShotTime: Date.now(),
+          };
+        }
       }
     });
 
