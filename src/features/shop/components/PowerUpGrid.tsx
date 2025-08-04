@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { PowerUpCardBlockchain } from "../PowerUpCardBlockchain";
+import { PowerUpCard } from "../PowerUpCard";
 import { POWERUP_ORDER, POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpType } from "@/shared/types/powerUps";
 import { Loader } from "@/shared/components/Loader";
@@ -48,7 +48,7 @@ export const PowerUpGrid: React.FC<PowerUpGridProps> = memo(
           const isLoading = isUpgrading[powerUpType];
 
           return (
-            <PowerUpCardBlockchain
+            <PowerUpCard
               key={powerUpType}
               powerUp={powerUp}
               currentLevel={currentLevel}
