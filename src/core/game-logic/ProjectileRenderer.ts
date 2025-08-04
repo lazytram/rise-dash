@@ -1,5 +1,5 @@
 import { BaseRenderer } from "./BaseRenderer";
-import { RiceRocket, SamuraiBullet } from "@/shared/types/game";
+import { RiceRocket, EnemyBullet } from "@/shared/types/game";
 import { RICE_ROCKET_COLORS, COMMON_COLORS } from "@/shared/constants/colors";
 
 export class ProjectileRenderer extends BaseRenderer {
@@ -9,9 +9,9 @@ export class ProjectileRenderer extends BaseRenderer {
     });
   }
 
-  drawSamuraiBullets(samuraiBullets: SamuraiBullet[]): void {
-    samuraiBullets.forEach((bullet) => {
-      this.drawSamuraiBullet(bullet);
+  drawenemyBullets(enemyBullets: EnemyBullet[]): void {
+    enemyBullets.forEach((bullet) => {
+      this.drawEnemyBullet(bullet);
     });
   }
 
@@ -25,7 +25,7 @@ export class ProjectileRenderer extends BaseRenderer {
     this.ctx.fillRect(rocket.x, rocket.y, rocket.width / 2, rocket.height / 2);
   }
 
-  private drawSamuraiBullet(bullet: SamuraiBullet): void {
+  private drawEnemyBullet(bullet: EnemyBullet): void {
     // Draw shuriken trail
     this.ctx.fillStyle = "rgba(255, 69, 0, 0.5)";
     this.ctx.fillRect(bullet.x - 8, bullet.y, 8, bullet.height);

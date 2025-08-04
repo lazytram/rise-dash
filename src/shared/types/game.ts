@@ -89,9 +89,9 @@ export interface Boss extends MovableEntity {
 }
 
 /**
- * Projectile fired by samurai enemies
+ * Projectile fired by enemy entities (samurai, ninja, boss)
  */
-export interface SamuraiBullet extends MovableEntity {
+export interface EnemyBullet extends MovableEntity {
   velocityY: number;
 }
 
@@ -140,7 +140,7 @@ export interface DifficultyLevel {
   sushiSpawnProbability: number;
   samuraiShotCooldown: number;
   samuraiLives: number;
-  samuraiBulletSpeed: number;
+  enemyBulletspeed: number;
   // New enemy parameters
   ninjaSpawnDistance: number;
   ninjaShotCooldown: number;
@@ -163,7 +163,7 @@ export interface GameState {
   samurais: Samurai[];
   ninjas: Ninja[];
   bosses: Boss[];
-  samuraiBullets: SamuraiBullet[];
+  enemyBullets: EnemyBullet[];
   powerUps: PowerUp[];
   distance: number;
   isGameRunning: boolean;
