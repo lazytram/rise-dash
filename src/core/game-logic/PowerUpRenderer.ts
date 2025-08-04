@@ -1,5 +1,5 @@
 import { PowerUp } from "@/shared/types/game";
-import { PowerUpType } from "@/shared/types/powerUps";
+import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { BaseRenderer } from "./BaseRenderer";
 
 export class PowerUpRenderer extends BaseRenderer {
@@ -10,24 +10,8 @@ export class PowerUpRenderer extends BaseRenderer {
     // Draw glow effect first (behind the power-up)
     this.drawPowerUpGlow(powerUp);
 
-    // Draw power-up based on type
-    switch (powerUp.type) {
-      case PowerUpType.SHIELD:
-        this.drawShieldPowerUp(powerUp);
-        break;
-      case PowerUpType.INFINITE_AMMO:
-        this.drawInfiniteAmmoPowerUp(powerUp);
-        break;
-      case PowerUpType.JUMP_BOOST:
-        this.drawJumpBoostPowerUp(powerUp);
-        break;
-      case PowerUpType.SLOW_MOTION:
-        this.drawSlowMotionPowerUp(powerUp);
-        break;
-      case PowerUpType.MULTI_SHOT:
-        this.drawMultiShotPowerUp(powerUp);
-        break;
-    }
+    // Draw power-up with generic method
+    this.drawGenericPowerUp(powerUp);
 
     // Draw floating animation
     this.drawFloatingAnimation(powerUp);
@@ -37,21 +21,34 @@ export class PowerUpRenderer extends BaseRenderer {
     powerUps.forEach((powerUp) => this.drawPowerUp(powerUp));
   }
 
-  private drawShieldPowerUp(powerUp: PowerUp): void {
-    // Draw shield icon (hexagon)
+  private drawGenericPowerUp(powerUp: PowerUp): void {
+    const centerX = powerUp.x + powerUp.width / 2;
+    const centerY = powerUp.y + powerUp.height / 2;
+    const size = Math.min(powerUp.width, powerUp.height) / 2 - 2;
+
+    // Draw background circle/hexagon
+    this.drawPowerUpBackground(powerUp, centerX, centerY, size);
+
+    // Draw icon from constants
+    this.drawPowerUpIcon(powerUp, centerX, centerY);
+  }
+
+  private drawPowerUpBackground(
+    powerUp: PowerUp,
+    centerX: number,
+    centerY: number,
+    size: number
+  ): void {
     this.ctx.fillStyle = powerUp.color;
     this.ctx.strokeStyle = "#ffffff";
     this.ctx.lineWidth = 2;
 
-    const centerX = powerUp.x + powerUp.width / 2;
-    const centerY = powerUp.y + powerUp.height / 2;
-    const radius = Math.min(powerUp.width, powerUp.height) / 2 - 2;
-
+    // Draw hexagon background
     this.ctx.beginPath();
     for (let i = 0; i < 6; i++) {
       const angle = (i * Math.PI) / 3;
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
+      const x = centerX + size * Math.cos(angle);
+      const y = centerY + size * Math.sin(angle);
       if (i === 0) {
         this.ctx.moveTo(x, y);
       } else {
@@ -61,126 +58,23 @@ export class PowerUpRenderer extends BaseRenderer {
     this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
-
-    // Draw shield symbol
-    this.ctx.fillStyle = "#ffffff";
-    this.ctx.font = "12px Arial";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("🛡️", centerX, centerY + 4);
   }
 
-  private drawInfiniteAmmoPowerUp(powerUp: PowerUp): void {
-    // Draw infinity symbol
-    this.ctx.fillStyle = powerUp.color;
-    this.ctx.strokeStyle = "#ffffff";
-    this.ctx.lineWidth = 2;
+  private drawPowerUpIcon(
+    powerUp: PowerUp,
+    centerX: number,
+    centerY: number
+  ): void {
+    // Get icon from constants
+    const powerUpData = POWERUP_UPGRADES[powerUp.type];
+    const icon = powerUpData?.icon || "❓";
 
-    const centerX = powerUp.x + powerUp.width / 2;
-    const centerY = powerUp.y + powerUp.height / 2;
-    const radius = Math.min(powerUp.width, powerUp.height) / 3;
-
-    // Draw infinity symbol
-    this.ctx.beginPath();
-    this.ctx.arc(centerX - radius, centerY, radius, 0, Math.PI * 2);
-    this.ctx.arc(centerX + radius, centerY, radius, 0, Math.PI * 2);
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    // Draw ammo symbol
+    // Draw icon
     this.ctx.fillStyle = "#ffffff";
-    this.ctx.font = "10px Arial";
+    this.ctx.font = "16px Arial";
     this.ctx.textAlign = "center";
-    this.ctx.fillText("∞", centerX, centerY + 3);
-  }
-
-  private drawJumpBoostPowerUp(powerUp: PowerUp): void {
-    // Draw kangaroo/jump symbol
-    this.ctx.fillStyle = powerUp.color;
-    this.ctx.strokeStyle = "#ffffff";
-    this.ctx.lineWidth = 2;
-
-    const centerX = powerUp.x + powerUp.width / 2;
-    const centerY = powerUp.y + powerUp.height / 2;
-    const size = Math.min(powerUp.width, powerUp.height) / 2 - 2;
-
-    // Draw jump arrow
-    this.ctx.beginPath();
-    this.ctx.moveTo(centerX, centerY + size);
-    this.ctx.lineTo(centerX, centerY - size);
-    this.ctx.lineTo(centerX - size / 3, centerY - size / 2);
-    this.ctx.moveTo(centerX, centerY - size);
-    this.ctx.lineTo(centerX + size / 3, centerY - size / 2);
-    this.ctx.stroke();
-
-    // Draw jump symbol
-    this.ctx.fillStyle = "#ffffff";
-    this.ctx.font = "12px Arial";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("🦘", centerX, centerY + 4);
-  }
-
-  private drawSlowMotionPowerUp(powerUp: PowerUp): void {
-    // Draw clock/slow motion symbol
-    this.ctx.fillStyle = powerUp.color;
-    this.ctx.strokeStyle = "#ffffff";
-    this.ctx.lineWidth = 2;
-
-    const centerX = powerUp.x + powerUp.width / 2;
-    const centerY = powerUp.y + powerUp.height / 2;
-    const size = Math.min(powerUp.width, powerUp.height) / 2 - 2;
-
-    // Draw clock circle
-    this.ctx.beginPath();
-    this.ctx.arc(centerX, centerY, size, 0, 2 * Math.PI);
-    this.ctx.stroke();
-
-    // Draw clock hands
-    this.ctx.beginPath();
-    this.ctx.moveTo(centerX, centerY);
-    this.ctx.lineTo(centerX, centerY - size / 2);
-    this.ctx.moveTo(centerX, centerY);
-    this.ctx.lineTo(centerX + size / 3, centerY);
-    this.ctx.stroke();
-
-    // Draw slow motion symbol
-    this.ctx.fillStyle = "#ffffff";
-    this.ctx.font = "12px Arial";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("⏰", centerX, centerY + 4);
-  }
-
-  private drawMultiShotPowerUp(powerUp: PowerUp): void {
-    // Draw multiple projectiles
-    this.ctx.fillStyle = powerUp.color;
-    this.ctx.strokeStyle = "#ffffff";
-    this.ctx.lineWidth = 2;
-
-    const centerX = powerUp.x + powerUp.width / 2;
-    const centerY = powerUp.y + powerUp.height / 2;
-    const size = Math.min(powerUp.width, powerUp.height) / 3;
-
-    // Draw three projectiles
-    for (let i = 0; i < 3; i++) {
-      const offsetX = (i - 1) * size * 0.8;
-      const offsetY = (i - 1) * size * 0.3;
-
-      this.ctx.beginPath();
-      this.ctx.arc(
-        centerX + offsetX,
-        centerY + offsetY,
-        size / 2,
-        0,
-        Math.PI * 2
-      );
-      this.ctx.fill();
-      this.ctx.stroke();
-    }
-
-    // Draw multi-shot symbol
-    this.ctx.fillStyle = "#ffffff";
-    this.ctx.font = "10px Arial";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("3", centerX, centerY + 3);
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillText(icon, centerX, centerY);
   }
 
   private drawPowerUpGlow(powerUp: PowerUp): void {

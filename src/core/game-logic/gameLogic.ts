@@ -490,7 +490,7 @@ export class GameLogic {
     return {
       id: this.generateEntityId(),
       x: GAME_CONSTANTS.CANVAS_WIDTH,
-      y: groundY - 28, // Increased height to reduce collision chance
+      y: groundY - 25, // Increased height to reduce collision chance
       width: 30, // Default sushi width
       height: 30, // Default sushi height
       velocityX: baseSpeed * speedVariation,
@@ -836,6 +836,9 @@ export class GameLogic {
   static checkCollisions(gameState: GameState): GameState {
     let newGameState = gameState;
 
+    // Make enemies shoot FIRST (before collision checks)
+    newGameState = this.makeEnemiesShoot(newGameState);
+
     // Check RiceRocket vs Enemy collisions
     newGameState = this.checkRiceRocketEnemyCollisions(newGameState);
 
@@ -844,9 +847,6 @@ export class GameLogic {
 
     // Check Player vs PowerUp collisions
     newGameState = this.checkPlayerPowerUpCollisions(newGameState);
-
-    // Make enemies shoot
-    newGameState = this.makeEnemiesShoot(newGameState);
 
     return newGameState;
   }
@@ -952,18 +952,21 @@ export class GameLogic {
     const newSamurais = [...samurais];
 
     newSamurais.forEach((samurai, index) => {
-      const bullet = this.makeSamuraiShoot(
-        samurai,
-        gameState.distance,
-        gameState.difficultyLevel,
-        gameState.player
-      );
-      if (bullet) {
-        newSamuraiBullets.push(bullet);
-        newSamurais[index] = {
-          ...samurai,
-          lastShotTime: Date.now(),
-        };
+      // Only make samurai shoot if it still has lives
+      if (samurai.lives > 0) {
+        const bullet = this.makeSamuraiShoot(
+          samurai,
+          gameState.distance,
+          gameState.difficultyLevel,
+          gameState.player
+        );
+        if (bullet) {
+          newSamuraiBullets.push(bullet);
+          newSamurais[index] = {
+            ...samurai,
+            lastShotTime: Date.now(),
+          };
+        }
       }
     });
 

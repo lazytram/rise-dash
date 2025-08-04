@@ -284,6 +284,10 @@
       "maxLevelReached": "Niveau Maximum Atteint !",
       "insufficientRice": "RICE Insuffisant",
       "noActive": "Aucun power-up actif",
+      "upgrading": "Amélioration...",
+      "loading": "Chargement...",
+      "level": "Niveau",
+      "projectiles": "projectiles",
       "errorUpgrading": "Échec de la mise à niveau du power-up. Veuillez réessayer.",
       "signatureRejected": "Mise à niveau annulée. Vous avez rejeté la signature.",
       "powerUpNotInitialized": "Power-up non initialisé sur le contrat"

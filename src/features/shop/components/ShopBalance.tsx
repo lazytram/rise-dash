@@ -26,7 +26,7 @@ export const ShopBalance: React.FC<ShopBalanceProps> = memo(
                 <div className="flex items-center space-x-2">
                   <Loader size="sm" />
                   <Text variant="subtitle" size="sm" className="text-white/70">
-                    Loading...
+                    {t("features.powerUps.loading")}
                   </Text>
                 </div>
               ) : (

@@ -284,7 +284,11 @@
       "upgrade": "Upgrade",
       "maxLevelReached": "Max Level Reached!",
       "insufficientRice": "Insufficient RICE",
-      "noActive": "No active power-up"
+      "noActive": "No active power-up",
+      "upgrading": "Upgrading...",
+      "loading": "Loading...",
+      "level": "Level",
+      "projectiles": "projectiles"
     },
     "powerUp": {
       "title": "Power-ups",

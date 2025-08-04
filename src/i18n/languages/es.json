@@ -284,6 +284,10 @@
       "maxLevelReached": "¡Nivel Máximo Alcanzado!",
       "insufficientRice": "RICE Insuficiente",
       "noActive": "Sin power-up activo",
+      "upgrading": "Actualizando...",
+      "loading": "Cargando...",
+      "level": "Nivel",
+      "projectiles": "proyectiles",
       "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
       "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
       "powerUpNotInitialized": "Power-up no inicializado en el contrato"

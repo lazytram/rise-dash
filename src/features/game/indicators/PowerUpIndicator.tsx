@@ -38,10 +38,21 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
       return Math.max(0, Math.ceil(remaining / 1000));
     };
 
-    const getPowerUpProgress = (endTime: number): number => {
-      const totalDuration = 10000; // 10 seconds from constants
-      const remaining = endTime - currentTime;
-      const elapsed = totalDuration - remaining;
+    const getPowerUpProgress = (powerUp: ActivePowerUp): number => {
+      // Get the power-up level from player
+      const powerUpLevel = player.powerUpLevels[powerUp.type] || 1;
+
+      // Get the duration from constants based on level
+      const powerUpData = POWERUP_UPGRADES[powerUp.type];
+      const upgradeData = powerUpData.upgrades.find(
+        (upgrade) => upgrade.level === powerUpLevel
+      );
+      const totalDuration = upgradeData?.duration || 10000; // Fallback to 10s
+
+      // Calculate start time based on actual duration
+      const startTime = powerUp.endTime - totalDuration;
+      const elapsed = currentTime - startTime;
+
       return Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
     };
 
@@ -145,50 +156,58 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
     const activePowerUps = getActivePowerUps();
 
     return (
-      <div className="bg-gradient-to-br from-purple-900/20 to-violet-800/30 backdrop-blur-sm border border-purple-400/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-16 sm:h-18 md:h-20 lg:h-22 flex flex-col justify-center shadow-lg">
-        <h3 className="text-purple-100 font-semibold mb-2 text-center text-xs">
+      <div className="bg-gradient-to-br from-purple-900/20 to-violet-800/30 backdrop-blur-sm border border-purple-400/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-20 sm:h-22 md:h-24 lg:h-26 flex flex-col shadow-lg">
+        <h3 className="text-purple-100 font-semibold text-center text-xs mb-2 flex-shrink-0">
           {t("features.powerUps.title")}
         </h3>
-        <div className="flex items-center justify-center h-8">
+        <div className="flex-1 flex items-center justify-center">
           {activePowerUps.length > 0 ? (
             activePowerUps.map((powerUp) => {
               const colors = getColorClasses(powerUp.color);
               const timeRemaining = calculatePowerUpTimeRemaining(
                 powerUp.endTime
               );
-              const progress = getPowerUpProgress(powerUp.endTime);
+              const progress = getPowerUpProgress(powerUp);
 
               return (
                 <div
                   key={powerUp.type}
-                  className={`flex items-center justify-between ${colors.bg} ${colors.border} rounded-lg p-1.5 w-full shadow-lg`}
+                  className={`flex flex-col space-y-1.5 ${colors.bg} ${colors.border} rounded-lg p-2 w-full shadow-lg backdrop-blur-sm`}
                 >
-                  <div className="flex items-center space-x-1.5">
-                    <span className={`${colors.text} text-xs`}>
-                      {powerUp.icon}
-                    </span>
-                    <span className={`${colors.text} font-semibold text-xs`}>
-                      {powerUp.name}
-                    </span>
+                  {/* Header with icon and name */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className={`${colors.text} text-sm flex-shrink-0`}>
+                        {powerUp.icon}
+                      </span>
+                      <span className={`${colors.text} font-semibold text-xs`}>
+                        {powerUp.name}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <div className="w-6 bg-gray-800/50 rounded-full h-1.5 border border-gray-600/50">
+
+                  {/* Progress bar with time */}
+                  <div className="flex items-center justify-center">
+                    <div className="relative w-full bg-gray-800/50 rounded-full h-3 border border-gray-600/50 overflow-hidden">
                       <div
-                        className={`${colors.progress} h-1.5 rounded-full transition-all duration-200 shadow-sm`}
+                        className={`${colors.progress} h-3 rounded-full transition-all duration-300 ease-out shadow-sm`}
                         style={{ width: `${progress}%` }}
                       />
+                      {/* Time overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span
+                          className={`${colors.text} text-xs font-mono font-bold drop-shadow-sm`}
+                        >
+                          {timeRemaining}s
+                        </span>
+                      </div>
                     </div>
-                    <span
-                      className={`${colors.text} text-xs font-mono min-w-[1.5rem] text-center`}
-                    >
-                      {timeRemaining}s
-                    </span>
                   </div>
                 </div>
               );
             })[0] // Show only the first active power-up
           ) : (
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex items-center justify-center w-full">
               <span className="text-purple-200/70 text-xs font-medium">
                 {t("features.powerUps.noActive")}
               </span>
