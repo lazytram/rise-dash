@@ -9,6 +9,9 @@ import { AnimatedContainer } from "@/shared/components/AnimatedContainer";
 import { DataTable } from "@/shared/components/DataTable";
 import { StatusIndicator } from "@/shared/components/StatusIndicator";
 import { cn } from "@/shared/utils/cn";
+import { Box, Button } from "@/shared/components";
+import { useGameHistory } from "./hooks/useGameHistory";
+import { ProfileSection } from "./ProfileSection";
 
 interface PlayerScore {
   score: bigint;
@@ -17,18 +20,11 @@ interface PlayerScore {
   gameHash: string;
 }
 
-interface ProfileGameHistoryProps {
-  playerScores: PlayerScore[];
-  loading: boolean;
-}
-
 const ITEMS_PER_PAGE = 5;
 
-export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
-  playerScores,
-  loading,
-}) => {
+export const ProfileGameHistory: React.FC = () => {
   const { t } = useTranslations();
+  const { playerScores, loading, error, retry } = useGameHistory();
   const [currentPage, setCurrentPage] = useState(1);
 
   // Pagination logic
@@ -39,13 +35,30 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <Loader
-          size="lg"
-          color="gradient"
-          text={t("scenes.profile.loadingScores")}
-        />
-      </div>
+      <ProfileSection>
+        <Box variant="centered" className="flex-1">
+          <Loader
+            size="lg"
+            color="gradient"
+            text={t("scenes.profile.loadingScores")}
+          />
+        </Box>
+      </ProfileSection>
+    );
+  }
+
+  if (error) {
+    return (
+      <ProfileSection>
+        <Box variant="centered" className="flex-1">
+          <Text variant="error" className="mb-4">
+            {error}
+          </Text>
+          <Button onClick={retry} variant="primary">
+            {t("common.retry")}
+          </Button>
+        </Box>
+      </ProfileSection>
     );
   }
 

@@ -12,22 +12,11 @@ import {
   ProfileAchievements,
 } from "./index";
 import { SceneHeader } from "@/shared/components/SceneHeader";
-import { usePlayerScores, useAchievements } from "./hooks";
 
 export const ProfileContent: React.FC = () => {
   const { t } = useTranslations();
   const { isConnected } = useAccount();
   const [activeTab, setActiveTab] = useState("gameHistory");
-
-  // Use TanStack Query hooks
-  const { data: playerScores = [], isLoading: scoresLoading } =
-    usePlayerScores();
-
-  const {
-    isLoading: achievementsLoading,
-    error: achievementsError,
-    refetch: refetchAchievements,
-  } = useAchievements();
 
   if (!isConnected) {
     return (
@@ -50,7 +39,7 @@ export const ProfileContent: React.FC = () => {
           title={t("scenes.profile.title")}
           subtitle={t("scenes.profile.subtitle")}
         />
-        <ProfileStats playerScores={playerScores} />
+        <ProfileStats />
 
         {/* Tabs Section */}
         <Tabs
@@ -58,23 +47,12 @@ export const ProfileContent: React.FC = () => {
             {
               id: "gameHistory",
               label: t("scenes.profile.gameHistory"),
-              content: (
-                <ProfileGameHistory
-                  playerScores={playerScores}
-                  loading={scoresLoading}
-                />
-              ),
+              content: <ProfileGameHistory />,
             },
             {
               id: "achievements",
               label: t("scenes.profile.achievements"),
-              content: (
-                <ProfileAchievements
-                  loading={achievementsLoading}
-                  error={achievementsError?.message || null}
-                  onRetry={refetchAchievements}
-                />
-              ),
+              content: <ProfileAchievements />,
             },
           ]}
           activeTab={activeTab}

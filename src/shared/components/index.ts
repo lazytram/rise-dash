@@ -32,3 +32,13 @@ export { LanguageSelector } from "./LanguageSelector";
 export { Providers } from "./Providers";
 export { RiceLogo } from "./RiceLogo";
 export { ErrorBoundary } from "./ErrorBoundary";
+
+// Achievement Components
+export {
+  AchievementCard,
+  AchievementGrid,
+  AchievementFilter,
+  type Achievement,
+  type FilterType,
+  type RarityFilter,
+} from "../../features/profile/achievements";

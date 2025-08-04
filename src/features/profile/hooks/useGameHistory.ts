@@ -1,26 +1,42 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { useTranslations } from "@/shared/hooks/useTranslations";
-import { achievementsService } from "../services/achievementsService";
-import { Achievement } from "../achievements/types";
+import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 
-const fetchAchievements = async (): Promise<Achievement[]> => {
-  return await achievementsService.getAchievements();
+interface PlayerScore {
+  score: bigint;
+  timestamp: bigint;
+  playerName: string;
+  gameHash: string;
+}
+
+const fetchPlayerScores = async (
+  address: `0x${string}`
+): Promise<PlayerScore[]> => {
+  const scores = await blockchainService.getPlayerScores(address);
+
+  // Sort scores by score (descending) and then by timestamp (descending)
+  return scores.sort((a, b) => {
+    if (a.score !== b.score) {
+      return Number(b.score - a.score);
+    }
+    return Number(b.timestamp - a.timestamp);
+  });
 };
 
-export const useAchievements = () => {
-  const { isConnected } = useAccount();
+export const useGameHistory = () => {
+  const { address, isConnected } = useAccount();
   const { t } = useTranslations();
 
   const {
-    data: achievements = [],
+    data: playerScores = [],
     isLoading: loading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["achievements"],
-    queryFn: fetchAchievements,
-    enabled: isConnected,
+    queryKey: ["playerScores", address],
+    queryFn: () => fetchPlayerScores(address!),
+    enabled: isConnected && !!address,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
   });
@@ -45,13 +61,13 @@ export const useAchievements = () => {
     }
 
     // Generic error with fallback
-    return t("errors.loadingAchievementsError", {
-      fallback: "Error loading achievements",
+    return t("errors.loadingScoresError", {
+      fallback: "Error loading player scores",
     });
   };
 
   return {
-    achievements,
+    playerScores,
     loading,
     error: getErrorMessage(),
     retry,
