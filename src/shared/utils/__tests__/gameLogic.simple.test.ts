@@ -119,7 +119,7 @@ describe("GameLogic - Simple Tests", () => {
     it("should clear entities when game is not running", () => {
       const gameState = createTestGameState({
         isGameRunning: false,
-        samuraiBullets: [
+        enemyBullets: [
           {
             id: "test",
             x: 100,
@@ -146,7 +146,7 @@ describe("GameLogic - Simple Tests", () => {
       const result = GameLogic.updateGameState(gameState);
 
       // Should clear all entities when game is not running
-      expect(result.samuraiBullets).toEqual([]);
+      expect(result.enemyBullets).toEqual([]);
       expect(result.riceRockets).toEqual([]);
       expect(result.sushis).toEqual([]);
       expect(result.toriis).toEqual([]);

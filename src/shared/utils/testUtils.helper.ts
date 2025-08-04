@@ -6,7 +6,7 @@ import {
   Samurai,
   Ninja,
   Boss,
-  SamuraiBullet,
+  EnemyBullet,
   RiceRocket,
   PowerUp,
   Torii,
@@ -108,9 +108,9 @@ export const createTestBoss = (overrides: Partial<Boss> = {}): Boss => ({
   ...overrides,
 });
 
-export const createTestSamuraiBullet = (
-  overrides: Partial<SamuraiBullet> = {}
-): SamuraiBullet => ({
+export const createTestEnemyBullet = (
+  overrides: Partial<EnemyBullet> = {}
+): EnemyBullet => ({
   id: "test-bullet",
   x: 150,
   y: 300,
@@ -176,7 +176,7 @@ export const createCollidingEntities = (
     case "samurai":
       return { player, entity: createTestSamurai({ x: 100, y: 300 }) };
     case "bullet":
-      return { player, entity: createTestSamuraiBullet({ x: 100, y: 300 }) };
+      return { player, entity: createTestEnemyBullet({ x: 100, y: 300 }) };
     case "powerup":
       return { player, entity: createTestPowerUp({ x: 100, y: 300 }) };
     default:
@@ -195,7 +195,7 @@ export const createNonCollidingEntities = (
     case "samurai":
       return { player, entity: createTestSamurai({ x: 200, y: 300 }) };
     case "bullet":
-      return { player, entity: createTestSamuraiBullet({ x: 200, y: 300 }) };
+      return { player, entity: createTestEnemyBullet({ x: 200, y: 300 }) };
     case "powerup":
       return { player, entity: createTestPowerUp({ x: 200, y: 300 }) };
     default:
@@ -388,7 +388,7 @@ const getEntityArrayName = (entityType: string) => {
     case "samurai":
       return "samurais";
     case "bullet":
-      return "samuraiBullets";
+      return "enemyBullets";
     case "powerup":
       return "powerUps";
     default:

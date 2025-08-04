@@ -5,7 +5,7 @@ import {
   Sushi,
   Torii,
   Samurai,
-  SamuraiBullet,
+  EnemyBullet,
   Ninja,
   Boss,
   PowerUp,
@@ -71,7 +71,7 @@ export class GameLogic {
     );
 
     // Calculate samurai bullet speed (increases with level)
-    const samuraiBulletSpeed =
+    const enemyBulletspeed =
       GAME_CONSTANTS.BASE_SAMURAI_BULLET_SPEED * (1 + (level - 1) * 0.1);
 
     // Calculate ninja parameters (unlocked at level 3+)
@@ -111,7 +111,7 @@ export class GameLogic {
       sushiSpawnProbability,
       samuraiShotCooldown,
       samuraiLives,
-      samuraiBulletSpeed,
+      enemyBulletspeed,
       ninjaSpawnDistance,
       ninjaShotCooldown,
       ninjaLives,
@@ -151,7 +151,7 @@ export class GameLogic {
       samurais: [],
       ninjas: [],
       bosses: [],
-      samuraiBullets: [],
+      enemyBullets: [],
       powerUps: [],
       distance: 0,
       isGameRunning: false,
@@ -165,7 +165,7 @@ export class GameLogic {
       // Ensure projectiles are cleared when game is not running
       return {
         ...gameState,
-        samuraiBullets: [],
+        enemyBullets: [],
         riceRockets: [],
         sushis: [],
         toriis: [],
@@ -190,7 +190,7 @@ export class GameLogic {
       updatedSamurais,
       updatedNinjas,
       updatedBosses,
-      updatedSamuraiBullets,
+      updatedEnemyBullets,
       updatedPowerUps,
     ] = [
       this.updatePlayerPhysics(gameState.player),
@@ -200,7 +200,7 @@ export class GameLogic {
       this.updateSamurais(gameState.samurais),
       this.updateNinjas(gameState.ninjas),
       this.updateBosses(gameState.bosses),
-      this.updateSamuraiBullets(gameState.samuraiBullets),
+      this.updateEnemyBullets(gameState.enemyBullets),
       this.updatePowerUps(gameState.powerUps),
     ];
 
@@ -213,7 +213,7 @@ export class GameLogic {
       samurais: updatedSamurais,
       ninjas: updatedNinjas,
       bosses: updatedBosses,
-      samuraiBullets: updatedSamuraiBullets,
+      enemyBullets: updatedEnemyBullets,
       powerUps: updatedPowerUps,
       distance: updatedDistance,
       difficultyLevel: updatedDifficultyLevel,
@@ -232,7 +232,7 @@ export class GameLogic {
         isGameOver: true,
         isGameRunning: false,
         // Clear ALL game entities when game over to prevent instant death on restart
-        samuraiBullets: [],
+        enemyBullets: [],
         riceRockets: [],
         sushis: [],
         toriis: [],
@@ -691,10 +691,7 @@ export class GameLogic {
     return speed;
   }
 
-  static getCurrentSamuraiBulletSpeed(
-    distance: number,
-    player?: Player
-  ): number {
+  static getCurrentenemyBulletspeed(distance: number, player?: Player): number {
     const speedMultiplier = this.calculateSpeedMultiplier(distance);
     let speed = GAME_CONSTANTS.BASE_SAMURAI_BULLET_SPEED * speedMultiplier;
 
@@ -778,12 +775,12 @@ export class GameLogic {
     };
   }
 
-  static createSamuraiBullet(
+  static createEnemyBullet(
     samurai: Samurai,
     distance: number,
     difficultyLevel: DifficultyLevel,
     player?: Player
-  ): SamuraiBullet {
+  ): EnemyBullet {
     // Ensure bullet starts at a safe distance from the player
     const bulletX = Math.max(samurai.x, 150); // Minimum 150px from left edge
 
@@ -793,16 +790,14 @@ export class GameLogic {
       y: samurai.y + samurai.height / 2, // Same height as samurai center
       width: GAME_CONSTANTS.SAMURAI_BULLET_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_BULLET_HEIGHT,
-      velocityX: this.getCurrentSamuraiBulletSpeed(distance, player), // Use difficulty-based speed
+      velocityX: this.getCurrentenemyBulletspeed(distance, player), // Use difficulty-based speed
       velocityY: 0, // No vertical movement
       color: SAMURAI_BULLET_COLORS.BODY,
     };
   }
 
-  static updateSamuraiBullets(
-    samuraiBullets: SamuraiBullet[]
-  ): SamuraiBullet[] {
-    return samuraiBullets
+  static updateEnemyBullets(enemyBullets: EnemyBullet[]): EnemyBullet[] {
+    return enemyBullets
       .map((bullet) => ({
         ...bullet,
         x: bullet.x + bullet.velocityX,
@@ -816,15 +811,10 @@ export class GameLogic {
     distance: number,
     difficultyLevel: DifficultyLevel,
     player?: Player
-  ): SamuraiBullet | null {
+  ): EnemyBullet | null {
     const currentTime = Date.now();
     if (currentTime - samurai.lastShotTime >= samurai.shotCooldown) {
-      return this.createSamuraiBullet(
-        samurai,
-        distance,
-        difficultyLevel,
-        player
-      );
+      return this.createEnemyBullet(samurai, distance, difficultyLevel, player);
     }
     return null;
   }
@@ -842,8 +832,8 @@ export class GameLogic {
     // Check RiceRocket vs Enemy collisions
     newGameState = this.checkRiceRocketEnemyCollisions(newGameState);
 
-    // Check Player vs SamuraiBullet collisions (handles shield protection)
-    newGameState = this.checkPlayerSamuraiBulletCollisions(newGameState);
+    // Check Player vs EnemyBullet collisions (handles shield protection)
+    newGameState = this.checkPlayerEnemyBulletCollisions(newGameState);
 
     // Check Player vs PowerUp collisions
     newGameState = this.checkPlayerPowerUpCollisions(newGameState);
@@ -867,9 +857,10 @@ export class GameLogic {
   }
 
   static checkRiceRocketSamuraiCollisions(gameState: GameState): GameState {
-    const { riceRockets, samurais } = gameState;
+    const { riceRockets, samurais, enemyBullets } = gameState;
     const newRiceRockets = [...riceRockets];
     const newSamurais = [...samurais];
+    let enemyDied = false;
 
     // Check each rice rocket against each samurai
     for (let i = newRiceRockets.length - 1; i >= 0; i--) {
@@ -887,6 +878,7 @@ export class GameLogic {
           // Remove samurai if no lives left
           if (newSamurais[j].lives <= 0) {
             newSamurais.splice(j, 1);
+            enemyDied = true;
           }
           break;
         }
@@ -897,16 +889,17 @@ export class GameLogic {
       ...gameState,
       riceRockets: newRiceRockets,
       samurais: newSamurais,
+      enemyBullets: enemyDied ? [] : enemyBullets,
     };
   }
 
-  static checkPlayerSamuraiBulletCollisions(gameState: GameState): GameState {
-    const { player, samuraiBullets } = gameState;
-    const newSamuraiBullets = [...samuraiBullets];
+  static checkPlayerEnemyBulletCollisions(gameState: GameState): GameState {
+    const { player, enemyBullets } = gameState;
+    const newenemyBullets = [...enemyBullets];
 
     // Check each samurai bullet against player
-    for (let i = newSamuraiBullets.length - 1; i >= 0; i--) {
-      const bullet = newSamuraiBullets[i];
+    for (let i = newenemyBullets.length - 1; i >= 0; i--) {
+      const bullet = newenemyBullets[i];
       if (this.checkCollision(player, bullet)) {
         // Debug: Log bullet collision
         const formattedDistance = this.formatDistance(gameState.distance);
@@ -915,7 +908,7 @@ export class GameLogic {
         );
 
         // Always remove the bullet on collision
-        newSamuraiBullets.splice(i, 1);
+        newenemyBullets.splice(i, 1);
 
         // If player has shield, remove bullet and continue (shield protects from death)
         if (player.hasShield) {
@@ -925,7 +918,7 @@ export class GameLogic {
           // No shield - player dies, trigger game over and clear all projectiles
           return {
             ...gameState,
-            samuraiBullets: [],
+            enemyBullets: [],
             riceRockets: [],
             sushis: [],
             toriis: [],
@@ -942,38 +935,7 @@ export class GameLogic {
 
     return {
       ...gameState,
-      samuraiBullets: newSamuraiBullets,
-    };
-  }
-
-  static makeSamuraisShoot(gameState: GameState): GameState {
-    const { samurais, samuraiBullets } = gameState;
-    const newSamuraiBullets = [...samuraiBullets];
-    const newSamurais = [...samurais];
-
-    newSamurais.forEach((samurai, index) => {
-      // Only make samurai shoot if it still has lives
-      if (samurai.lives > 0) {
-        const bullet = this.makeSamuraiShoot(
-          samurai,
-          gameState.distance,
-          gameState.difficultyLevel,
-          gameState.player
-        );
-        if (bullet) {
-          newSamuraiBullets.push(bullet);
-          newSamurais[index] = {
-            ...samurai,
-            lastShotTime: Date.now(),
-          };
-        }
-      }
-    });
-
-    return {
-      ...gameState,
-      samurais: newSamurais,
-      samuraiBullets: newSamuraiBullets,
+      enemyBullets: newenemyBullets,
     };
   }
 
@@ -1375,9 +1337,10 @@ export class GameLogic {
   // ================================
 
   static checkRiceRocketNinjaCollisions(gameState: GameState): GameState {
-    const { riceRockets, ninjas } = gameState;
+    const { riceRockets, ninjas, enemyBullets } = gameState;
     const newRiceRockets = [...riceRockets];
     const newNinjas = [...ninjas];
+    let enemyDied = false;
 
     // Check each rice rocket against each ninja
     for (let i = newRiceRockets.length - 1; i >= 0; i--) {
@@ -1395,6 +1358,7 @@ export class GameLogic {
           // Remove ninja if no lives left
           if (newNinjas[j].lives <= 0) {
             newNinjas.splice(j, 1);
+            enemyDied = true;
           }
           break;
         }
@@ -1405,13 +1369,16 @@ export class GameLogic {
       ...gameState,
       riceRockets: newRiceRockets,
       ninjas: newNinjas,
+      enemyBullets: enemyDied ? [] : enemyBullets,
     };
   }
 
   static checkRiceRocketBossCollisions(gameState: GameState): GameState {
-    const { riceRockets, bosses } = gameState;
+    const { riceRockets, bosses, enemyBullets } = gameState;
     const newRiceRockets = [...riceRockets];
     const newBosses = [...bosses];
+
+    let enemyDied = false;
 
     // Check each rice rocket against each boss
     for (let i = newRiceRockets.length - 1; i >= 0; i--) {
@@ -1429,6 +1396,7 @@ export class GameLogic {
           // Remove boss if no lives left
           if (newBosses[j].lives <= 0) {
             newBosses.splice(j, 1);
+            enemyDied = true;
           }
           break;
         }
@@ -1439,6 +1407,7 @@ export class GameLogic {
       ...gameState,
       riceRockets: newRiceRockets,
       bosses: newBosses,
+      enemyBullets: enemyDied ? [] : enemyBullets,
     };
   }
 
@@ -1468,77 +1437,79 @@ export class GameLogic {
   static makeEnemiesShoot(gameState: GameState): GameState {
     let newGameState = gameState;
 
-    // Make samurais shoot
-    newGameState = this.makeSamuraisShoot(newGameState);
-
-    // Make ninjas shoot
-    newGameState = this.makeNinjasShoot(newGameState);
-
-    // Make bosses shoot
-    newGameState = this.makeBossesShoot(newGameState);
+    // Make all enemies shoot in one unified function
+    newGameState = this.makeAllEnemiesShoot(newGameState);
 
     return newGameState;
   }
 
-  static makeNinjasShoot(gameState: GameState): GameState {
-    const { ninjas, samuraiBullets } = gameState;
-    const newSamuraiBullets = [...samuraiBullets];
-    const newNinjas = [...ninjas];
+  static makeAllEnemiesShoot(gameState: GameState): GameState {
+    const { samurais, ninjas, bosses, enemyBullets } = gameState;
+    const newEnemyBullets = [...enemyBullets];
 
-    newNinjas.forEach((ninja, index) => {
-      const bullet = this.makeSamuraiShoot(
-        ninja,
-        gameState.distance,
-        gameState.difficultyLevel,
-        gameState.player
-      );
-      if (bullet) {
-        newSamuraiBullets.push(bullet);
-        newNinjas[index] = {
-          ...ninja,
-          lastShotTime: Date.now(),
-        };
-      }
-    });
-
-    return {
-      ...gameState,
-      ninjas: newNinjas,
-      samuraiBullets: newSamuraiBullets,
-    };
-  }
-
-  static makeBossesShoot(gameState: GameState): GameState {
-    const { bosses, samuraiBullets } = gameState;
-    const newSamuraiBullets = [...samuraiBullets];
-    const newBosses = [...bosses];
-
-    newBosses.forEach((boss, index) => {
-      const currentTime = Date.now();
-      if (currentTime - boss.lastShotTime >= boss.shotCooldown) {
-        // Boss shoots multiple bullets
-        for (let i = 0; i < GAME_CONSTANTS.BOSS_MULTI_SHOT_COUNT; i++) {
-          const bullet = this.createSamuraiBullet(
-            boss,
+    // Helper function for single-shot enemies (samurais and ninjas)
+    const makeSingleShotEnemyShoot = (enemies: (Samurai | Ninja)[]) => {
+      enemies.forEach((enemy, index) => {
+        if (enemy.lives > 0) {
+          const bullet = this.makeSamuraiShoot(
+            enemy,
             gameState.distance,
             gameState.difficultyLevel,
             gameState.player
           );
-          // Adjust bullet positions for spread
-          bullet.y = boss.y + boss.height / 2 + (i - 1) * 20;
-          newSamuraiBullets.push(bullet);
+          if (bullet) {
+            newEnemyBullets.push(bullet);
+            enemies[index] = {
+              ...enemy,
+              lastShotTime: Date.now(),
+            };
+          }
         }
-        newBosses[index] = {
-          ...boss,
-          lastShotTime: currentTime,
-        };
-      }
-    });
+      });
+    };
+
+    // Helper function for multi-shot enemies (bosses)
+    const makeMultiShotEnemyShoot = (bosses: Boss[]) => {
+      bosses.forEach((boss, index) => {
+        if (boss.lives > 0) {
+          const currentTime = Date.now();
+          if (currentTime - boss.lastShotTime >= boss.shotCooldown) {
+            // Boss shoots multiple bullets
+            for (let i = 0; i < GAME_CONSTANTS.BOSS_MULTI_SHOT_COUNT; i++) {
+              const bullet = this.createEnemyBullet(
+                boss,
+                gameState.distance,
+                gameState.difficultyLevel,
+                gameState.player
+              );
+              // Adjust bullet positions for spread
+              bullet.y = boss.y + boss.height / 2 + (i - 1) * 20;
+              newEnemyBullets.push(bullet);
+            }
+            bosses[index] = {
+              ...boss,
+              lastShotTime: currentTime,
+            };
+          }
+        }
+      });
+    };
+
+    // Make all enemies shoot
+    const newSamurais = [...samurais];
+    const newNinjas = [...ninjas];
+    const newBosses = [...bosses];
+
+    makeSingleShotEnemyShoot(newSamurais);
+    makeSingleShotEnemyShoot(newNinjas);
+    makeMultiShotEnemyShoot(newBosses);
 
     return {
       ...gameState,
+      samurais: newSamurais,
+      ninjas: newNinjas,
       bosses: newBosses,
-      samuraiBullets: newSamuraiBullets,
+      enemyBullets: newEnemyBullets,
     };
   }
 }
