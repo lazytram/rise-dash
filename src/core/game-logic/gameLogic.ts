@@ -836,6 +836,9 @@ export class GameLogic {
   static checkCollisions(gameState: GameState): GameState {
     let newGameState = gameState;
 
+    // Make enemies shoot FIRST (before collision checks)
+    newGameState = this.makeEnemiesShoot(newGameState);
+
     // Check RiceRocket vs Enemy collisions
     newGameState = this.checkRiceRocketEnemyCollisions(newGameState);
 
@@ -844,9 +847,6 @@ export class GameLogic {
 
     // Check Player vs PowerUp collisions
     newGameState = this.checkPlayerPowerUpCollisions(newGameState);
-
-    // Make enemies shoot
-    newGameState = this.makeEnemiesShoot(newGameState);
 
     return newGameState;
   }

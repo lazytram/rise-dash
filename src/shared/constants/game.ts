@@ -32,7 +32,7 @@ export const GAME_CONSTANTS = {
   SAMURAI_HEIGHT: 60,
   SAMURAI_SPEED: -2,
   SAMURAI_LIVES: 3,
-  SAMURAI_SHOT_COOLDOWN: 3000, // Back to original value
+  SAMURAI_SHOT_COOLDOWN: 3250, // Back to original value
   // Samurai bullet constants
   SAMURAI_BULLET_WIDTH: 6,
   SAMURAI_BULLET_HEIGHT: 6,
