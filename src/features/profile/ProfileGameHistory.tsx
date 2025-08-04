@@ -127,14 +127,15 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
         const globalIndex = startIndex + index;
         const isPersonalBest = globalIndex === 0;
 
+        // Only show status for Personal Best, otherwise return empty
+        if (!isPersonalBest) {
+          return null;
+        }
+
         return (
           <StatusIndicator
-            status={isPersonalBest ? "success" : "info"}
-            message={
-              isPersonalBest
-                ? t("scenes.profile.personalBest")
-                : t("scenes.profile.newScore")
-            }
+            status="success"
+            message={t("scenes.profile.personalBest")}
           />
         );
       },
