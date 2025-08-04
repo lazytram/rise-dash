@@ -3,7 +3,7 @@ import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
 import { Text } from "@/shared/components/Text";
 import { RiceLogo } from "@/shared/components/RiceLogo";
-import { PowerUpUpgradeData } from "@/shared/types/powerUps";
+import { PowerUpType, PowerUpUpgradeData } from "@/shared/types/powerUps";
 
 interface PowerUpCardBlockchainProps {
   powerUp: PowerUpUpgradeData;
@@ -62,16 +62,16 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
       }
 
       switch (powerUp.type) {
-        case "rice_rocket_ammo":
+        case PowerUpType.RICE_ROCKET_AMMO:
           return `${current.ammoCount || 0} → ${next?.ammoCount || 0} ${t(
             "features.powerUps.ammo"
           )}`;
-        case "shield":
-        case "infinite_ammo":
+        case PowerUpType.SHIELD:
+        case PowerUpType.INFINITE_AMMO:
           return `${(current.duration || 0) / 1000}s → ${
             (next?.duration || 0) / 1000
           }s ${t("features.powerUps.duration")}`;
-        case "jump_boost":
+        case PowerUpType.JUMP_BOOST:
           const currentJump = (
             ((current.jumpMultiplier || 1) - 1) *
             100
@@ -80,7 +80,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
           return `${
             (current.duration || 0) / 1000
           }s, +${currentJump}% → +${nextJump}%`;
-        case "slow_motion":
+        case PowerUpType.SLOW_MOTION:
           const currentSlow = (
             (1 - (current.slowMultiplier || 1)) *
             100
@@ -89,7 +89,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
           return `${
             (current.duration || 0) / 1000
           }s, -${currentSlow}% → -${nextSlow}%`;
-        case "multi_shot":
+        case PowerUpType.MULTI_SHOT:
           return `${(current.duration || 0) / 1000}s, ${
             current.projectileCount || 0
           } → ${next?.projectileCount || 0} ${t(
