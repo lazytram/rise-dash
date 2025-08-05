@@ -497,21 +497,25 @@ export const RARITY_COLORS = {
     bg: "bg-gray-500/20",
     border: "border-gray-500/50",
     text: "text-gray-300",
+    progress: "bg-gray-500",
   },
   rare: {
     bg: "bg-blue-500/20",
     border: "border-blue-500/50",
     text: "text-blue-300",
+    progress: "bg-blue-500",
   },
   epic: {
     bg: "bg-purple-500/20",
     border: "border-purple-500/50",
     text: "text-purple-300",
+    progress: "bg-purple-500",
   },
   legendary: {
     bg: "bg-yellow-500/20",
     border: "border-yellow-500/50",
     text: "text-yellow-300",
+    progress: "bg-yellow-500",
   },
 } as const;
 
