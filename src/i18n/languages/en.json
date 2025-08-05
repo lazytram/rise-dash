@@ -43,6 +43,19 @@
       "date": "Date",
       "status": "Status",
       "achievements": "Achievements",
+      "achievementsCompleted": "completed",
+      "achievementsProgress": "Progress",
+      "achievementsReward": "Reward",
+      "achievementsRarity": {
+        "common": "Common",
+        "rare": "Rare",
+        "epic": "Epic",
+        "legendary": "Legendary"
+      },
+      "noAchievementsFound": "No achievements found",
+      "tryChangingFilters": "Try changing your filters",
+      "percentComplete": "% Complete",
+      "filters": "Filters",
       "comingSoon": "Coming Soon",
       "player": "Player",
       "connectWalletToView": "Connect your wallet to view your profile",
@@ -347,6 +360,16 @@
   "ui": {
     "language": "Language",
     "selectLanguage": "Select language"
+  },
+  "errors": {
+    "networkError": "Network error - please check your connection",
+    "timeoutError": "Request timeout - please try again",
+    "unauthorizedError": "Unauthorized access - please reconnect your wallet",
+    "loadingScoresError": "Failed to load player scores",
+    "loadingAchievementsError": "Failed to load achievements",
+    "genericError": "An unexpected error occurred",
+    "blockchainError": "Blockchain connection error",
+    "walletError": "Wallet connection error"
   },
   "common": {
     "title": "Rise Dash",

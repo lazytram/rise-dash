@@ -219,6 +219,22 @@
       "errorUpgrading": "Échec de l'amélioration du power-up. Veuillez réessayer.",
       "signatureRejected": "Amélioration annulée. Vous avez rejeté la signature.",
       "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+    },
+    "profile": {
+      "achievements": "Réalisations",
+      "achievementsCompleted": "terminées",
+      "achievementsProgress": "Progression",
+      "achievementsReward": "Récompense",
+      "achievementsRarity": {
+        "common": "Commun",
+        "rare": "Rare",
+        "epic": "Épique",
+        "legendary": "Légendaire"
+      },
+      "noAchievementsFound": "Aucune réalisation trouvée",
+      "tryChangingFilters": "Essayez de changer vos filtres",
+      "percentComplete": "% Terminé",
+      "filters": "Filtres"
     }
   },
   "features": {
@@ -349,6 +365,16 @@
   "ui": {
     "language": "Langue",
     "selectLanguage": "Sélectionner la langue"
+  },
+  "errors": {
+    "networkError": "Erreur de réseau - veuillez vérifier votre connexion",
+    "timeoutError": "Délai d'attente dépassé - veuillez réessayer",
+    "unauthorizedError": "Accès non autorisé - veuillez reconnecter votre wallet",
+    "loadingScoresError": "Échec du chargement des scores du joueur",
+    "loadingAchievementsError": "Échec du chargement des achievements",
+    "genericError": "Une erreur inattendue s'est produite",
+    "blockchainError": "Erreur de connexion blockchain",
+    "walletError": "Erreur de connexion wallet"
   },
   "common": {
     "title": "Rise Dash",

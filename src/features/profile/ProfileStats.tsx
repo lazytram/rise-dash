@@ -2,37 +2,11 @@ import React from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Card } from "@/shared/components/Card";
 import { Text } from "@/shared/components/Text";
+import { useProfileStats } from "./hooks/useProfileStats";
 
-interface PlayerScore {
-  score: bigint;
-  timestamp: bigint;
-  playerName: string;
-  gameHash: string;
-}
-
-interface ProfileStatsProps {
-  playerScores: PlayerScore[];
-}
-
-export const ProfileStats: React.FC<ProfileStatsProps> = ({ playerScores }) => {
+export const ProfileStats: React.FC = () => {
   const { t } = useTranslations();
-
-  const getBestScore = () => {
-    if (playerScores.length === 0) return 0;
-    return Number(playerScores[0].score);
-  };
-
-  const getTotalGames = () => {
-    return playerScores.length;
-  };
-
-  const getAverageScore = () => {
-    if (playerScores.length === 0) return 0;
-    return Math.round(
-      playerScores.reduce((acc, score) => acc + Number(score.score), 0) /
-        playerScores.length
-    );
-  };
+  const { bestScore, totalGames, averageScore } = useProfileStats();
 
   const formatNumber = (num: number) => {
     return num.toLocaleString();
@@ -62,7 +36,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({ playerScores }) => {
 
           <div className="space-y-1">
             <Text variant="bold" size="3xl" className="text-white">
-              {formatNumber(getBestScore())}
+              {formatNumber(bestScore)}
             </Text>
             <Text variant="muted" size="sm" className="text-white/70">
               {t("features.gameplay.meters")}
@@ -93,7 +67,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({ playerScores }) => {
 
           <div className="space-y-1">
             <Text variant="bold" size="3xl" className="text-white">
-              {formatNumber(getTotalGames())}
+              {formatNumber(totalGames)}
             </Text>
             <Text variant="muted" size="sm" className="text-white/70">
               {t("scenes.profile.gamesPlayed")}
@@ -124,7 +98,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({ playerScores }) => {
 
           <div className="space-y-1">
             <Text variant="bold" size="3xl" className="text-white">
-              {formatNumber(getAverageScore())}
+              {formatNumber(averageScore)}
             </Text>
             <Text variant="muted" size="sm" className="text-white/70">
               {t("features.gameplay.meters")}

@@ -5,6 +5,7 @@ export const RISE_TESTNET_ADDRESSES = {
   SCORE_BOARD: "0xF2dC776b9b71DEC08df3a40861b7DbFb629C9F5a",
   RICE_MANAGER: "0xd74e64EcEFCC745845878C215C5BE9D3d368c8bA",
   POWER_UP_MANAGER: "0xC12889D661c6BeE9930b00241FdAE913e64a5722",
+  ACHIEVEMENT_MANAGER: "0x...", // TODO: Deploy AchievementManager contract
 } as const;
 
 // Get contract address based on current network
@@ -23,6 +24,7 @@ export const CONTRACT_ADDRESSES_CURRENT = {
   SCORE_BOARD: getContractAddress("SCORE_BOARD"),
   RICE_MANAGER: getContractAddress("RICE_MANAGER"),
   POWER_UP_MANAGER: getContractAddress("POWER_UP_MANAGER"),
+  ACHIEVEMENT_MANAGER: getContractAddress("ACHIEVEMENT_MANAGER"),
 } as const;
 
 // Convenience functions for specific contracts (kept for backward compatibility)
