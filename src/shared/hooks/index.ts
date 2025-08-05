@@ -4,5 +4,6 @@ export { useGameLoop } from "./useGameLoop";
 export { useHydration } from "./useHydration";
 export { useKeyboardControls } from "./useKeyboardControls";
 export { usePowerUpSync } from "./usePowerUpSync";
+export { useScrollToCenter } from "./useScrollToCenter";
 export { useTranslations } from "./useTranslations";
 export { useTutorialAutoShow } from "./useTutorialAutoShow";
