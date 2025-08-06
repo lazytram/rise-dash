@@ -80,14 +80,33 @@ export const SAMURAI_BULLET_COLORS = {
 } as const;
 
 export const NINJA_COLORS = {
-  BODY: "#800080", // Purple
-  SHADOW: "#4B0082", // Dark purple
+  BODY: "#000000", // Black (main body)
+  SUIT_DETAILS: "#1a1a1a", // Darker black (suit details)
+  HOOD: "#000000", // Black (hood)
+  HOOD_DETAILS: "#1a1a1a", // Darker black (hood details)
+  MASK: "#000000", // Black (mask)
+  MASK_STRAPS: "#1a1a1a", // Darker black (mask straps)
+  EYES: "#FFFFFF", // White (eyes)
+  EYE_PUPILS: "#000000", // Black (eye pupils)
+  SHURIKEN: "#800080", // Purple (shuriken)
+  SHURIKEN_CENTER: "#4B0082", // Dark purple (shuriken center)
+  SHURIKEN_GLOW: "rgba(128, 0, 128, 0.3)", // Purple glow
+  BELT: "#2F4F4F", // Dark slate gray (belt)
+  BELT_POUCHES: "#1a1a1a", // Darker black (belt pouches)
 } as const;
 
 export const BOSS_COLORS = {
-  BODY: "#DC143C", // Crimson
-  ARMOR: "#8B0000", // Dark red
-  EYES: "#FFD700", // Gold
+  BODY: "#8B0000", // Dark red (armor base)
+  ARMOR: "#DC143C", // Crimson (armor plates)
+  SHOULDERS: "#B22222", // Fire brick (shoulder guards)
+  HORNS: "#2F4F4F", // Dark slate gray (horns)
+  HORN_DETAILS: "#696969", // Dim gray (horn details)
+  EYES: "#FFD700", // Gold (eyes)
+  EYE_PUPILS: "#000000", // Black (eye pupils)
+  MOUTH: "#000000", // Black (mouth)
+  WEAPON: "#8B4513", // Saddle brown (kanabo club)
+  WEAPON_SPIKES: "#696969", // Dim gray (club spikes)
+  WEAPON_HANDLE: "#D2691E", // Chocolate (club handle)
 } as const;
 
 export const POWERUP_COLORS = {

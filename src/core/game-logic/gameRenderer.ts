@@ -4,6 +4,8 @@ import {
   Sushi,
   Torii,
   Samurai,
+  Ninja,
+  Boss,
   EnemyBullet,
   PowerUp,
 } from "@/shared/types/game";
@@ -69,6 +71,8 @@ export class GameRenderer {
     sushis: Sushi[],
     toriis: Torii[],
     samurais: Samurai[],
+    ninjas: Ninja[],
+    bosses: Boss[],
     enemyBullets: EnemyBullet[],
     powerUps: PowerUp[],
     distance: number,
@@ -112,6 +116,14 @@ export class GameRenderer {
       samurais,
       playerX
     );
+    const visibleNinjas = this.cullingSystem.filterVisibleEntities(
+      ninjas,
+      playerX
+    );
+    const visibleBosses = this.cullingSystem.filterVisibleEntities(
+      bosses,
+      playerX
+    );
     const visibleToriis = this.cullingSystem.filterVisibleEntities(
       toriis,
       playerX
@@ -124,8 +136,15 @@ export class GameRenderer {
     // Render visible entities
     this.projectileRenderer.drawRiceRockets(visibleRiceRockets);
     this.projectileRenderer.drawenemyBullets(visibleenemyBullets);
-    this.enemyRenderer.drawSushis(visibleSushis);
-    this.enemyRenderer.drawSamurais(visibleSamurais);
+    // Use unified enemy rendering system
+    this.enemyRenderer.render(
+      visibleSamurais,
+      visibleNinjas,
+      visibleBosses,
+      visibleSushis,
+      visibleToriis,
+      visibleenemyBullets
+    );
     this.decorationRenderer.drawToriis(visibleToriis);
     this.powerUpRenderer.drawPowerUps(visiblePowerUps);
 

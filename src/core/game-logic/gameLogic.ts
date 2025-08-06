@@ -10,6 +10,7 @@ import {
   Boss,
   PowerUp,
   DifficultyLevel,
+  ProjectileType,
 } from "@/shared/types/game";
 import { GAME_CONSTANTS } from "@/shared/constants/game";
 import {
@@ -22,7 +23,6 @@ import {
   BOSS_COLORS,
   POWERUP_COLORS,
 } from "@/shared/constants/colors";
-import { player } from "@/core/entities/player";
 import {
   getPowerUpEffect,
   getMaxAmmo,
@@ -42,13 +42,6 @@ export class GameLogic {
     );
 
     const speedMultiplier = this.calculateSpeedMultiplier(distance);
-
-    // Calculate samurai spawn distance (decreases with level)
-    const samuraiSpawnDistance = Math.max(
-      GAME_CONSTANTS.MIN_SAMURAI_SPAWN_DISTANCE,
-      GAME_CONSTANTS.BASE_SAMURAI_SPAWN_DISTANCE -
-        (level - 1) * GAME_CONSTANTS.SAMURAI_SPAWN_DISTANCE_DECREASE
-    );
 
     // Calculate sushi spawn probability (increases with level)
     const sushiSpawnProbability = Math.min(
@@ -107,7 +100,6 @@ export class GameLogic {
     return {
       level,
       speedMultiplier,
-      samuraiSpawnDistance,
       sushiSpawnProbability,
       samuraiShotCooldown,
       samuraiLives,
@@ -144,7 +136,38 @@ export class GameLogic {
 
   static createInitialGameState(): GameState {
     return {
-      player: player,
+      player: this.resetPlayer({
+        x: 100,
+        y: 300,
+        width: 30,
+        height: 30,
+        velocityY: 0,
+        isJumping: false,
+        color: "#ff6b6b",
+        riceRocketAmmo: getMaxAmmo(),
+        maxRiceRocketAmmo: getMaxAmmo(),
+        lastAmmoRechargeTime: Date.now(),
+        hasShield: false,
+        hasInfiniteAmmo: false,
+        hasJumpBoost: false,
+        hasSlowMotion: false,
+        hasMultiShot: false,
+        powerUpEndTimes: {
+          shield: 0,
+          infiniteAmmo: 0,
+          jumpBoost: 0,
+          slowMotion: 0,
+          multiShot: 0,
+        },
+        powerUpLevels: {
+          [PowerUpType.SHIELD]: 1,
+          [PowerUpType.INFINITE_AMMO]: 1,
+          [PowerUpType.JUMP_BOOST]: 1,
+          [PowerUpType.SLOW_MOTION]: 1,
+          [PowerUpType.MULTI_SHOT]: 1,
+          [PowerUpType.RICE_ROCKET_AMMO]: 1,
+        },
+      }),
       riceRockets: [],
       sushis: [],
       toriis: [],
@@ -157,6 +180,7 @@ export class GameLogic {
       isGameRunning: false,
       isGameOver: false,
       difficultyLevel: this.calculateDifficultyLevel(0),
+      lastEnemySpawnDistance: 0,
     };
   }
 
@@ -262,17 +286,12 @@ export class GameLogic {
       newGameState = this.addTorii(newGameState);
     }
 
-    // Spawn Samurai
-    if (this.shouldSpawnSamurai(newGameState)) {
-      newGameState = this.addSamurai(newGameState);
+    // Spawn Enemy (Samurai or Ninja) - unified spawn logic
+    if (this.shouldSpawnEnemy(newGameState)) {
+      newGameState = this.spawnEnemy(newGameState);
     }
 
-    // Spawn Ninja (level 3+)
-    if (this.shouldSpawnNinja(newGameState)) {
-      newGameState = this.addNinja(newGameState);
-    }
-
-    // Spawn Boss (level 5+)
+    // Spawn Boss (every 1000 meters)
     if (this.shouldSpawnBoss(newGameState)) {
       newGameState = this.addBoss(newGameState);
     }
@@ -757,10 +776,15 @@ export class GameLogic {
       return false;
     }
 
-    // Use dynamic spawn distance based on difficulty level
-    return (
-      formattedDistance % gameState.difficultyLevel.samuraiSpawnDistance === 0
-    );
+    // Check if we have enough distance since the last samurai spawn
+    const distanceSinceLastSpawn =
+      formattedDistance - gameState.lastEnemySpawnDistance;
+    if (distanceSinceLastSpawn < GAME_CONSTANTS.SAMURAI_MIN_SPAWN_INTERVAL) {
+      return false;
+    }
+
+    // Random chance to spawn (70% probability when conditions are met)
+    return Math.random() < GAME_CONSTANTS.SAMURAI_SPAWN_PROBABILITY;
   }
 
   static addSamurai(gameState: GameState): GameState {
@@ -772,27 +796,70 @@ export class GameLogic {
     return {
       ...gameState,
       samurais: [...gameState.samurais, newSamurai],
+      lastEnemySpawnDistance: GameLogic.formatDistance(gameState.distance),
     };
   }
 
   static createEnemyBullet(
-    samurai: Samurai,
+    enemy: Samurai | Ninja,
     distance: number,
     difficultyLevel: DifficultyLevel,
     player?: Player
   ): EnemyBullet {
     // Ensure bullet starts at a safe distance from the player
-    const bulletX = Math.max(samurai.x, 150); // Minimum 150px from left edge
+    const bulletX = Math.max(enemy.x, 150); // Minimum 150px from left edge
 
     return {
       id: Date.now().toString() + Math.random(),
       x: bulletX, // Start from safe position
-      y: samurai.y + samurai.height / 2, // Same height as samurai center
+      y: enemy.y + enemy.height / 2, // Same height as enemy center
       width: GAME_CONSTANTS.SAMURAI_BULLET_WIDTH,
       height: GAME_CONSTANTS.SAMURAI_BULLET_HEIGHT,
       velocityX: this.getCurrentenemyBulletspeed(distance, player), // Use difficulty-based speed
       velocityY: 0, // No vertical movement
       color: SAMURAI_BULLET_COLORS.BODY,
+      projectileType: ProjectileType.BOSS_BULLET,
+    };
+  }
+
+  static createShuriken(
+    ninja: Ninja,
+    distance: number,
+    difficultyLevel: DifficultyLevel,
+    player?: Player
+  ): EnemyBullet {
+    // Ensure shuriken starts at a safe distance from the player
+    const shurikenX = Math.max(ninja.x, 150); // Minimum 150px from left edge
+
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: shurikenX, // Start from safe position
+      y: ninja.y + ninja.height / 2, // Same height as ninja center
+      width: GAME_CONSTANTS.SHURIKEN_WIDTH,
+      height: GAME_CONSTANTS.SHURIKEN_HEIGHT,
+      velocityX: this.getCurrentenemyBulletspeed(distance, player) * 1.2, // Shuriken are faster
+      velocityY: 0, // No vertical movement
+      color: NINJA_COLORS.SHURIKEN, // Purple shuriken
+      projectileType: ProjectileType.SHURIKEN,
+    };
+  }
+
+  static createKatanaSlash(samurai: Samurai): EnemyBullet {
+    // Katana slash is a melee attack that appears as a circular slash
+    const slashRadius = 60; // 1.5m equivalent in pixels
+    const slashX = samurai.x - slashRadius; // Start from samurai position
+    const slashY = samurai.y + samurai.height / 2 - slashRadius / 2;
+
+    return {
+      id: Date.now().toString() + Math.random(),
+      x: slashX,
+      y: slashY,
+      width: slashRadius * 2,
+      height: slashRadius,
+      velocityX: GAME_CONSTANTS.KATANA_SLASH_SPEED, // Slower than bullets, moves towards player
+      velocityY: 0,
+      color: "#C0C0C0", // Silver color for katana slash
+      projectileType: ProjectileType.KATANA_SLASH,
     };
   }
 
@@ -806,15 +873,23 @@ export class GameLogic {
       .filter((bullet) => bullet.x > -bullet.width);
   }
 
-  static makeSamuraiShoot(
-    samurai: Samurai,
+  static makeSamuraiShoot(samurai: Samurai): EnemyBullet | null {
+    const currentTime = Date.now();
+    if (currentTime - samurai.lastShotTime >= samurai.shotCooldown) {
+      return this.createKatanaSlash(samurai);
+    }
+    return null;
+  }
+
+  static makeNinjaShoot(
+    ninja: Ninja,
     distance: number,
     difficultyLevel: DifficultyLevel,
     player?: Player
   ): EnemyBullet | null {
     const currentTime = Date.now();
-    if (currentTime - samurai.lastShotTime >= samurai.shotCooldown) {
-      return this.createEnemyBullet(samurai, distance, difficultyLevel, player);
+    if (currentTime - ninja.lastShotTime >= ninja.shotCooldown) {
+      return this.createShuriken(ninja, distance, difficultyLevel, player);
     }
     return null;
   }
@@ -1152,12 +1227,12 @@ export class GameLogic {
     if (gameState.bosses.length > 0) return false;
 
     const formattedDistance = GameLogic.formatDistance(gameState.distance);
-    const difficultyLevel = gameState.difficultyLevel;
 
-    // Only spawn bosses at level 5+
-    if (difficultyLevel.level < 5) return false;
+    // Don't spawn boss at the very beginning (distance 0)
+    if (formattedDistance === 0) return false;
 
-    return formattedDistance % difficultyLevel.bossSpawnDistance === 0;
+    // Spawn bosses every 1000 meters
+    return formattedDistance % GAME_CONSTANTS.BOSS_SPAWN_DISTANCE === 0;
   }
 
   static addBoss(gameState: GameState): GameState {
@@ -1447,26 +1522,40 @@ export class GameLogic {
     const { samurais, ninjas, bosses, enemyBullets } = gameState;
     const newEnemyBullets = [...enemyBullets];
 
-    // Helper function for single-shot enemies (samurais and ninjas)
-    const makeSingleShotEnemyShoot = (enemies: (Samurai | Ninja)[]) => {
-      enemies.forEach((enemy, index) => {
-        if (enemy.lives > 0) {
-          const bullet = this.makeSamuraiShoot(
-            enemy,
-            gameState.distance,
-            gameState.difficultyLevel,
-            gameState.player
-          );
-          if (bullet) {
-            newEnemyBullets.push(bullet);
-            enemies[index] = {
-              ...enemy,
-              lastShotTime: Date.now(),
-            };
-          }
+    // Make samurais shoot katana slashes
+    const newSamurais = [...samurais];
+    newSamurais.forEach((samurai, index) => {
+      if (samurai.lives > 0) {
+        const slash = this.makeSamuraiShoot(samurai);
+        if (slash) {
+          newEnemyBullets.push(slash);
+          newSamurais[index] = {
+            ...samurai,
+            lastShotTime: Date.now(),
+          };
         }
-      });
-    };
+      }
+    });
+
+    // Make ninjas shoot shuriken
+    const newNinjas = [...ninjas];
+    newNinjas.forEach((ninja, index) => {
+      if (ninja.lives > 0) {
+        const shuriken = this.makeNinjaShoot(
+          ninja,
+          gameState.distance,
+          gameState.difficultyLevel,
+          gameState.player
+        );
+        if (shuriken) {
+          newEnemyBullets.push(shuriken);
+          newNinjas[index] = {
+            ...ninja,
+            lastShotTime: Date.now(),
+          };
+        }
+      }
+    });
 
     // Helper function for multi-shot enemies (bosses)
     const makeMultiShotEnemyShoot = (bosses: Boss[]) => {
@@ -1495,13 +1584,8 @@ export class GameLogic {
       });
     };
 
-    // Make all enemies shoot
-    const newSamurais = [...samurais];
-    const newNinjas = [...ninjas];
+    // Make bosses shoot
     const newBosses = [...bosses];
-
-    makeSingleShotEnemyShoot(newSamurais);
-    makeSingleShotEnemyShoot(newNinjas);
     makeMultiShotEnemyShoot(newBosses);
 
     return {
@@ -1511,5 +1595,64 @@ export class GameLogic {
       bosses: newBosses,
       enemyBullets: newEnemyBullets,
     };
+  }
+
+  static shouldSpawnEnemy(gameState: GameState): boolean {
+    // Don't spawn if there are already enemies on screen
+    if (gameState.samurais.length > 0 || gameState.ninjas.length > 0) {
+      console.log("❌ Enemies already on screen:", {
+        samurais: gameState.samurais.length,
+        ninjas: gameState.ninjas.length,
+      });
+      return false;
+    }
+
+    const formattedDistance = GameLogic.formatDistance(gameState.distance);
+
+    // Don't spawn enemies before 50 meters
+    if (formattedDistance < GAME_CONSTANTS.SAMURAI_MIN_SPAWN_DISTANCE) {
+      console.log(
+        "❌ Distance too low:",
+        formattedDistance,
+        "<",
+        GAME_CONSTANTS.SAMURAI_MIN_SPAWN_DISTANCE
+      );
+      return false;
+    }
+
+    // Don't spawn at exactly 0 (which would be the case at the very beginning)
+    if (formattedDistance === 0) {
+      console.log("❌ Distance is 0");
+      return false;
+    }
+
+    // Check if we have enough distance since the last enemy spawn
+    const distanceSinceLastSpawn =
+      formattedDistance - gameState.lastEnemySpawnDistance;
+    if (distanceSinceLastSpawn < GAME_CONSTANTS.SAMURAI_MIN_SPAWN_INTERVAL) {
+      console.log(
+        "❌ Not enough distance since last spawn:",
+        distanceSinceLastSpawn,
+        "<",
+        GAME_CONSTANTS.SAMURAI_MIN_SPAWN_INTERVAL
+      );
+      return false;
+    }
+
+    console.log("✅ Should spawn enemy at distance:", formattedDistance);
+    // 100% chance to spawn when conditions are met
+    return true;
+  }
+
+  static spawnEnemy(gameState: GameState): GameState {
+    const random = Math.random();
+
+    if (random < 0.7) {
+      // Spawn samurai (70% chance)
+      return this.addSamurai(gameState);
+    } else {
+      // Spawn ninja (30% chance)
+      return this.addNinja(gameState);
+    }
   }
 }

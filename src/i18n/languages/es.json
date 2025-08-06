@@ -19,6 +19,48 @@
       "performanceHint": "Presiona F3 para mostrar rendimiento",
       "savingInProgress": "Guardando en progreso...",
       "pleaseWait": "Por favor espera...",
+      "enemyInfo": {
+        "title": "Tipos de Enemigos",
+        "subtitle": "Aprende sobre tus enemigos para mejorar tu estrategia",
+        "description": "Descripción",
+        "attack": "Ataque",
+        "frequency": "Frecuencia",
+        "difficulty": "Dificultad",
+        "proTips": "Consejos Pro",
+        "enemies": {
+          "samurai": {
+            "name": "Samurái",
+            "description": "Un guerrero disciplinado con habilidades mortales de espada. Sus golpes precisos pueden ser devastadores si no tienes cuidado.",
+            "attack": "Golpe de Espada",
+            "frequency": "Media",
+            "difficulty": "Media",
+            "strategy": "Esquiva y contraataca",
+            "tip": "Sincroniza tus esquivas con sus golpes de espada. Son predecibles pero mortales."
+          },
+          "ninja": {
+            "name": "Ninja",
+            "description": "Un asesino sigiloso que se mueve silenciosamente y ataca desde las sombras. Sus ataques impredecibles requieren reflejos rápidos.",
+            "attack": "Golpe Sigiloso",
+            "frequency": "Alta",
+            "difficulty": "Difícil",
+            "strategy": "Mantente alerta, son sigilosos",
+            "tip": "Observa sus movimientos sigilosos. A menudo atacan desde ángulos inesperados."
+          },
+          "boss": {
+            "name": "Jefe",
+            "description": "Un enemigo poderoso con múltiples patrones de ataque y mucha vida. Requieren estrategia y timing para derrotarlos.",
+            "attack": "Multi-Golpe",
+            "frequency": "Baja",
+            "difficulty": "Extrema",
+            "strategy": "Usa power-ups y esquiva cuidadosamente",
+            "tip": "Guarda tus power-ups para las batallas contra jefes. Tienen múltiples patrones de ataque."
+          }
+        }
+      },
+      "enemyGuide": {
+        "title": "Guía de Enemigos",
+        "subtitle": "Aprende estrategias enemigas"
+      },
       "rewards": {
         "title": "Recompensas de Distancia",
         "breakdown": "Desglose de Recompensas",

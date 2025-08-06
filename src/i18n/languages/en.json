@@ -14,11 +14,53 @@
       "restartMessage": "Press SPACE or UP ARROW to restart",
       "startMessage": "Press SPACE or UP ARROW to start",
       "jumpMessage": "UP ARROW to jump, SPACE to shoot RiceRockets",
-      "enemyMessage": "Samurais appear every 50m - shoot 3 times to defeat them!",
+      "enemyMessage": "Enemies appear every 75m - Samurais (70%) & Ninjas (30%)",
       "instructions": "Use UP ARROW to jump and SPACEBAR to shoot rice rockets!",
       "performanceHint": "Press F3 to show performance",
       "savingInProgress": "Saving in progress...",
       "pleaseWait": "Please wait...",
+      "enemyInfo": {
+        "title": "Enemy Types",
+        "subtitle": "Learn about your enemies to improve your strategy",
+        "description": "Description",
+        "attack": "Attack",
+        "frequency": "Frequency",
+        "difficulty": "Difficulty",
+        "proTips": "Pro Tips",
+        "enemies": {
+          "samurai": {
+            "name": "Samurai",
+            "description": "A disciplined warrior with deadly sword skills. Their precise strikes can be devastating if you're not careful.",
+            "attack": "Sword Slash",
+            "frequency": "Medium",
+            "difficulty": "Medium",
+            "strategy": "Dodge and counter-attack",
+            "tip": "Time your dodges with their sword swings. They're predictable but deadly."
+          },
+          "ninja": {
+            "name": "Ninja",
+            "description": "A stealthy assassin who moves silently and strikes from the shadows. Their unpredictable attacks require quick reflexes.",
+            "attack": "Stealth Strike",
+            "frequency": "High",
+            "difficulty": "Hard",
+            "strategy": "Stay alert, they're stealthy",
+            "tip": "Watch for their stealth movements. They often attack from unexpected angles."
+          },
+          "boss": {
+            "name": "Boss",
+            "description": "A powerful enemy with multiple attack patterns and high health. They require strategy and timing to defeat.",
+            "attack": "Multi-Strike",
+            "frequency": "Low",
+            "difficulty": "Extreme",
+            "strategy": "Use power-ups and dodge carefully",
+            "tip": "Save your power-ups for boss fights. They have multiple attack patterns."
+          }
+        }
+      },
+      "enemyGuide": {
+        "title": "Enemy Guide",
+        "subtitle": "Learn enemy strategies"
+      },
       "rewards": {
         "title": "Distance Rewards",
         "breakdown": "Rewards Breakdown",

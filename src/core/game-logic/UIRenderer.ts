@@ -44,17 +44,17 @@ export class UIRenderer extends BaseRenderer {
     this.ctx.fillText(
       startText || "Press SPACE to start",
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
-      GAME_CONSTANTS.CANVAS_HEIGHT / 2
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 - 40
     );
     this.ctx.fillText(
       jumpText || "SPACE to jump",
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
-      GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 30
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 - 10
     );
     this.ctx.fillText(
       enemyText || "Enemies appear every 500m",
       GAME_CONSTANTS.CANVAS_WIDTH / 2,
-      GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 60
+      GAME_CONSTANTS.CANVAS_HEIGHT / 2 + 20
     );
 
     this.ctx.textAlign = "left";

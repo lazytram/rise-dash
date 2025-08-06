@@ -1,19 +1,15 @@
 import { BaseRenderer } from "./BaseRenderer";
-import { Sushi, Samurai } from "@/shared/types/game";
+import { drawEnemy } from "@/shared/utils/enemyDrawing";
+import {
+  Samurai,
+  Ninja,
+  Boss,
+  Sushi,
+  Torii,
+  EnemyBullet,
+} from "@/shared/types/game";
 
 export class EnemyRenderer extends BaseRenderer {
-  drawSushis(sushis: Sushi[]): void {
-    sushis.forEach((sushi) => {
-      this.drawSushi(sushi);
-    });
-  }
-
-  drawSamurais(samurais: Samurai[]): void {
-    samurais.forEach((samurai) => {
-      this.drawSamurai(samurai);
-    });
-  }
-
   private drawSushi(sushi: Sushi): void {
     // Draw sushi base
     this.ctx.fillStyle = sushi.color;
@@ -44,128 +40,189 @@ export class EnemyRenderer extends BaseRenderer {
   }
 
   private drawSamurai(samurai: Samurai): void {
-    this.drawSamuraiBody(samurai);
-    this.drawSamuraiHelmet(samurai);
-    this.drawSamuraiArmor(samurai);
-    this.drawSamuraiFace(samurai);
-    this.drawSamuraiWeapon(samurai);
+    // Use the generic drawing function for samurai with detailed design
+    drawEnemy(this.ctx, "samurai", samurai.x, samurai.y, 0, {
+      detailed: true, // Same detailed design as modal
+      animated: true, // Add animations
+      showShadow: true, // Show shadows
+    });
+
+    // Draw lives indicator
     this.drawSamuraiLives(samurai);
   }
 
-  private drawSamuraiBody(samurai: Samurai): void {
-    // Draw samurai body (armor base) - blue armor
-    this.ctx.fillStyle = "#0066CC";
-    this.ctx.fillRect(samurai.x, samurai.y, samurai.width, samurai.height);
-  }
-
-  private drawSamuraiHelmet(samurai: Samurai): void {
-    // Draw samurai helmet (kabuto) - blue helmet with golden crests
-    this.ctx.fillStyle = "#0066CC";
-    this.ctx.fillRect(samurai.x + 6, samurai.y, samurai.width - 12, 15);
-
-    // Draw helmet top (hachi) - rounded top
-    this.ctx.fillStyle = "#004499";
-    this.ctx.fillRect(samurai.x + 8, samurai.y - 2, samurai.width - 16, 4);
-
-    // Draw golden horn-like crests (maedate)
-    this.ctx.fillStyle = "#FFD700";
-    this.ctx.fillRect(samurai.x + 12, samurai.y - 6, 4, 8);
-    this.ctx.fillRect(samurai.x + 24, samurai.y - 6, 4, 8);
-    this.ctx.fillRect(samurai.x + 18, samurai.y - 8, 4, 6);
-
-    // Draw helmet side flaps (fukigaeshi)
-    this.ctx.fillStyle = "#0066CC";
-    this.ctx.fillRect(samurai.x - 2, samurai.y + 2, 6, 12);
-    this.ctx.fillRect(samurai.x + samurai.width - 4, samurai.y + 2, 6, 12);
-  }
-
-  private drawSamuraiArmor(samurai: Samurai): void {
-    // Draw samurai armor (yoroi) - blue segmented armor
-    this.ctx.fillStyle = "#0066CC";
-    this.ctx.fillRect(samurai.x + 4, samurai.y + 15, samurai.width - 8, 30);
-
-    // Draw segmented armor plates (lamellae)
-    this.ctx.fillStyle = "#000000";
-    for (let i = 0; i < 5; i++) {
-      this.ctx.fillRect(
-        samurai.x + 4,
-        samurai.y + 20 + i * 5,
-        samurai.width - 8,
-        2
-      );
-    }
-
-    // Draw shoulder guards (sode)
-    this.ctx.fillStyle = "#CC0000";
-    this.ctx.fillRect(samurai.x - 2, samurai.y + 15, 6, 20);
-    this.ctx.fillRect(samurai.x + samurai.width - 4, samurai.y + 15, 6, 20);
-
-    // Draw armored sleeves (kote)
-    this.ctx.fillStyle = "#0066CC";
-    this.ctx.fillRect(samurai.x - 4, samurai.y + 25, 8, 15);
-    this.ctx.fillRect(samurai.x + samurai.width - 4, samurai.y + 25, 8, 15);
-
-    // Draw armored skirt (kusazuri)
-    this.ctx.fillStyle = "#CC0000";
-    for (let i = 0; i < 4; i++) {
-      this.ctx.fillRect(samurai.x + 2 + i * 10, samurai.y + 45, 6, 15);
-    }
-
-    // Draw leg protection
-    this.ctx.fillStyle = "#0066CC";
-    this.ctx.fillRect(samurai.x + 8, samurai.y + 50, 8, 10);
-    this.ctx.fillRect(samurai.x + 24, samurai.y + 50, 8, 10);
-  }
-
-  private drawSamuraiFace(samurai: Samurai): void {
-    // Draw samurai face mask (menpo)
-    this.ctx.fillStyle = "#CC0000";
-    this.ctx.fillRect(samurai.x + 10, samurai.y + 8, samurai.width - 20, 8);
-
-    // Draw mask details - brown skin showing through
-    this.ctx.fillStyle = "#8B4513";
-    this.ctx.fillRect(samurai.x + 12, samurai.y + 10, samurai.width - 24, 2);
-    this.ctx.fillRect(samurai.x + 12, samurai.y + 14, samurai.width - 24, 2);
-  }
-
-  private drawSamuraiWeapon(samurai: Samurai): void {
-    // Draw katana sword
-    this.ctx.fillStyle = "#C0C0C0"; // Silver blade
-    this.ctx.fillRect(samurai.x + 15, samurai.y + 20, 10, 2);
-    this.ctx.fillStyle = "#FFD700"; // Gold hilt
-    this.ctx.fillRect(samurai.x + 25, samurai.y + 19, 3, 4);
-  }
-
   private drawSamuraiLives(samurai: Samurai): void {
+    const lives = samurai.lives;
+    const maxLives = 3;
     const heartSize = 8;
-    const heartSpacing = 10;
-    const startX = samurai.x;
-    const startY = samurai.y - 20;
+    const spacing = 2;
 
-    for (let i = 0; i < samurai.maxLives; i++) {
-      const heartX = startX + i * heartSpacing;
-      const heartY = startY;
+    for (let i = 0; i < maxLives; i++) {
+      const x =
+        samurai.x +
+        (samurai.width - maxLives * (heartSize + spacing)) / 2 +
+        i * (heartSize + spacing);
+      const y = samurai.y - heartSize - 5;
 
-      if (i < samurai.lives) {
+      if (i < lives) {
+        // Full heart
         this.ctx.fillStyle = "#FF0000";
       } else {
+        // Empty heart
         this.ctx.fillStyle = "#666666";
       }
 
-      // Draw pixelated heart
-      this.ctx.fillRect(heartX + 2, heartY + 2, heartSize - 4, heartSize - 4);
-      this.ctx.fillRect(heartX + 1, heartY + 1, 2, 2);
-      this.ctx.fillRect(heartX + heartSize - 3, heartY + 1, 2, 2);
-      this.ctx.fillRect(heartX + 3, heartY + heartSize - 3, 2, 2);
-
-      // Heart outline for filled hearts
-      if (i < samurai.lives) {
-        this.ctx.fillStyle = "#8B0000";
-        this.ctx.fillRect(heartX, heartY, heartSize, 1);
-        this.ctx.fillRect(heartX, heartY + heartSize - 1, heartSize, 1);
-        this.ctx.fillRect(heartX, heartY, 1, heartSize);
-        this.ctx.fillRect(heartX + heartSize - 1, heartY, 1, heartSize);
-      }
+      // Simple heart shape
+      this.ctx.fillRect(x, y, heartSize, heartSize);
     }
+  }
+
+  private drawNinja(ninja: Ninja): void {
+    // Use the generic drawing function for ninja with detailed design
+    drawEnemy(this.ctx, "ninja", ninja.x, ninja.y, 0, {
+      detailed: true, // Same detailed design as modal
+      animated: true, // Add animations
+      showShadow: true, // Show shadows
+    });
+
+    // Draw lives indicator
+    this.drawNinjaLives(ninja);
+
+    // Add jumping animation effect
+    if (ninja.isJumping) {
+      this.drawNinjaJumpEffect(ninja);
+    }
+  }
+
+  private drawNinjaLives(ninja: Ninja): void {
+    const lives = ninja.lives;
+    const maxLives = 3;
+    const heartSize = 8;
+    const spacing = 2;
+
+    for (let i = 0; i < maxLives; i++) {
+      const x =
+        ninja.x +
+        (ninja.width - maxLives * (heartSize + spacing)) / 2 +
+        i * (heartSize + spacing);
+      const y = ninja.y - heartSize - 5;
+
+      if (i < lives) {
+        // Full heart
+        this.ctx.fillStyle = "#800080";
+      } else {
+        // Empty heart
+        this.ctx.fillStyle = "#666666";
+      }
+
+      // Simple heart shape
+      this.ctx.fillRect(x, y, heartSize, heartSize);
+    }
+  }
+
+  private drawNinjaJumpEffect(ninja: Ninja): void {
+    // Draw jumping effect (dust particles)
+    this.ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+    for (let i = 0; i < 3; i++) {
+      const x = ninja.x + Math.random() * ninja.width;
+      const y = ninja.y + ninja.height + Math.random() * 5;
+      this.ctx.fillRect(x, y, 2, 2);
+    }
+  }
+
+  private drawBoss(boss: Boss): void {
+    // Use the generic drawing function for boss with detailed design
+    drawEnemy(this.ctx, "boss", boss.x, boss.y, 0, {
+      detailed: true, // Same detailed design as modal
+      animated: true, // Add animations
+      showShadow: true, // Show shadows
+    });
+
+    // Draw lives indicator
+    this.drawBossLives(boss);
+  }
+
+  private drawBossLives(boss: Boss): void {
+    const lives = boss.lives;
+    const maxLives = 5;
+    const heartSize = 10;
+    const spacing = 3;
+
+    for (let i = 0; i < maxLives; i++) {
+      const x =
+        boss.x +
+        (boss.width - maxLives * (heartSize + spacing)) / 2 +
+        i * (heartSize + spacing);
+      const y = boss.y - heartSize - 8;
+
+      if (i < lives) {
+        // Full heart
+        this.ctx.fillStyle = "#8B0000";
+      } else {
+        // Empty heart
+        this.ctx.fillStyle = "#666666";
+      }
+
+      // Simple heart shape
+      this.ctx.fillRect(x, y, heartSize, heartSize);
+    }
+  }
+
+  private drawTorii(torii: Torii): void {
+    // Draw torii gate
+    this.ctx.fillStyle = "#8B4513";
+
+    // Base pillars
+    this.ctx.fillRect(torii.x, torii.y + torii.height - 20, 8, 20);
+    this.ctx.fillRect(
+      torii.x + torii.width - 8,
+      torii.y + torii.height - 20,
+      8,
+      20
+    );
+
+    // Top beam
+    this.ctx.fillRect(torii.x - 5, torii.y + 10, torii.width + 10, 8);
+
+    // Decorative elements
+    this.ctx.fillStyle = "#FFD700";
+    this.ctx.fillRect(torii.x + 2, torii.y + 8, 4, 4);
+    this.ctx.fillRect(torii.x + torii.width - 6, torii.y + 8, 4, 4);
+  }
+
+  private drawEnemyBullet(bullet: EnemyBullet): void {
+    // Draw enemy bullet
+    this.ctx.fillStyle = bullet.color;
+    this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+
+    // Add glow effect
+    this.ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+    this.ctx.fillRect(
+      bullet.x - 1,
+      bullet.y - 1,
+      bullet.width + 2,
+      bullet.height + 2
+    );
+  }
+
+  public render(
+    samurais: Samurai[],
+    ninjas: Ninja[],
+    bosses: Boss[],
+    sushis: Sushi[],
+    toriis: Torii[],
+    enemyBullets: EnemyBullet[]
+  ): void {
+    // Draw all enemies
+    samurais.forEach((samurai) => this.drawSamurai(samurai));
+    ninjas.forEach((ninja) => this.drawNinja(ninja));
+    bosses.forEach((boss) => this.drawBoss(boss));
+
+    // Draw collectibles
+    sushis.forEach((sushi) => this.drawSushi(sushi));
+    toriis.forEach((torii) => this.drawTorii(torii));
+
+    // Draw enemy bullets
+    enemyBullets.forEach((bullet) => this.drawEnemyBullet(bullet));
   }
 }

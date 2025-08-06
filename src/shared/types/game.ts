@@ -88,11 +88,22 @@ export interface Boss extends MovableEntity {
   lastPhaseChange: number;
 }
 
+// ================================
+// PROJECTILE TYPES
+// ================================
+
+export enum ProjectileType {
+  SHURIKEN = "shuriken",
+  KATANA_SLASH = "katana_slash",
+  BOSS_BULLET = "boss_bullet",
+}
+
 /**
  * Projectile fired by enemy entities (samurai, ninja, boss)
  */
 export interface EnemyBullet extends MovableEntity {
   velocityY: number;
+  projectileType: ProjectileType;
 }
 
 // ================================
@@ -136,7 +147,6 @@ export type Torii = MovableEntity;
 export interface DifficultyLevel {
   level: number;
   speedMultiplier: number;
-  samuraiSpawnDistance: number;
   sushiSpawnProbability: number;
   samuraiShotCooldown: number;
   samuraiLives: number;
@@ -169,6 +179,7 @@ export interface GameState {
   isGameRunning: boolean;
   isGameOver: boolean;
   difficultyLevel: DifficultyLevel;
+  lastEnemySpawnDistance: number; // Track the last enemy spawn distance
 }
 
 export interface GameConstants {
@@ -180,8 +191,6 @@ export interface GameConstants {
   FPS: number;
   RICE_ROCKET_SPEED: number;
   RICE_ROCKET_SIZE: number;
-  SUSHI_SPEED: number;
-  SUSHI_SPAWN_DISTANCE: number;
   // Torii constants
   TORII_SPAWN_DISTANCE: number;
   TORII_WIDTH: number;
@@ -190,12 +199,6 @@ export interface GameConstants {
   TORII_TOP_BAR_HEIGHT: number;
   TORII_BOTTOM_BAR_HEIGHT: number;
   TORII_CENTER_BAR_HEIGHT: number;
-  // Sushi spawn constants
-  SUSHI_MIN_SPAWN_DISTANCE: number;
-  SUSHI_MAX_SPAWN_DISTANCE: number;
-  SUSHI_SPAWN_PROBABILITY: number;
-  // Game start constants
-  INITIAL_SUSHI_SPAWN_DISTANCE: number;
 }
 
 export interface DistanceReward {

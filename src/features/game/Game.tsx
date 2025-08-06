@@ -1,19 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import { GameState } from "@/shared/types/game";
-import { GAME_CONSTANTS } from "@/shared/constants/game";
-import { GameLogic } from "@/core/game-logic/gameLogic";
-import { useKeyboardControls } from "@/shared/hooks/useKeyboardControls";
-import { useGameLoop } from "@/shared/hooks/useGameLoop";
-import { useTranslations } from "@/shared/hooks/useTranslations";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useAccount } from "wagmi";
-import { loadLevelsFromBlockchain } from "@/shared/services/powerUpService";
-
+import { useTranslations } from "@/shared/hooks/useTranslations";
 import { GameCanvas } from "./GameCanvas";
-import { ScoreBoard } from "./ScoreBoard";
 import { GameIndicators } from "./GameIndicators";
+import { ScoreBoard } from "./ScoreBoard";
+import { EnemyInfoModal } from "./components/EnemyInfoModal";
+import { EnemyGuideButton } from "./components/EnemyGuideButton";
+import { GameLogic } from "@/core/game-logic/gameLogic";
 import { GameRenderer } from "@/core/game-logic/gameRenderer";
+import { GAME_CONSTANTS } from "@/shared/constants/game";
+import { useGameLoop } from "@/shared/hooks/useGameLoop";
+import { useKeyboardControls } from "@/shared/hooks/useKeyboardControls";
+import { loadLevelsFromBlockchain } from "@/shared/services/powerUpService";
+import { GameState } from "@/shared/types/game";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -26,6 +33,8 @@ const Game = () => {
   const [gameState, setGameState] = useState<GameState>(
     GameLogic.createInitialGameState()
   );
+
+  const [showEnemyInfo, setShowEnemyInfo] = useState(false);
 
   const startGame = useCallback(() => {
     setGameState((prev) => ({
@@ -77,7 +86,7 @@ const Game = () => {
   // Load power-up levels from blockchain when address changes
   useEffect(() => {
     if (address) {
-      loadLevelsFromBlockchain(address).catch((error) => {
+      loadLevelsFromBlockchain(address).catch((error: unknown) => {
         console.warn("Failed to load power-up levels from blockchain:", error);
       });
     }
@@ -136,6 +145,8 @@ const Game = () => {
       gameState.sushis,
       gameState.toriis,
       gameState.samurais,
+      gameState.ninjas,
+      gameState.bosses,
       gameState.enemyBullets,
       gameState.powerUps,
       gameState.distance,
@@ -149,6 +160,8 @@ const Game = () => {
     gameState.sushis,
     gameState.toriis,
     gameState.samurais,
+    gameState.ninjas,
+    gameState.bosses,
     gameState.enemyBullets,
     gameState.powerUps,
     gameState.distance,
@@ -163,6 +176,12 @@ const Game = () => {
         <div className="flex flex-col items-center justify-center flex-1">
           <div className="relative">
             <GameCanvas canvasRef={canvasRef} />
+
+            <EnemyGuideButton
+              onClick={() => setShowEnemyInfo(true)}
+              isVisible={!gameState.isGameRunning && !gameState.isGameOver}
+            />
+
             {gameState.isGameOver && (
               <ScoreBoard
                 distance={GameLogic.formatDistance(gameState.distance)}
@@ -170,6 +189,7 @@ const Game = () => {
               />
             )}
           </div>
+
           {/* Zone réservée pour les indicateurs avec hauteur responsive */}
           <div className="mt-4 sm:mt-6 h-24 sm:h-28 md:h-32 flex items-center justify-center w-full px-4">
             <GameIndicators
@@ -180,6 +200,12 @@ const Game = () => {
           </div>
         </div>
       </div>
+
+      {/* Enemy Info Modal */}
+      <EnemyInfoModal
+        isOpen={showEnemyInfo}
+        onClose={() => setShowEnemyInfo(false)}
+      />
     </>
   );
 };
