@@ -9,16 +9,58 @@
     "game": {
       "startGame": "Commencer le jeu",
       "restart": "Recommencer",
-      "gameOver": "Partie terminée !",
-      "finalScore": "Score final",
+      "gameOver": "Game Over !",
+      "finalScore": "Score Final",
       "restartMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour recommencer",
       "startMessage": "Appuyez sur ESPACE ou FLÈCHE HAUT pour commencer",
       "jumpMessage": "FLÈCHE HAUT pour sauter, ESPACE pour tirer des RiceRockets",
-      "enemyMessage": "Les samouraïs apparaissent tous les 50m - tirez 3 fois pour les vaincre !",
-      "instructions": "Utilisez FLÈCHE HAUT pour sauter et BARRE D'ESPACE pour tirer des fusées de riz !",
+      "enemyMessage": "Ennemis apparaissent tous les 75m - Samouraïs (70%) & Ninjas (30%)",
+      "instructions": "Utilisez FLÈCHE HAUT pour sauter et ESPACE pour tirer des rice rockets !",
       "performanceHint": "Appuyez sur F3 pour afficher les performances",
       "savingInProgress": "Sauvegarde en cours...",
-      "pleaseWait": "Patientez...",
+      "pleaseWait": "Veuillez patienter...",
+      "enemyInfo": {
+        "title": "Types d'Ennemis",
+        "subtitle": "Apprenez à connaître vos ennemis pour améliorer votre stratégie",
+        "description": "Description",
+        "attack": "Attaque",
+        "frequency": "Fréquence",
+        "difficulty": "Difficulté",
+        "proTips": "Conseils Pro",
+        "enemies": {
+          "samurai": {
+            "name": "Samouraï",
+            "description": "Un guerrier discipliné avec des compétences d'épée mortelles. Leurs coups précis peuvent être dévastateurs si vous ne faites pas attention.",
+            "attack": "Coup d'Épée",
+            "frequency": "Moyenne",
+            "difficulty": "Moyenne",
+            "strategy": "Esquivez et contre-attaquez",
+            "tip": "Synchronisez vos esquives avec leurs coups d'épée. Ils sont prévisibles mais mortels."
+          },
+          "ninja": {
+            "name": "Ninja",
+            "description": "Un assassin furtif qui se déplace silencieusement et frappe depuis l'ombre. Leurs attaques imprévisibles nécessitent des réflexes rapides.",
+            "attack": "Frappe Furtive",
+            "frequency": "Élevée",
+            "difficulty": "Difficile",
+            "strategy": "Restez vigilant, ils sont furtifs",
+            "tip": "Surveillez leurs mouvements furtifs. Ils attaquent souvent sous des angles inattendus."
+          },
+          "boss": {
+            "name": "Boss",
+            "description": "Un ennemi puissant avec plusieurs patterns d'attaque et beaucoup de vie. Ils nécessitent stratégie et timing pour être vaincus.",
+            "attack": "Multi-Frappe",
+            "frequency": "Faible",
+            "difficulty": "Extrême",
+            "strategy": "Utilisez les power-ups et esquivez prudemment",
+            "tip": "Gardez vos power-ups pour les combats de boss. Ils ont plusieurs patterns d'attaque."
+          }
+        }
+      },
+      "enemyGuide": {
+        "title": "Guide des Ennemis",
+        "subtitle": "Apprenez les stratégies ennemies"
+      },
       "rewards": {
         "title": "Récompenses de Distance",
         "breakdown": "Détail des Récompenses",
@@ -214,11 +256,7 @@
       "noPowerUps": "Aucun power-up disponible",
       "connectWalletToView": "Connectez votre wallet pour voir les power-ups",
       "signatureError": "Échec de l'obtention de la signature du serveur",
-      "upgradeError": "Échec de l'amélioration du power-up",
-      "insufficientRice": "RICE Insuffisant",
-      "errorUpgrading": "Échec de l'amélioration du power-up. Veuillez réessayer.",
-      "signatureRejected": "Amélioration annulée. Vous avez rejeté la signature.",
-      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+      "upgradeError": "Échec de l'amélioration du power-up"
     }
   },
   "features": {
@@ -230,7 +268,7 @@
       "speed": "Vitesse",
       "difficulty": "Difficulté",
       "readyToSave": "Prêt à sauvegarder",
-      "rewardsAvailable": "Récompenses calculées",
+      "rewardsAvailable": "Récompenses disponibles",
       "scoreSavedSuccess": "Score sauvegardé avec succès !",
       "newRecordAchieved": "Nouveau record !",
       "scoreRecorded": "Score enregistré !",
@@ -282,15 +320,12 @@
       "rice": "RICE",
       "upgrade": "Améliorer",
       "maxLevelReached": "Niveau Maximum Atteint !",
-      "insufficientRice": "RICE Insuffisant",
+
       "noActive": "Aucun power-up actif",
       "upgrading": "Amélioration...",
       "loading": "Chargement...",
       "level": "Niveau",
-      "projectiles": "projectiles",
-      "errorUpgrading": "Échec de la mise à niveau du power-up. Veuillez réessayer.",
-      "signatureRejected": "Mise à niveau annulée. Vous avez rejeté la signature.",
-      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+      "projectiles": "projectiles"
     },
     "powerUp": {
       "title": "Power-ups",

@@ -14,11 +14,53 @@
       "restartMessage": "Presiona ESPACIO o FLECHA ARRIBA para reiniciar",
       "startMessage": "Presiona ESPACIO o FLECHA ARRIBA para comenzar",
       "jumpMessage": "FLECHA ARRIBA para saltar, ESPACIO para disparar RiceRockets",
-      "enemyMessage": "¡Los samuráis aparecen cada 50m - dispara 3 veces para derrotarlos!",
+      "enemyMessage": "Los enemigos aparecen cada 75m - Samuráis (70%) & Ninjas (30%)",
       "instructions": "¡Usa FLECHA ARRIBA para saltar y BARRA ESPACIADORA para disparar cohetes de arroz!",
       "performanceHint": "Presiona F3 para mostrar rendimiento",
       "savingInProgress": "Guardando en progreso...",
       "pleaseWait": "Por favor espera...",
+      "enemyInfo": {
+        "title": "Tipos de Enemigos",
+        "subtitle": "Aprende sobre tus enemigos para mejorar tu estrategia",
+        "description": "Descripción",
+        "attack": "Ataque",
+        "frequency": "Frecuencia",
+        "difficulty": "Dificultad",
+        "proTips": "Consejos Pro",
+        "enemies": {
+          "samurai": {
+            "name": "Samurái",
+            "description": "Un guerrero disciplinado con habilidades mortales de espada. Sus golpes precisos pueden ser devastadores si no tienes cuidado.",
+            "attack": "Golpe de Espada",
+            "frequency": "Media",
+            "difficulty": "Media",
+            "strategy": "Esquiva y contraataca",
+            "tip": "Sincroniza tus esquivas con sus golpes de espada. Son predecibles pero mortales."
+          },
+          "ninja": {
+            "name": "Ninja",
+            "description": "Un asesino sigiloso que se mueve silenciosamente y ataca desde las sombras. Sus ataques impredecibles requieren reflejos rápidos.",
+            "attack": "Golpe Sigiloso",
+            "frequency": "Alta",
+            "difficulty": "Difícil",
+            "strategy": "Mantente alerta, son sigilosos",
+            "tip": "Observa sus movimientos sigilosos. A menudo atacan desde ángulos inesperados."
+          },
+          "boss": {
+            "name": "Jefe",
+            "description": "Un enemigo poderoso con múltiples patrones de ataque y mucha vida. Requieren estrategia y timing para derrotarlos.",
+            "attack": "Multi-Golpe",
+            "frequency": "Baja",
+            "difficulty": "Extrema",
+            "strategy": "Usa power-ups y esquiva cuidadosamente",
+            "tip": "Guarda tus power-ups para las batallas contra jefes. Tienen múltiples patrones de ataque."
+          }
+        }
+      },
+      "enemyGuide": {
+        "title": "Guía de Enemigos",
+        "subtitle": "Aprende estrategias enemigas"
+      },
       "rewards": {
         "title": "Recompensas de Distancia",
         "breakdown": "Desglose de Recompensas",
@@ -214,11 +256,7 @@
       "noPowerUps": "No hay power-ups disponibles",
       "connectWalletToView": "Conecta tu wallet para ver los power-ups",
       "signatureError": "Error al obtener la firma del servidor",
-      "upgradeError": "Error al actualizar el power-up",
-      "insufficientRice": "RICE Insuficiente",
-      "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
-      "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
-      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
+      "upgradeError": "Error al actualizar el power-up"
     }
   },
   "features": {
@@ -230,7 +268,7 @@
       "speed": "Velocidad",
       "difficulty": "Dificultad",
       "readyToSave": "Listo para guardar",
-      "rewardsAvailable": "Recompensas calculadas",
+      "rewardsAvailable": "Recompensas disponibles",
       "scoreSavedSuccess": "¡Puntuación guardada exitosamente!",
       "newRecordAchieved": "¡Nuevo récord!",
       "scoreRecorded": "¡Puntuación registrada!",
@@ -282,15 +320,12 @@
       "rice": "RICE",
       "upgrade": "Mejorar",
       "maxLevelReached": "¡Nivel Máximo Alcanzado!",
-      "insufficientRice": "RICE Insuficiente",
+
       "noActive": "Sin power-up activo",
       "upgrading": "Actualizando...",
       "loading": "Cargando...",
       "level": "Nivel",
-      "projectiles": "proyectiles",
-      "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
-      "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
-      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
+      "projectiles": "proyectiles"
     },
     "powerUp": {
       "title": "Power-ups",

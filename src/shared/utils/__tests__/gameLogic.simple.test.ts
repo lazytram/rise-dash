@@ -97,6 +97,7 @@ import {
   createTestSamurai,
   createTestPowerUp,
 } from "../testUtils.helper";
+import { ProjectileType } from "@/shared/types/game";
 
 describe("GameLogic - Simple Tests", () => {
   describe("Game State Management", () => {
@@ -129,6 +130,7 @@ describe("GameLogic - Simple Tests", () => {
             velocityX: -5,
             velocityY: 0,
             color: "red",
+            projectileType: ProjectileType.KATANA_SLASH,
           },
         ],
         riceRockets: [
@@ -337,11 +339,11 @@ describe("GameLogic - Simple Tests", () => {
 
     it("should make samurai shoot", () => {
       const samurai = createTestSamurai({ lastShotTime: 0 });
-      const difficultyLevel = GameLogic.calculateDifficultyLevel(100);
-      const bullet = GameLogic.makeSamuraiShoot(samurai, 100, difficultyLevel);
+      const bullet = GameLogic.makeSamuraiShoot(samurai);
 
       expect(bullet).toBeDefined();
-      expect(bullet?.x).toBe(samurai.x);
+      // The katana slash is created at samurai.x - slashRadius (60 pixels to the left)
+      expect(bullet?.x).toBe(samurai.x - 60);
     });
   });
 

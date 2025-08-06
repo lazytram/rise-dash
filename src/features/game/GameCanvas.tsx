@@ -1,15 +1,18 @@
+import React from "react";
 import { GAME_CONSTANTS } from "@/shared/constants/game";
 
 interface GameCanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  onClick?: (event: React.MouseEvent<HTMLCanvasElement>) => void;
 }
 
-export const GameCanvas = ({ canvasRef }: GameCanvasProps) => {
+export const GameCanvas = ({ canvasRef, onClick }: GameCanvasProps) => {
   return (
     <div className="backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-6 rounded-lg flex items-center justify-center">
       <canvas
         ref={canvasRef}
-        className="border-2 border-white/20 rounded-lg"
+        onClick={onClick}
+        className="border-2 border-white/20 rounded-lg cursor-pointer"
         style={{
           display: "block",
           imageRendering: "pixelated", // Better for pixel art
