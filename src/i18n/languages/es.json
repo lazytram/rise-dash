@@ -14,7 +14,7 @@
       "restartMessage": "Presiona ESPACIO o FLECHA ARRIBA para reiniciar",
       "startMessage": "Presiona ESPACIO o FLECHA ARRIBA para comenzar",
       "jumpMessage": "FLECHA ARRIBA para saltar, ESPACIO para disparar RiceRockets",
-      "enemyMessage": "¡Los samuráis aparecen cada 50m - dispara 3 veces para derrotarlos!",
+      "enemyMessage": "Los enemigos aparecen cada 75m - Samuráis (70%) & Ninjas (30%)",
       "instructions": "¡Usa FLECHA ARRIBA para saltar y BARRA ESPACIADORA para disparar cohetes de arroz!",
       "performanceHint": "Presiona F3 para mostrar rendimiento",
       "savingInProgress": "Guardando en progreso...",
@@ -256,11 +256,7 @@
       "noPowerUps": "No hay power-ups disponibles",
       "connectWalletToView": "Conecta tu wallet para ver los power-ups",
       "signatureError": "Error al obtener la firma del servidor",
-      "upgradeError": "Error al actualizar el power-up",
-      "insufficientRice": "RICE Insuficiente",
-      "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
-      "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
-      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
+      "upgradeError": "Error al actualizar el power-up"
     }
   },
   "features": {
@@ -272,7 +268,7 @@
       "speed": "Velocidad",
       "difficulty": "Dificultad",
       "readyToSave": "Listo para guardar",
-      "rewardsAvailable": "Recompensas calculadas",
+      "rewardsAvailable": "Recompensas disponibles",
       "scoreSavedSuccess": "¡Puntuación guardada exitosamente!",
       "newRecordAchieved": "¡Nuevo récord!",
       "scoreRecorded": "¡Puntuación registrada!",
@@ -324,15 +320,12 @@
       "rice": "RICE",
       "upgrade": "Mejorar",
       "maxLevelReached": "¡Nivel Máximo Alcanzado!",
-      "insufficientRice": "RICE Insuficiente",
+
       "noActive": "Sin power-up activo",
       "upgrading": "Actualizando...",
       "loading": "Cargando...",
       "level": "Nivel",
-      "projectiles": "proyectiles",
-      "errorUpgrading": "Error al actualizar el power-up. Por favor intenta de nuevo.",
-      "signatureRejected": "Actualización cancelada. Has rechazado la firma.",
-      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
+      "projectiles": "proyectiles"
     },
     "powerUp": {
       "title": "Power-ups",

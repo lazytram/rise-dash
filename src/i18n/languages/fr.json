@@ -7,7 +7,7 @@
       "siweStatement": "Connectez-vous à Rise Dash pour prouver que vous possédez cette wallet."
     },
     "game": {
-      "startGame": "Commencer",
+      "startGame": "Commencer le jeu",
       "restart": "Recommencer",
       "gameOver": "Game Over !",
       "finalScore": "Score Final",
@@ -256,11 +256,7 @@
       "noPowerUps": "Aucun power-up disponible",
       "connectWalletToView": "Connectez votre wallet pour voir les power-ups",
       "signatureError": "Échec de l'obtention de la signature du serveur",
-      "upgradeError": "Échec de l'amélioration du power-up",
-      "insufficientRice": "RICE Insuffisant",
-      "errorUpgrading": "Échec de l'amélioration du power-up. Veuillez réessayer.",
-      "signatureRejected": "Amélioration annulée. Vous avez rejeté la signature.",
-      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+      "upgradeError": "Échec de l'amélioration du power-up"
     }
   },
   "features": {
@@ -272,7 +268,7 @@
       "speed": "Vitesse",
       "difficulty": "Difficulté",
       "readyToSave": "Prêt à sauvegarder",
-      "rewardsAvailable": "Récompenses calculées",
+      "rewardsAvailable": "Récompenses disponibles",
       "scoreSavedSuccess": "Score sauvegardé avec succès !",
       "newRecordAchieved": "Nouveau record !",
       "scoreRecorded": "Score enregistré !",
@@ -324,15 +320,12 @@
       "rice": "RICE",
       "upgrade": "Améliorer",
       "maxLevelReached": "Niveau Maximum Atteint !",
-      "insufficientRice": "RICE Insuffisant",
+
       "noActive": "Aucun power-up actif",
       "upgrading": "Amélioration...",
       "loading": "Chargement...",
       "level": "Niveau",
-      "projectiles": "projectiles",
-      "errorUpgrading": "Échec de la mise à niveau du power-up. Veuillez réessayer.",
-      "signatureRejected": "Mise à niveau annulée. Vous avez rejeté la signature.",
-      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+      "projectiles": "projectiles"
     },
     "powerUp": {
       "title": "Power-ups",
