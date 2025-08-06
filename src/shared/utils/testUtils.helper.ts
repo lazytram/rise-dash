@@ -10,6 +10,7 @@ import {
   RiceRocket,
   PowerUp,
   Torii,
+  ProjectileType,
 } from "@/shared/types/game";
 import { PowerUpType } from "@/shared/types/powerUps";
 import { GAME_CONSTANTS } from "@/shared/constants/game";
@@ -119,6 +120,7 @@ export const createTestEnemyBullet = (
   velocityX: GAME_CONSTANTS.BASE_SAMURAI_BULLET_SPEED,
   velocityY: 0,
   color: "#FF0000",
+  projectileType: ProjectileType.KATANA_SLASH,
   ...overrides,
 });
 
