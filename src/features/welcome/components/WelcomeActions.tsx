@@ -3,61 +3,58 @@ import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
 
 import { DailyRevealHomeButton } from "@/features/auth/DailyRevealHomeButton";
-import { Tutorial } from "../../tutorial";
 
 interface WelcomeActionsProps {
   onPlayClick: () => void;
   onProfileClick: () => void;
   onLeaderboardClick: () => void;
-  onInstructionsClick: () => void;
 }
 
 export const WelcomeActions = memo(function WelcomeActions({
   onPlayClick,
   onProfileClick,
   onLeaderboardClick,
-  onInstructionsClick,
 }: WelcomeActionsProps) {
   const { t } = useTranslations();
 
   return (
-    <div className="flex flex-col items-center w-full space-y-4">
+    <div className="flex flex-col items-center w-full space-y-10 animate-fade-in-up animation-delay-300">
+      {/* Main Play Button - Enhanced */}
       <div className="flex justify-center w-full">
         <Button
           onClick={onPlayClick}
-          className="w-2/3 max-w-xs bg-emerald-600 hover:bg-emerald-700 cursor-pointer text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+          variant="gradient"
+          size="xl"
+          className="w-80 max-w-xs animate-glow-pulse hover:scale-105 transition-transform duration-300 opacity-100 shadow-2xl"
         >
           {t("common.playNow")}
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 w-full">
+      {/* Secondary Actions Grid - Enhanced */}
+      <div className="grid grid-cols-2 gap-8 w-full max-w-lg">
         <Button
           onClick={onProfileClick}
-          className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-200"
+          variant="glass"
+          size="lg"
+          className="w-full hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-400 opacity-90 hover:opacity-100 shadow-lg"
         >
           {t("scenes.profile.title")}
         </Button>
         <Button
           onClick={onLeaderboardClick}
-          className="w-full cursor-pointer bg-amber-600 hover:bg-amber-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-200"
+          variant="glass"
+          size="lg"
+          className="w-full hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-500 opacity-90 hover:opacity-100 shadow-lg"
         >
           {t("scenes.leaderboard.title")}
         </Button>
       </div>
 
-      <Button
-        onClick={onInstructionsClick}
-        className="w-full cursor-pointer bg-slate-600 hover:bg-slate-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-200"
-      >
-        {t("scenes.instructions.title")}
-      </Button>
-
-      <div className="flex justify-center items-center w-full">
+      {/* Daily Reveal - Enhanced */}
+      <div className="flex justify-center items-center w-full animate-fade-in-up animation-delay-600">
         <DailyRevealHomeButton />
       </div>
-
-      <Tutorial />
     </div>
   );
 });

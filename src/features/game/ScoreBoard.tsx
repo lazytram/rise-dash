@@ -19,6 +19,13 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   onClose,
   onRestart,
 }) => {
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else if (onRestart) {
+      onRestart();
+    }
+  };
   const { t } = useTranslations();
   const { isConnected, address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,15 +109,15 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   }
 
   return (
-    <Modal size="lg">
+    <Modal size="full" isOpen={true} onClose={handleClose}>
       <div className="h-[500px] sm:h-[550px] flex flex-col relative overflow-hidden p-4 sm:p-6">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-purple-900/20 to-indigo-900/20 rounded-2xl backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#3a1344]/20 via-[#7967e5]/20 to-[#99eafc]/20 rounded-2xl backdrop-blur-sm">
           <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-4 left-4 w-1.5 h-1.5 bg-violet-400/30 rounded-full animate-pulse"></div>
-            <div className="absolute top-8 right-8 w-1 h-1 bg-purple-400/40 rounded-full animate-pulse delay-300"></div>
-            <div className="absolute bottom-6 left-8 w-1 h-1 bg-indigo-400/30 rounded-full animate-pulse delay-700"></div>
-            <div className="absolute bottom-4 right-4 w-1 h-1 bg-violet-400/50 rounded-full animate-pulse delay-1000"></div>
+            <div className="absolute top-4 left-4 w-1.5 h-1.5 bg-[#7967e5]/30 rounded-full animate-pulse"></div>
+            <div className="absolute top-8 right-8 w-1 h-1 bg-[#99eafc]/40 rounded-full animate-pulse delay-300"></div>
+            <div className="absolute bottom-6 left-8 w-1 h-1 bg-[#7967e5]/30 rounded-full animate-pulse delay-700"></div>
+            <div className="absolute bottom-4 right-4 w-1 h-1 bg-[#99eafc]/50 rounded-full animate-pulse delay-1000"></div>
           </div>
         </div>
 
@@ -120,9 +127,9 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 drop-shadow-lg tracking-wide">
               {t("features.blockchain.saveScore")}
             </h2>
-            <div className="w-12 sm:w-16 h-0.5 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 mx-auto rounded-full shadow-lg"></div>
-            <div className="absolute -top-1 -left-1 w-1.5 h-1.5 bg-violet-400/60 rounded-full animate-pulse"></div>
-            <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-indigo-400/60 rounded-full animate-pulse delay-500"></div>
+            <div className="w-12 sm:w-16 h-0.5 bg-gradient-to-r from-[#7967e5] via-[#99eafc] to-[#7967e5] mx-auto rounded-full shadow-lg"></div>
+            <div className="absolute -top-1 -left-1 w-1.5 h-1.5 bg-[#7967e5]/60 rounded-full animate-pulse"></div>
+            <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-[#99eafc]/60 rounded-full animate-pulse delay-500"></div>
           </div>
         </div>
 
@@ -152,9 +159,9 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
         {/* Bottom decorative elements */}
         <div className="absolute bottom-2 sm:bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          <div className="w-1 h-1 bg-violet-400/40 rounded-full animate-pulse"></div>
-          <div className="w-1 h-1 bg-emerald-400/40 rounded-full animate-pulse delay-200"></div>
-          <div className="w-1 h-1 bg-orange-400/40 rounded-full animate-pulse delay-400"></div>
+          <div className="w-1 h-1 bg-[#7967e5]/40 rounded-full animate-pulse"></div>
+          <div className="w-1 h-1 bg-[#99eafc]/40 rounded-full animate-pulse delay-200"></div>
+          <div className="w-1 h-1 bg-[#7967e5]/40 rounded-full animate-pulse delay-400"></div>
         </div>
       </div>
     </Modal>

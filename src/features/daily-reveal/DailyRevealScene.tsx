@@ -2,12 +2,12 @@
 
 import { memo } from "react";
 import { DailyRevealContent } from "./DailyRevealContent";
-import { SceneContainer } from "@/shared/components/SceneContainer";
+import { Scene } from "@/shared/components/Scene";
 
 export const DailyRevealScene = memo(function DailyRevealScene() {
   return (
-    <SceneContainer>
+    <Scene sceneKey="dailyReveal">
       <DailyRevealContent />
-    </SceneContainer>
+    </Scene>
   );
 });

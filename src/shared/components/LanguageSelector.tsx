@@ -64,7 +64,7 @@ export const LanguageSelector = memo(function LanguageSelector() {
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-3 backdrop-blur-xl bg-white/20 border border-white/30 rounded-2xl shadow-2xl overflow-hidden z-50 min-w-[200px] animate-fade-in">
+        <div className="absolute top-full right-0 mt-3 bg-gradient-to-b from-slate-900/95 via-purple-900/95 to-slate-900/95 backdrop-blur-xl border border-purple-500/20 rounded-2xl shadow-2xl overflow-hidden z-50 min-w-[200px] animate-fade-in">
           {availableLocales.map((localeOption, index) => (
             <button
               key={localeOption.code}
@@ -72,7 +72,7 @@ export const LanguageSelector = memo(function LanguageSelector() {
               className={`w-full flex items-center gap-4 px-5 py-3.5 text-left hover:bg-white/20 transition-all duration-200 cursor-pointer transform hover:scale-105 ${
                 locale === localeOption.code
                   ? "bg-white/30 text-white font-semibold"
-                  : "text-white/90 hover:text-white"
+                  : "text-slate-300 hover:text-white"
               }`}
               style={{
                 animationDelay: `${index * 50}ms`,

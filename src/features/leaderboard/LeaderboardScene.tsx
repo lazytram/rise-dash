@@ -2,12 +2,12 @@
 
 import { memo } from "react";
 import { LeaderboardContent } from "./LeaderboardContent";
-import { SceneContainer } from "@/shared/components/SceneContainer";
+import { Scene } from "@/shared/components/Scene";
 
 export const LeaderboardScene = memo(function LeaderboardScene() {
   return (
-    <SceneContainer>
+    <Scene sceneKey="leaderboard">
       <LeaderboardContent />
-    </SceneContainer>
+    </Scene>
   );
 });

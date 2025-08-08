@@ -18,7 +18,7 @@ export enum SceneType {
 /**
  * Scene configuration with component and metadata
  */
-export interface Scene {
+export interface SceneConfig {
   id: SceneType;
   component: React.ComponentType;
   title: string;

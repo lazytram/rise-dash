@@ -190,15 +190,11 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 onClick={onUpgrade}
                 disabled={isButtonDisabled}
                 variant={
-                  canAfford && !isBalanceLoading ? "success" : "secondary"
+                  canAfford && !isBalanceLoading ? "gradient" : "secondary"
                 }
                 size="sm"
                 className={`w-full h-10 transition-all duration-200 ${
-                  isLoading
-                    ? "bg-gradient-to-r from-violet-500 to-violet-600 animate-pulse"
-                    : canAfford && !isBalanceLoading
-                    ? "bg-gradient-to-r from-violet-500/80 to-violet-600/80 hover:from-violet-600 hover:to-violet-700 border border-violet-400/30"
-                    : "bg-gradient-to-r from-gray-500/50 to-gray-600/50 border border-gray-400/30"
+                  isLoading ? "animate-pulse" : ""
                 }`}
               >
                 {isLoading ? (

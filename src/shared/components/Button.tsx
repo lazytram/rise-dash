@@ -2,22 +2,36 @@ import React from "react";
 import { cn } from "@/shared/utils/cn";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "success" | "danger" | "ghost";
-  size?: "sm" | "md" | "lg";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "danger"
+    | "ghost"
+    | "gradient"
+    | "glass";
+  size?: "sm" | "md" | "lg" | "xl";
+  loading?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
 }
 
 const buttonVariants = {
-  primary: "bg-purple-500 hover:bg-purple-600 text-white",
-  secondary: "bg-gray-500 hover:bg-gray-600 text-white",
-  success: "bg-green-500 hover:bg-green-600 text-white",
-  danger: "bg-red-500 hover:bg-red-600 text-white",
-  ghost: "bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm",
+  primary:
+    "bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg hover:shadow-xl",
+  secondary: "bg-muted hover:bg-muted/80 text-foreground border border-border",
+  success: "bg-success hover:bg-success/90 text-white shadow-lg",
+  danger: "bg-error hover:bg-error/90 text-white shadow-lg",
+  ghost: "bg-transparent hover:bg-muted text-foreground",
+  gradient: "gradient-bg text-white shadow-lg hover:shadow-xl",
+  glass: "glass glass-hover text-foreground",
 };
 
 const buttonSizes = {
-  sm: "py-2 px-4 text-sm",
-  md: "py-3 px-6 text-base",
-  lg: "py-4 px-8 text-lg",
+  sm: "h-8 px-3 text-sm rounded-md",
+  md: "h-10 px-4 text-sm rounded-lg",
+  lg: "h-12 px-6 text-base rounded-lg",
+  xl: "h-14 px-8 text-lg rounded-xl",
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -26,20 +40,29 @@ export const Button: React.FC<ButtonProps> = ({
   className,
   children,
   disabled,
+  loading = false,
+  icon,
+  iconPosition = "left",
   ...props
 }) => {
   return (
     <button
       className={cn(
-        "font-bold rounded-lg transition-colors duration-200 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center",
+        "btn-modern font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 focus-ring",
         buttonVariants[variant],
         buttonSizes[size],
+        loading && "pointer-events-none",
         className
       )}
-      disabled={disabled}
+      disabled={disabled || loading}
       {...props}
     >
+      {loading && (
+        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
+      )}
+      {!loading && icon && iconPosition === "left" && icon}
       {children}
+      {!loading && icon && iconPosition === "right" && icon}
     </button>
   );
 };
