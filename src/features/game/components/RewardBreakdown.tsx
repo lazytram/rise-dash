@@ -27,12 +27,12 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
         >
           {t("features.gameplay.distanceRewards")}
         </Text>
-        <div className="w-6 sm:w-8 h-0.5 bg-gradient-to-r from-orange-400 to-yellow-400 mx-auto mt-1 sm:mt-2 rounded-full"></div>
+        <div className="w-6 sm:w-8 h-0.5 bg-gradient-to-r from-[#7967e5] to-[#99eafc] mx-auto mt-1 sm:mt-2 rounded-full"></div>
       </div>
 
       {/* Total Rewards Card */}
       <div className="relative group w-full max-w-xs mb-3 sm:mb-4">
-        <div className="relative bg-gradient-to-br from-orange-600/90 via-yellow-600/90 to-amber-600/90 rounded-lg p-4 sm:p-5 shadow-xl border border-orange-400/40 backdrop-blur-md transform transition-all duration-500 group-hover:scale-105 group-hover:shadow-orange-500/30 group-hover:border-orange-300/60">
+        <div className="relative bg-gradient-to-br from-[#3a1344]/95 via-[#7967e5]/95 to-[#3a1344]/95 rounded-lg p-4 sm:p-5 shadow-xl border border-[#7967e5]/50 backdrop-blur-md transform transition-all duration-500 group-hover:scale-105 group-hover:shadow-[#7967e5]/40 group-hover:border-[#99eafc]/70">
           <div className="flex flex-col items-center space-y-2 sm:space-y-3">
             {/* Total Amount */}
             <div className="flex items-center space-x-2">
@@ -66,12 +66,12 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
           {/* Enhanced Decorative Elements */}
           <div className="absolute top-2 sm:top-3 right-2 sm:right-3 w-1.5 h-1.5 bg-white/50 rounded-full animate-pulse"></div>
           <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 w-1 h-1 bg-white/40 rounded-full animate-pulse delay-300"></div>
-          <div className="absolute top-1/2 left-1.5 w-0.5 h-0.5 bg-orange-300/60 rounded-full animate-pulse delay-700"></div>
-          <div className="absolute top-1/2 right-1.5 w-0.5 h-0.5 bg-yellow-300/60 rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1.5 w-0.5 h-0.5 bg-[#7967e5]/60 rounded-full animate-pulse delay-700"></div>
+          <div className="absolute top-1/2 right-1.5 w-0.5 h-0.5 bg-[#99eafc]/60 rounded-full animate-pulse delay-1000"></div>
         </div>
 
         {/* Enhanced Glow Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 via-yellow-500/20 to-amber-500/30 rounded-lg blur-lg -z-10 group-hover:blur-xl transition-all duration-500"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#7967e5]/50 via-[#99eafc]/40 to-[#7967e5]/50 rounded-lg blur-lg -z-10 group-hover:blur-xl transition-all duration-500"></div>
       </div>
 
       {/* Milestones Breakdown */}
@@ -89,7 +89,7 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
           {rewards.distanceRewards.slice(0, 3).map((reward, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-2 sm:p-3 bg-white/10 rounded-lg border border-white/20 backdrop-blur-sm"
+              className="flex items-center justify-between p-2 sm:p-3 bg-[#7967e5]/10 rounded-lg border border-[#7967e5]/20 backdrop-blur-sm"
             >
               <div className="flex items-center space-x-2">
                 <RiceLogo size={12} className="sm:w-3 sm:h-3 text-white/70" />

@@ -7,45 +7,45 @@ export const InstructionsTips: React.FC = () => {
   const { t } = useTranslations();
 
   return (
-    <div className="bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-xl p-6 border border-white/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-      <div className="flex items-center mb-4">
-        <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg flex items-center justify-center mr-3">
-          <span className="text-white font-bold text-sm">💡</span>
+    <div className="bg-gradient-to-br from-[#3a1344]/20 to-[#7967e5]/20 rounded-xl p-4 border border-[#7967e5]/30 backdrop-blur-sm">
+      <div className="flex items-center mb-3">
+        <div className="w-6 h-6 bg-gradient-to-r from-[#7967e5] to-[#99eafc] rounded-lg flex items-center justify-center mr-2">
+          <span className="text-white font-bold text-xs">💡</span>
         </div>
-        <h2 className="text-xl font-semibold text-white">
+        <h2 className="text-lg font-semibold text-white">
           {t("scenes.instructions.tips.title")}
         </h2>
       </div>
-      <ul className="space-y-3">
-        <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
-          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+      <ul className="space-y-2">
+        <li className="flex items-start p-2 bg-white/10 rounded-lg">
+          <div className="w-5 h-5 bg-[#7967e5] rounded-full flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
             <span className="text-white text-xs font-bold">1</span>
           </div>
-          <Text variant="body" className="text-white/90">
+          <Text variant="body" className="text-white/90 text-sm">
             {t("scenes.instructions.tips.tip1")}
           </Text>
         </li>
-        <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
-          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+        <li className="flex items-start p-2 bg-white/10 rounded-lg">
+          <div className="w-5 h-5 bg-[#99eafc] rounded-full flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
             <span className="text-white text-xs font-bold">2</span>
           </div>
-          <Text variant="body" className="text-white/90">
+          <Text variant="body" className="text-white/90 text-sm">
             {t("scenes.instructions.tips.tip2")}
           </Text>
         </li>
-        <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
-          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+        <li className="flex items-start p-2 bg-white/10 rounded-lg">
+          <div className="w-5 h-5 bg-[#7967e5] rounded-full flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
             <span className="text-white text-xs font-bold">3</span>
           </div>
-          <Text variant="body" className="text-white/90">
+          <Text variant="body" className="text-white/90 text-sm">
             {t("scenes.instructions.tips.tip3")}
           </Text>
         </li>
-        <li className="flex items-start p-3 bg-white/10 rounded-lg hover:bg-white/15 transition-colors">
-          <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+        <li className="flex items-start p-2 bg-white/10 rounded-lg">
+          <div className="w-5 h-5 bg-[#99eafc] rounded-full flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
             <span className="text-white text-xs font-bold">4</span>
           </div>
-          <Text variant="body" className="text-white/90">
+          <Text variant="body" className="text-white/90 text-sm">
             {t("scenes.instructions.tips.tip4")}
           </Text>
         </li>

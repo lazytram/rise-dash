@@ -1,5 +1,6 @@
 import React from "react";
-import { UI_COLORS } from "@/shared/constants/colors";
+import { Button } from "@/shared/components/Button";
+import { Card } from "@/shared/components/Card";
 
 interface TutorialCardProps {
   title: string;
@@ -25,31 +26,32 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
   onComplete,
 }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 max-w-md w-full shadow-2xl animate-fade-in">
+    <Card variant="glass" className="max-w-md w-full animate-scale-in">
       {/* Progress bar */}
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-white/80 text-sm font-medium">Progress</span>
-          <span className="text-white/60 text-xs">{Math.round(progress)}%</span>
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-muted-foreground text-sm font-medium">
+            Progress
+          </span>
+          <span className="text-muted-foreground text-xs">
+            {Math.round(progress)}%
+          </span>
         </div>
-        <div className="w-full bg-white/20 rounded-full h-2">
+        <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
           <div
-            className="h-2 rounded-full transition-all duration-500 ease-out"
-            style={{
-              width: `${progress}%`,
-              background: `linear-gradient(90deg, ${UI_COLORS.GRADIENT_FROM}, ${UI_COLORS.GRADIENT_VIA}, ${UI_COLORS.GRADIENT_TO})`,
-            }}
+            className="h-2 rounded-full transition-all duration-500 ease-out gradient-bg"
+            style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       {/* Title */}
-      <h2 className="text-xl font-bold text-white mb-3 leading-tight">
+      <h2 className="text-xl font-bold text-foreground mb-4 leading-tight">
         {title}
       </h2>
 
       {/* Description */}
-      <div className="text-white/90 text-sm leading-relaxed mb-6 whitespace-pre-line">
+      <div className="text-muted-foreground text-sm leading-relaxed mb-8 whitespace-pre-line">
         {description}
       </div>
 
@@ -57,40 +59,43 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           {!isFirstStep && (
-            <button
+            <Button
               onClick={onPrevious}
-              className="px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors duration-200"
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground"
             >
               Previous
-            </button>
+            </Button>
           )}
         </div>
 
         <div className="flex gap-2">
-          <button
+          <Button
             onClick={onSkip}
-            className="px-4 py-2 text-sm font-medium text-white/60 hover:text-white/80 transition-colors duration-200"
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
           >
             Skip
-          </button>
+          </Button>
 
           {isLastStep ? (
-            <button
+            <Button
               onClick={onComplete}
-              className="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 shadow-lg"
+              variant="gradient"
+              size="sm"
+              className="animate-glow-pulse"
             >
               Get Started!
-            </button>
+            </Button>
           ) : (
-            <button
-              onClick={onNext}
-              className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg"
-            >
+            <Button onClick={onNext} variant="primary" size="sm">
               Next
-            </button>
+            </Button>
           )}
         </div>
       </div>
-    </div>
+    </Card>
   );
 };

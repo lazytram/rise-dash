@@ -1,43 +1,86 @@
 import React, { useEffect } from "react";
 import { cn } from "@/shared/utils/cn";
+import { Button } from "./Button";
 
 interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
   children: React.ReactNode;
   className?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl" | "full";
+  showCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
   children,
   className,
   size = "md",
+  showCloseButton = true,
+  closeOnOverlayClick = true,
 }) => {
-  const sizeClasses = {
-    sm: "max-w-md",
-    md: "max-w-2xl",
-    lg: "max-w-4xl",
-  };
-
-  // Block scroll when modal is open
   useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = "hidden";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
 
     return () => {
-      document.body.style.overflow = originalStyle;
+      document.body.style.overflow = "unset";
     };
-  }, []);
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const sizeClasses = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+    full: "max-w-4xl",
+  };
 
   return (
-    <div className="fixed inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
+        onClick={closeOnOverlayClick ? onClose : undefined}
+      />
+
+      {/* Modal Content */}
       <div
         className={cn(
-          "backdrop-blur-sm bg-white/5 border border-white/20 rounded-lg p-8 w-full shadow-2xl animate-scale-in",
+          "relative w-full glass rounded-xl shadow-2xl animate-scale-in",
           sizeClasses[size],
           className
         )}
       >
-        {children}
+        {/* Header */}
+        {(title || showCloseButton) && (
+          <div className="flex items-center justify-between p-6 border-b border-border">
+            {title && (
+              <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+            )}
+            {showCloseButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="ml-auto"
+                icon="✕"
+              />
+            )}
+          </div>
+        )}
+
+        {/* Body */}
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );

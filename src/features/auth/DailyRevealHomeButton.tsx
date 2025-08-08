@@ -13,10 +13,10 @@ export const DailyRevealHomeButton: React.FC = () => {
   return (
     <Button
       onClick={() => setScene(SceneType.DAILY_REVEAL)}
-      variant="primary"
-      className="bg-gradient-to-r from-purple-600/80 to-indigo-600/80 hover:from-purple-700 hover:to-indigo-700 border border-purple-400/30 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+      variant="gradient"
+      size="lg"
+      className="animate-glow-pulse hover:scale-105 transition-all duration-300 opacity-85 hover:opacity-100"
     >
-      <span className="text-2xl mr-3">🎴</span>
       {t("scenes.dailyReveal.title")}
     </Button>
   );

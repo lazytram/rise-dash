@@ -2,18 +2,27 @@
 
 import Game from "./Game";
 import { useTranslations } from "@/shared/hooks/useTranslations";
+import { Scene } from "@/shared/components/Scene";
 
 export function GameScreen() {
   const { t } = useTranslations();
 
   return (
-    <>
-      <div className="flex justify-between mb-8 w-full">
-        <h1 className="text-4xl font-bold text-white text-center flex-1">
+    <Scene
+      sceneKey="game"
+      config={{
+        showCard: false,
+        fullHeight: true,
+        padding: "none",
+        maxWidth: "full",
+      }}
+    >
+      <div className="w-full">
+        <h1 className="text-4xl font-bold text-white text-center mb-4">
           {t("common.title")}
         </h1>
+        <Game />
       </div>
-      <Game />
-    </>
+    </Scene>
   );
 }

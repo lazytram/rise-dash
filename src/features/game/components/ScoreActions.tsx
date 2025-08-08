@@ -2,6 +2,7 @@ import React from "react";
 import { useAccount } from "wagmi";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Text } from "@/shared/components/Text";
+import { Button } from "@/shared/components/Button";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 
 interface ScoreActionsProps {
@@ -22,9 +23,9 @@ const ConnectionStatus: React.FC<{ isConnected: boolean }> = ({
 
   return (
     <div className="text-center">
-      <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-full border border-white/20 backdrop-blur-sm">
+      <div className="inline-flex items-center space-x-2 px-4 py-2 bg-[#7967e5]/10 rounded-full border border-[#7967e5]/20 backdrop-blur-sm">
         <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-        <Text variant="body" className="text-white/70 font-medium text-sm">
+        <Text variant="body" className="text-[#99eafc]/70 font-medium text-sm">
           {t("features.blockchain.connectWalletToSave")}
         </Text>
       </div>
@@ -42,10 +43,12 @@ const SaveScoreButton: React.FC<{
   const { t } = useTranslations();
 
   return (
-    <button
+    <Button
       onClick={onSave}
       disabled={isRecording || isSubmitting || !isConnected}
-      className="flex-1 flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-700 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed transition-all duration-200 border border-violet-400/30 cursor-pointer text-xs sm:text-sm whitespace-nowrap"
+      variant="gradient"
+      size="md"
+      className="flex-1 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl transform hover:scale-105"
     >
       {isRecording || isSubmitting ? (
         <>
@@ -58,7 +61,7 @@ const SaveScoreButton: React.FC<{
           <span>{t("features.blockchain.saveScore")}</span>
         </>
       )}
-    </button>
+    </Button>
   );
 };
 
@@ -69,13 +72,15 @@ const RestartButton: React.FC<{ onRestart?: () => void }> = ({ onRestart }) => {
   if (!onRestart) return null;
 
   return (
-    <button
+    <Button
       onClick={onRestart}
-      className="flex-1 flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border border-emerald-400/30 cursor-pointer text-xs sm:text-sm whitespace-nowrap"
+      variant="ghost"
+      size="md"
+      className="flex-1 py-3 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white border-0"
     >
       <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full"></div>
       <span>{t("scenes.game.restart")}</span>
-    </button>
+    </Button>
   );
 };
 
@@ -99,10 +104,10 @@ const ErrorDisplay: React.FC<{ error?: Error | null }> = ({ error }) => {
   };
 
   return (
-    <div className="w-full max-w-md p-3 bg-red-500/10 border border-red-400/20 rounded-lg backdrop-blur-sm">
+    <div className="w-full max-w-md p-3 bg-[#7967e5]/10 border border-[#7967e5]/20 rounded-lg backdrop-blur-sm">
       <div className="flex items-center space-x-2">
         <div className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0"></div>
-        <Text variant="body" className="text-red-200/90 font-medium text-xs">
+        <Text variant="body" className="text-[#99eafc]/90 font-medium text-xs">
           {getErrorMessage(error?.message)}
         </Text>
       </div>

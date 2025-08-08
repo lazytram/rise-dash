@@ -1,11 +1,13 @@
-export { TutorialModal } from "./TutorialModal";
 export { Tutorial } from "./Tutorial";
-export { TutorialSection } from "./TutorialSection";
-export { TutorialObjective } from "./TutorialObjective";
+export { TutorialButton } from "./TutorialButton";
+export { TutorialCard } from "./TutorialCard";
 export { TutorialControls } from "./TutorialControls";
 export { TutorialEnemies } from "./TutorialEnemies";
+export { TutorialModal } from "./TutorialModal";
+export { TutorialObjective } from "./TutorialObjective";
 export { TutorialPowerUps } from "./TutorialPowerUps";
 export { TutorialScoring } from "./TutorialScoring";
+export { TutorialSection } from "./TutorialSection";
 export { TutorialTips } from "./TutorialTips";
 export { useTutorialStore } from "@/infrastructure/store/tutorialStore";
 export { useTutorialAutoShow } from "@/shared/hooks/useTutorialAutoShow";

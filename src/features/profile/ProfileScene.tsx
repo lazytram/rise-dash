@@ -2,12 +2,12 @@
 
 import { memo } from "react";
 import { ProfileContent } from "./ProfileContent";
-import { SceneContainer } from "@/shared/components/SceneContainer";
+import { Scene } from "@/shared/components/Scene";
 
 export const ProfileScene = memo(function ProfileScene() {
   return (
-    <SceneContainer>
+    <Scene sceneKey="profile">
       <ProfileContent />
-    </SceneContainer>
+    </Scene>
   );
 });

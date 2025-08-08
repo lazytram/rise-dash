@@ -2,12 +2,12 @@
 
 import { memo } from "react";
 import { InstructionsContent } from "./InstructionsContent";
-import { SceneContainer } from "@/shared/components/SceneContainer";
+import { Scene } from "@/shared/components/Scene";
 
 export const InstructionsScene = memo(function InstructionsScene() {
   return (
-    <SceneContainer>
+    <Scene sceneKey="instructions">
       <InstructionsContent />
-    </SceneContainer>
+    </Scene>
   );
 });

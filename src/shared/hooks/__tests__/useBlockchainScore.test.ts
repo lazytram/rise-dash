@@ -20,11 +20,13 @@ jest.mock("wagmi", () => ({
 jest.mock("@/infrastructure/blockchain/blockchainService", () => ({
   blockchainService: {
     getContractInfo: jest.fn(),
-    generateGameHash: jest.fn(),
     recordScore: jest.fn(),
+    recordScoreWithRICE: jest.fn(),
     isNewPersonalBest: jest.fn(),
     getLeaderboard: jest.fn(),
     getTotalScores: jest.fn(),
+    getPlayerBestScore: jest.fn(),
+    checkContractConfig: jest.fn(),
   },
 }));
 
@@ -97,9 +99,25 @@ describe("useBlockchainScore", () => {
       minTimeBetweenScores: BigInt(0),
     });
 
-    mockBlockchainService.generateGameHash.mockReturnValue(
-      "0xgamehash" as `0x${string}`
-    );
+    mockBlockchainService.recordScore.mockResolvedValue({
+      gameHash: "0xgamehash" as `0x${string}`,
+      signature: "0xsignature" as `0x${string}`,
+    });
+
+    mockBlockchainService.recordScoreWithRICE.mockResolvedValue({
+      gameHash: "0xgamehash" as `0x${string}`,
+      signature: "0xsignature" as `0x${string}`,
+    });
+
+    mockBlockchainService.getPlayerBestScore.mockResolvedValue(BigInt(1000));
+    mockBlockchainService.isNewPersonalBest.mockResolvedValue(true);
+    mockBlockchainService.getLeaderboard.mockResolvedValue([]);
+    mockBlockchainService.getTotalScores.mockResolvedValue(BigInt(100));
+    mockBlockchainService.checkContractConfig.mockResolvedValue({
+      paused: false,
+      securityKeySet: true,
+    });
+
   });
 
   describe("saveScore", () => {
@@ -164,9 +182,9 @@ describe("useBlockchainScore", () => {
     });
 
     it("should handle API signature error", async () => {
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: false,
-      });
+      mockBlockchainService.recordScore.mockRejectedValue(
+        new Error("API signature error")
+      );
 
       const { result } = renderHookWithQueryClient(() => useBlockchainScore());
 
@@ -203,12 +221,6 @@ describe("useBlockchainScore", () => {
     });
 
     it("should handle writeContract error", async () => {
-      const mockSignature = "0xsignature" as `0x${string}`;
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: true,
-        json: () => Promise.resolve({ signature: mockSignature }),
-      });
-
       mockWriteContract.mockImplementation(() => {
         throw new Error("Write contract error");
       });
@@ -272,7 +284,7 @@ describe("useBlockchainScore", () => {
 
     it("should handle errors and return true", async () => {
       mockBlockchainService.isNewPersonalBest.mockRejectedValue(
-        new Error("Network error")
+        new Error("Non-retryable error")
       );
 
       const { result } = renderHookWithQueryClient(() => useBlockchainScore());
@@ -345,7 +357,7 @@ describe("useBlockchainScore", () => {
       // when isSuccess becomes true
       expect(mockShowSuccess).toHaveBeenCalledWith(
         "features.blockchain.transactionSuccess",
-        "features.blockchain.scoreSavedSuccessfully",
+        "features.blockchain.operationSuccess",
         mockHash,
         "features.blockchain.viewTransaction"
       );
@@ -361,16 +373,13 @@ describe("useBlockchainScore", () => {
         error: mockError,
       } as unknown as ReturnType<typeof useWriteContract>);
 
-      const { result } = renderHookWithQueryClient(() => useBlockchainScore());
+      renderHookWithQueryClient(() => useBlockchainScore());
 
-      // Call the transaction error handler manually
-      act(() => {
-        result.current.handleTransactionError();
-      });
-
+      // The error toast should be shown automatically via useEffect
+      // when error becomes available
       expect(mockShowError).toHaveBeenCalledWith(
         "common.error",
-        "features.blockchain.scoreSaveError. Transaction failed"
+        "features.blockchain.operationError. Transaction failed"
       );
     });
   });

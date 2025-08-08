@@ -1,24 +1,20 @@
 import React from "react";
 import { cn } from "@/shared/utils/cn";
 
-interface SceneContainerProps {
+interface SceneWrapperProps {
   children: React.ReactNode;
   className?: string;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl" | "6xl" | "full";
   padding?: "none" | "sm" | "md" | "lg" | "xl";
   background?: "none" | "gradient" | "glass" | "pattern";
-  fullHeight?: boolean;
-  centered?: boolean;
 }
 
-export const SceneContainer: React.FC<SceneContainerProps> = ({
+export const SceneWrapper: React.FC<SceneWrapperProps> = ({
   children,
   className,
   maxWidth = "4xl",
   padding = "lg",
   background = "none",
-  fullHeight = false,
-  centered = true,
 }) => {
   const maxWidthClasses = {
     sm: "max-w-sm",
@@ -33,10 +29,10 @@ export const SceneContainer: React.FC<SceneContainerProps> = ({
 
   const paddingClasses = {
     none: "",
-    sm: "p-3",
-    md: "p-5",
-    lg: "p-7",
-    xl: "p-9",
+    sm: "p-4",
+    md: "p-6",
+    lg: "p-8",
+    xl: "p-10",
   };
 
   const backgroundClasses = {
@@ -47,23 +43,8 @@ export const SceneContainer: React.FC<SceneContainerProps> = ({
       "bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_50%)]",
   };
 
-  // Special handling for Game scene (full width, no padding)
-  if (maxWidth === "full" && padding === "none") {
-    return (
-      <div className="w-full h-full">
-        <div className={cn("w-full h-full", className)}>{children}</div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={cn(
-        "flex items-center justify-center px-4 pt-10",
-        fullHeight ? "h-full" : "h-full py-2",
-        centered && "justify-center"
-      )}
-    >
+    <div className={cn("flex items-center justify-center px-4 py-8 h-full")}>
       <div
         className={cn(
           "w-full",

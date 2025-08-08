@@ -117,38 +117,38 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
       switch (color) {
         case "blue":
           return {
-            bg: "bg-blue-900/40",
-            border: "border-blue-400/60",
-            text: "text-blue-200",
-            progress: "bg-blue-400",
+            bg: "bg-[#7967e5]/20",
+            border: "border-[#7967e5]/40",
+            text: "text-[#99eafc]",
+            progress: "bg-gradient-to-r from-[#7967e5] to-[#99eafc]",
           };
         case "green":
           return {
-            bg: "bg-green-900/40",
-            border: "border-green-400/60",
-            text: "text-green-200",
-            progress: "bg-green-400",
+            bg: "bg-[#99eafc]/20",
+            border: "border-[#99eafc]/40",
+            text: "text-[#99eafc]",
+            progress: "bg-gradient-to-r from-[#99eafc] to-[#7967e5]",
           };
         case "orange":
           return {
-            bg: "bg-orange-900/40",
-            border: "border-orange-400/60",
-            text: "text-orange-200",
-            progress: "bg-orange-400",
+            bg: "bg-[#3a1344]/20",
+            border: "border-[#3a1344]/40",
+            text: "text-[#7967e5]",
+            progress: "bg-gradient-to-r from-[#3a1344] to-[#7967e5]",
           };
         case "purple":
           return {
-            bg: "bg-purple-900/40",
-            border: "border-purple-400/60",
-            text: "text-purple-200",
-            progress: "bg-purple-400",
+            bg: "bg-[#7967e5]/20",
+            border: "border-[#7967e5]/40",
+            text: "text-[#99eafc]",
+            progress: "bg-gradient-to-r from-[#7967e5] to-[#99eafc]",
           };
         default:
           return {
-            bg: "bg-gray-900/40",
-            border: "border-gray-400/60",
-            text: "text-gray-200",
-            progress: "bg-gray-400",
+            bg: "bg-[#7967e5]/20",
+            border: "border-[#7967e5]/40",
+            text: "text-[#99eafc]",
+            progress: "bg-gradient-to-r from-[#7967e5] to-[#99eafc]",
           };
       }
     };
@@ -156,8 +156,8 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
     const activePowerUps = getActivePowerUps();
 
     return (
-      <div className="bg-gradient-to-br from-purple-900/20 to-violet-800/30 backdrop-blur-sm border border-purple-400/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-20 sm:h-22 md:h-24 lg:h-26 flex flex-col shadow-lg">
-        <h3 className="text-purple-100 font-semibold text-center text-xs mb-2 flex-shrink-0">
+      <div className="bg-gradient-to-br from-[#3a1344]/20 to-[#7967e5]/20 backdrop-blur-sm border border-[#7967e5]/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-20 sm:h-22 md:h-24 lg:h-26 flex flex-col shadow-lg">
+        <h3 className="text-[#99eafc] font-semibold text-center text-xs mb-2 flex-shrink-0">
           {t("features.powerUps.title")}
         </h3>
         <div className="flex-1 flex items-center justify-center">
@@ -208,7 +208,7 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
             })[0] // Show only the first active power-up
           ) : (
             <div className="flex items-center justify-center w-full">
-              <span className="text-purple-200/70 text-xs font-medium">
+              <span className="text-[#99eafc]/70 text-xs font-medium">
                 {t("features.powerUps.noActive")}
               </span>
             </div>

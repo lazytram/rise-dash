@@ -225,7 +225,7 @@ export const useBlockchainScore = () => {
       hasShownSuccessRef.current = true;
       showSuccessRef.current(
         tRef.current("features.blockchain.transactionSuccess"),
-        tRef.current("features.blockchain.scoreSavedSuccessfully"),
+        tRef.current("features.blockchain.operationSuccess"),
         hash,
         tRef.current("features.blockchain.viewTransaction")
       );
@@ -237,9 +237,14 @@ export const useBlockchainScore = () => {
     }
   }, [isSuccess, hash, isConfirming, error, invalidatePlayerScores]);
 
-  // Handle transaction error
-  const handleTransactionError = useCallback(() => {
-    if (error) {
+  // Handle transaction error with ref to avoid infinite loops
+  const errorRef = useRef<string | null>(null);
+
+  // Auto-trigger error toast when transaction fails
+  useEffect(() => {
+    if (error && error.message !== errorRef.current) {
+      errorRef.current = error.message;
+
       let shortMessage = error.message;
 
       if (error.message.includes("User rejected")) {
@@ -257,17 +262,10 @@ export const useBlockchainScore = () => {
 
       showError(
         t("common.error"),
-        `${t("features.blockchain.scoreSaveError")}. ${shortMessage}`
+        `${t("features.blockchain.operationError")}. ${shortMessage}`
       );
     }
   }, [error, showError, t]);
-
-  // Auto-trigger error toast when transaction fails
-  useEffect(() => {
-    if (error) {
-      handleTransactionError();
-    }
-  }, [error, handleTransactionError]);
 
   const getLeaderboard = useCallback(async (offset: number, limit: number) => {
     try {
@@ -315,6 +313,5 @@ export const useBlockchainScore = () => {
     isSuccess,
     error,
     hash,
-    handleTransactionError,
   };
 };

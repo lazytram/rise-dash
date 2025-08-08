@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 import { useSession } from "next-auth/react";
 import { useSceneStore } from "@/infrastructure/store/sceneStore";
 import { SceneType } from "@/shared/types/scenes";
-import { SceneContainer } from "@/shared/components/SceneContainer";
+import { SceneWrapper } from "@/shared/components/SceneWrapper";
 import { WelcomeLogo, WelcomeHeader, WelcomeActions } from "./components";
 
 export const WelcomeScene = memo(function WelcomeScene() {
@@ -27,23 +27,31 @@ export const WelcomeScene = memo(function WelcomeScene() {
     setScene(SceneType.LEADERBOARD);
   };
 
-  const handleInstructionsClick = () => {
-    setScene(SceneType.INSTRUCTIONS);
-  };
-
   return (
-    <SceneContainer maxWidth="md" className="text-center">
-      <WelcomeLogo />
-      <WelcomeHeader />
+    <SceneWrapper
+      maxWidth="lg"
+      className="text-center"
+      background="pattern"
+      padding="xl"
+    >
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] space-y-8">
+        {/* Hero Section */}
+        <div className="space-y-8 animate-fade-in-up">
+          <WelcomeLogo />
+          <WelcomeHeader />
+        </div>
 
-      {isAuthenticated && (
-        <WelcomeActions
-          onPlayClick={handlePlayClick}
-          onProfileClick={handleProfileClick}
-          onLeaderboardClick={handleLeaderboardClick}
-          onInstructionsClick={handleInstructionsClick}
-        />
-      )}
-    </SceneContainer>
+        {/* Actions Section */}
+        {isAuthenticated && (
+          <div className="animate-fade-in-up animation-delay-300">
+            <WelcomeActions
+              onPlayClick={handlePlayClick}
+              onProfileClick={handleProfileClick}
+              onLeaderboardClick={handleLeaderboardClick}
+            />
+          </div>
+        )}
+      </div>
+    </SceneWrapper>
   );
 });

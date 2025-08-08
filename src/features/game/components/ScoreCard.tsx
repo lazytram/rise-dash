@@ -39,14 +39,14 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
       default:
         return {
           background:
-            "bg-gradient-to-br from-violet-600/90 via-purple-600/90 to-indigo-600/90",
-          border: "border-violet-400/40",
-          hoverBorder: "group-hover:border-violet-300/60",
-          shadow: "group-hover:shadow-violet-500/30",
-          glow: "from-violet-500/30 via-purple-500/20 to-indigo-500/30",
-          textGradient: "from-white to-violet-100",
-          decorative1: "bg-violet-300/60",
-          decorative2: "bg-purple-300/60",
+            "bg-gradient-to-br from-[#3a1344]/95 via-[#7967e5]/95 to-[#3a1344]/95",
+          border: "border-[#7967e5]/50",
+          hoverBorder: "group-hover:border-[#99eafc]/70",
+          shadow: "group-hover:shadow-[#7967e5]/40",
+          glow: "from-[#7967e5]/40 via-[#99eafc]/30 to-[#7967e5]/40",
+          textGradient: "from-white to-white",
+          decorative1: "bg-[#7967e5]/70",
+          decorative2: "bg-[#99eafc]/70",
         };
     }
   };
@@ -68,7 +68,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
           className={`w-6 sm:w-8 h-0.5 bg-gradient-to-r ${
             variant === "success"
               ? "from-green-400 to-emerald-400"
-              : "from-violet-400 to-purple-400"
+              : "from-[#7967e5] to-[#99eafc]"
           } mx-auto mt-1 sm:mt-2 rounded-full`}
         ></div>
       </div>
