@@ -1,4 +1,4 @@
-import { Scene, SceneType } from "@/shared/types/scenes";
+import { SceneConfig, SceneType } from "@/shared/types/scenes";
 import { WelcomeScene } from "../welcome/WelcomeScene";
 import { GameScene } from "../game/GameScene";
 import { ProfileScene } from "../profile/ProfileScene";
@@ -7,7 +7,7 @@ import { InstructionsScene } from "../instructions/InstructionsScene";
 import { ShopScene } from "../shop/ShopScene";
 import { DailyRevealScene } from "../daily-reveal/DailyRevealScene";
 
-export const scenes: Scene[] = [
+export const scenes: SceneConfig[] = [
   {
     id: SceneType.WELCOME,
     component: WelcomeScene,

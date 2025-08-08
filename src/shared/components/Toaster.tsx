@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Text } from "./Text";
 import { Button } from "./Button";
-import { useToastStore, Toast } from "@/infrastructure/store/toastStore";
+import { useToastStore, ToastData } from "@/infrastructure/store/toastStore";
 
 export const Toaster: React.FC = () => {
   const { toasts, removeToast, clearToasts } = useToastStore();
@@ -14,7 +14,7 @@ export const Toaster: React.FC = () => {
     clearToasts();
   }, [clearToasts]);
 
-  const getToastStyles = (type: Toast["type"]) => {
+  const getToastStyles = (type: ToastData["type"]) => {
     switch (type) {
       case "success":
         return "backdrop-blur-sm bg-green-500/20 border border-green-400/30 text-white shadow-2xl";
@@ -29,7 +29,7 @@ export const Toaster: React.FC = () => {
     }
   };
 
-  const getIcon = (type: Toast["type"]) => {
+  const getIcon = (type: ToastData["type"]) => {
     switch (type) {
       case "success":
         return "✅";

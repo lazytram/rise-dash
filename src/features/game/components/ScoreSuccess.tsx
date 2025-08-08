@@ -25,7 +25,11 @@ export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
   const { t } = useTranslations();
 
   return (
-    <Modal size="full" isOpen={true} onClose={onClose || onRestart}>
+    <Modal
+      size="full"
+      isOpen={true}
+      onClose={onClose || onRestart || (() => {})}
+    >
       <div className="h-[500px] sm:h-[550px] flex flex-col relative overflow-hidden p-4 sm:p-6">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#3a1344]/20 via-[#7967e5]/20 to-[#99eafc]/20 rounded-2xl backdrop-blur-sm">

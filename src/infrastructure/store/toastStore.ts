@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export interface Toast {
+export interface ToastData {
   id: string;
   type: "success" | "error" | "pending" | "info";
   title: string;
@@ -11,8 +11,8 @@ export interface Toast {
 }
 
 interface ToastStore {
-  toasts: Toast[];
-  addToast: (toast: Omit<Toast, "id">) => void;
+  toasts: ToastData[];
+  addToast: (toast: Omit<ToastData, "id">) => void;
   removeToast: (id: string) => void;
   showSuccess: (
     title: string,
@@ -34,11 +34,11 @@ interface ToastStore {
 export const useToastStore = create<ToastStore>()((set, get) => ({
   toasts: [],
 
-  addToast: (toast: Omit<Toast, "id">) => {
+  addToast: (toast: Omit<ToastData, "id">) => {
     const id = `${toast.type}-${
       toast.transactionHash || Date.now()
     }-${Math.random().toString(36).substring(2, 11)}`;
-    const newToast: Toast = {
+    const newToast: ToastData = {
       ...toast,
       id,
       duration: toast.duration || 4000, // Default shorter duration
