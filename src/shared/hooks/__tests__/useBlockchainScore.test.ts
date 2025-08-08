@@ -116,8 +116,8 @@ describe("useBlockchainScore", () => {
     mockBlockchainService.checkContractConfig.mockResolvedValue({
       paused: false,
       securityKeySet: true,
+      gameOwner: "0xowner",
     });
-
   });
 
   describe("saveScore", () => {
@@ -357,7 +357,7 @@ describe("useBlockchainScore", () => {
       // when isSuccess becomes true
       expect(mockShowSuccess).toHaveBeenCalledWith(
         "features.blockchain.transactionSuccess",
-        "features.blockchain.operationSuccess",
+        "features.blockchain.riceOperationSuccess",
         mockHash,
         "features.blockchain.viewTransaction"
       );
@@ -379,7 +379,7 @@ describe("useBlockchainScore", () => {
       // when error becomes available
       expect(mockShowError).toHaveBeenCalledWith(
         "common.error",
-        "features.blockchain.operationError. Transaction failed"
+        "features.blockchain.riceOperationError. Transaction failed"
       );
     });
   });

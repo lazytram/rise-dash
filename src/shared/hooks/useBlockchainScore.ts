@@ -225,7 +225,7 @@ export const useBlockchainScore = () => {
       hasShownSuccessRef.current = true;
       showSuccessRef.current(
         tRef.current("features.blockchain.transactionSuccess"),
-        tRef.current("features.blockchain.operationSuccess"),
+        tRef.current("features.blockchain.riceOperationSuccess"),
         hash,
         tRef.current("features.blockchain.viewTransaction")
       );
@@ -262,7 +262,7 @@ export const useBlockchainScore = () => {
 
       showError(
         t("common.error"),
-        `${t("features.blockchain.operationError")}. ${shortMessage}`
+        `${t("features.blockchain.riceOperationError")}. ${shortMessage}`
       );
     }
   }, [error, showError, t]);
