@@ -37,6 +37,9 @@ export const ShopContent: React.FC = memo(() => {
 
   return (
     <div className="w-full">
+      <h2 className="text-2xl font-bold text-white mb-6">
+        {t("features.shop.title")}
+      </h2>
       {/* Balance Section */}
       <ShopBalance
         riceBalance={riceBalance}

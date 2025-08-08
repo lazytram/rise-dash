@@ -132,8 +132,8 @@
       "loadingBalance": "Cargando saldo RICE..."
     },
     "instructions": {
-      "title": "Instrucciones",
-      "subtitle": "Aprende a jugar Rise Dash",
+      "title": "Cómo Jugar",
+      "subtitle": "Aprende los conceptos básicos y domina el juego",
       "controls": {
         "title": "Controles",
         "jump": "Saltar",
@@ -143,11 +143,11 @@
       "gameplay": {
         "title": "Gameplay",
         "objective": "Objetivo",
-        "objectiveDesc": "Corre lo más lejos posible evitando enemigos y recolectando power-ups. Tu distancia recorrida es tu puntuación.",
+        "objectiveDesc": "Salta y dispara tu camino a través de los enemigos para lograr la puntuación más alta posible.",
         "enemies": "Enemigos",
-        "enemiesDesc": "Los samuráis aparecen cada 50m y disparan shurikens. Dispara 3 veces para derrotarlos. Los ninjas y jefes aparecen a distancias mayores.",
+        "enemiesDesc": "Diferentes tipos de enemigos aparecen a medida que progresas. Cada uno tiene patrones de ataque y estrategias únicas.",
         "powerUps": "Power-ups",
-        "powerUpsDesc": "Recolecta power-ups para mejorar tus habilidades: escudo, munición infinita, impulso de salto, cámara lenta y disparos múltiples.",
+        "powerUpsDesc": "Recolecta power-ups para ganar ventajas temporales como escudos, munición infinita, y más.",
         "scoring": "Sistema de Puntuación",
         "scoringDesc": "Tu puntuación se basa en la distancia recorrida. Mientras más lejos vayas, mayor será tu puntuación. Los power-ups te ayudan a sobrevivir más tiempo.",
         "tips": "Consejos",
@@ -240,23 +240,6 @@
       "buttons": {
         "understood": "Entiendo"
       }
-    },
-    "powerUps": {
-      "upgrading": "Actualizando Power-Up",
-      "upgradingMessage": "Procesando tu actualización en la blockchain...",
-      "upgradeSuccess": "¡Power-Up Actualizado!",
-      "upgradeSuccessMessage": "¡Tu power-up ha sido actualizado exitosamente!",
-      "maxLevelReached": "Este power-up ya está en el nivel máximo.",
-      "insufficientRICE": "No tienes suficiente RICE para actualizar este power-up.",
-      "upgradeCost": "Costo de Actualización",
-      "currentLevel": "Nivel Actual",
-      "maxLevel": "Nivel Máximo",
-      "upgrade": "Actualizar",
-      "loading": "Cargando power-ups...",
-      "noPowerUps": "No hay power-ups disponibles",
-      "connectWalletToView": "Conecta tu wallet para ver los power-ups",
-      "signatureError": "Error al obtener la firma del servidor",
-      "upgradeError": "Error al actualizar el power-up"
     }
   },
   "features": {
@@ -320,23 +303,25 @@
       "rice": "RICE",
       "upgrade": "Mejorar",
       "maxLevelReached": "¡Nivel Máximo Alcanzado!",
-
+      "insufficientRice": "RICE insuficiente",
       "noActive": "Sin power-up activo",
       "upgrading": "Actualizando...",
       "loading": "Cargando...",
       "level": "Nivel",
-      "projectiles": "proyectiles"
-    },
-    "powerUp": {
-      "title": "Power-ups",
-      "upgrading": "Actualizando Power-up",
+      "projectiles": "proyectiles",
       "upgradingMessage": "Procesando tu actualización en la blockchain...",
-      "upgradeSuccess": "¡Power-up Actualizado!",
+      "upgradeSuccess": "¡Power-Up Actualizado!",
       "upgradeSuccessMessage": "¡Tu power-up ha sido actualizado exitosamente!",
       "upgradeError": "Error al actualizar el power-up",
       "failedToLoadLevels": "Error al cargar los niveles de power-up",
       "failedToLoadConfigs": "Error al cargar las configuraciones de power-up",
-      "invalidPowerUp": "Power-up seleccionado inválido"
+      "invalidPowerUp": "Power-up seleccionado inválido",
+      "signatureError": "Error al obtener la firma del servidor",
+      "insufficientRiceError": "No tienes suficiente RICE para actualizar este power-up.",
+      "noPowerUps": "No hay power-ups disponibles",
+      "connectWalletToView": "Conecta tu wallet para ver los power-ups",
+      "signatureRejected": "Actualización cancelada. Rechazaste la firma.",
+      "powerUpNotInitialized": "Power-up no inicializado en el contrato"
     },
     "blockchain": {
       "saveScore": "Guardar Puntuación",
@@ -346,6 +331,8 @@
       "newRecord": "¡Nuevo Récord Personal!",
       "scoreRecorded": "Puntuación registrada en la blockchain RISE",
       "connectWallet": "Por favor conecta tu wallet primero",
+      "connectWalletToSave": "Conecta tu wallet para guardar tu puntuación",
+      "connectWalletMessage": "Necesitas conectar tu wallet para guardar tu puntuación en la blockchain",
       "namePlaceholder": "Tu nombre (máx 20 caracteres)",
       "save": "Guardar",
       "saving": "Guardando...",
@@ -362,7 +349,6 @@
       "userRejected": "Transacción rechazada por el usuario",
       "insufficientFunds": "Fondos insuficientes para la transacción",
       "networkError": "Error de red - verifica tu conexión",
-
       "errorAddingRICE": "Error agregando RICE",
       "errorSpendingRICE": "Error gastando RICE",
       "insufficientRICE": "RICE insuficiente",
@@ -379,6 +365,17 @@
       "calculatingRewards": "Calculando recompensas...",
       "dailyRevealCooldown": "Revelación diaria ya reclamada hoy",
       "nextRevealIn": "Próxima revelación en {{time}}"
+    },
+    "dailyReveal": {
+      "title": "Revelación Diaria",
+      "revealButton": "Revelar Carta"
+    },
+    "shop": {
+      "title": "Tienda Power-up",
+      "balanceTitle": "Saldo RICE"
+    },
+    "tutorial": {
+      "button": "Tutorial"
     }
   },
   "ui": {

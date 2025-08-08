@@ -62,6 +62,9 @@ export const DailyRevealContent: React.FC<DailyRevealContentProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* Daily Streak Card */}
         <div className="flex flex-col items-center space-y-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {t("features.dailyReveal.title")}
+          </h2>
           <DailyRevealCard
             size={280}
             onClick={handleReveal}

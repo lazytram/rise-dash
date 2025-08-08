@@ -27,7 +27,7 @@ export const TutorialButton: React.FC = () => {
         className="hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-900"
         icon="💡"
       >
-        Tutorial
+        {t("features.tutorial.button")}
       </Button>
 
       <TutorialModal isOpen={isModalOpen} onClose={handleCloseModal} />

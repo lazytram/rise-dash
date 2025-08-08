@@ -121,7 +121,6 @@
       "upgradeProgress": "Upgrade Progress",
       "insufficientFunds": "Insufficient funds",
       "upgradeSuccess": "Upgrade Successful!",
-
       "upgradedToLevel": "upgraded to level {{ level }}",
       "upgradeErrorDescription": "An error occurred during the upgrade. Please try again.",
       "confirmUpgrade": "Confirm Upgrade",
@@ -132,30 +131,9 @@
       "loadingData": "Loading shop data...",
       "loadingBalance": "Loading RICE balance..."
     },
-    "powerUps": {
-      "upgrading": "Upgrading Power-Up",
-      "upgradingMessage": "Processing your upgrade on the blockchain...",
-      "upgradeSuccess": "Power-Up Upgraded!",
-      "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
-      "maxLevelReached": "This power-up is already at maximum level.",
-      "insufficientRICE": "You don't have enough RICE to upgrade this power-up.",
-      "upgradeCost": "Upgrade Cost",
-      "currentLevel": "Current Level",
-      "maxLevel": "Max Level",
-      "upgrade": "Upgrade",
-      "loading": "Loading power-ups...",
-      "noPowerUps": "No power-ups available",
-      "connectWalletToView": "Connect your wallet to view power-ups",
-      "signatureError": "Failed to get signature from server",
-      "upgradeError": "Failed to upgrade power-up",
-      "insufficientRice": "Insufficient RICE",
-      "errorUpgrading": "Failed to upgrade power-up. Please try again.",
-      "signatureRejected": "Upgrade cancelled. You rejected the signature.",
-      "powerUpNotInitialized": "Power-up not initialized on contract"
-    },
     "instructions": {
-      "title": "Instructions",
-      "subtitle": "Learn how to play Rise Dash",
+      "title": "How to Play",
+      "subtitle": "Learn the basics and master the game",
       "controls": {
         "title": "Controls",
         "jump": "Jump",
@@ -165,11 +143,11 @@
       "gameplay": {
         "title": "Gameplay",
         "objective": "Objective",
-        "objectiveDesc": "Run as far as possible while avoiding enemies and collecting power-ups. Your distance traveled is your score.",
+        "objectiveDesc": "Jump and shoot your way through enemies to achieve the highest score possible.",
         "enemies": "Enemies",
-        "enemiesDesc": "Samurais appear every 50m and shoot shurikens. Shoot 3 times to defeat them. Ninjas and bosses appear at higher distances.",
+        "enemiesDesc": "Different enemy types appear as you progress. Each has unique attack patterns and strategies.",
         "powerUps": "Power-ups",
-        "powerUpsDesc": "Collect power-ups to enhance your abilities: shield, infinite ammo, jump boost, slow motion, and multi-shot.",
+        "powerUpsDesc": "Collect power-ups to gain temporary advantages like shields, infinite ammo, and more.",
         "scoring": "Scoring System",
         "scoringDesc": "Your score is based on distance traveled. The further you go, the higher your score. Power-ups help you survive longer.",
         "tips": "Tips",
@@ -330,18 +308,20 @@
       "upgrading": "Upgrading...",
       "loading": "Loading...",
       "level": "Level",
-      "projectiles": "projectiles"
-    },
-    "powerUp": {
-      "title": "Power-ups",
-      "upgrading": "Upgrading Power-up",
+      "projectiles": "projectiles",
       "upgradingMessage": "Processing your upgrade on the blockchain...",
-      "upgradeSuccess": "Power-up Upgraded!",
+      "upgradeSuccess": "Power-Up Upgraded!",
       "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
       "upgradeError": "Failed to upgrade power-up",
       "failedToLoadLevels": "Failed to load power-up levels",
       "failedToLoadConfigs": "Failed to load power-up configurations",
-      "invalidPowerUp": "Invalid power-up selected"
+      "invalidPowerUp": "Invalid power-up selected",
+      "signatureError": "Failed to get signature from server",
+      "insufficientRiceError": "You don't have enough RICE to upgrade this power-up.",
+      "noPowerUps": "No power-ups available",
+      "connectWalletToView": "Connect your wallet to view power-ups",
+      "signatureRejected": "Upgrade cancelled. You rejected the signature.",
+      "powerUpNotInitialized": "Power-up not initialized on contract"
     },
     "blockchain": {
       "saveScore": "Save Score",
@@ -351,6 +331,8 @@
       "newRecord": "New Personal Record!",
       "scoreRecorded": "Score recorded on RISE blockchain",
       "connectWallet": "Please connect your wallet first",
+      "connectWalletToSave": "Connect your wallet to save your score",
+      "connectWalletMessage": "You need to connect your wallet to save your score on the blockchain",
       "namePlaceholder": "Your name (max 20 characters)",
       "save": "Save",
       "saving": "Saving...",
@@ -367,7 +349,6 @@
       "userRejected": "Transaction rejected by user",
       "insufficientFunds": "Insufficient funds for transaction",
       "networkError": "Network error - check your connection",
-
       "errorAddingRICE": "Error adding RICE",
       "errorSpendingRICE": "Error spending RICE",
       "insufficientRICE": "Insufficient RICE",
@@ -384,6 +365,17 @@
       "calculatingRewards": "Calculating rewards...",
       "dailyRevealCooldown": "Daily reveal already claimed today",
       "nextRevealIn": "Next reveal in {{time}}"
+    },
+    "dailyReveal": {
+      "title": "Daily Reveal",
+      "revealButton": "Reveal Card"
+    },
+    "shop": {
+      "title": "Power-up Shop",
+      "balanceTitle": "RICE Balance"
+    },
+    "tutorial": {
+      "button": "Tutorial"
     }
   },
   "ui": {
