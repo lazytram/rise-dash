@@ -7,6 +7,7 @@ import {
   DifficultyIndicator,
   PowerUpIndicator,
   ShimmerBox,
+  StackedPowerUpsIndicator,
 } from "./indicators";
 
 interface GameIndicatorsProps {
@@ -36,6 +37,7 @@ export const GameIndicators: React.FC<GameIndicatorsProps> = ({
       <AmmoIndicator player={player} />
       <DifficultyIndicator difficultyLevel={difficultyLevel} />
       <PowerUpIndicator player={player} />
+      <StackedPowerUpsIndicator player={player} />
     </div>
   );
 };

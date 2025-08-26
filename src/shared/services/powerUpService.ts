@@ -44,6 +44,7 @@ export class LocalPowerUpService implements PowerUpService {
       [PowerUpType.SLOW_MOTION]: 1,
       [PowerUpType.MULTI_SHOT]: 1,
       [PowerUpType.RICE_ROCKET_AMMO]: 1,
+      [PowerUpType.PHOENIX_PACT]: 1,
     };
     this.riceBalance = 200;
   }
@@ -124,6 +125,7 @@ export class LocalPowerUpService implements PowerUpService {
       [PowerUpType.SLOW_MOTION]: 1,
       [PowerUpType.MULTI_SHOT]: 1,
       [PowerUpType.RICE_ROCKET_AMMO]: 1,
+      [PowerUpType.PHOENIX_PACT]: 1,
     };
   }
 
@@ -147,9 +149,8 @@ export class LocalPowerUpService implements PowerUpService {
   // New blockchain methods
   async loadLevelsFromBlockchain(playerAddress: Address): Promise<void> {
     try {
-      const blockchainLevels = await this.getPowerUpLevelsFromBlockchain(
-        playerAddress
-      );
+      const blockchainLevels =
+        await this.getPowerUpLevelsFromBlockchain(playerAddress);
 
       // Map blockchain levels to local levels
       this.levels = {
@@ -159,6 +160,7 @@ export class LocalPowerUpService implements PowerUpService {
         [PowerUpType.SLOW_MOTION]: blockchainLevels[3] || 1,
         [PowerUpType.MULTI_SHOT]: blockchainLevels[4] || 1,
         [PowerUpType.RICE_ROCKET_AMMO]: blockchainLevels[5] || 1,
+        [PowerUpType.PHOENIX_PACT]: blockchainLevels[6] || 1,
       };
     } catch (error) {
       console.error("❌ Failed to load levels from blockchain:", error);
@@ -228,6 +230,7 @@ export class LocalPowerUpService implements PowerUpService {
         [PowerUpType.SLOW_MOTION]: 3,
         [PowerUpType.MULTI_SHOT]: 4,
         [PowerUpType.RICE_ROCKET_AMMO]: 5,
+        [PowerUpType.PHOENIX_PACT]: 6,
       };
       const powerUpId = powerUpIdMap[powerUpType];
 

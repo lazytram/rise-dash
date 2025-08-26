@@ -141,13 +141,14 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 </Text>
               </div>
             </div>
-            <Text
-              variant="subtitle"
-              size="sm"
-              className="text-muted-foreground"
-            >
+            <div className="text-sm text-muted-foreground">
               {t(`features.powerUps.description.${powerUp.type}`)}
-            </Text>
+              {powerUp.stackable ? (
+                <span className="ml-2 inline-flex items-center text-[10px] uppercase tracking-wide text-primary/80 border border-primary/30 px-1.5 py-0.5 rounded">
+                  {t("features.powerUps.stackable")}
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
 

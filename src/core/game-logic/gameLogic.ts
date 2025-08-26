@@ -159,6 +159,7 @@ export class GameLogic {
           slowMotion: 0,
           multiShot: 0,
         },
+        stackedPowerUps: {},
         powerUpLevels: {
           [PowerUpType.SHIELD]: 1,
           [PowerUpType.INFINITE_AMMO]: 1,
@@ -166,6 +167,7 @@ export class GameLogic {
           [PowerUpType.SLOW_MOTION]: 1,
           [PowerUpType.MULTI_SHOT]: 1,
           [PowerUpType.RICE_ROCKET_AMMO]: 1,
+          [PowerUpType.PHOENIX_PACT]: 1,
         },
       }),
       riceRockets: [],
@@ -251,20 +253,47 @@ export class GameLogic {
 
     // Check for game over conditions (sushi and samurai collisions)
     if (this.checkGameOverConditions(newGameState)) {
-      newGameState = {
-        ...newGameState,
-        isGameOver: true,
-        isGameRunning: false,
-        // Clear ALL game entities when game over to prevent instant death on restart
-        enemyBullets: [],
-        riceRockets: [],
-        sushis: [],
-        toriis: [],
-        samurais: [],
-        ninjas: [],
-        bosses: [],
-        powerUps: [],
-      };
+      const phoenixStacks =
+        newGameState.player.stackedPowerUps?.[PowerUpType.PHOENIX_PACT] || 0;
+      if (phoenixStacks > 0) {
+        // Consume a Phoenix Pact to instantly resurrect
+        newGameState = {
+          ...newGameState,
+          player: {
+            ...this.resetPlayer(newGameState.player),
+            stackedPowerUps: {
+              ...(newGameState.player.stackedPowerUps || {}),
+              [PowerUpType.PHOENIX_PACT]: phoenixStacks - 1,
+            },
+          },
+          // Clear entities to give a brief respite
+          enemyBullets: [],
+          riceRockets: [],
+          sushis: [],
+          toriis: [],
+          samurais: [],
+          ninjas: [],
+          bosses: [],
+          powerUps: [],
+          isGameOver: false,
+          isGameRunning: true,
+        };
+      } else {
+        newGameState = {
+          ...newGameState,
+          isGameOver: true,
+          isGameRunning: false,
+          // Clear ALL game entities when game over to prevent instant death on restart
+          enemyBullets: [],
+          riceRockets: [],
+          sushis: [],
+          toriis: [],
+          samurais: [],
+          ninjas: [],
+          bosses: [],
+          powerUps: [],
+        };
+      }
     }
 
     return newGameState;
@@ -333,6 +362,7 @@ export class GameLogic {
         slowMotion: 0,
         multiShot: 0,
       },
+      stackedPowerUps: player.stackedPowerUps || {},
       // Update power-up levels from service
       powerUpLevels: {
         [PowerUpType.SHIELD]: powerUpService.getPowerUpLevel(
@@ -352,6 +382,9 @@ export class GameLogic {
         ),
         [PowerUpType.RICE_ROCKET_AMMO]: powerUpService.getPowerUpLevel(
           PowerUpType.RICE_ROCKET_AMMO
+        ),
+        [PowerUpType.PHOENIX_PACT]: powerUpService.getPowerUpLevel(
+          PowerUpType.PHOENIX_PACT
         ),
       },
     };
@@ -990,7 +1023,35 @@ export class GameLogic {
           // Shield absorbs the bullet - player survives
           // Continue checking other bullets
         } else {
-          // No shield - player dies, trigger game over and clear all projectiles
+          // No shield - try Phoenix Pact instant resurrection
+          const phoenixStacks =
+            gameState.player.stackedPowerUps?.[PowerUpType.PHOENIX_PACT] || 0;
+          if (phoenixStacks > 0) {
+            const resurrectedPlayer = {
+              ...this.resetPlayer(gameState.player),
+              stackedPowerUps: {
+                ...(gameState.player.stackedPowerUps || {}),
+                [PowerUpType.PHOENIX_PACT]: phoenixStacks - 1,
+              },
+            };
+
+            return {
+              ...gameState,
+              player: resurrectedPlayer,
+              enemyBullets: [],
+              riceRockets: [],
+              sushis: [],
+              toriis: [],
+              samurais: [],
+              ninjas: [],
+              bosses: [],
+              powerUps: [],
+              isGameOver: false,
+              isGameRunning: true,
+            };
+          }
+
+          // No Phoenix Pact -> game over
           return {
             ...gameState,
             enemyBullets: [],
@@ -1326,10 +1387,21 @@ export class GameLogic {
     const powerUpType = powerUp.type;
 
     const effect = getPowerUpEffect(powerUpType);
-    const endTime = currentTime + effect.duration;
+    const endTime =
+      currentTime + (effect.duration || GAME_CONSTANTS.POWERUP_DURATION);
 
     // Apply the new power-up with level-based effects
     switch (powerUp.type) {
+      case PowerUpType.PHOENIX_PACT: {
+        const current = player.stackedPowerUps?.[PowerUpType.PHOENIX_PACT] || 0;
+        return {
+          ...player,
+          stackedPowerUps: {
+            ...(player.stackedPowerUps || {}),
+            [PowerUpType.PHOENIX_PACT]: current + 1,
+          },
+        };
+      }
       case PowerUpType.SHIELD:
         console.log(
           "Shield collected! End time:",

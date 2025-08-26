@@ -23,6 +23,7 @@ const defaultPowerUpLevels: PowerUpLevels = {
   [PowerUpType.SLOW_MOTION]: 1,
   [PowerUpType.MULTI_SHOT]: 1,
   [PowerUpType.RICE_ROCKET_AMMO]: 1,
+  [PowerUpType.PHOENIX_PACT]: 1,
 };
 
 export const usePowerUpStore = create<PowerUpStore>()(

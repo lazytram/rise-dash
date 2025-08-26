@@ -115,6 +115,26 @@ export const POWERUP_UPGRADES: Record<PowerUpType, PowerUpUpgradeData> = {
       { level: 10, riceCost: 2000, ammoCount: 15 },
     ],
   },
+  [PowerUpType.PHOENIX_PACT]: {
+    type: PowerUpType.PHOENIX_PACT,
+    name: "Phoenix Pact",
+    description: "On death: instant resurrection",
+    icon: "🔥",
+    color: "from-rose-600/80 to-orange-600/80",
+    stackable: true,
+    upgrades: [
+      { level: 1, riceCost: 0 },
+      { level: 2, riceCost: 250 },
+      { level: 3, riceCost: 600 },
+      { level: 4, riceCost: 1000 },
+      { level: 5, riceCost: 1500 },
+      { level: 6, riceCost: 2100 },
+      { level: 7, riceCost: 2800 },
+      { level: 8, riceCost: 3600 },
+      { level: 9, riceCost: 4500 },
+      { level: 10, riceCost: 5500 },
+    ],
+  },
 };
 
 export const POWERUP_ORDER: PowerUpType[] = [

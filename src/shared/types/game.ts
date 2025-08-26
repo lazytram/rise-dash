@@ -33,6 +33,8 @@ export interface Player {
   };
   // Power-up levels
   powerUpLevels: PowerUpLevels;
+  // Stacked power-ups inventory (only for stackable ones like Phoenix Pact)
+  stackedPowerUps?: Partial<Record<PowerUpType, number>>;
 }
 
 /**

@@ -209,6 +209,7 @@ export const usePowerUpSync = () => {
       [PowerUpType.SLOW_MOTION]: 3,
       [PowerUpType.MULTI_SHOT]: 4,
       [PowerUpType.RICE_ROCKET_AMMO]: 5,
+      [PowerUpType.PHOENIX_PACT]: 6,
     };
     return powerUpTypeMap[powerUpType] || 0;
   };

@@ -89,5 +89,6 @@ export const GAME_CONSTANTS = {
     JUMP_BOOST: PowerUpType.JUMP_BOOST,
     SLOW_MOTION: PowerUpType.SLOW_MOTION,
     MULTI_SHOT: PowerUpType.MULTI_SHOT,
+    PHOENIX_PACT: PowerUpType.PHOENIX_PACT,
   } as const,
 } as const;

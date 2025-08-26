@@ -115,6 +115,7 @@ export const POWERUP_COLORS = {
   JUMP_BOOST: "#FF69B4", // Hot pink
   SLOW_MOTION: "#4169E1", // Royal blue
   MULTI_SHOT: "#FF8C00", // Dark orange
+  PHOENIX_PACT: "#FF4500", // Orange red
 } as const;
 
 // Rice Logo Colors (based on the actual logo)
