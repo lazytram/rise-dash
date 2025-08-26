@@ -117,38 +117,40 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
       switch (color) {
         case "blue":
           return {
-            bg: "bg-[#7967e5]/20",
-            border: "border-[#7967e5]/40",
-            text: "text-[#99eafc]",
-            progress: "bg-gradient-to-r from-[#7967e5] to-[#99eafc]",
+            bg: "bg-primary/20",
+            border: "border-primary/40",
+            text: "text-primary",
+            progress: "bg-gradient-to-r from-primary to-primary-hover",
           };
         case "green":
+          // Use explicit lime green colors for Infinite Ammo without relying on theme tokens
+          // #32CD32 (lime green) with lighter variant for gradient
           return {
-            bg: "bg-[#99eafc]/20",
-            border: "border-[#99eafc]/40",
-            text: "text-[#99eafc]",
-            progress: "bg-gradient-to-r from-[#99eafc] to-[#7967e5]",
+            bg: "bg-[rgba(50,205,50,0.20)]",
+            border: "border-[rgba(50,205,50,0.40)]",
+            text: "text-[#32CD32]",
+            progress: "bg-[linear-gradient(to_right,#32CD32,#90EE90)]",
           };
         case "orange":
           return {
-            bg: "bg-[#3a1344]/20",
-            border: "border-[#3a1344]/40",
-            text: "text-[#7967e5]",
-            progress: "bg-gradient-to-r from-[#3a1344] to-[#7967e5]",
+            bg: "bg-warning/20",
+            border: "border-warning/40",
+            text: "text-warning",
+            progress: "bg-gradient-to-r from-warning to-warning-light",
           };
         case "purple":
           return {
-            bg: "bg-[#7967e5]/20",
-            border: "border-[#7967e5]/40",
-            text: "text-[#99eafc]",
-            progress: "bg-gradient-to-r from-[#7967e5] to-[#99eafc]",
+            bg: "bg-primary/20",
+            border: "border-primary/40",
+            text: "text-primary",
+            progress: "bg-gradient-to-r from-primary to-primary-hover",
           };
         default:
           return {
-            bg: "bg-[#7967e5]/20",
-            border: "border-[#7967e5]/40",
-            text: "text-[#99eafc]",
-            progress: "bg-gradient-to-r from-[#7967e5] to-[#99eafc]",
+            bg: "bg-primary/20",
+            border: "border-primary/40",
+            text: "text-primary",
+            progress: "bg-gradient-to-r from-primary to-primary-hover",
           };
       }
     };
@@ -156,8 +158,8 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
     const activePowerUps = getActivePowerUps();
 
     return (
-      <div className="bg-gradient-to-br from-[#3a1344]/20 to-[#7967e5]/20 backdrop-blur-sm border border-[#7967e5]/30 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-20 sm:h-22 md:h-24 lg:h-26 flex flex-col shadow-lg">
-        <h3 className="text-[#99eafc] font-semibold text-center text-xs mb-2 flex-shrink-0">
+      <div className="glass-light backdrop-blur-sm border border-primary/20 rounded-lg p-3 w-32 sm:w-36 md:w-40 lg:w-44 h-20 sm:h-22 md:h-24 lg:h-26 flex flex-col shadow-lg">
+        <h3 className="text-primary font-semibold text-center text-xs mb-2 flex-shrink-0">
           {t("features.powerUps.title")}
         </h3>
         <div className="flex-1 flex items-center justify-center">
@@ -188,7 +190,7 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
 
                   {/* Progress bar with time */}
                   <div className="flex items-center justify-center">
-                    <div className="relative w-full bg-gray-800/50 rounded-full h-3 border border-gray-600/50 overflow-hidden">
+                    <div className="relative w-full bg-muted/50 rounded-full h-3 border border-muted-foreground/30 overflow-hidden">
                       <div
                         className={`${colors.progress} h-3 rounded-full transition-all duration-300 ease-out shadow-sm`}
                         style={{ width: `${progress}%` }}
@@ -208,7 +210,7 @@ export const PowerUpIndicator: React.FC<PowerUpIndicatorProps> = memo(
             })[0] // Show only the first active power-up
           ) : (
             <div className="flex items-center justify-center w-full">
-              <span className="text-[#99eafc]/70 text-xs font-medium">
+              <span className="text-muted-foreground text-xs font-medium">
                 {t("features.powerUps.noActive")}
               </span>
             </div>

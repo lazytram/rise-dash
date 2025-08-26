@@ -37,7 +37,7 @@ export const WelcomeActions = memo(function WelcomeActions({
           onClick={onProfileClick}
           variant="glass"
           size="lg"
-          className="w-full hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-400 opacity-90 hover:opacity-100 shadow-lg"
+          className="w-full hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-400 opacity-90 hover:opacity-100 shadow-lg text-foreground"
         >
           {t("scenes.profile.title")}
         </Button>
@@ -45,7 +45,7 @@ export const WelcomeActions = memo(function WelcomeActions({
           onClick={onLeaderboardClick}
           variant="glass"
           size="lg"
-          className="w-full hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-500 opacity-90 hover:opacity-100 shadow-lg"
+          className="w-full hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-500 opacity-90 hover:opacity-100 shadow-lg text-foreground"
         >
           {t("scenes.leaderboard.title")}
         </Button>

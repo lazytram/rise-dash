@@ -29,10 +29,10 @@ export const Loader: React.FC<LoaderProps> = ({
           className={cn(
             "absolute inset-0 animate-spin",
             color === "gradient"
-              ? "text-purple-500"
+              ? "text-primary"
               : color === "purple"
-              ? "text-purple-500"
-              : "text-white"
+                ? "text-primary"
+                : "text-foreground"
           )}
         >
           <svg
@@ -53,7 +53,7 @@ export const Loader: React.FC<LoaderProps> = ({
 
       {/* Simple text */}
       {text && (
-        <p className="text-sm text-white-400 mt-3 text-center max-w-xs">
+        <p className="text-sm text-muted-foreground mt-3 text-center max-w-xs">
           {text}
         </p>
       )}

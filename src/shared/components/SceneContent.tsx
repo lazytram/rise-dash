@@ -25,7 +25,7 @@ export const SceneContent: React.FC<SceneContentProps> = ({
   }
 
   const baseCardClasses =
-    "backdrop-blur-sm bg-white/5 border border-white/20 shadow-2xl p-8";
+    "glass-light backdrop-blur-sm border border-primary/20 shadow-lg p-8";
   const finalCardClasses = cardClassName
     ? cn(baseCardClasses, cardClassName)
     : baseCardClasses;

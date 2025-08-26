@@ -18,11 +18,11 @@ export const WelcomeHeader = memo(function WelcomeHeader() {
       </Text>
 
       <div className="space-y-4 animate-fade-in-up animation-delay-200 max-w-2xl mx-auto">
-        <Text className="text-responsive-lg text-[#99eafc]/90 text-balance leading-relaxed">
+        <Text className="text-responsive-lg text-foreground text-balance leading-relaxed">
           {t("scenes.welcome.subtitle")}
         </Text>
         {!isAuthenticated && (
-          <Text className="text-responsive text-[#99eafc]/70 text-balance leading-relaxed">
+          <Text className="text-responsive text-muted-foreground text-balance leading-relaxed">
             {t("scenes.welcome.connectWallet")}
           </Text>
         )}

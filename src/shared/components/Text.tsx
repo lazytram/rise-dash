@@ -28,14 +28,14 @@ export const Text: React.FC<TextProps> = ({
   style,
 }) => {
   const variantClasses = {
-    default: "text-gray-800",
-    title: "text-gray-800 font-bold",
-    subtitle: "text-gray-600",
-    body: "text-gray-700",
-    caption: "text-gray-500 text-sm",
-    error: "text-red-600",
-    success: "text-green-600",
-    muted: "text-gray-500",
+    default: "text-foreground",
+    title: "text-foreground font-bold",
+    subtitle: "text-muted-foreground",
+    body: "text-foreground",
+    caption: "text-muted-foreground text-sm",
+    error: "text-error",
+    success: "text-success",
+    muted: "text-muted-foreground",
     bold: "font-bold",
   };
 

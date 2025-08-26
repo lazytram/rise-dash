@@ -44,7 +44,7 @@ export const Navbar = memo(function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#3a1344]/95 via-[#7967e5]/95 to-[#99eafc]/95 backdrop-blur-2xl border-b border-[#7967e5]/40 shadow-2xl transition-all duration-300 h-16"
+        "fixed top-0 left-0 right-0 z-50 glass-light backdrop-blur-2xl border-b border-primary/20 shadow-lg transition-all duration-300 h-16"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,8 +79,8 @@ export const Navbar = memo(function Navbar() {
                     className={cn(
                       "transition-all duration-200",
                       isActive(scene)
-                        ? "text-white bg-white/20 border border-white/40 shadow-lg opacity-100"
-                        : "text-slate-200 hover:text-white hover:bg-[#7967e5]/20 opacity-80 hover:opacity-100"
+                        ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                        : "text-foreground hover:text-primary hover:bg-primary-light/50 opacity-80 hover:opacity-100"
                     )}
                   >
                     {label}
@@ -89,7 +89,7 @@ export const Navbar = memo(function Navbar() {
               </div>
 
               {/* Separator */}
-              <div className="w-px h-6 bg-gradient-to-b from-transparent via-[#7967e5]/60 to-transparent" />
+              <div className="w-px h-6 bg-gradient-to-b from-transparent via-primary/30 to-transparent" />
 
               {/* Profile Group */}
               <div className="flex items-center space-x-3">
@@ -102,8 +102,8 @@ export const Navbar = memo(function Navbar() {
                     className={cn(
                       "transition-all duration-200",
                       isActive(scene)
-                        ? "text-white bg-white/20 border border-white/40 shadow-lg opacity-100"
-                        : "text-slate-200 hover:text-white hover:bg-[#7967e5]/20 opacity-80 hover:opacity-100"
+                        ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                        : "text-foreground hover:text-primary hover:bg-primary-light/50 opacity-80 hover:opacity-100"
                     )}
                   >
                     {label}
@@ -112,7 +112,7 @@ export const Navbar = memo(function Navbar() {
               </div>
 
               {/* Separator */}
-              <div className="w-px h-6 bg-gradient-to-b from-transparent via-[#7967e5]/60 to-transparent" />
+              <div className="w-px h-6 bg-gradient-to-b from-transparent via-primary/30 to-transparent" />
 
               {/* Features Group */}
               <div className="flex items-center space-x-3">
@@ -125,8 +125,8 @@ export const Navbar = memo(function Navbar() {
                     className={cn(
                       "transition-all duration-200",
                       isActive(scene)
-                        ? "text-white bg-white/20 border border-white/40 shadow-lg opacity-100"
-                        : "text-slate-200 hover:text-white hover:bg-[#7967e5]/20 opacity-80 hover:opacity-100"
+                        ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                        : "text-foreground hover:text-primary hover:bg-primary-light/50 opacity-80 hover:opacity-100"
                     )}
                   >
                     {label}
@@ -146,7 +146,7 @@ export const Navbar = memo(function Navbar() {
 
       {/* Mobile menu - Only show when authenticated */}
       {isAuthenticated && (
-        <div className="md:hidden bg-gradient-to-b from-[#3a1344]/95 via-[#7967e5]/95 to-[#99eafc]/95 backdrop-blur-2xl border-t border-[#7967e5]/40 transition-all duration-300">
+        <div className="md:hidden glass-light backdrop-blur-2xl border-t border-primary/20 transition-all duration-300">
           <div className="px-4 py-3 space-y-3">
             {/* Game Group */}
             <div className="flex justify-center space-x-2">
@@ -159,8 +159,8 @@ export const Navbar = memo(function Navbar() {
                   className={cn(
                     "transition-all duration-200",
                     isActive(scene)
-                      ? "text-white bg-white/20 border border-white/30 shadow-lg opacity-100"
-                      : "text-slate-300 opacity-70"
+                      ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                      : "text-foreground opacity-70 hover:text-primary"
                   )}
                 >
                   {label}
@@ -179,8 +179,8 @@ export const Navbar = memo(function Navbar() {
                   className={cn(
                     "transition-all duration-200",
                     isActive(scene)
-                      ? "text-white bg-white/20 border border-white/30 shadow-lg opacity-100"
-                      : "text-slate-300 opacity-70"
+                      ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                      : "text-foreground opacity-70 hover:text-primary"
                   )}
                 >
                   {label}
@@ -199,8 +199,8 @@ export const Navbar = memo(function Navbar() {
                   className={cn(
                     "transition-all duration-200",
                     isActive(scene)
-                      ? "text-white bg-white/20 border border-white/30 shadow-lg opacity-100"
-                      : "text-slate-300 opacity-70"
+                      ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                      : "text-foreground opacity-70 hover:text-primary"
                   )}
                 >
                   {label}

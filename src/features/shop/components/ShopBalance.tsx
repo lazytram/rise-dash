@@ -15,17 +15,17 @@ export const ShopBalance: React.FC<ShopBalanceProps> = memo(
     const { t } = useTranslations();
 
     return (
-      <div className="mb-8 p-4 bg-gradient-to-r from-violet-500/20 to-indigo-500/20 rounded-xl border border-white/20">
+      <div className="mb-8 p-4 glass-light rounded-xl border border-primary/20">
         <div className="flex items-center justify-between">
           <div>
-            <Text variant="subtitle" size="sm" className="text-white/70 mb-1">
+            <Text variant="subtitle" size="sm" className="text-muted-foreground mb-1">
               {t("scenes.shop.riceBalance")}
             </Text>
             <div className="flex items-center space-x-2">
               {isLoadingBalance ? (
                 <div className="flex items-center space-x-2">
                   <Loader size="sm" />
-                  <Text variant="subtitle" size="sm" className="text-white/70">
+                  <Text variant="subtitle" size="sm" className="text-muted-foreground">
                     {t("features.powerUps.loading")}
                   </Text>
                 </div>
@@ -34,7 +34,7 @@ export const ShopBalance: React.FC<ShopBalanceProps> = memo(
                   <Text
                     variant="title"
                     size="2xl"
-                    className="text-white font-bold"
+                    className="text-foreground font-bold"
                   >
                     {riceBalance}
                   </Text>
@@ -46,10 +46,10 @@ export const ShopBalance: React.FC<ShopBalanceProps> = memo(
             </div>
           </div>
           <div className="text-right">
-            <Text variant="subtitle" size="sm" className="text-white/70 mb-1">
+            <Text variant="subtitle" size="sm" className="text-muted-foreground mb-1">
               {t("scenes.shop.progression")}
             </Text>
-            <Text variant="title" size="lg" className="text-white font-bold">
+            <Text variant="title" size="lg" className="text-foreground font-bold">
               {progression}%
             </Text>
           </div>

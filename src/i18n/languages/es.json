@@ -131,6 +131,12 @@
       "loadingData": "Cargando datos de la tienda...",
       "loadingBalance": "Cargando saldo RICE..."
     },
+    "powerUps": {
+      "upgradeSuccess": "¡Power-Up Mejorado!",
+      "upgradeSuccessMessage": "¡Tu power-up ha sido mejorado exitosamente!",
+      "upgrading": "Mejorando...",
+      "upgradingMessage": "Procesando tu mejora en la blockchain..."
+    },
     "instructions": {
       "title": "Cómo Jugar",
       "subtitle": "Aprende los conceptos básicos y domina el juego",
@@ -264,7 +270,8 @@
       "partialReward": "Recompensa parcial por {{distance}}m",
       "totalEarned": "Total ganado",
       "currentScore": "Puntuación actual",
-      "distanceRewards": "Recompensas de distancia"
+      "distanceRewards": "Recompensas de distancia",
+      "restart": "Reiniciar"
     },
     "enemies": {
       "samurai": "Samurái",
@@ -300,6 +307,7 @@
       "ammo": "munición",
       "maxLevel": "Nivel Máximo",
       "upgradeCost": "Costo de Mejora",
+      "currentStats": "Estadísticas Actuales",
       "rice": "RICE",
       "upgrade": "Mejorar",
       "maxLevelReached": "¡Nivel Máximo Alcanzado!",

@@ -18,52 +18,52 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
     switch (status) {
       case "pending":
         return {
-          color: "bg-blue-400",
-          bgColor: "bg-blue-500/10",
-          borderColor: "border-blue-400/20",
-          textColor: "text-blue-200/90",
+          color: "bg-blue-500",
+          bgColor: "bg-blue-500/15",
+          borderColor: "border-blue-500/40",
+          textColor: "text-blue-700",
         };
       case "success":
         return {
-          color: "bg-green-400",
-          bgColor: "bg-green-500/10",
-          borderColor: "border-green-400/20",
-          textColor: "text-green-200/90",
+          color: "bg-green-500",
+          bgColor: "bg-green-500/15",
+          borderColor: "border-green-500/40",
+          textColor: "text-green-700",
         };
       case "error":
         return {
-          color: "bg-red-400",
-          bgColor: "bg-red-500/10",
-          borderColor: "border-red-400/20",
-          textColor: "text-red-200/90",
+          color: "bg-red-500",
+          bgColor: "bg-red-500/15",
+          borderColor: "border-red-500/40",
+          textColor: "text-red-700",
         };
       case "info":
         return {
-          color: "bg-purple-400",
-          bgColor: "bg-purple-500/10",
-          borderColor: "border-purple-400/20",
-          textColor: "text-purple-200/90",
+          color: "bg-purple-500",
+          bgColor: "bg-purple-500/15",
+          borderColor: "border-purple-500/40",
+          textColor: "text-purple-700",
         };
       case "warning":
         return {
-          color: "bg-orange-400",
-          bgColor: "bg-orange-500/10",
-          borderColor: "border-orange-400/20",
-          textColor: "text-orange-200/90",
+          color: "bg-orange-500",
+          bgColor: "bg-orange-500/15",
+          borderColor: "border-orange-500/40",
+          textColor: "text-orange-700",
         };
       case "calculating":
         return {
-          color: "bg-emerald-400",
-          bgColor: "bg-emerald-500/10",
-          borderColor: "border-emerald-400/20",
-          textColor: "text-emerald-200/90",
+          color: "bg-emerald-500",
+          bgColor: "bg-emerald-500/15",
+          borderColor: "border-emerald-500/40",
+          textColor: "text-emerald-700",
         };
       default:
         return {
-          color: "bg-white/60",
-          bgColor: "bg-white/10",
-          borderColor: "border-white/20",
-          textColor: "text-white/70",
+          color: "bg-gray-500",
+          bgColor: "bg-gray-500/15",
+          borderColor: "border-gray-500/40",
+          textColor: "text-gray-700",
         };
     }
   };

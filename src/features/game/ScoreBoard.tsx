@@ -110,58 +110,70 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   return (
     <Modal size="full" isOpen={true} onClose={handleClose}>
-      <div className="h-[500px] sm:h-[550px] flex flex-col relative overflow-hidden p-4 sm:p-6">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#3a1344]/20 via-[#7967e5]/20 to-[#99eafc]/20 rounded-2xl backdrop-blur-sm">
-          <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-4 left-4 w-1.5 h-1.5 bg-[#7967e5]/30 rounded-full animate-pulse"></div>
-            <div className="absolute top-8 right-8 w-1 h-1 bg-[#99eafc]/40 rounded-full animate-pulse delay-300"></div>
-            <div className="absolute bottom-6 left-8 w-1 h-1 bg-[#7967e5]/30 rounded-full animate-pulse delay-700"></div>
-            <div className="absolute bottom-4 right-4 w-1 h-1 bg-[#99eafc]/50 rounded-full animate-pulse delay-1000"></div>
+      <div className="min-h-[600px] max-h-[700px] flex flex-col relative overflow-hidden p-6 sm:p-8">
+        {/* Light Mode Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-gray-50/95 to-white/95 rounded-3xl backdrop-blur-xl border border-gray-200/50 shadow-xl">
+          {/* Animated particles */}
+          <div className="absolute inset-0 overflow-hidden rounded-3xl">
+            <div className="absolute top-6 left-6 w-2 h-2 bg-[#7967e5]/30 rounded-full animate-pulse"></div>
+            <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-[#99eafc]/40 rounded-full animate-pulse delay-300"></div>
+            <div className="absolute bottom-8 left-12 w-1 h-1 bg-[#7967e5]/20 rounded-full animate-pulse delay-700"></div>
+            <div className="absolute bottom-6 right-6 w-1.5 h-1.5 bg-[#99eafc]/30 rounded-full animate-pulse delay-1000"></div>
+            <div className="absolute top-1/2 left-8 w-1 h-1 bg-[#7967e5]/15 rounded-full animate-pulse delay-500"></div>
+            <div className="absolute top-1/3 right-8 w-1 h-1 bg-[#99eafc]/25 rounded-full animate-pulse delay-800"></div>
           </div>
         </div>
 
-        {/* Header with compact styling */}
-        <div className="relative text-center mb-4 sm:mb-6">
+        {/* Enhanced Header */}
+        <div className="relative text-center mb-6 sm:mb-8">
           <div className="inline-block relative">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 drop-shadow-lg tracking-wide">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 drop-shadow-sm tracking-wide">
               {t("features.blockchain.saveScore")}
             </h2>
-            <div className="w-12 sm:w-16 h-0.5 bg-gradient-to-r from-[#7967e5] via-[#99eafc] to-[#7967e5] mx-auto rounded-full shadow-lg"></div>
-            <div className="absolute -top-1 -left-1 w-1.5 h-1.5 bg-[#7967e5]/60 rounded-full animate-pulse"></div>
-            <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-[#99eafc]/60 rounded-full animate-pulse delay-500"></div>
+            <div className="w-16 sm:w-20 h-1 bg-gradient-to-r from-[#7967e5] via-[#99eafc] to-[#7967e5] mx-auto rounded-full shadow-md"></div>
+            <div className="absolute -top-2 -left-2 w-2 h-2 bg-[#7967e5]/40 rounded-full animate-pulse"></div>
+            <div className="absolute -top-2 -right-2 w-2 h-2 bg-[#7967e5]/40 rounded-full animate-pulse delay-500"></div>
           </div>
         </div>
 
-        {/* Main Content with horizontal layout */}
-        <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 items-stretch relative">
-          {/* Left Column - Score */}
-          <div className="flex-1 flex flex-col items-center justify-start min-w-0">
-            <ScoreDisplay distance={distance} />
+        {/* Main Content - Improved Layout */}
+        <div className="flex-1 flex flex-col xl:flex-row gap-6 sm:gap-8 relative">
+          {/* Left Section - Score Display */}
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="max-w-md mx-auto w-full">
+              <ScoreDisplay distance={distance} />
+            </div>
           </div>
 
-          {/* Right Column - Rewards */}
-          <div className="flex-1 flex flex-col items-center justify-start min-w-0">
-            <RewardBreakdown rewards={rewards} isScoreSaved={isSuccess} />
+          {/* Center Divider - Only on larger screens */}
+          <div className="hidden xl:block w-px bg-gradient-to-b from-transparent via-gray-300/50 to-transparent mx-4"></div>
+
+          {/* Right Section - Rewards and Actions */}
+          <div className="flex-1 flex flex-col justify-between">
+            <div className="max-w-md mx-auto w-full">
+              <RewardBreakdown rewards={rewards} isScoreSaved={false} />
+            </div>
+
+            {/* Actions Section */}
+            <div className="mt-6 sm:mt-8">
+              <div className="max-w-md mx-auto">
+                <ScoreActions
+                  onSaveScore={handleSaveScore}
+                  onRestart={onRestart}
+                  isRecording={isSavingWithRICE}
+                  isSubmitting={isSubmitting}
+                  error={error}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Actions with compact spacing */}
-        <div className="mt-6 sm:mt-8 relative">
-          <ScoreActions
-            onSaveScore={handleSaveScore}
-            onRestart={onRestart}
-            isRecording={isSavingWithRICE}
-            isSubmitting={isSubmitting}
-            error={error}
-          />
-        </div>
-
-        {/* Bottom decorative elements */}
-        <div className="absolute bottom-2 sm:bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          <div className="w-1 h-1 bg-[#7967e5]/40 rounded-full animate-pulse"></div>
-          <div className="w-1 h-1 bg-[#99eafc]/40 rounded-full animate-pulse delay-200"></div>
-          <div className="w-1 h-1 bg-[#7967e5]/40 rounded-full animate-pulse delay-400"></div>
+        {/* Bottom Decorative Elements */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
+          <div className="w-1.5 h-1.5 bg-[#7967e5]/30 rounded-full animate-pulse"></div>
+          <div className="w-1.5 h-1.5 bg-[#99eafc]/30 rounded-full animate-pulse delay-200"></div>
+          <div className="w-1.5 h-1.5 bg-[#7967e5]/30 rounded-full animate-pulse delay-400"></div>
         </div>
       </div>
     </Modal>

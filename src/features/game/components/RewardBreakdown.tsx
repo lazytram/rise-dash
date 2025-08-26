@@ -23,7 +23,7 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
         <Text
           variant="subtitle"
           size="lg"
-          className="text-white/90 font-semibold tracking-wider uppercase text-xs sm:text-sm"
+          className="text-gray-900 font-bold tracking-wider uppercase text-xs sm:text-sm"
         >
           {t("features.gameplay.distanceRewards")}
         </Text>
@@ -79,7 +79,7 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
         <div className="mb-2 sm:mb-3 text-center">
           <Text
             variant="body"
-            className="text-white/80 font-medium text-xs tracking-wide uppercase"
+            className="text-gray-800 font-bold text-xs tracking-wide uppercase"
           >
             {t("features.gameplay.milestonesReached")}
           </Text>
@@ -89,13 +89,13 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
           {rewards.distanceRewards.slice(0, 3).map((reward, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-2 sm:p-3 bg-[#7967e5]/10 rounded-lg border border-[#7967e5]/20 backdrop-blur-sm"
+              className="flex items-center justify-between p-2 sm:p-3 bg-[#7967e5]/10 rounded-lg border border-[#7967e5]/30 backdrop-blur-sm shadow-sm"
             >
               <div className="flex items-center space-x-2">
-                <RiceLogo size={12} className="sm:w-3 sm:h-3 text-white/70" />
+                <RiceLogo size={12} className="sm:w-3 sm:h-3 text-[#7967e5]" />
                 <Text
                   variant="body"
-                  className="text-white/80 font-medium text-xs"
+                  className="text-gray-800 font-bold text-xs"
                 >
                   {t("features.gameplay.partialReward", {
                     distance: reward.distance,
@@ -105,11 +105,11 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
               <div className="flex items-center space-x-1">
                 <Text
                   variant="body"
-                  className="text-white font-semibold text-xs sm:text-sm"
+                  className="text-[#7967e5] font-bold text-xs sm:text-sm"
                 >
                   +{reward.riceReward}
                 </Text>
-                <RiceLogo size={12} className="sm:w-3 sm:h-3 text-white/70" />
+                <RiceLogo size={12} className="sm:w-3 sm:h-3 text-[#7967e5]" />
               </div>
             </div>
           ))}
@@ -117,7 +117,7 @@ export const RewardBreakdown: React.FC<RewardBreakdownProps> = ({
             <div className="text-center py-1.5 sm:py-2">
               <Text
                 variant="body"
-                className="text-white/60 font-medium text-xs"
+                className="text-gray-600 font-medium text-xs"
               >
                 {t("features.gameplay.moreMilestones", {
                   count: rewards.distanceRewards.length - 3,

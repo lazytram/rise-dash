@@ -23,9 +23,9 @@ const ConnectionStatus: React.FC<{ isConnected: boolean }> = ({
 
   return (
     <div className="text-center">
-      <div className="inline-flex items-center space-x-2 px-4 py-2 bg-[#7967e5]/10 rounded-full border border-[#7967e5]/20 backdrop-blur-sm">
-        <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-        <Text variant="body" className="text-[#99eafc]/70 font-medium text-sm">
+      <div className="inline-flex items-center space-x-2 px-4 py-2 bg-red-500/15 rounded-full border border-red-500/40 backdrop-blur-sm shadow-md">
+        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-sm"></div>
+        <Text variant="body" className="text-red-700 font-bold text-sm">
           {t("features.blockchain.connectWalletToSave")}
         </Text>
       </div>
@@ -48,7 +48,7 @@ const SaveScoreButton: React.FC<{
       disabled={isRecording || isSubmitting || !isConnected}
       variant="gradient"
       size="md"
-      className="flex-1 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl transform hover:scale-105"
+      className="flex-1 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {isRecording || isSubmitting ? (
         <>
@@ -57,7 +57,7 @@ const SaveScoreButton: React.FC<{
         </>
       ) : (
         <>
-          <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full"></div>
+          <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full shadow-sm"></div>
           <span>{t("features.blockchain.saveScore")}</span>
         </>
       )}
@@ -76,9 +76,9 @@ const RestartButton: React.FC<{ onRestart?: () => void }> = ({ onRestart }) => {
       onClick={onRestart}
       variant="ghost"
       size="md"
-      className="flex-1 py-3 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white border-0"
+      className="flex-1 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white border border-gray-600/50 shadow-lg hover:shadow-xl"
     >
-      <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full"></div>
+      <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full shadow-sm"></div>
       <span>{t("scenes.game.restart")}</span>
     </Button>
   );
@@ -104,10 +104,10 @@ const ErrorDisplay: React.FC<{ error?: Error | null }> = ({ error }) => {
   };
 
   return (
-    <div className="w-full max-w-md p-3 bg-[#7967e5]/10 border border-[#7967e5]/20 rounded-lg backdrop-blur-sm">
+    <div className="w-full max-w-md p-3 bg-red-500/15 border border-red-500/40 rounded-lg backdrop-blur-sm shadow-md">
       <div className="flex items-center space-x-2">
-        <div className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0"></div>
-        <Text variant="body" className="text-[#99eafc]/90 font-medium text-xs">
+        <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse flex-shrink-0 shadow-sm"></div>
+        <Text variant="body" className="text-red-700 font-bold text-xs">
           {getErrorMessage(error?.message)}
         </Text>
       </div>

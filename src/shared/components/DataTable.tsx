@@ -1,13 +1,11 @@
 import React from "react";
-import { Text } from "@/shared/components/Text";
-import { AnimatedContainer } from "@/shared/components/AnimatedContainer";
 import { cn } from "@/shared/utils/cn";
+import { Text } from "./Text";
 
 interface Column<T> {
   key: string;
   header: string;
   render: (item: T, index: number) => React.ReactNode;
-  className?: string;
 }
 
 interface DataTableProps<T> {
@@ -34,18 +32,18 @@ export function DataTable<T>({
       {/* Enhanced Table with modern styling */}
       <div className="relative">
         {/* Background glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-cyan-500/20 rounded-xl blur-lg"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#7967e5]/10 via-[#99eafc]/5 to-[#7967e5]/10 rounded-xl blur-lg"></div>
 
         {/* Main table container */}
-        <div className="relative bg-gradient-to-br from-purple-900/40 via-purple-800/30 to-blue-900/40 rounded-xl border border-white/20 backdrop-blur-sm overflow-hidden shadow-xl">
+        <div className="relative bg-white/80 rounded-xl border border-gray-200/50 backdrop-blur-sm overflow-hidden shadow-lg">
           {/* Table header with enhanced styling */}
-          <div className="bg-gradient-to-r from-purple-600/30 via-purple-500/20 to-blue-600/30 border-b border-white/20">
+          <div className="bg-gradient-to-r from-[#7967e5]/20 via-[#7967e5]/15 to-[#7967e5]/20 border-b border-gray-200/50">
             <div className="flex gap-4 px-4 py-3">
               {columns.map((column) => (
                 <div key={column.key} className="flex-1 text-center">
                   <Text
                     variant="subtitle"
-                    className="text-white/90 font-semibold text-sm"
+                    className="text-gray-800 font-semibold text-sm"
                   >
                     {column.header}
                   </Text>
@@ -55,41 +53,30 @@ export function DataTable<T>({
           </div>
 
           {/* Table body with enhanced rows */}
-          <div className="divide-y divide-white/10">
+          <div className="divide-y divide-gray-200/50">
             {data.map((item, index) => {
-              const isHighlighted = highlightRow
-                ? highlightRow(item, index)
-                : false;
+              const isHighlighted = highlightRow ? highlightRow(item, index) : false;
+              const animationDelayValue = animationDelay + index * rowDelay;
 
               return (
-                <AnimatedContainer
+                <div
                   key={index}
-                  animation="fadeIn"
-                  delay={animationDelay + index * rowDelay}
+                  className={cn(
+                    "group cursor-pointer transition-all duration-300 hover:bg-[#7967e5]/5",
+                    isHighlighted && "bg-[#7967e5]/10 border-l-4 border-[#7967e5]",
+                    "animate-fade-in-up"
+                  )}
+                  style={{ animationDelay: `${animationDelayValue}ms` }}
+                  onClick={() => onRowClick?.(item, index)}
                 >
-                  <div
-                    className={cn(
-                      "group transition-all duration-300 ease-out hover:bg-white/10 hover:scale-[1.01] hover:shadow-md cursor-pointer",
-                      isHighlighted &&
-                        "bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-blue-500/20 border-l-4 border-blue-400"
-                    )}
-                    onClick={() => onRowClick?.(item, index)}
-                  >
-                    <div className="flex gap-4 px-4 py-3">
-                      {columns.map((column) => (
-                        <div
-                          key={column.key}
-                          className={cn(
-                            "flex-1 flex items-center justify-center",
-                            column.className
-                          )}
-                        >
-                          {column.render(item, index)}
-                        </div>
-                      ))}
-                    </div>
+                  <div className="flex gap-4 px-4 py-3">
+                    {columns.map((column) => (
+                      <div key={column.key} className="flex-1 text-center">
+                        {column.render(item, index)}
+                      </div>
+                    ))}
                   </div>
-                </AnimatedContainer>
+                </div>
               );
             })}
           </div>
