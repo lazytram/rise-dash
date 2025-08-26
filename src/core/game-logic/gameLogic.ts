@@ -95,7 +95,7 @@ export class GameLogic {
     // Calculate power-up spawn probability (increases with level)
     const powerUpSpawnProbability = Math.min(
       0.8,
-      GAME_CONSTANTS.POWERUP_SPAWN_PROBABILITY + (level - 1) * 0.05
+      GAME_CONSTANTS.POWERUP_SPAWN_PROBABILITY + (level - 1) * 0.065
     );
 
     return {
