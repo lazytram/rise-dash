@@ -53,6 +53,8 @@ export interface PowerUpUpgradeData {
   color: string;
   // Whether this power-up is stackable (collected and stored for later use)
   stackable?: boolean;
+  // If true, the power-up must be purchased/unlocked before it can spawn or be used
+  requiresPurchase?: boolean;
   upgrades: PowerUpUpgrade[];
 }
 

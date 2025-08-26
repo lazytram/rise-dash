@@ -232,7 +232,9 @@
         "slowMotion": "Ralenti",
         "slowMotionDesc": "Ralentit le temps pour un meilleur contrôle",
         "multiShot": "Tirs Multiples",
-        "multiShotDesc": "Tire plusieurs projectiles en même temps"
+        "multiShotDesc": "Tire plusieurs projectiles en même temps",
+        "phoenixPact": "Pacte du Phénix",
+        "phoenixPactDesc": "À la mort : résurrection instantanée"
       },
       "scoring": {
         "title": "Système de Score",
@@ -288,13 +290,15 @@
       "slow_motion": "Ralenti",
       "multi_shot": "Tirs Multiples",
       "rice_rocket_ammo": "Munitions de Base",
+      "phoenix_pact": "Pacte du Phénix",
       "shortNames": {
         "shield": "Bouclier",
         "infinite_ammo": "Munitions ∞",
         "jump_boost": "Saut",
         "slow_motion": "Ralenti",
         "multi_shot": "Tirs Multiples",
-        "rice_rocket_ammo": "Munitions"
+        "rice_rocket_ammo": "Munitions",
+        "phoenix_pact": "Phénix"
       },
       "description": {
         "shield": "Protection contre les collisions",
@@ -302,7 +306,8 @@
         "jump_boost": "Sauts plus hauts",
         "slow_motion": "Ralentit les ennemis",
         "multi_shot": "Projectiles multiples",
-        "rice_rocket_ammo": "Capacité maximale de munitions"
+        "rice_rocket_ammo": "Capacité maximale de munitions",
+        "phoenix_pact": "À la mort : résurrection instantanée"
       },
       "duration": "Durée",
       "remaining": "restant",
@@ -312,6 +317,7 @@
       "currentStats": "Statistiques Actuelles",
       "rice": "RICE",
       "upgrade": "Améliorer",
+      "unlock": "Débloquer",
       "maxLevelReached": "Niveau Maximum Atteint !",
       "insufficientRice": "RICE insuffisant",
       "noActive": "Aucun power-up actif",
@@ -331,7 +337,8 @@
       "noPowerUps": "Aucun power-up disponible",
       "connectWalletToView": "Connectez votre wallet pour voir les power-ups",
       "signatureRejected": "Amélioration annulée. Vous avez rejeté la signature.",
-      "powerUpNotInitialized": "Power-up non initialisé sur le contrat"
+      "powerUpNotInitialized": "Power-up non initialisé sur le contrat",
+      "stackable": "Cumulable"
     },
     "blockchain": {
       "saveScore": "Sauvegarder le Score",

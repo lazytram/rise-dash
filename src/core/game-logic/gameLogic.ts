@@ -28,6 +28,7 @@ import {
   getMaxAmmo,
   getPowerUpService,
 } from "@/shared/services/powerUpService";
+import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpType } from "@/shared/types/powerUps";
 
 export class GameLogic {
@@ -1314,9 +1315,22 @@ export class GameLogic {
 
   static createPowerUp(distance: number, player?: Player): PowerUp {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
+    // Use player's current levels to decide eligibility
     const powerUpTypes = Object.values(GAME_CONSTANTS.POWERUP_TYPES);
-    const randomType =
-      powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+    // Filter power-ups that require purchase if player level == 0 (locked)
+    const eligibleTypes = powerUpTypes.filter((type) => {
+      const config = POWERUP_UPGRADES[type as unknown as PowerUpType];
+      const requiresPurchase = config?.requiresPurchase === true;
+      const playerLevel =
+        player?.powerUpLevels?.[type as unknown as PowerUpType] || 0;
+      if (requiresPurchase) {
+        return playerLevel > 0; // only if unlocked (purchased/upgraded at least level 1)
+      }
+      return true;
+    });
+
+    const pool = eligibleTypes.length > 0 ? eligibleTypes : powerUpTypes;
+    const randomType = pool[Math.floor(Math.random() * pool.length)];
 
     return {
       id: Date.now().toString() + Math.random(),

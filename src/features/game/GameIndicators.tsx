@@ -28,6 +28,7 @@ export const GameIndicators: React.FC<GameIndicatorsProps> = ({
         <ShimmerBox />
         <ShimmerBox />
         <ShimmerBox />
+        <ShimmerBox />
       </div>
     );
   }
