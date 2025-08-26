@@ -110,7 +110,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   return (
     <Modal size="full" isOpen={true} onClose={handleClose}>
-      <div className="min-h-[600px] max-h-[700px] flex flex-col relative overflow-hidden p-6 sm:p-8">
+      <div className="min-h-[70vh] max-h-[85vh] flex flex-col relative overflow-hidden p-4 sm:p-8">
         {/* Light Mode Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-gray-50/95 to-white/95 rounded-3xl backdrop-blur-xl border border-gray-200/50 shadow-xl">
           {/* Animated particles */}
@@ -125,7 +125,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
         </div>
 
         {/* Enhanced Header */}
-        <div className="relative text-center mb-6 sm:mb-8">
+        <div className="relative text-center mb-4 sm:mb-8">
           <div className="inline-block relative">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 drop-shadow-sm tracking-wide">
               {t("features.blockchain.saveScore")}
@@ -136,36 +136,48 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
         </div>
 
-        {/* Main Content - Improved Layout */}
-        <div className="flex-1 flex flex-col xl:flex-row gap-6 sm:gap-8 relative">
-          {/* Left Section - Score Display */}
-          <div className="flex-1 flex flex-col justify-center">
-            <div className="max-w-md mx-auto w-full">
-              <ScoreDisplay distance={distance} />
-            </div>
-          </div>
-
-          {/* Center Divider - Only on larger screens */}
-          <div className="hidden xl:block w-px bg-gradient-to-b from-transparent via-gray-300/50 to-transparent mx-4"></div>
-
-          {/* Right Section - Rewards and Actions */}
-          <div className="flex-1 flex flex-col justify-between">
-            <div className="max-w-md mx-auto w-full">
-              <RewardBreakdown rewards={rewards} isScoreSaved={false} />
-            </div>
-
-            {/* Actions Section */}
-            <div className="mt-6 sm:mt-8">
-              <div className="max-w-md mx-auto">
-                <ScoreActions
-                  onSaveScore={handleSaveScore}
-                  onRestart={onRestart}
-                  isRecording={isSavingWithRICE}
-                  isSubmitting={isSubmitting}
-                  error={error}
-                />
+        {/* Main Content - Responsive grid; no scroll needed on desktop */}
+        <div className="flex-1 relative pb-24 sm:pb-0 overflow-y-auto lg:overflow-visible">
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-2 items-start">
+            {/* Score Display */}
+            <div>
+              <div className="max-w-md mx-auto w-full">
+                <ScoreDisplay distance={distance} />
               </div>
             </div>
+
+            {/* Rewards and Actions */}
+            <div>
+              <div className="max-w-md mx-auto w-full">
+                <RewardBreakdown rewards={rewards} isScoreSaved={false} />
+              </div>
+
+              {/* Actions Section (desktop/tablet) */}
+              <div className="mt-4 sm:mt-6 hidden sm:block lg:sticky lg:top-4">
+                <div className="max-w-md mx-auto">
+                  <ScoreActions
+                    onSaveScore={handleSaveScore}
+                    onRestart={onRestart}
+                    isRecording={isSavingWithRICE}
+                    isSubmitting={isSubmitting}
+                    error={error}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sticky mobile actions */}
+        <div className="sm:hidden fixed left-0 right-0 bottom-0 z-10 px-4 pb-4 pt-3 bg-gradient-to-t from-white/90 to-white/40 backdrop-blur-md border-t border-gray-200/60">
+          <div className="max-w-md mx-auto">
+            <ScoreActions
+              onSaveScore={handleSaveScore}
+              onRestart={onRestart}
+              isRecording={isSavingWithRICE}
+              isSubmitting={isSubmitting}
+              error={error}
+            />
           </div>
         </div>
 

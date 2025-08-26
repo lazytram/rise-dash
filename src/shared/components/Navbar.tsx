@@ -10,8 +10,10 @@ import { AuthButton } from "@/features/auth/AuthButton";
 import { LanguageSelector } from "./LanguageSelector";
 import { RiceLogo } from "./RiceLogo";
 import { cn } from "@/shared/utils/cn";
+import { useTranslations } from "@/shared/hooks/useTranslations";
 
 export const Navbar = memo(function Navbar() {
+  const { t } = useTranslations();
   const { isConnected } = useAccount();
   const { data: session, status } = useSession();
   const { currentScene, setScene } = useSceneStore();
@@ -29,16 +31,16 @@ export const Navbar = memo(function Navbar() {
   };
 
   // Groupes de navigation
-  const gameGroup = [{ scene: SceneType.GAME, label: "Play" }];
+  const gameGroup = [{ scene: SceneType.GAME, label: t("nav.play") }];
 
   const profileGroup = [
-    { scene: SceneType.PROFILE, label: "Profile" },
-    { scene: SceneType.LEADERBOARD, label: "Leaderboard" },
+    { scene: SceneType.PROFILE, label: t("nav.profile") },
+    { scene: SceneType.LEADERBOARD, label: t("nav.leaderboard") },
   ];
 
   const featuresGroup = [
-    { scene: SceneType.SHOP, label: "Shop" },
-    { scene: SceneType.INSTRUCTIONS, label: "Help" },
+    { scene: SceneType.SHOP, label: t("nav.shop") },
+    { scene: SceneType.INSTRUCTIONS, label: t("nav.help") },
   ];
 
   return (

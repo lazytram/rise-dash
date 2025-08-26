@@ -40,7 +40,10 @@ export function DataTable<T>({
           <div className="bg-gradient-to-r from-[#7967e5]/20 via-[#7967e5]/15 to-[#7967e5]/20 border-b border-gray-200/50">
             <div className="flex gap-4 px-4 py-3">
               {columns.map((column) => (
-                <div key={column.key} className="flex-1 text-center">
+                <div
+                  key={column.key}
+                  className="flex-1 flex items-center justify-center text-center"
+                >
                   <Text
                     variant="subtitle"
                     className="text-gray-800 font-semibold text-sm"
@@ -55,7 +58,9 @@ export function DataTable<T>({
           {/* Table body with enhanced rows */}
           <div className="divide-y divide-gray-200/50">
             {data.map((item, index) => {
-              const isHighlighted = highlightRow ? highlightRow(item, index) : false;
+              const isHighlighted = highlightRow
+                ? highlightRow(item, index)
+                : false;
               const animationDelayValue = animationDelay + index * rowDelay;
 
               return (
@@ -63,7 +68,8 @@ export function DataTable<T>({
                   key={index}
                   className={cn(
                     "group cursor-pointer transition-all duration-300 hover:bg-[#7967e5]/5",
-                    isHighlighted && "bg-[#7967e5]/10 border-l-4 border-[#7967e5]",
+                    isHighlighted &&
+                      "bg-[#7967e5]/10 border-l-4 border-[#7967e5]",
                     "animate-fade-in-up"
                   )}
                   style={{ animationDelay: `${animationDelayValue}ms` }}
@@ -71,7 +77,10 @@ export function DataTable<T>({
                 >
                   <div className="flex gap-4 px-4 py-3">
                     {columns.map((column) => (
-                      <div key={column.key} className="flex-1 text-center">
+                      <div
+                        key={column.key}
+                        className="flex-1 flex items-center justify-center text-center"
+                      >
                         {column.render(item, index)}
                       </div>
                     ))}

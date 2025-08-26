@@ -12,7 +12,7 @@ interface LanguageStore {
 export const useLanguageStore = create<LanguageStore>()(
   persist(
     (set) => ({
-      locale: "fr", // Default language changed to French
+      locale: "en", // Default language changed to English
       setLocale: (locale: Locale) => set({ locale }),
     }),
     {
