@@ -60,14 +60,14 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
         <Text
           variant="subtitle"
           size="lg"
-          className="text-white/90 font-semibold tracking-wider uppercase text-xs sm:text-sm"
+          className="text-gray-900 font-bold tracking-wider uppercase text-xs sm:text-sm"
         >
           {title}
         </Text>
         <div
           className={`w-6 sm:w-8 h-0.5 bg-gradient-to-r ${
             variant === "success"
-              ? "from-green-400 to-emerald-400"
+              ? "from-green-500 to-emerald-500"
               : "from-[#7967e5] to-[#99eafc]"
           } mx-auto mt-1 sm:mt-2 rounded-full`}
         ></div>
@@ -90,7 +90,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
               </Text>
               <Text
                 variant="body"
-                className="text-white/80 font-medium text-xs sm:text-sm tracking-wide"
+                className="text-white font-semibold text-xs sm:text-sm tracking-wide"
               >
                 {t("features.gameplay.meters")}
               </Text>
@@ -100,7 +100,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
             {subtitle && (
               <Text
                 variant="body"
-                className="text-white/70 font-medium text-xs tracking-wide uppercase"
+                className="text-white font-medium text-xs tracking-wide uppercase"
               >
                 {subtitle}
               </Text>

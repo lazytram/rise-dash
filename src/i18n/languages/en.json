@@ -131,6 +131,12 @@
       "loadingData": "Loading shop data...",
       "loadingBalance": "Loading RICE balance..."
     },
+    "powerUps": {
+      "upgradeSuccess": "Power-Up Upgraded!",
+      "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
+      "upgrading": "Upgrading...",
+      "upgradingMessage": "Processing your upgrade on the blockchain..."
+    },
     "instructions": {
       "title": "How to Play",
       "subtitle": "Learn the basics and master the game",
@@ -300,6 +306,7 @@
       "ammo": "ammo",
       "maxLevel": "Max Level",
       "upgradeCost": "Upgrade Cost",
+      "currentStats": "Current Stats",
       "rice": "RICE",
       "upgrade": "Upgrade",
       "maxLevelReached": "Max Level Reached!",

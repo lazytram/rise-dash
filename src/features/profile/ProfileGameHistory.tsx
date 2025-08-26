@@ -54,10 +54,10 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
       <AnimatedContainer animation="fadeIn" delay={100}>
         <div className="text-center py-12">
           <div className="text-6xl mb-6 animate-bounce">📊</div>
-          <Text variant="subtitle" className="text-white mb-3">
+          <Text variant="subtitle" className="text-gray-800 mb-3">
             {t("scenes.profile.noScoresYet")}
           </Text>
-          <Text variant="caption" className="text-white/60">
+          <Text variant="caption" className="text-gray-600">
             {t("scenes.profile.playGameToSeeScores")}
           </Text>
         </div>
@@ -80,13 +80,13 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
               className={cn(
                 "text-2xl font-bold",
                 isPersonalBest
-                  ? "bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
-                  : "text-white"
+                  ? "bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent"
+                  : "text-gray-900"
               )}
             >
               {score.score.toString()}
             </Text>
-            <Text variant="caption" className="text-white/60 mt-1">
+            <Text variant="caption" className="text-gray-600 mt-1">
               {t("features.gameplay.meters")}
             </Text>
           </div>
@@ -98,7 +98,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
       header: t("scenes.profile.date"),
       render: (score: PlayerScore) => (
         <div className="text-center">
-          <Text variant="body" className="text-white/90 font-medium">
+          <Text variant="body" className="text-gray-800 font-medium">
             {new Date(Number(score.timestamp) * 1000).toLocaleDateString(
               "en-GB",
               {
@@ -108,7 +108,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
               }
             )}
           </Text>
-          <Text variant="caption" className="text-white/60 mt-1">
+          <Text variant="caption" className="text-gray-600 mt-1">
             {new Date(Number(score.timestamp) * 1000).toLocaleTimeString(
               "en-GB",
               {
@@ -162,7 +162,7 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
       {totalPages > 1 && (
         <AnimatedContainer animation="slideUp" delay={800}>
           <div className="flex justify-center">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/20 p-4">
+            <div className="bg-gray-100/80 backdrop-blur-sm rounded-xl border border-gray-200/50 p-4">
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
@@ -177,9 +177,9 @@ export const ProfileGameHistory: React.FC<ProfileGameHistoryProps> = ({
       {/* Enhanced Page info with animation */}
       <AnimatedContainer animation="fadeIn" delay={900}>
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-            <Text variant="caption" className="text-white/70 font-medium">
+          <div className="inline-flex items-center gap-2 bg-gray-100/80 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-200/50">
+            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+            <Text variant="caption" className="text-gray-700 font-medium">
               {t("scenes.profile.showingResults", {
                 start: startIndex + 1,
                 end: Math.min(endIndex, playerScores.length),

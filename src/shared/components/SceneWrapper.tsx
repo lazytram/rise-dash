@@ -39,8 +39,7 @@ export const SceneWrapper: React.FC<SceneWrapperProps> = ({
     none: "",
     gradient: "gradient-bg",
     glass: "glass",
-    pattern:
-      "bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_50%)]",
+    pattern: "bg-pattern",
   };
 
   return (

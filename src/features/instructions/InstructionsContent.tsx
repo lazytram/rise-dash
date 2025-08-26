@@ -91,14 +91,14 @@ export const InstructionsContent: React.FC = () => {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-gray-200/80 hover:bg-gray-300/80 rounded-full flex items-center justify-center text-gray-700 transition-all duration-300 hover:scale-110 backdrop-blur-sm shadow-lg"
           aria-label="Previous slide"
         >
           <span className="text-xl">‹</span>
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-gray-200/80 hover:bg-gray-300/80 rounded-full flex items-center justify-center text-gray-700 transition-all duration-300 hover:scale-110 backdrop-blur-sm shadow-lg"
           aria-label="Next slide"
         >
           <span className="text-xl">›</span>
@@ -114,7 +114,7 @@ export const InstructionsContent: React.FC = () => {
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide
                 ? "bg-gradient-to-r from-[#7967e5] to-[#99eafc] scale-125"
-                : "bg-white/30 hover:bg-white/50"
+                : "bg-gray-300/50 hover:bg-gray-400/50"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -123,7 +123,7 @@ export const InstructionsContent: React.FC = () => {
 
       {/* Slide Counter */}
       <div className="text-center mt-1">
-        <Text variant="body" className="text-white/70 text-sm">
+        <Text variant="body" className="text-gray-600 text-sm">
           {currentSlide + 1} / {slides.length}
         </Text>
       </div>

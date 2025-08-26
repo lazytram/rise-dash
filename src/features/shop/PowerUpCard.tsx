@@ -116,33 +116,35 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
     };
 
     return (
-      <div className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 rounded-xl p-6 border border-white/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+      <div className="glass-light rounded-xl p-5 border border-primary/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-start mb-4">
-          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-3 border border-white/30 flex-shrink-0">
-            <span className="text-2xl drop-shadow-sm">{powerUp.icon}</span>
+        <div className="flex items-center mb-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center mr-4 border border-primary/20 flex-shrink-0">
+            <span className="text-2xl">{powerUp.icon}</span>
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
               <Text
                 variant="title"
                 size="lg"
-                className="text-white font-bold leading-tight"
+                className="text-foreground font-bold leading-tight"
               >
                 {getShortPowerUpName(powerUp.type)}
               </Text>
-              <Text
-                variant="title"
-                size="lg"
-                className="text-white font-bold ml-2 flex-shrink-0"
-              >
-                {Math.max(1, Math.min(10, Number(currentLevel) || 1))}/10
-              </Text>
+              <div className="bg-primary/10 rounded-lg px-3 py-1 border border-primary/20 flex-shrink-0 ml-3">
+                <Text
+                  variant="title"
+                  size="sm"
+                  className="text-primary font-bold"
+                >
+                  {Math.max(1, Math.min(10, Number(currentLevel) || 1))}/10
+                </Text>
+              </div>
             </div>
             <Text
               variant="subtitle"
               size="sm"
-              className="text-white/70 line-clamp-2"
+              className="text-muted-foreground"
             >
               {t(`features.powerUps.description.${powerUp.type}`)}
             </Text>
@@ -150,33 +152,45 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-white/10 rounded-full h-2 mb-4 overflow-hidden">
+        <div className="w-full bg-primary/10 rounded-full h-2 mb-4 overflow-hidden">
           <div
-            className="bg-gradient-to-r from-white/80 to-white/60 rounded-full h-2 transition-all duration-500 ease-out"
+            className="bg-gradient-to-r from-primary to-primary-hover rounded-full h-2 transition-all duration-500 ease-out"
             style={{ width: `${getProgressPercentage()}%` }}
           />
         </div>
 
-        {/* Current Stats */}
+        {/* Current Stats - Simplified */}
         <div className="mb-4">
-          <Text variant="subtitle" size="sm" className="text-white/80">
+          <Text
+            variant="subtitle"
+            size="sm"
+            className="text-muted-foreground font-medium"
+          >
             {getUpgradeDescription()}
           </Text>
         </div>
 
-        {/* Upgrade Section - Fixed at bottom */}
+        {/* Upgrade Section - Simplified */}
         <div className="mt-auto">
           {!isMaxLevel ? (
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <Text variant="subtitle" size="sm" className="text-white/70">
-                  {t("features.powerUps.upgradeCost")}:
-                </Text>
-                <div className="flex items-center space-x-1">
+              {/* Upgrade Cost - Simplified */}
+              <div className="flex items-center justify-between bg-primary/5 rounded-lg p-3 border border-primary/10">
+                <div className="flex items-center space-x-2">
+                  <span className="text-primary">💰</span>
+                  <Text
+                    variant="subtitle"
+                    size="sm"
+                    className="text-muted-foreground"
+                  >
+                    {t("features.powerUps.upgradeCost")}
+                  </Text>
+                </div>
+                <div className="flex items-center space-x-2">
                   <Text
                     variant="title"
                     size="lg"
-                    className="text-white font-bold drop-shadow-lg"
+                    className="text-foreground font-bold"
                   >
                     {upgradeCost}
                   </Text>
@@ -186,6 +200,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 </div>
               </div>
 
+              {/* Upgrade Button */}
               <Button
                 onClick={onUpgrade}
                 disabled={isButtonDisabled}
@@ -193,21 +208,21 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                   canAfford && !isBalanceLoading ? "gradient" : "secondary"
                 }
                 size="sm"
-                className={`w-full h-10 transition-all duration-200 ${
+                className={`w-full h-11 transition-all duration-200 ${
                   isLoading ? "animate-pulse" : ""
                 }`}
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm">
+                    <span className="text-sm font-medium">
                       {t("features.powerUps.upgrading")}
                     </span>
                   </div>
                 ) : isBalanceLoading ? (
                   <div className="flex items-center justify-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm">
+                    <span className="text-sm font-medium">
                       {t("features.powerUps.loading")}
                     </span>
                   </div>
@@ -219,26 +234,24 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 )}
               </Button>
 
+              {/* Insufficient Rice Warning - Simplified */}
               {!canAfford && !isLoading && !isBalanceLoading && (
                 <Text
                   variant="error"
                   size="sm"
-                  className="text-center text-red-700 font-medium drop-shadow-sm"
+                  className="text-error text-center font-medium"
                 >
                   {t("features.powerUps.insufficientRice")}
                 </Text>
               )}
             </div>
           ) : (
-            <div className="text-center">
+            <div className="text-center bg-primary/10 rounded-lg p-4 border border-primary/20">
               <Text
                 variant="title"
                 size="lg"
-                className="text-violet-300 font-bold drop-shadow-sm"
+                className="text-primary font-bold"
               >
-                {t("features.powerUps.maxLevelReached")}
-              </Text>
-              <Text variant="subtitle" size="sm" className="text-white/60 mt-1">
                 {t("features.powerUps.maxLevelReached")}
               </Text>
             </div>

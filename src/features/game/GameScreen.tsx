@@ -18,7 +18,7 @@ export function GameScreen() {
       }}
     >
       <div className="w-full">
-        <h1 className="text-4xl font-bold text-white text-center mb-4">
+        <h1 className="text-4xl font-bold text-foreground text-center mb-4">
           {t("common.title")}
         </h1>
         <Game />

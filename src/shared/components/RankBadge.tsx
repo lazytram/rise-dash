@@ -16,7 +16,7 @@ const getRankStyle = (rank: number) => {
     case 3:
       return "bg-gradient-to-r from-amber-600 to-amber-800 text-white font-bold";
     default:
-      return "bg-white/10 text-white";
+      return "bg-white/10 text-grey";
   }
 };
 

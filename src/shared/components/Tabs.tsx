@@ -21,7 +21,7 @@ export const Tabs: React.FC<TabsProps> = ({
   return (
     <div className={cn("w-full", className)}>
       {/* Tab Headers */}
-      <div className="flex border-b border-white/20 mb-6 bg-white/5 rounded-t-lg p-1 gap-2">
+      <div className="flex border-b border-gray-200/50 mb-6 bg-gray-100/50 rounded-t-lg p-1 gap-2">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -29,13 +29,13 @@ export const Tabs: React.FC<TabsProps> = ({
             className={cn(
               "px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 cursor-pointer relative overflow-hidden",
               activeTab === tab.id
-                ? "bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-white shadow-lg border border-white/20"
-                : "text-white/70 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20"
+                ? "bg-gradient-to-r from-[#7967e5]/20 to-[#99eafc]/20 text-gray-900 shadow-lg border border-[#7967e5]/30"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50 border border-transparent hover:border-gray-300/50"
             )}
           >
             <span className="relative z-10">{tab.label}</span>
             {activeTab === tab.id && (
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-lg" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#7967e5]/10 to-[#99eafc]/10 rounded-lg" />
             )}
           </button>
         ))}

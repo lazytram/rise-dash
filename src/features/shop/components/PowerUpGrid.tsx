@@ -38,7 +38,7 @@ export const PowerUpGrid: React.FC<PowerUpGridProps> = memo(
     }
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {POWERUP_ORDER.map((powerUpType) => {
           const powerUp = POWERUP_UPGRADES[powerUpType];
           const currentLevel = powerUpLevels[powerUpType] || 0;
