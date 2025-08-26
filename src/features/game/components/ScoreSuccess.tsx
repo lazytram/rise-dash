@@ -30,7 +30,7 @@ export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
       isOpen={true}
       onClose={onClose || onRestart || (() => {})}
     >
-      <div className="h-[500px] sm:h-[550px] flex flex-col relative overflow-hidden p-4 sm:p-6">
+      <div className="min-h-[70vh] max-h-[85vh] flex flex-col relative overflow-hidden p-4 sm:p-6">
         {/* Animated Background */}
         <div className="absolute inset-0 glass-light rounded-2xl backdrop-blur-sm">
           <div className="absolute top-0 left-0 w-full h-full">
@@ -65,56 +65,84 @@ export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
           </div>
         </div>
 
-        {/* Main Content with horizontal layout */}
-        <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 items-stretch relative">
-          {/* Left Column - Score Display */}
-          <div className="flex-1 flex flex-col">
-            <ScoreCard
-              distance={distance}
-              title={t("features.blockchain.scoreRecorded")}
-              variant="success"
-            />
+        {/* Main Content - Responsive grid; matches SaveScore layout */}
+        <div className="flex-1 relative pb-16 sm:pb-0 overflow-y-auto lg:overflow-visible">
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-2 items-start">
+            {/* Score Display */}
+            <div>
+              <ScoreCard
+                distance={distance}
+                title={t("features.blockchain.scoreRecorded")}
+                variant="success"
+              />
 
-            {/* View Transaction Button - Under Score Card */}
-            {transactionHash && (
-              <div className="mt-4 flex justify-center">
-                <Button
-                  onClick={() => {
-                    window.open(
-                      `https://explorer.testnet.riselabs.xyz/tx/${transactionHash}`,
-                      "_blank"
-                    );
-                  }}
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center space-x-2 px-4 py-2 bg-gray-700/80 border border-gray-600/50 hover:bg-gray-600/80 text-white shadow-lg"
-                >
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full shadow-sm"></div>
-                  <span className="text-sm font-semibold text-white">
-                    {t("features.blockchain.viewTransaction")}
-                  </span>
-                </Button>
+              {/* View transaction link under the score card */}
+              {transactionHash && (
+                <div className="mt-4 flex justify-center">
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `https://explorer.testnet.riselabs.xyz/tx/${transactionHash}`,
+                        "_blank"
+                      )
+                    }
+                    className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-colors text-sm font-semibold"
+                    aria-label={t("features.blockchain.viewTransaction")}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    <span>{t("features.blockchain.viewTransaction")}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-4 h-4"
+                      aria-hidden="true"
+                    >
+                      <path d="M13 3h8v8h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H13V3z" />
+                      <path d="M19 19H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7z" />
+                    </svg>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Rewards and actions */}
+            <div>
+              <div>
+                <RewardBreakdown
+                  rewards={RewardsService.calculateDistanceRewards(distance)}
+                  isScoreSaved={true}
+                />
               </div>
-            )}
-          </div>
 
-          {/* Right Column - Rewards */}
-          <div className="flex-1 flex flex-col">
-            <RewardBreakdown
-              rewards={RewardsService.calculateDistanceRewards(distance)}
-              isScoreSaved={true}
-            />
+              {/* Actions (desktop/tablet) */}
+              <div className="mt-6 sm:mt-8 hidden sm:block lg:sticky lg:top-4">
+                <div className="flex justify-center">
+                  <Button
+                    onClick={onRestart}
+                    variant="gradient"
+                    size="lg"
+                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl"
+                  >
+                    <div className="w-2 h-2 bg-white rounded-full shadow-sm"></div>
+                    <span className="text-white font-semibold">
+                      {t("features.gameplay.restart")}
+                    </span>
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Actions with compact spacing */}
-        <div className="mt-6 sm:mt-8 relative">
-          <div className="flex justify-center">
+        {/* Mobile actions (sticky bar) */}
+        <div className="sm:hidden fixed left-0 right-0 bottom-0 z-10 px-4 pb-4 pt-3 bg-gradient-to-t from-white/90 to-white/40 backdrop-blur-md border-t border-gray-200/60">
+          <div className="max-w-md mx-auto">
             <Button
               onClick={onRestart}
               variant="gradient"
               size="lg"
-              className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl"
+              className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl"
             >
               <div className="w-2 h-2 bg-white rounded-full shadow-sm"></div>
               <span className="text-white font-semibold">
@@ -125,7 +153,7 @@ export const ScoreSuccess: React.FC<ScoreSuccessProps> = ({
         </div>
 
         {/* Bottom decorative elements */}
-        <div className="absolute bottom-2 sm:bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-2 sm:bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2 pointer-events-none">
           <div className="w-1 h-1 bg-green-400/40 rounded-full animate-pulse"></div>
           <div className="w-1 h-1 bg-green-400/40 rounded-full animate-pulse delay-200"></div>
           <div className="w-1 h-1 bg-green-400/40 rounded-full animate-pulse delay-400"></div>

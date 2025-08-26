@@ -135,7 +135,9 @@
       "upgradeSuccess": "¡Power-Up Mejorado!",
       "upgradeSuccessMessage": "¡Tu power-up ha sido mejorado exitosamente!",
       "upgrading": "Mejorando...",
-      "upgradingMessage": "Procesando tu mejora en la blockchain..."
+      "upgradingMessage": "Procesando tu mejora en la blockchain...",
+      "signatureRejected": "Actualización cancelada. Rechazaste la firma.",
+      "errorUpgrading": "Ocurrió un error al mejorar el power-up."
     },
     "instructions": {
       "title": "Cómo Jugar",
@@ -415,5 +417,12 @@
     "file": "Archivo",
     "line": "Línea",
     "stack": "Traza de Pila"
+  },
+  "nav": {
+    "play": "Jugar",
+    "profile": "Perfil",
+    "leaderboard": "Tabla",
+    "shop": "Tienda",
+    "help": "Ayuda"
   }
 }

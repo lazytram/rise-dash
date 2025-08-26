@@ -135,7 +135,9 @@
       "upgradeSuccess": "Power-Up Upgraded!",
       "upgradeSuccessMessage": "Your power-up has been successfully upgraded!",
       "upgrading": "Upgrading...",
-      "upgradingMessage": "Processing your upgrade on the blockchain..."
+      "upgradingMessage": "Processing your upgrade on the blockchain...",
+      "signatureRejected": "Upgrade cancelled. You rejected the signature.",
+      "errorUpgrading": "An error occurred while upgrading the power-up."
     },
     "instructions": {
       "title": "How to Play",
@@ -270,7 +272,8 @@
       "partialReward": "Partial reward for {{distance}}m",
       "totalEarned": "Total earned",
       "currentScore": "Current score",
-      "distanceRewards": "Distance rewards"
+      "distanceRewards": "Distance rewards",
+      "restart": "Restart"
     },
     "enemies": {
       "samurai": "Samurai",
@@ -402,6 +405,13 @@
     "playNow": "Play now",
     "error": "Error",
     "you": "You"
+  },
+  "nav": {
+    "play": "Play",
+    "profile": "Profile",
+    "leaderboard": "Leaderboard",
+    "shop": "Shop",
+    "help": "Help"
   },
   "errorBoundary": {
     "title": "Something went wrong",

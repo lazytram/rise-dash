@@ -135,7 +135,9 @@
       "upgradeSuccess": "Power-Up Amélioré !",
       "upgradeSuccessMessage": "Votre power-up a été amélioré avec succès !",
       "upgrading": "Amélioration en cours...",
-      "upgradingMessage": "Traitement de votre amélioration sur la blockchain..."
+      "upgradingMessage": "Traitement de votre amélioration sur la blockchain...",
+      "signatureRejected": "Amélioration annulée. Vous avez rejeté la signature.",
+      "errorUpgrading": "Une erreur est survenue lors de l'amélioration du power-up."
     },
     "instructions": {
       "title": "Comment Jouer",
@@ -415,5 +417,12 @@
     "file": "Fichier",
     "line": "Ligne",
     "stack": "Pile d'Appel"
+  },
+  "nav": {
+    "play": "Jouer",
+    "profile": "Profil",
+    "leaderboard": "Classement",
+    "shop": "Boutique",
+    "help": "Aide"
   }
 }

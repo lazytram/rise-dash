@@ -48,7 +48,7 @@ const SaveScoreButton: React.FC<{
       disabled={isRecording || isSubmitting || !isConnected}
       variant="gradient"
       size="md"
-      className="flex-1 py-3 bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="py-3 min-w-[160px] justify-center bg-gradient-to-r from-[#7967e5] to-[#99eafc] hover:from-[#6d5ce7] hover:to-[#88d8f0] shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {isRecording || isSubmitting ? (
         <>
@@ -76,7 +76,7 @@ const RestartButton: React.FC<{ onRestart?: () => void }> = ({ onRestart }) => {
       onClick={onRestart}
       variant="ghost"
       size="md"
-      className="flex-1 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white border border-gray-600/50 shadow-lg hover:shadow-xl"
+      className="py-3 min-w-[160px] justify-center bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white border border-gray-600/50 shadow-lg hover:shadow-xl"
     >
       <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full shadow-sm"></div>
       <span>{t("scenes.game.restart")}</span>
@@ -143,7 +143,7 @@ export const ScoreActions: React.FC<ScoreActionsProps> = ({
       <ConnectionStatus isConnected={isConnected} />
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full max-w-md">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full max-w-md justify-center items-center">
         <SaveScoreButton
           onSave={handleSaveClick}
           isRecording={isRecording}
