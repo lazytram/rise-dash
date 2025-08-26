@@ -31,6 +31,7 @@ export const usePowerUps = () => {
     [PowerUpType.SLOW_MOTION]: false,
     [PowerUpType.MULTI_SHOT]: false,
     [PowerUpType.RICE_ROCKET_AMMO]: false,
+    [PowerUpType.PHOENIX_PACT]: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [powerUpLevels, setPowerUpLevels] = useState<PowerUpLevels>({});
@@ -111,6 +112,7 @@ export const usePowerUps = () => {
         3: PowerUpType.SLOW_MOTION,
         4: PowerUpType.MULTI_SHOT,
         5: PowerUpType.RICE_ROCKET_AMMO,
+        6: PowerUpType.PHOENIX_PACT,
       };
       levels.forEach((level, index) => {
         const powerUpType = powerUpTypeMap[index];
@@ -145,6 +147,7 @@ export const usePowerUps = () => {
         [PowerUpType.SLOW_MOTION]: 3,
         [PowerUpType.MULTI_SHOT]: 4,
         [PowerUpType.RICE_ROCKET_AMMO]: 5,
+        [PowerUpType.PHOENIX_PACT]: 6,
       };
       const powerUpId = powerUpIdMap[powerUpType];
 
@@ -188,6 +191,7 @@ export const usePowerUps = () => {
         [PowerUpType.SLOW_MOTION]: 3,
         [PowerUpType.MULTI_SHOT]: 4,
         [PowerUpType.RICE_ROCKET_AMMO]: 5,
+        [PowerUpType.PHOENIX_PACT]: 6,
       };
       const powerUpId = powerUpIdMap[powerUpType];
 
@@ -248,6 +252,7 @@ export const usePowerUps = () => {
         [PowerUpType.SLOW_MOTION]: 3,
         [PowerUpType.MULTI_SHOT]: 4,
         [PowerUpType.RICE_ROCKET_AMMO]: 5,
+        [PowerUpType.PHOENIX_PACT]: 6,
       };
       const powerUpId = powerUpIdMap[powerUpType];
 
@@ -266,9 +271,8 @@ export const usePowerUps = () => {
 
         // Also check if power-up is initialized on blockchain
         try {
-          const blockchainConfig = await blockchainService.getPowerUpConfig(
-            powerUpId
-          );
+          const blockchainConfig =
+            await blockchainService.getPowerUpConfig(powerUpId);
 
           // Check if power-up is initialized
           if (blockchainConfig.maxLevel === 0) {
@@ -432,6 +436,7 @@ export const usePowerUps = () => {
       [PowerUpType.SLOW_MOTION]: 3,
       [PowerUpType.MULTI_SHOT]: 4,
       [PowerUpType.RICE_ROCKET_AMMO]: 5,
+      [PowerUpType.PHOENIX_PACT]: 6,
     };
     return powerUpIdMap[powerUpType];
   }, []);
@@ -478,6 +483,7 @@ export const usePowerUps = () => {
         3: PowerUpType.SLOW_MOTION,
         4: PowerUpType.MULTI_SHOT,
         5: PowerUpType.RICE_ROCKET_AMMO,
+        6: PowerUpType.PHOENIX_PACT,
       };
       const powerUpType = powerUpTypeMap[powerUpId];
       return powerUpType ? upgradingPowerUps[powerUpType] : false;

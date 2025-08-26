@@ -1,9 +1,19 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
 import { Text } from "@/shared/components/Text";
 import { RiceLogo } from "@/shared/components/RiceLogo";
-import { PowerUpType, PowerUpUpgradeData } from "@/shared/types/powerUps";
+import { PowerUpUpgradeData } from "@/shared/types/powerUps";
+import {
+  buildUpgradeDescription,
+  clampDisplayLevel,
+  computeMaxLevel,
+  computeNextLevel,
+  computeProgressPercentage,
+  getShortPowerUpName as getShortPowerUpNameHelper,
+} from "./utils/powerUpCard";
+import { ProgressBar } from "./components/ProgressBar";
+import { LoadingIndicator } from "./components/LoadingIndicator";
 
 interface PowerUpCardBlockchainProps {
   powerUp: PowerUpUpgradeData;
@@ -29,91 +39,61 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
   }) => {
     const { t } = useTranslations();
 
-    // Ensure currentLevel is valid (0-10) and handle NaN/undefined
-    const validCurrentLevel = Math.max(
-      0, // Allow level 0 (no upgrades)
-      Math.min(10, Number(currentLevel) || 0)
+    const upgrades = useMemo(() => powerUp.upgrades ?? [], [powerUp.upgrades]);
+
+    const maxLevel = useMemo(() => computeMaxLevel(upgrades), [upgrades]);
+
+    const boundedCurrentLevel = useMemo(
+      () => clampDisplayLevel(currentLevel, maxLevel),
+      [currentLevel, maxLevel]
     );
-    const nextLevel = validCurrentLevel + 1;
 
-    // Determine if button should be disabled
-    const isButtonDisabled =
-      isLoading || isMaxLevel || !canAfford || isBalanceLoading;
+    const nextLevel = useMemo(
+      () => computeNextLevel(boundedCurrentLevel, maxLevel),
+      [boundedCurrentLevel, maxLevel]
+    );
 
-    const getUpgradeDescription = () => {
-      if (isMaxLevel) {
-        return t("features.powerUps.maxLevelReached");
-      }
+    const currentUpgrade = useMemo(
+      () => upgrades[boundedCurrentLevel - 1],
+      [upgrades, boundedCurrentLevel]
+    );
 
-      // Use actual current level for correct upgrade display
-      const actualCurrentLevel = Math.max(
-        1,
-        Math.min(10, Number(currentLevel) || 1)
-      );
-      const nextLevel = actualCurrentLevel + 1;
+    const nextUpgrade = useMemo(
+      () => upgrades[nextLevel - 1],
+      [upgrades, nextLevel]
+    );
 
-      // Get current and next upgrades based on actual current level
-      const current = powerUp.upgrades[actualCurrentLevel - 1]; // -1 because array is 0-indexed
-      const next = powerUp.upgrades[nextLevel - 1];
+    const isUnlockOnly = useMemo(
+      () => upgrades.length === 1,
+      [upgrades.length]
+    );
 
-      // Safety check: if current upgrade is undefined, return empty string
-      if (!current || !next) {
-        return "";
-      }
+    const isButtonDisabled = useMemo(
+      () => isLoading || isMaxLevel || !canAfford || isBalanceLoading,
+      [isLoading, isMaxLevel, canAfford, isBalanceLoading]
+    );
 
-      switch (powerUp.type) {
-        case PowerUpType.RICE_ROCKET_AMMO:
-          return `${current.ammoCount || 0} → ${next?.ammoCount || 0} ${t(
-            "features.powerUps.ammo"
-          )}`;
-        case PowerUpType.SHIELD:
-        case PowerUpType.INFINITE_AMMO:
-          return `${(current.duration || 0) / 1000}s → ${
-            (next?.duration || 0) / 1000
-          }s ${t("features.powerUps.duration")}`;
-        case PowerUpType.JUMP_BOOST:
-          const currentJump = (
-            ((current.jumpMultiplier || 1) - 1) *
-            100
-          ).toFixed(0);
-          const nextJump = (((next?.jumpMultiplier || 1) - 1) * 100).toFixed(0);
-          return `${
-            (current.duration || 0) / 1000
-          }s, +${currentJump}% → +${nextJump}%`;
-        case PowerUpType.SLOW_MOTION:
-          const currentSlow = (
-            (1 - (current.slowMultiplier || 1)) *
-            100
-          ).toFixed(0);
-          const nextSlow = ((1 - (next?.slowMultiplier || 1)) * 100).toFixed(0);
-          return `${
-            (current.duration || 0) / 1000
-          }s, -${currentSlow}% → -${nextSlow}%`;
-        case PowerUpType.MULTI_SHOT:
-          return `${(current.duration || 0) / 1000}s, ${
-            current.projectileCount || 0
-          } → ${next?.projectileCount || 0} ${t(
-            "features.powerUps.projectiles"
-          )}`;
-        default:
-          return "";
-      }
-    };
+    const progressPercentage = useMemo(
+      () => computeProgressPercentage(boundedCurrentLevel, maxLevel),
+      [boundedCurrentLevel, maxLevel]
+    );
 
-    const getProgressPercentage = () => {
-      // Level 1 = 0% progress, Level 10 = 100% progress
-      // Formula: ((level - 1) / 9) * 100
-      const actualCurrentLevel = Math.max(
-        1,
-        Math.min(10, Number(currentLevel) || 1)
-      );
-      const percentage = ((actualCurrentLevel - 1) / 9) * 100;
-      return isNaN(percentage) ? 0 : Math.max(0, Math.min(100, percentage));
-    };
+    const upgradeDescription = useMemo(
+      () =>
+        buildUpgradeDescription(
+          powerUp.type,
+          currentUpgrade,
+          nextUpgrade,
+          t,
+          isMaxLevel
+        ),
+      [powerUp.type, currentUpgrade, nextUpgrade, t, isMaxLevel]
+    );
 
-    const getShortPowerUpName = (type: string) => {
-      return t(`features.powerUps.shortNames.${type}`);
-    };
+    const shortName = useMemo(
+      () => getShortPowerUpNameHelper(powerUp.type, t),
+      [powerUp.type, t]
+    );
 
     return (
       <div className="glass-light rounded-xl p-5 border border-primary/20 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
@@ -124,40 +104,46 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
-              <Text
-                variant="title"
-                size="lg"
-                className="text-foreground font-bold leading-tight"
-              >
-                {getShortPowerUpName(powerUp.type)}
-              </Text>
-              <div className="bg-primary/10 rounded-lg px-3 py-1 border border-primary/20 flex-shrink-0 ml-3">
+              <div className="flex items-center gap-2 min-w-0">
                 <Text
                   variant="title"
-                  size="sm"
-                  className="text-primary font-bold"
+                  size="lg"
+                  className="text-foreground font-bold leading-tight"
                 >
-                  {Math.max(1, Math.min(10, Number(currentLevel) || 1))}/10
+                  {shortName}
                 </Text>
+                {powerUp.stackable ? (
+                  <span className="hidden sm:inline-flex items-center text-[10px] uppercase tracking-wide text-primary/80 border border-primary/30 px-1.5 py-0.5 rounded">
+                    {t("features.powerUps.stackable")}
+                  </span>
+                ) : null}
               </div>
+              {maxLevel > 1 ? (
+                <div className="bg-primary/10 rounded-lg px-3 py-1 border border-primary/20 flex-shrink-0 ml-3">
+                  <Text
+                    variant="title"
+                    size="sm"
+                    className="text-primary font-bold"
+                  >
+                    {Math.max(1, Math.min(maxLevel, Number(currentLevel) || 1))}
+                    /{maxLevel}
+                  </Text>
+                </div>
+              ) : null}
             </div>
-            <Text
-              variant="subtitle"
-              size="sm"
-              className="text-muted-foreground"
-            >
+            <div className="text-sm text-muted-foreground">
               {t(`features.powerUps.description.${powerUp.type}`)}
-            </Text>
+            </div>
+            {powerUp.stackable ? (
+              <span className="mt-2 inline-flex sm:hidden items-center text-[10px] uppercase tracking-wide text-primary/80 border border-primary/30 px-1.5 py-0.5 rounded">
+                {t("features.powerUps.stackable")}
+              </span>
+            ) : null}
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-primary/10 rounded-full h-2 mb-4 overflow-hidden">
-          <div
-            className="bg-gradient-to-r from-primary to-primary-hover rounded-full h-2 transition-all duration-500 ease-out"
-            style={{ width: `${getProgressPercentage()}%` }}
-          />
-        </div>
+        <ProgressBar percentage={progressPercentage} />
 
         {/* Current Stats - Simplified */}
         <div className="mb-4">
@@ -166,7 +152,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
             size="sm"
             className="text-muted-foreground font-medium"
           >
-            {getUpgradeDescription()}
+            {upgradeDescription}
           </Text>
         </div>
 
@@ -213,23 +199,16 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 }`}
               >
                 {isLoading ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm font-medium">
-                      {t("features.powerUps.upgrading")}
-                    </span>
-                  </div>
+                  <LoadingIndicator label={t("features.powerUps.upgrading")} />
                 ) : isBalanceLoading ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm font-medium">
-                      {t("features.powerUps.loading")}
-                    </span>
-                  </div>
+                  <LoadingIndicator label={t("features.powerUps.loading")} />
                 ) : (
                   <span className="text-sm font-medium">
-                    {t("features.powerUps.upgrade")} →{" "}
-                    {t("features.powerUps.level")} {nextLevel}
+                    {isUnlockOnly
+                      ? t("features.powerUps.unlock")
+                      : `${t("features.powerUps.upgrade")} → ${t(
+                          "features.powerUps.level"
+                        )} ${nextLevel}`}
                   </span>
                 )}
               </Button>

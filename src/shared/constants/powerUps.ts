@@ -115,6 +115,19 @@ export const POWERUP_UPGRADES: Record<PowerUpType, PowerUpUpgradeData> = {
       { level: 10, riceCost: 2000, ammoCount: 15 },
     ],
   },
+  [PowerUpType.PHOENIX_PACT]: {
+    type: PowerUpType.PHOENIX_PACT,
+    name: "Phoenix Pact",
+    description: "On death: instant resurrection",
+    icon: "🕊️",
+    color: "from-rose-600/80 to-orange-600/80",
+    stackable: true,
+    requiresPurchase: true,
+    upgrades: [
+      // Single unlock level: purchase once to enable spawning/usage
+      { level: 1, riceCost: 2000 },
+    ],
+  },
 };
 
 export const POWERUP_ORDER: PowerUpType[] = [
@@ -124,4 +137,5 @@ export const POWERUP_ORDER: PowerUpType[] = [
   PowerUpType.SLOW_MOTION,
   PowerUpType.MULTI_SHOT,
   PowerUpType.RICE_ROCKET_AMMO,
+  PowerUpType.PHOENIX_PACT,
 ];

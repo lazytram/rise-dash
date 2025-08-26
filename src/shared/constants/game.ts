@@ -80,7 +80,7 @@ export const GAME_CONSTANTS = {
   POWERUP_WIDTH: 30,
   POWERUP_HEIGHT: 30,
   POWERUP_SPAWN_DISTANCE: 200,
-  POWERUP_SPAWN_PROBABILITY: 0.3,
+  POWERUP_SPAWN_PROBABILITY: 0.39,
   POWERUP_DURATION: 10000, // 10 seconds duration
   // Power-up types
   POWERUP_TYPES: {
@@ -89,5 +89,6 @@ export const GAME_CONSTANTS = {
     JUMP_BOOST: PowerUpType.JUMP_BOOST,
     SLOW_MOTION: PowerUpType.SLOW_MOTION,
     MULTI_SHOT: PowerUpType.MULTI_SHOT,
+    PHOENIX_PACT: PowerUpType.PHOENIX_PACT,
   } as const,
 } as const;

@@ -34,6 +34,8 @@ const createPlayer = (): Player => {
       slowMotion: 0, // New power-up
       multiShot: 0,
     },
+    // Stacked power-ups inventory
+    stackedPowerUps: {},
     // Power-up levels from service
     powerUpLevels: {
       [PowerUpType.SHIELD]: powerUpService.getPowerUpLevel(PowerUpType.SHIELD),
@@ -51,6 +53,9 @@ const createPlayer = (): Player => {
       ),
       [PowerUpType.RICE_ROCKET_AMMO]: powerUpService.getPowerUpLevel(
         PowerUpType.RICE_ROCKET_AMMO
+      ),
+      [PowerUpType.PHOENIX_PACT]: powerUpService.getPowerUpLevel(
+        PowerUpType.PHOENIX_PACT
       ),
     },
   };

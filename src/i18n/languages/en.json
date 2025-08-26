@@ -232,7 +232,9 @@
         "slowMotion": "Slow Motion",
         "slowMotionDesc": "Slows down time for better control",
         "multiShot": "Multi Shot",
-        "multiShotDesc": "Shoots multiple projectiles at once"
+        "multiShotDesc": "Shoots multiple projectiles at once",
+        "phoenixPact": "Phoenix Pact",
+        "phoenixPactDesc": "On death: instant resurrection"
       },
       "scoring": {
         "title": "Scoring System",
@@ -288,13 +290,15 @@
       "slow_motion": "Slow Motion",
       "multi_shot": "Multi Shot",
       "rice_rocket_ammo": "Base Ammo",
+      "phoenix_pact": "Phoenix Pact",
       "shortNames": {
         "shield": "Shield",
         "infinite_ammo": "Ammo ∞",
         "jump_boost": "Jump",
         "slow_motion": "Slow",
         "multi_shot": "Multi",
-        "rice_rocket_ammo": "Ammo"
+        "rice_rocket_ammo": "Ammo",
+        "phoenix_pact": "Phoenix"
       },
       "description": {
         "shield": "Protection against collisions",
@@ -302,7 +306,8 @@
         "jump_boost": "Higher jumps",
         "slow_motion": "Slows down enemies",
         "multi_shot": "Multiple projectiles",
-        "rice_rocket_ammo": "Maximum ammo capacity"
+        "rice_rocket_ammo": "Maximum ammo capacity",
+        "phoenix_pact": "On death: instant resurrection"
       },
       "duration": "Duration",
       "remaining": "remaining",
@@ -312,9 +317,13 @@
       "currentStats": "Current Stats",
       "rice": "RICE",
       "upgrade": "Upgrade",
+      "unlock": "Unlock",
       "maxLevelReached": "Max Level Reached!",
       "insufficientRice": "Insufficient RICE",
       "noActive": "No active power-up",
+      "noStacked": "No stacks",
+      "stackedTitle": "Stacks",
+      "stackable": "Stackable",
       "upgrading": "Upgrading...",
       "loading": "Loading...",
       "level": "Level",

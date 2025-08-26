@@ -12,6 +12,7 @@ export enum PowerUpType {
   SLOW_MOTION = "slow_motion",
   MULTI_SHOT = "multi_shot",
   RICE_ROCKET_AMMO = "rice_rocket_ammo",
+  PHOENIX_PACT = "phoenix_pact",
 }
 
 /**
@@ -38,6 +39,7 @@ export interface PowerUpLevels {
   [PowerUpType.SLOW_MOTION]: number;
   [PowerUpType.MULTI_SHOT]: number;
   [PowerUpType.RICE_ROCKET_AMMO]: number;
+  [PowerUpType.PHOENIX_PACT]: number;
 }
 
 /**
@@ -49,6 +51,10 @@ export interface PowerUpUpgradeData {
   description: string;
   icon: string;
   color: string;
+  // Whether this power-up is stackable (collected and stored for later use)
+  stackable?: boolean;
+  // If true, the power-up must be purchased/unlocked before it can spawn or be used
+  requiresPurchase?: boolean;
   upgrades: PowerUpUpgrade[];
 }
 
