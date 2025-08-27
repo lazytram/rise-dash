@@ -39,6 +39,32 @@
       "congrats": "Well done!",
       "summary": "{{moves}} moves • {{time}}s"
     },
+    "tapeRice": {
+      "title": "Mogu-Raisu",
+      "subtitle": "Whack the tanuki popping from tatami to earn RICE.",
+      "timer": "Timer",
+      "score": "Score",
+      "combo": "Combo",
+      "rice": "RICE",
+      "finalScore": "Score",
+      "riceEarned": "+{{amount}} RICE",
+      "congrats": "Well done!",
+      "summary": "Game finished • 30s",
+      "legend": {
+        "hit": "Normal tanuki",
+        "hitDesc": "Hit the tanuki 🦝: +1 RICE",
+        "rare": "Golden onigiri",
+        "rareDesc": "1 in 20 chance 🍙: +5 RICE",
+        "miss": "Miss",
+        "missDesc": "Click elsewhere: combo resets"
+      },
+      "actions": {
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Reset",
+        "playAgain": "Play Again"
+      }
+    },
     "welcome": {
       "subtitle": "The arcade game where every jump counts!",
       "connectWallet": "Connect your wallet and prove you're the real player.",

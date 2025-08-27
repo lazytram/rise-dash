@@ -40,6 +40,13 @@ export const GamingRoomContent: React.FC = memo(() => {
         status: "available",
       },
       {
+        id: "tape-rice",
+        title: t("scenes.tapeRice.title"),
+        description: t("scenes.tapeRice.subtitle"),
+        scene: SceneType.TAPE_RICE,
+        status: "available",
+      },
+      {
         id: "coming-soon-2",
         title: t("scenes.gamingRoom.items.comingSoon2.title"),
         description: t("scenes.gamingRoom.items.comingSoon2.description"),

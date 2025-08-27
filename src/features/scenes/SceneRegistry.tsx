@@ -8,6 +8,7 @@ import { ShopScene } from "../shop/ShopScene";
 import { DailyRevealScene } from "../daily-reveal/DailyRevealScene";
 import { GamingRoomScene } from "../gaming-room/GamingRoomScene";
 import { MemoryFlipScene } from "../memory-flip/MemoryFlipScene";
+import { TapeRiceScene } from "../tape-rice/TapeRiceScene";
 
 export const scenes: SceneConfig[] = [
   {
@@ -62,6 +63,12 @@ export const scenes: SceneConfig[] = [
     id: SceneType.MEMORY_FLIP,
     component: MemoryFlipScene,
     title: "Memory Flip",
+    showHeader: true,
+  },
+  {
+    id: SceneType.TAPE_RICE,
+    component: TapeRiceScene,
+    title: "Mogu-Raisu",
     showHeader: true,
   },
 ];

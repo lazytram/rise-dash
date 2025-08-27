@@ -15,6 +15,7 @@ export enum SceneType {
   DAILY_REVEAL = "dailyReveal",
   GAMING_ROOM = "gamingRoom",
   MEMORY_FLIP = "memoryFlip",
+  TAPE_RICE = "tapeRice",
 }
 
 /**
