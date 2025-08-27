@@ -1,5 +1,70 @@
 {
   "scenes": {
+    "gamingRoom": {
+      "title": "Bento Garden",
+      "subtitle": "¡Tu rincón arcade! Sumérgete en un jardín de mini‑juegos rápidos y divertidos. Juega, acepta desafíos y gana RICE con cada victoria.",
+      "badges": {
+        "earnRice": "Gana RICE",
+        "soon": "Pronto"
+      },
+      "actions": {
+        "play": "Abrir",
+        "comingSoon": "Próximamente"
+      },
+      "items": {
+        "dailyReveal": {
+          "title": "Revelación Diaria",
+          "description": "Revela una carta cada día para ganar RICE"
+        },
+        "comingSoon1": {
+          "title": "Próximamente",
+          "description": "Un nuevo minijuego de habilidad para ganar RICE"
+        },
+        "comingSoon2": {
+          "title": "Próximamente",
+          "description": "Otro desafío divertido está en camino"
+        }
+      }
+    },
+    "memoryFlip": {
+      "title": "Memory Flip",
+      "subtitle": "Empareja emojis temáticos de arroz con el menor número de movimientos.",
+      "moves": "Movimientos",
+      "time": "Tiempo",
+      "pairs": "Pares",
+      "reset": "Reiniciar",
+      "finalScore": "Puntuación",
+      "playAgain": "Jugar de nuevo",
+      "riceEarned": "+{{amount}} RICE",
+      "congrats": "¡Bien hecho!",
+      "summary": "{{moves}} movimientos • {{time}}s"
+    },
+    "tapeRice": {
+      "title": "Mogu-Raisu",
+      "subtitle": "Golpea a los tanuki que salen del tatami para ganar RICE.",
+      "timer": "Temporizador",
+      "score": "Puntuación",
+      "combo": "Combo",
+      "rice": "RICE",
+      "finalScore": "Puntuación",
+      "riceEarned": "+{{amount}} RICE",
+      "congrats": "¡Bien hecho!",
+      "summary": "Partida finalizada • 30s",
+      "legend": {
+        "hit": "Tanuki normal",
+        "hitDesc": "Golpea al tanuki 🦝: +1 RICE",
+        "rare": "Onigiri dorado",
+        "rareDesc": "1 de 20 🍙: +5 RICE",
+        "miss": "Fallo",
+        "missDesc": "Clic fuera: combo se reinicia"
+      },
+      "actions": {
+        "start": "Comenzar",
+        "pause": "Pausa",
+        "reset": "Reiniciar",
+        "playAgain": "Jugar de nuevo"
+      }
+    },
     "welcome": {
       "subtitle": "¡El juego de arcade donde cada salto cuenta!",
       "connectWallet": "Conecta tu wallet y demuestra que eres el verdadero jugador.",
@@ -430,6 +495,7 @@
     "profile": "Perfil",
     "leaderboard": "Tabla",
     "shop": "Tienda",
-    "help": "Ayuda"
+    "help": "Ayuda",
+    "gamingRoom": "Bento"
   }
 }

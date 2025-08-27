@@ -1,5 +1,70 @@
 {
   "scenes": {
+    "gamingRoom": {
+      "title": "Bento Garden",
+      "subtitle": "Your arcade corner! Dive into a garden full of fast and fun mini‑games. Play, take on challenges, and earn RICE with every win.",
+      "badges": {
+        "earnRice": "Earn RICE",
+        "soon": "Soon"
+      },
+      "actions": {
+        "play": "Open",
+        "comingSoon": "Coming soon"
+      },
+      "items": {
+        "dailyReveal": {
+          "title": "Daily Reveal",
+          "description": "Reveal a card every day to earn RICE"
+        },
+        "comingSoon1": {
+          "title": "Coming soon",
+          "description": "A new skill-based minigame to win RICE"
+        },
+        "comingSoon2": {
+          "title": "Coming soon",
+          "description": "Another fun challenge is on the way"
+        }
+      }
+    },
+    "memoryFlip": {
+      "title": "Memory Flip",
+      "subtitle": "Match the rice-themed emojis in as few moves as possible.",
+      "moves": "Moves",
+      "time": "Time",
+      "pairs": "Pairs",
+      "reset": "Reset",
+      "finalScore": "Score",
+      "playAgain": "Play Again",
+      "riceEarned": "+{{amount}} RICE",
+      "congrats": "Well done!",
+      "summary": "{{moves}} moves • {{time}}s"
+    },
+    "tapeRice": {
+      "title": "Mogu-Raisu",
+      "subtitle": "Whack the tanuki popping from tatami to earn RICE.",
+      "timer": "Timer",
+      "score": "Score",
+      "combo": "Combo",
+      "rice": "RICE",
+      "finalScore": "Score",
+      "riceEarned": "+{{amount}} RICE",
+      "congrats": "Well done!",
+      "summary": "Game finished • 30s",
+      "legend": {
+        "hit": "Normal tanuki",
+        "hitDesc": "Hit the tanuki 🦝: +1 RICE",
+        "rare": "Golden onigiri",
+        "rareDesc": "1 in 20 chance 🍙: +5 RICE",
+        "miss": "Miss",
+        "missDesc": "Click elsewhere: combo resets"
+      },
+      "actions": {
+        "start": "Start",
+        "pause": "Pause",
+        "reset": "Reset",
+        "playAgain": "Play Again"
+      }
+    },
     "welcome": {
       "subtitle": "The arcade game where every jump counts!",
       "connectWallet": "Connect your wallet and prove you're the real player.",
@@ -420,7 +485,8 @@
     "profile": "Profile",
     "leaderboard": "Leaderboard",
     "shop": "Shop",
-    "help": "Help"
+    "help": "Help",
+    "gamingRoom": "Bento"
   },
   "errorBoundary": {
     "title": "Something went wrong",

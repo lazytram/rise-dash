@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, useRef } from "react";
 import { useAccount } from "wagmi";
 import { useSession } from "next-auth/react";
 import { useSceneStore } from "@/infrastructure/store/sceneStore";
@@ -17,6 +17,7 @@ export const Navbar = memo(function Navbar() {
   const { isConnected } = useAccount();
   const { data: session, status } = useSession();
   const { currentScene, setScene } = useSceneStore();
+  const mobileMenuRef = useRef<HTMLDetailsElement>(null);
 
   const isAuthenticated = useMemo(() => {
     return isConnected && session && status === "authenticated";
@@ -24,6 +25,9 @@ export const Navbar = memo(function Navbar() {
 
   const handleNavigation = (scene: SceneType) => {
     setScene(scene);
+    if (mobileMenuRef.current) {
+      mobileMenuRef.current.open = false;
+    }
   };
 
   const isActive = (scene: SceneType) => {
@@ -39,6 +43,7 @@ export const Navbar = memo(function Navbar() {
   ];
 
   const featuresGroup = [
+    { scene: SceneType.GAMING_ROOM, label: t("nav.gamingRoom") },
     { scene: SceneType.SHOP, label: t("nav.shop") },
     { scene: SceneType.INSTRUCTIONS, label: t("nav.help") },
   ];
@@ -58,7 +63,9 @@ export const Navbar = memo(function Navbar() {
           {/* Logo - Always on the left */}
           <div className="flex items-center">
             <button
-              onClick={() => setScene(SceneType.WELCOME)}
+              onClick={() => {
+                setScene(SceneType.WELCOME);
+              }}
               className="flex items-center hover:scale-105 transition-all duration-300 cursor-pointer"
             >
               <RiceLogo
@@ -69,9 +76,9 @@ export const Navbar = memo(function Navbar() {
 
           {/* Navigation Links - Only show when authenticated */}
           {isAuthenticated && (
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
               {/* Game Group */}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 xl:space-x-3">
                 {gameGroup.map(({ scene, label }) => (
                   <Button
                     key={scene}
@@ -79,7 +86,7 @@ export const Navbar = memo(function Navbar() {
                     size="sm"
                     onClick={() => handleNavigation(scene)}
                     className={cn(
-                      "transition-all duration-200",
+                      "transition-all duration-200 whitespace-nowrap",
                       isActive(scene)
                         ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
                         : "text-foreground hover:text-primary hover:bg-primary-light/50 opacity-80 hover:opacity-100"
@@ -94,7 +101,7 @@ export const Navbar = memo(function Navbar() {
               <div className="w-px h-6 bg-gradient-to-b from-transparent via-primary/30 to-transparent" />
 
               {/* Profile Group */}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 xl:space-x-3">
                 {profileGroup.map(({ scene, label }) => (
                   <Button
                     key={scene}
@@ -102,7 +109,7 @@ export const Navbar = memo(function Navbar() {
                     size="sm"
                     onClick={() => handleNavigation(scene)}
                     className={cn(
-                      "transition-all duration-200",
+                      "transition-all duration-200 whitespace-nowrap",
                       isActive(scene)
                         ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
                         : "text-foreground hover:text-primary hover:bg-primary-light/50 opacity-80 hover:opacity-100"
@@ -117,7 +124,7 @@ export const Navbar = memo(function Navbar() {
               <div className="w-px h-6 bg-gradient-to-b from-transparent via-primary/30 to-transparent" />
 
               {/* Features Group */}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 xl:space-x-3">
                 {featuresGroup.map(({ scene, label }) => (
                   <Button
                     key={scene}
@@ -125,7 +132,7 @@ export const Navbar = memo(function Navbar() {
                     size="sm"
                     onClick={() => handleNavigation(scene)}
                     className={cn(
-                      "transition-all duration-200",
+                      "transition-all duration-200 whitespace-nowrap",
                       isActive(scene)
                         ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
                         : "text-foreground hover:text-primary hover:bg-primary-light/50 opacity-80 hover:opacity-100"
@@ -138,80 +145,89 @@ export const Navbar = memo(function Navbar() {
             </div>
           )}
 
-          {/* Right side - Auth and Language */}
+          {/* Right side - Auth, Language, Burger (CSS-native) */}
           <div className="flex items-center space-x-4">
             <LanguageSelector />
             <AuthButton />
+            {isAuthenticated && (
+              <details ref={mobileMenuRef} className="lg:hidden relative">
+                <summary className="list-none inline-flex items-center justify-center p-2 rounded-lg border border-primary/20 glass hover:scale-105 transition-all duration-200 cursor-pointer select-none">
+                  <span className="relative block w-5 h-5">
+                    <span className="absolute left-0 right-0 top-1 h-0.5 bg-foreground" />
+                    <span className="absolute left-0 right-0 top-2.5 h-0.5 bg-foreground" />
+                    <span className="absolute left-0 right-0 top-4 h-0.5 bg-foreground" />
+                  </span>
+                </summary>
+                <div className="fixed top-16 left-0 right-0 z-40 glass-light backdrop-blur-2xl border-t border-primary/20">
+                  <div className="px-4 py-3 space-y-3">
+                    {/* Game Group */}
+                    <div className="flex justify-center space-x-2">
+                      {gameGroup.map(({ scene, label }) => (
+                        <Button
+                          key={scene}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleNavigation(scene)}
+                          className={cn(
+                            "transition-all duration-200 whitespace-nowrap",
+                            isActive(scene)
+                              ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                              : "text-foreground opacity-70 hover:text-primary"
+                          )}
+                        >
+                          {label}
+                        </Button>
+                      ))}
+                    </div>
+
+                    {/* Profile Group */}
+                    <div className="flex justify-center space-x-2">
+                      {profileGroup.map(({ scene, label }) => (
+                        <Button
+                          key={scene}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleNavigation(scene)}
+                          className={cn(
+                            "transition-all duration-200 whitespace-nowrap",
+                            isActive(scene)
+                              ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                              : "text-foreground opacity-70 hover:text-primary"
+                          )}
+                        >
+                          {label}
+                        </Button>
+                      ))}
+                    </div>
+
+                    {/* Features Group */}
+                    <div className="flex justify-center space-x-2">
+                      {featuresGroup.map(({ scene, label }) => (
+                        <Button
+                          key={scene}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleNavigation(scene)}
+                          className={cn(
+                            "transition-all duration-200 whitespace-nowrap",
+                            isActive(scene)
+                              ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
+                              : "text-foreground opacity-70 hover:text-primary"
+                          )}
+                        >
+                          {label}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </details>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile menu - Only show when authenticated */}
-      {isAuthenticated && (
-        <div className="md:hidden glass-light backdrop-blur-2xl border-t border-primary/20 transition-all duration-300">
-          <div className="px-4 py-3 space-y-3">
-            {/* Game Group */}
-            <div className="flex justify-center space-x-2">
-              {gameGroup.map(({ scene, label }) => (
-                <Button
-                  key={scene}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleNavigation(scene)}
-                  className={cn(
-                    "transition-all duration-200",
-                    isActive(scene)
-                      ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
-                      : "text-foreground opacity-70 hover:text-primary"
-                  )}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
-
-            {/* Profile Group */}
-            <div className="flex justify-center space-x-2">
-              {profileGroup.map(({ scene, label }) => (
-                <Button
-                  key={scene}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleNavigation(scene)}
-                  className={cn(
-                    "transition-all duration-200",
-                    isActive(scene)
-                      ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
-                      : "text-foreground opacity-70 hover:text-primary"
-                  )}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
-
-            {/* Features Group */}
-            <div className="flex justify-center space-x-2">
-              {featuresGroup.map(({ scene, label }) => (
-                <Button
-                  key={scene}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleNavigation(scene)}
-                  className={cn(
-                    "transition-all duration-200",
-                    isActive(scene)
-                      ? "text-primary bg-primary-light border border-primary/30 shadow-md opacity-100"
-                      : "text-foreground opacity-70 hover:text-primary"
-                  )}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* CSS-native details/summary handles the burger menu – no React state needed */}
     </nav>
   );
 });
