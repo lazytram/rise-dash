@@ -6,6 +6,8 @@ import { LeaderboardScene } from "../leaderboard/LeaderboardScene";
 import { InstructionsScene } from "../instructions/InstructionsScene";
 import { ShopScene } from "../shop/ShopScene";
 import { DailyRevealScene } from "../daily-reveal/DailyRevealScene";
+import { GamingRoomScene } from "../gaming-room/GamingRoomScene";
+import { MemoryFlipScene } from "../memory-flip/MemoryFlipScene";
 
 export const scenes: SceneConfig[] = [
   {
@@ -48,6 +50,18 @@ export const scenes: SceneConfig[] = [
     id: SceneType.DAILY_REVEAL,
     component: DailyRevealScene,
     title: "Daily Reveal",
+    showHeader: true,
+  },
+  {
+    id: SceneType.GAMING_ROOM,
+    component: GamingRoomScene,
+    title: "Gaming Room",
+    showHeader: true,
+  },
+  {
+    id: SceneType.MEMORY_FLIP,
+    component: MemoryFlipScene,
+    title: "Memory Flip",
     showHeader: true,
   },
 ];

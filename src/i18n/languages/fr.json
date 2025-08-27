@@ -1,5 +1,44 @@
 {
   "scenes": {
+    "gamingRoom": {
+      "title": "Bento Garden",
+      "subtitle": "Ton coin arcade ! Plonge dans un jardin de mini‑jeux rapides et fun. Joue, relève des défis et gagne du RICE à chaque victoire.",
+      "badges": {
+        "earnRice": "Gagnez du RICE",
+        "soon": "Bientôt"
+      },
+      "actions": {
+        "play": "Ouvrir",
+        "comingSoon": "Bientôt disponible"
+      },
+      "items": {
+        "dailyReveal": {
+          "title": "Révélation quotidienne",
+          "description": "Révélez une carte chaque jour pour gagner du RICE"
+        },
+        "comingSoon1": {
+          "title": "Bientôt disponible",
+          "description": "Un nouveau mini-jeu d'adresse pour gagner du RICE"
+        },
+        "comingSoon2": {
+          "title": "Bientôt disponible",
+          "description": "Un autre défi amusant arrive bientôt"
+        }
+      }
+    },
+    "memoryFlip": {
+      "title": "Memory Flip",
+      "subtitle": "Associe les emojis autour du riz avec un minimum de coups.",
+      "moves": "Coups",
+      "time": "Temps",
+      "pairs": "Paires",
+      "reset": "Réinitialiser",
+      "finalScore": "Score",
+      "playAgain": "Rejouer",
+      "riceEarned": "+{{amount}} RICE",
+      "congrats": "Bravo !",
+      "summary": "{{moves}} coups • {{time}}s"
+    },
     "welcome": {
       "subtitle": "Le jeu d'arcade où chaque saut compte !",
       "connectWallet": "Connectez votre wallet et prouvez que vous êtes le vrai joueur.",
@@ -430,6 +469,7 @@
     "profile": "Profil",
     "leaderboard": "Classement",
     "shop": "Boutique",
-    "help": "Aide"
+    "help": "Aide",
+    "gamingRoom": "Bento"
   }
 }
