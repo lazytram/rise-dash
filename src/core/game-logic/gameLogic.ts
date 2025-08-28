@@ -1322,9 +1322,10 @@ export class GameLogic {
       const config = POWERUP_UPGRADES[type as unknown as PowerUpType];
       const requiresPurchase = config?.requiresPurchase === true;
       const playerLevel =
-        player?.powerUpLevels?.[type as unknown as PowerUpType] || 0;
+        player?.powerUpLevels?.[type as unknown as PowerUpType];
       if (requiresPurchase) {
-        return playerLevel > 0; // only if unlocked (purchased/upgraded at least level 1)
+        // Level must be defined and > 0
+        return (playerLevel ?? 0) > 0;
       }
       return true;
     });
@@ -1397,8 +1398,15 @@ export class GameLogic {
       },
     };
 
-    // Get power-up effect based on current level
+    // Prevent collecting locked purchased power-ups (e.g., Phoenix) if level is 0
     const powerUpType = powerUp.type;
+    const config = POWERUP_UPGRADES[powerUpType];
+    if (config?.requiresPurchase) {
+      const level = player.powerUpLevels?.[powerUpType];
+      if ((level ?? 0) <= 0) {
+        return player;
+      }
+    }
 
     const effect = getPowerUpEffect(powerUpType);
     const endTime =

@@ -44,13 +44,15 @@ export class LocalPowerUpService implements PowerUpService {
       [PowerUpType.SLOW_MOTION]: 1,
       [PowerUpType.MULTI_SHOT]: 1,
       [PowerUpType.RICE_ROCKET_AMMO]: 1,
-      [PowerUpType.PHOENIX_PACT]: 1,
+      [PowerUpType.PHOENIX_PACT]: 0,
     };
     this.riceBalance = 200;
   }
 
   getPowerUpLevel(type: PowerUpType): number {
-    return this.levels[type] || 1;
+    // Preserve zero (locked) levels; only fallback when undefined
+    const level = this.levels[type];
+    return level ?? 1;
   }
 
   getPowerUpEffect(type: PowerUpType): PowerUpEffect {
@@ -125,7 +127,7 @@ export class LocalPowerUpService implements PowerUpService {
       [PowerUpType.SLOW_MOTION]: 1,
       [PowerUpType.MULTI_SHOT]: 1,
       [PowerUpType.RICE_ROCKET_AMMO]: 1,
-      [PowerUpType.PHOENIX_PACT]: 1,
+      [PowerUpType.PHOENIX_PACT]: 0,
     };
   }
 
@@ -154,13 +156,14 @@ export class LocalPowerUpService implements PowerUpService {
 
       // Map blockchain levels to local levels
       this.levels = {
-        [PowerUpType.SHIELD]: blockchainLevels[0] || 1,
-        [PowerUpType.INFINITE_AMMO]: blockchainLevels[1] || 1,
-        [PowerUpType.JUMP_BOOST]: blockchainLevels[2] || 1,
-        [PowerUpType.SLOW_MOTION]: blockchainLevels[3] || 1,
-        [PowerUpType.MULTI_SHOT]: blockchainLevels[4] || 1,
-        [PowerUpType.RICE_ROCKET_AMMO]: blockchainLevels[5] || 1,
-        [PowerUpType.PHOENIX_PACT]: blockchainLevels[6] || 1,
+        [PowerUpType.SHIELD]: blockchainLevels[0] ?? 1,
+        [PowerUpType.INFINITE_AMMO]: blockchainLevels[1] ?? 1,
+        [PowerUpType.JUMP_BOOST]: blockchainLevels[2] ?? 1,
+        [PowerUpType.SLOW_MOTION]: blockchainLevels[3] ?? 1,
+        [PowerUpType.MULTI_SHOT]: blockchainLevels[4] ?? 1,
+        [PowerUpType.RICE_ROCKET_AMMO]: blockchainLevels[5] ?? 1,
+        // Phoenix stays locked if 0 or undefined
+        [PowerUpType.PHOENIX_PACT]: blockchainLevels[6] ?? 0,
       };
     } catch (error) {
       console.error("❌ Failed to load levels from blockchain:", error);
@@ -214,7 +217,8 @@ export class LocalPowerUpService implements PowerUpService {
     try {
       return await blockchainService.getPowerUpLevels(playerAddress);
     } catch {
-      return Array(10).fill(1); // Default levels
+      // Default to 0 to avoid unlocking gated power-ups like Phoenix
+      return Array(10).fill(0);
     }
   }
 
