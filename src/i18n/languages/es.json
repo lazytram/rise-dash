@@ -142,6 +142,10 @@
     "profile": {
       "title": "Perfil",
       "subtitle": "Consulta tus logros y estadísticas de juego",
+      "shareCard": {
+        "title": "ID de Rise Dash",
+        "subtitle": "Mejor run, partidas y promedio — ¡presume tu grind!"
+      },
       "bestScore": "Mejor Puntuación",
       "totalGames": "Total de Juegos",
       "averageScore": "Puntuación Promedio",
@@ -161,7 +165,15 @@
       "gamesPlayed": "juegos jugados",
       "average": "prom",
       "personalBest": "Mejor Personal",
-      "newScore": "Nueva Puntuación"
+      "newScore": "Nueva Puntuación",
+      "share": {
+        "title": "Comparte tu tarjeta",
+        "export": "Exportar tarjeta",
+        "download": "Descargar PNG",
+        "share": "Compartir",
+        "shareOnX": "Compartir en",
+        "downloadImage": "Descargar imagen"
+      }
     },
     "leaderboard": {
       "title": "Tabla de Posiciones",

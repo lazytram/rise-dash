@@ -1,0 +1,308 @@
+"use client";
+
+import React, { useEffect, useMemo, useRef } from "react";
+import { useTranslations } from "@/shared/hooks/useTranslations";
+
+type PlayerScore = {
+  score: bigint;
+  timestamp: bigint;
+  playerName: string;
+  gameHash: string;
+};
+
+interface ProfileShareCardProps {
+  playerScores: PlayerScore[];
+  walletAddress?: string | null;
+  width?: number;
+  height?: number;
+}
+
+function formatShortAddress(address?: string | null): string {
+  if (!address) return "";
+  if (address.length <= 10) return address;
+  return `${address.slice(0, 6)}…${address.slice(-4)}`;
+}
+
+function computeStats(playerScores: PlayerScore[]) {
+  const best = playerScores.length ? Number(playerScores[0].score) : 0;
+  const total = playerScores.length;
+  const avg = playerScores.length
+    ? Math.round(
+        playerScores.reduce((acc, s) => acc + Number(s.score), 0) /
+          playerScores.length
+      )
+    : 0;
+  return { best, total, avg };
+}
+
+export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
+  playerScores,
+  walletAddress,
+  width = 1200,
+  height = 630,
+}) => {
+  const { t, locale } = useTranslations();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const stats = useMemo(() => computeStats(playerScores), [playerScores]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const dpr =
+      typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    // Responsive sizing: fill container width inside modal
+    canvas.style.width = "100%";
+    canvas.style.height = "auto";
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.resetTransform();
+    ctx.scale(dpr, dpr);
+
+    // Background
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, "#0ea5e9");
+    grad.addColorStop(0.6, "#6366f1");
+    grad.addColorStop(1, "#8b5cf6");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+
+    const glow = ctx.createRadialGradient(
+      width * 0.25,
+      height * 0.2,
+      10,
+      width * 0.25,
+      height * 0.2,
+      Math.max(width, height) * 0.9
+    );
+    glow.addColorStop(0, "rgba(255,255,255,0.25)");
+    glow.addColorStop(1, "transparent");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, width, height);
+
+    // Card container
+    const padding = 40;
+    const cardX = padding;
+    const cardY = padding;
+    const cardW = width - padding * 2;
+    const cardH = height - padding * 2;
+
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    roundRect(ctx, cardX + 8, cardY + 12, cardW, cardH, 28, true, false);
+    // Gradient border ring
+    const borderGrad = ctx.createLinearGradient(
+      cardX,
+      cardY,
+      cardX + cardW,
+      cardY + cardH
+    );
+    borderGrad.addColorStop(0, "rgba(255,255,255,0.55)");
+    borderGrad.addColorStop(1, "rgba(255,255,255,0.25)");
+    ctx.fillStyle = "rgba(255,255,255,0.12)";
+    ctx.strokeStyle = borderGrad;
+    ctx.lineWidth = 2.5;
+    roundRect(ctx, cardX, cardY, cardW, cardH, 26, true, true);
+
+    // Inner highlight border
+    ctx.strokeStyle = "rgba(255,255,255,0.25)";
+    ctx.lineWidth = 1;
+    roundRect(
+      ctx,
+      cardX + 10,
+      cardY + 10,
+      cardW - 20,
+      cardH - 20,
+      22,
+      false,
+      true
+    );
+
+    // Header (fun/impactful)
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "800 54px Inter, ui-sans-serif, system-ui";
+    ctx.fillText(t("scenes.profile.shareCard.title"), cardX + 48, cardY + 100);
+
+    ctx.globalAlpha = 0.95;
+    ctx.font = "500 26px Inter, ui-sans-serif, system-ui";
+    ctx.fillText(
+      t("scenes.profile.shareCard.subtitle"),
+      cardX + 48,
+      cardY + 145
+    );
+    ctx.globalAlpha = 1;
+
+    // Subtle divider
+    ctx.strokeStyle = "rgba(255,255,255,0.20)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cardX + 48, cardY + 165);
+    ctx.lineTo(cardX + cardW - 48, cardY + 165);
+    ctx.stroke();
+
+    // Stats blocks (cleaner)
+    const blockY = cardY + 200;
+    const blockH = 200;
+    const gap = 24;
+    const blockW = (cardW - 48 * 2 - gap * 2) / 3;
+    const x0 = cardX + 48;
+
+    const blocks: Array<{
+      title: string;
+      value: number;
+      subtitle: string;
+      icon: string;
+    }> = [
+      {
+        title: t("scenes.profile.bestScore"),
+        value: stats.best,
+        subtitle: t("features.gameplay.meters"),
+        icon: "🏆",
+      },
+      {
+        title: t("scenes.profile.totalGames"),
+        value: stats.total,
+        subtitle: t("scenes.profile.gamesPlayed"),
+        icon: "🎮",
+      },
+      {
+        title: t("scenes.profile.averageScore"),
+        value: stats.avg,
+        subtitle: t("features.gameplay.meters"),
+        icon: "📊",
+      },
+    ];
+
+    blocks.forEach((b, i) => {
+      const x = x0 + i * (blockW + gap);
+      // Minimal glass tile
+      ctx.fillStyle = "rgba(255,255,255,0.10)";
+      ctx.strokeStyle = "rgba(255,255,255,0.22)";
+      ctx.lineWidth = 1.25;
+      roundRect(ctx, x, blockY, blockW, blockH, 18, true, true);
+
+      ctx.fillStyle = "#e5e7eb";
+      ctx.font = "600 22px Inter, ui-sans-serif, system-ui";
+      ctx.fillText(`${b.icon}  ${b.title}`, x + 24, blockY + 42);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "800 56px Inter, ui-sans-serif, system-ui";
+      ctx.fillText(
+        new Intl.NumberFormat(locale).format(b.value),
+        x + 24,
+        blockY + 110
+      );
+
+      ctx.fillStyle = "#e5e7eb";
+      ctx.font = "500 22px Inter, ui-sans-serif, system-ui";
+      ctx.fillText(b.subtitle, x + 24, blockY + 150);
+    });
+
+    // Footer
+    const footerY = cardY + cardH - 40;
+    ctx.fillStyle = "#e5e7eb";
+    ctx.font = "600 22px Inter, ui-sans-serif, system-ui";
+    ctx.fillText("Rise Dash", cardX + 48, footerY);
+    const wa = formatShortAddress(walletAddress || undefined);
+    if (wa) {
+      const text = `ID: ${wa}`;
+      const w = ctx.measureText(text).width;
+      ctx.fillText(text, cardX + cardW - 48 - w, footerY);
+    }
+
+    // Logo
+    drawRiceLogo(ctx, cardX + cardW - 80, cardY + 80, 56);
+  }, [t, locale, playerScores, walletAddress, width, height, stats]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="mx-auto w-full h-auto rounded-2xl border border-white/20 shadow-2xl"
+    />
+  );
+};
+
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+  fill: boolean,
+  stroke: boolean
+) {
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+  if (fill) ctx.fill();
+  if (stroke) ctx.stroke();
+}
+
+function drawRiceLogo(
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  size: number
+) {
+  const radius = size / 2;
+  const gradient = ctx.createLinearGradient(
+    centerX - radius,
+    centerY - radius,
+    centerX - radius,
+    centerY + radius
+  );
+  gradient.addColorStop(0, "#4C1D95");
+  gradient.addColorStop(0.55, "#7C3AED");
+  gradient.addColorStop(1, "#C7D2FE");
+
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.25)";
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+  ctx.fillStyle = gradient;
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.rotate((-15 * Math.PI) / 180);
+  ctx.beginPath();
+  ctx.ellipse(0, 0, radius * 0.36, radius * 0.56, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "#FFFFFF";
+  ctx.strokeStyle = "#E5E7EB";
+  ctx.lineWidth = 1.5;
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.ellipse(0, 0, radius * 0.24, radius * 0.4, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "#F9FAFB";
+  ctx.fill();
+
+  ctx.strokeStyle = "#E5E7EB";
+  ctx.lineWidth = 0.5;
+  ctx.globalAlpha = 0.6;
+  ctx.beginPath();
+  ctx.moveTo(-radius * 0.24, -radius * 0.16);
+  ctx.lineTo(radius * 0.24, -radius * 0.16);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(-radius * 0.2, 0);
+  ctx.lineTo(radius * 0.2, 0);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(-radius * 0.24, radius * 0.16);
+  ctx.lineTo(radius * 0.24, radius * 0.16);
+  ctx.stroke();
+  ctx.restore();
+}

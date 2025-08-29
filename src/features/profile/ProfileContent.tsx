@@ -3,6 +3,8 @@ import { useAccount } from "wagmi";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Text } from "@/shared/components/Text";
 import { Tabs } from "@/shared/components/Tabs";
+import { Button } from "@/shared/components/Button";
+import { Modal } from "@/shared/components/Modal";
 import {
   ProfileHeader,
   ProfileStats,
@@ -10,11 +12,13 @@ import {
   ProfileAchievements,
 } from "./index";
 import { usePlayerScores, useAchievements } from "./hooks";
+import { ProfileShareCard } from "./ProfileShareCard";
 
 export const ProfileContent: React.FC = () => {
   const { t } = useTranslations();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [activeTab, setActiveTab] = useState("gameHistory");
+  const [shareOpen, setShareOpen] = useState(false);
 
   // Use TanStack Query hooks
   const { data: playerScores = [], isLoading: scoresLoading } =
@@ -39,6 +43,19 @@ export const ProfileContent: React.FC = () => {
 
   return (
     <div className="w-full">
+      {isConnected && (
+        <div className="flex items-center justify-end mb-4">
+          <Button
+            variant="gradient"
+            size="md"
+            onClick={() => setShareOpen(true)}
+            icon="✨"
+            className="rounded-full px-5"
+          >
+            {t("scenes.profile.share.export")}
+          </Button>
+        </div>
+      )}
       <ProfileStats playerScores={playerScores} />
 
       {/* Tabs Section */}
@@ -69,6 +86,131 @@ export const ProfileContent: React.FC = () => {
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
+
+      {/* Share modal */}
+      <Modal
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        size="xl"
+        className="max-w-4xl max-h-[85vh] overflow-auto self-start mt-4"
+        title={t("scenes.profile.share.title")}
+      >
+        <div className="space-y-4">
+          <div className="flex justify-center">
+            <div id="profile-share-card" className="w-full max-w-3xl">
+              <ProfileShareCard
+                playerScores={playerScores}
+                walletAddress={address}
+                width={1200}
+                height={630}
+              />
+            </div>
+          </div>
+          <div className="flex gap-3 justify-center">
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                const wrapper = document.getElementById("profile-share-card");
+                const canvas = wrapper?.querySelector(
+                  "canvas"
+                ) as HTMLCanvasElement | null;
+                if (!canvas) return;
+                const blob = await new Promise<Blob | null>((resolve) =>
+                  canvas.toBlob((b) => resolve(b), "image/png")
+                );
+                if (!blob) return;
+                const file = new File([blob], "rise-dash-profile.png", {
+                  type: "image/png",
+                });
+                const data = {
+                  files: [file],
+                  title: "Rise Dash",
+                  text: "My Rise Dash stats",
+                } as ShareData;
+                if (navigator.canShare && navigator.canShare(data)) {
+                  try {
+                    await navigator.share(data);
+                    return;
+                  } catch {}
+                }
+                const best = playerScores.length
+                  ? Number(playerScores[0].score)
+                  : 0;
+                const total = playerScores.length;
+                const avg = total
+                  ? Math.round(
+                      playerScores.reduce(
+                        (acc, s) => acc + Number(s.score),
+                        0
+                      ) / total
+                    )
+                  : 0;
+                const tweet = `My Rise Dash stats 🚀\nBest: ${best.toLocaleString()}m • Avg: ${avg.toLocaleString()}m • ${total} games\nBuilt on @rise_chain #RiseDash #Web3Gaming`;
+                const text = encodeURIComponent(tweet);
+                const twitterUrl = `https://twitter.com/intent/tweet?text=${text}`;
+                window.open(twitterUrl, "_blank", "noopener,noreferrer");
+              }}
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 md:w-6 md:h-6"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.64 3H21L13.5 11.6 22 21h-6.04l-4.66-6.1L6 21H2l7.66-8.5L2.22 3h6.04l4.29 5.6L17.64 3Z"
+                  />
+                </svg>
+              }
+              iconPosition="right"
+              className="rounded-full px-5 bg-black text-white hover:bg-black/90 border border-white/20 shadow-lg hover:shadow-xl tracking-wide"
+            >
+              {t("scenes.profile.share.shareOnX")}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                const wrapper = document.getElementById("profile-share-card");
+                const canvas = wrapper?.querySelector(
+                  "canvas"
+                ) as HTMLCanvasElement | null;
+                if (!canvas) return;
+                const url = canvas.toDataURL("image/png");
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "rise-dash-profile.png";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+              }}
+              iconPosition="right"
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 md:w-6 md:h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M12 3v12" />
+                  <path d="M7 10l5 5 5-5" />
+                  <path d="M5 20h14" />
+                </svg>
+              }
+              className="rounded-full px-5 bg-white text-foreground hover:bg-white/90 border border-white/20 shadow-lg hover:shadow-xl tracking-wide"
+            >
+              {t("scenes.profile.share.downloadImage")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
