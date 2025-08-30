@@ -56,7 +56,6 @@ export const LeaderboardContent: React.FC = () => {
 
         // Get total number of scores
         const total = await getTotalScores();
-        console.log("total", total);
         setTotalEntries(Number(total));
         setTotalPages(Math.ceil(Number(total) / itemsPerPage));
 

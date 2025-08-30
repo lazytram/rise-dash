@@ -1,4 +1,4 @@
-import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
+import { POWERUP_ORDER, POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpLevels, PowerUpType } from "@/shared/types/powerUps";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
 import { Address } from "viem";
@@ -14,6 +14,7 @@ export interface PowerUpEffect {
 
 export interface PowerUpService {
   getPowerUpLevel(type: PowerUpType): number;
+  hasPurchased(type: PowerUpType): boolean;
   getPowerUpEffect(type: PowerUpType): PowerUpEffect;
   getMaxAmmo(): number;
   canUpgrade(type: PowerUpType, riceBalance: number): boolean;
@@ -51,8 +52,8 @@ export class LocalPowerUpService implements PowerUpService {
 
   getPowerUpLevel(type: PowerUpType): number {
     // Preserve zero (locked) levels; only fallback when undefined
-    const level = this.levels[type];
-    return level ?? 1;
+
+    return this.levels[type] ?? 1;
   }
 
   getPowerUpEffect(type: PowerUpType): PowerUpEffect {
@@ -78,6 +79,10 @@ export class LocalPowerUpService implements PowerUpService {
     };
 
     return effect;
+  }
+
+  hasPurchased(type: PowerUpType): boolean {
+    return this.getPowerUpLevel(type) > 0;
   }
 
   getMaxAmmo(): number {
@@ -154,17 +159,21 @@ export class LocalPowerUpService implements PowerUpService {
       const blockchainLevels =
         await this.getPowerUpLevelsFromBlockchain(playerAddress);
 
-      // Map blockchain levels to local levels
-      this.levels = {
-        [PowerUpType.SHIELD]: blockchainLevels[0] ?? 1,
-        [PowerUpType.INFINITE_AMMO]: blockchainLevels[1] ?? 1,
-        [PowerUpType.JUMP_BOOST]: blockchainLevels[2] ?? 1,
-        [PowerUpType.SLOW_MOTION]: blockchainLevels[3] ?? 1,
-        [PowerUpType.MULTI_SHOT]: blockchainLevels[4] ?? 1,
-        [PowerUpType.RICE_ROCKET_AMMO]: blockchainLevels[5] ?? 1,
-        // Phoenix stays locked if 0 or undefined
-        [PowerUpType.PHOENIX_PACT]: blockchainLevels[6] ?? 0,
-      };
+      // Generic mapping for any requiresPurchase power-up:
+      // - Chain returns baseline 1; keep it for normal power-ups
+      // - For purchase-gated ones, interpret baseline 1 as locked (0)
+      const mapped: Partial<Record<PowerUpType, number>> = {};
+      POWERUP_ORDER.forEach((type, index) => {
+        const requiresPurchase = !!POWERUP_UPGRADES[type]?.requiresPurchase;
+        const chainLevel =
+          blockchainLevels[index] ?? (requiresPurchase ? 0 : 1);
+        const clientLevel = requiresPurchase
+          ? Math.max(0, chainLevel - 1)
+          : chainLevel || 1;
+        mapped[type] = clientLevel;
+      });
+
+      this.levels = mapped as PowerUpLevels;
     } catch (error) {
       console.error("❌ Failed to load levels from blockchain:", error);
       // Keep current levels if blockchain call fails
@@ -280,6 +289,10 @@ export const getPowerUpLevel = (type: PowerUpType): number => {
 
 export const getPowerUpEffect = (type: PowerUpType): PowerUpEffect => {
   return powerUpService.getPowerUpEffect(type);
+};
+
+export const hasPurchased = (type: PowerUpType): boolean => {
+  return powerUpService.hasPurchased(type);
 };
 
 export const getMaxAmmo = (): number => {

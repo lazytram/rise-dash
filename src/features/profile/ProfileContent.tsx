@@ -44,7 +44,7 @@ export const ProfileContent: React.FC = () => {
   return (
     <div className="w-full">
       {isConnected && (
-        <div className="flex items-center justify-end mb-4">
+        <div className="mb-4 flex justify-center md:mb-0 md:absolute md:top-6 md:right-6 md:z-10">
           <Button
             variant="gradient"
             size="lg"
@@ -126,29 +126,6 @@ export const ProfileContent: React.FC = () => {
             <Button
               variant="secondary"
               onClick={async () => {
-                const wrapper = document.getElementById("profile-share-card");
-                const canvas = wrapper?.querySelector(
-                  "canvas"
-                ) as HTMLCanvasElement | null;
-                if (!canvas) return;
-                const blob = await new Promise<Blob | null>((resolve) =>
-                  canvas.toBlob((b) => resolve(b), "image/png")
-                );
-                if (!blob) return;
-                const file = new File([blob], "rise-dash-profile.png", {
-                  type: "image/png",
-                });
-                const data = {
-                  files: [file],
-                  title: "Rise Dash",
-                  text: "My Rise Dash stats",
-                } as ShareData;
-                if (navigator.canShare && navigator.canShare(data)) {
-                  try {
-                    await navigator.share(data);
-                    return;
-                  } catch {}
-                }
                 const best = playerScores.length
                   ? Number(playerScores[0].score)
                   : 0;
@@ -161,7 +138,7 @@ export const ProfileContent: React.FC = () => {
                       ) / total
                     )
                   : 0;
-                const tweet = `My Rise Dash stats 🚀\nBest: ${best.toLocaleString()}m • Avg: ${avg.toLocaleString()}m • ${total} games\nBuilt on @rise_chain #RiseDash #Web3Gaming`;
+                const tweet = `My Rise Dash stats 🚀\nBest: ${best.toLocaleString()}m • Avg: ${avg.toLocaleString()}m • ${total} games\nBuilt on @rise_chain #RiseDash #aRISE`;
                 const text = encodeURIComponent(tweet);
                 const twitterUrl = `https://twitter.com/intent/tweet?text=${text}`;
                 window.open(twitterUrl, "_blank", "noopener,noreferrer");
