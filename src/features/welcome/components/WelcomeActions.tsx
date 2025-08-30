@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
 
-import { DailyRevealHomeButton } from "@/features/auth/DailyRevealHomeButton";
+import { GamingRoomHomeButton } from "@/features/auth/GamingRoomHomeButton";
 
 interface WelcomeActionsProps {
   onPlayClick: () => void;
@@ -51,9 +51,9 @@ export const WelcomeActions = memo(function WelcomeActions({
         </Button>
       </div>
 
-      {/* Daily Reveal - Enhanced */}
+      {/* Bento Garden - Enhanced */}
       <div className="flex justify-center items-center w-full animate-fade-in-up animation-delay-600">
-        <DailyRevealHomeButton />
+        <GamingRoomHomeButton />
       </div>
     </div>
   );
