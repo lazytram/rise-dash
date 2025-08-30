@@ -228,7 +228,7 @@ export const createPlayerWithPowerUp = (
     [PowerUpType.SLOW_MOTION]: 1,
     [PowerUpType.MULTI_SHOT]: 1,
     [PowerUpType.RICE_ROCKET_AMMO]: 1,
-    [PowerUpType.PHOENIX_PACT]: 1,
+    [PowerUpType.PHOENIX_PACT]: 0,
   };
 
   // Set the specific power-up as active
