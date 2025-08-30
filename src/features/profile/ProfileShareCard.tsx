@@ -63,11 +63,11 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     ctx.resetTransform();
     ctx.scale(dpr, dpr);
 
-    // Background
-    const grad = ctx.createLinearGradient(0, 0, width, height);
-    grad.addColorStop(0, "#0ea5e9");
-    grad.addColorStop(0.6, "#6366f1");
-    grad.addColorStop(1, "#8b5cf6");
+    // Background (deeper, smoother)
+    const grad = ctx.createLinearGradient(0, 0, 0, height);
+    grad.addColorStop(0, "#0b1220");
+    grad.addColorStop(0.6, "#111827");
+    grad.addColorStop(1, "#0f172a");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
@@ -79,10 +79,88 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
       height * 0.2,
       Math.max(width, height) * 0.9
     );
-    glow.addColorStop(0, "rgba(255,255,255,0.25)");
+    glow.addColorStop(0, "rgba(255,255,255,0.18)");
     glow.addColorStop(1, "transparent");
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, width, height);
+
+    // Soft gradient blobs for a vibrant yet subtle feel
+    const drawBlob = (
+      cx: number,
+      cy: number,
+      radius: number,
+      inner: string,
+      outer: string,
+      blur: number,
+      alpha: number
+    ) => {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.filter = `blur(${blur}px)`;
+      const rg = ctx.createRadialGradient(cx, cy, 10, cx, cy, radius);
+      rg.addColorStop(0, inner);
+      rg.addColorStop(1, outer);
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+    drawBlob(
+      width * 0.2,
+      height * 0.1,
+      Math.max(width, height) * 0.35,
+      "rgba(99,102,241,0.9)",
+      "rgba(99,102,241,0)",
+      120,
+      0.6
+    );
+    drawBlob(
+      width * 0.82,
+      height * 0.2,
+      Math.max(width, height) * 0.3,
+      "rgba(34,211,238,0.9)",
+      "rgba(34,211,238,0)",
+      120,
+      0.55
+    );
+    drawBlob(
+      width * 0.5,
+      height * 0.85,
+      Math.max(width, height) * 0.35,
+      "rgba(244,114,182,0.85)",
+      "rgba(244,114,182,0)",
+      140,
+      0.5
+    );
+
+    // Subtle noise overlay for texture
+    const noiseCanvas = document.createElement("canvas");
+    noiseCanvas.width = 64;
+    noiseCanvas.height = 64;
+    const nctx = noiseCanvas.getContext("2d");
+    if (nctx) {
+      const imageData = nctx.createImageData(
+        noiseCanvas.width,
+        noiseCanvas.height
+      );
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        const val = Math.random() * 255;
+        imageData.data[i] = val;
+        imageData.data[i + 1] = val;
+        imageData.data[i + 2] = val;
+        imageData.data[i + 3] = 12; // ~5% alpha
+      }
+      nctx.putImageData(imageData, 0, 0);
+      const pattern = ctx.createPattern(noiseCanvas, "repeat");
+      if (pattern) {
+        ctx.save();
+        ctx.globalAlpha = 0.06;
+        ctx.fillStyle = pattern;
+        ctx.fillRect(0, 0, width, height);
+        ctx.restore();
+      }
+    }
 
     // Card container
     const padding = 40;
@@ -91,8 +169,13 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     const cardW = width - padding * 2;
     const cardH = height - padding * 2;
 
-    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.save();
+    ctx.shadowColor = "rgba(0,0,0,0.35)";
+    ctx.shadowBlur = 30;
+    ctx.shadowOffsetY = 10;
+    ctx.fillStyle = "rgba(255,255,255,0.06)";
     roundRect(ctx, cardX + 8, cardY + 12, cardW, cardH, 28, true, false);
+    ctx.restore();
     // Gradient border ring
     const borderGrad = ctx.createLinearGradient(
       cardX,
@@ -100,15 +183,15 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
       cardX + cardW,
       cardY + cardH
     );
-    borderGrad.addColorStop(0, "rgba(255,255,255,0.55)");
-    borderGrad.addColorStop(1, "rgba(255,255,255,0.25)");
-    ctx.fillStyle = "rgba(255,255,255,0.12)";
+    borderGrad.addColorStop(0, "rgba(255,255,255,0.25)");
+    borderGrad.addColorStop(1, "rgba(255,255,255,0.08)");
+    ctx.fillStyle = "rgba(255,255,255,0.08)";
     ctx.strokeStyle = borderGrad;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2;
     roundRect(ctx, cardX, cardY, cardW, cardH, 26, true, true);
 
     // Inner highlight border
-    ctx.strokeStyle = "rgba(255,255,255,0.25)";
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
     ctx.lineWidth = 1;
     roundRect(
       ctx,
@@ -121,12 +204,24 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
       true
     );
 
-    // Header (fun/impactful)
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "800 54px Inter, ui-sans-serif, system-ui";
+    // Header (gradient text + soft glow)
+    const titleGrad = ctx.createLinearGradient(
+      cardX + 48,
+      cardY + 40,
+      cardX + 580,
+      cardY + 140
+    );
+    titleGrad.addColorStop(0, "#22d3ee");
+    titleGrad.addColorStop(1, "#a78bfa");
+    ctx.fillStyle = titleGrad;
+    ctx.shadowColor = "rgba(167,139,250,0.35)";
+    ctx.shadowBlur = 20;
+    ctx.font = "900 58px Inter, ui-sans-serif, system-ui";
     ctx.fillText(t("scenes.profile.shareCard.title"), cardX + 48, cardY + 100);
+    ctx.shadowBlur = 0;
 
     ctx.globalAlpha = 0.95;
+    ctx.fillStyle = "rgba(229,231,235,0.9)";
     ctx.font = "500 26px Inter, ui-sans-serif, system-ui";
     ctx.fillText(
       t("scenes.profile.shareCard.subtitle"),
@@ -135,8 +230,18 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     );
     ctx.globalAlpha = 1;
 
-    // Subtle divider
-    ctx.strokeStyle = "rgba(255,255,255,0.20)";
+    // Subtle divider (fade edges)
+    const dividerGrad = ctx.createLinearGradient(
+      cardX + 48,
+      0,
+      cardX + cardW - 48,
+      0
+    );
+    dividerGrad.addColorStop(0, "rgba(255,255,255,0)");
+    dividerGrad.addColorStop(0.1, "rgba(255,255,255,0.15)");
+    dividerGrad.addColorStop(0.9, "rgba(255,255,255,0.15)");
+    dividerGrad.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.strokeStyle = dividerGrad;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(cardX + 48, cardY + 165);
@@ -178,24 +283,43 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
 
     blocks.forEach((b, i) => {
       const x = x0 + i * (blockW + gap);
-      // Minimal glass tile
-      ctx.fillStyle = "rgba(255,255,255,0.10)";
-      ctx.strokeStyle = "rgba(255,255,255,0.22)";
+      // Minimal glass tile with gentle depth
+      ctx.save();
+      ctx.shadowColor = "rgba(0,0,0,0.25)";
+      ctx.shadowBlur = 18;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = "rgba(255,255,255,0.07)";
+      ctx.strokeStyle = "rgba(255,255,255,0.16)";
       ctx.lineWidth = 1.25;
       roundRect(ctx, x, blockY, blockW, blockH, 18, true, true);
+      ctx.restore();
 
+      // Top highlight line
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x + 1, blockY + 1.5);
+      ctx.lineTo(x + blockW - 1, blockY + 1.5);
+      ctx.stroke();
+
+      // Title
       ctx.fillStyle = "#e5e7eb";
       ctx.font = "600 22px Inter, ui-sans-serif, system-ui";
       ctx.fillText(`${b.icon}  ${b.title}`, x + 24, blockY + 42);
 
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "800 56px Inter, ui-sans-serif, system-ui";
+      // Value (soft gradient)
+      const valGrad = ctx.createLinearGradient(x, blockY, x, blockY + blockH);
+      valGrad.addColorStop(0, "#ffffff");
+      valGrad.addColorStop(1, "#d1d5db");
+      ctx.fillStyle = valGrad;
+      ctx.font = "800 60px Inter, ui-sans-serif, system-ui";
       ctx.fillText(
         new Intl.NumberFormat(locale).format(b.value),
         x + 24,
         blockY + 110
       );
 
+      // Subtitle
       ctx.fillStyle = "#e5e7eb";
       ctx.font = "500 22px Inter, ui-sans-serif, system-ui";
       ctx.fillText(b.subtitle, x + 24, blockY + 150);
@@ -203,8 +327,16 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
 
     // Footer
     const footerY = cardY + cardH - 40;
-    ctx.fillStyle = "#e5e7eb";
-    ctx.font = "600 22px Inter, ui-sans-serif, system-ui";
+    const footGrad = ctx.createLinearGradient(
+      cardX + 48,
+      footerY - 20,
+      cardX + 240,
+      footerY + 20
+    );
+    footGrad.addColorStop(0, "#93c5fd");
+    footGrad.addColorStop(1, "#a78bfa");
+    ctx.fillStyle = footGrad;
+    ctx.font = "700 22px Inter, ui-sans-serif, system-ui";
     ctx.fillText("Rise Dash", cardX + 48, footerY);
     const wa = formatShortAddress(walletAddress || undefined);
     if (wa) {

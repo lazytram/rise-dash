@@ -47,12 +47,28 @@ export const ProfileContent: React.FC = () => {
         <div className="flex items-center justify-end mb-4">
           <Button
             variant="gradient"
-            size="md"
+            size="lg"
             onClick={() => setShareOpen(true)}
-            icon="✨"
-            className="rounded-full px-5"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className="w-5 h-5 md:w-6 md:h-6 text-white/90 transition-transform duration-200 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12 2l1.7 3.9L18 7l-3.3 2.1L13.7 13 12 9.9 10.3 13l-1-3.9L6 7l4.3-1.1L12 2Zm7 10.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9.9-2.1ZM3 13l1.2 2.8L7 17l-2.8 1.2L3 21l-1.2-2.8L-1 17l2.8-1.2L3 13Z"
+                />
+              </svg>
+            }
+            className="group relative rounded-full px-6 overflow-hidden ring-1 ring-white/15 hover:ring-white/25 shadow-[0_10px_30px_-10px_rgba(147,197,253,0.5)] hover:shadow-[0_16px_40px_-12px_rgba(167,139,250,0.65)] transition-all duration-300"
           >
-            {t("scenes.profile.share.export")}
+            <span className="relative z-10">
+              {t("scenes.profile.share.export")}
+            </span>
+            <span className="pointer-events-none absolute inset-0 -z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-400/20 via-fuchsia-400/20 to-purple-400/20" />
           </Button>
         </div>
       )}
