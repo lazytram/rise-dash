@@ -27,6 +27,7 @@ import {
   getPowerUpEffect,
   getMaxAmmo,
   getPowerUpService,
+  hasPurchased,
 } from "@/shared/services/powerUpService";
 import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpType } from "@/shared/types/powerUps";
@@ -1010,12 +1011,6 @@ export class GameLogic {
     for (let i = newenemyBullets.length - 1; i >= 0; i--) {
       const bullet = newenemyBullets[i];
       if (this.checkCollision(player, bullet)) {
-        // Debug: Log bullet collision
-        const formattedDistance = this.formatDistance(gameState.distance);
-        console.log(
-          `Bullet collision at distance ${formattedDistance}, Player pos: (${player.x}, ${player.y}), Bullet pos: (${bullet.x}, ${bullet.y})`
-        );
-
         // Always remove the bullet on collision
         newenemyBullets.splice(i, 1);
 
@@ -1317,17 +1312,12 @@ export class GameLogic {
     const groundY = GAME_CONSTANTS.CANVAS_HEIGHT - GAME_CONSTANTS.GROUND_HEIGHT;
     // Use player's current levels to decide eligibility
     const powerUpTypes = Object.values(GAME_CONSTANTS.POWERUP_TYPES);
-    // Filter power-ups that require purchase if player level == 0 (locked)
+    // Filter power-ups that require purchase using the unified helper
     const eligibleTypes = powerUpTypes.filter((type) => {
       const config = POWERUP_UPGRADES[type as unknown as PowerUpType];
       const requiresPurchase = config?.requiresPurchase === true;
-      const playerLevel =
-        player?.powerUpLevels?.[type as unknown as PowerUpType];
-      if (requiresPurchase) {
-        // Level must be defined and > 0
-        return (playerLevel ?? 0) > 0;
-      }
-      return true;
+      if (!requiresPurchase) return true;
+      return hasPurchased(type as unknown as PowerUpType);
     });
 
     const pool = eligibleTypes.length > 0 ? eligibleTypes : powerUpTypes;
@@ -1401,11 +1391,8 @@ export class GameLogic {
     // Prevent collecting locked purchased power-ups (e.g., Phoenix) if level is 0
     const powerUpType = powerUp.type;
     const config = POWERUP_UPGRADES[powerUpType];
-    if (config?.requiresPurchase) {
-      const level = player.powerUpLevels?.[powerUpType];
-      if ((level ?? 0) <= 0) {
-        return player;
-      }
+    if (config?.requiresPurchase && !hasPurchased(powerUpType)) {
+      return player;
     }
 
     const effect = getPowerUpEffect(powerUpType);
@@ -1425,12 +1412,6 @@ export class GameLogic {
         };
       }
       case PowerUpType.SHIELD:
-        console.log(
-          "Shield collected! End time:",
-          endTime,
-          "Current time:",
-          currentTime
-        );
         return {
           ...resetPlayer,
           hasShield: true,
@@ -1694,10 +1675,6 @@ export class GameLogic {
   static shouldSpawnEnemy(gameState: GameState): boolean {
     // Don't spawn if there are already enemies on screen
     if (gameState.samurais.length > 0 || gameState.ninjas.length > 0) {
-      console.log("❌ Enemies already on screen:", {
-        samurais: gameState.samurais.length,
-        ninjas: gameState.ninjas.length,
-      });
       return false;
     }
 
@@ -1705,18 +1682,11 @@ export class GameLogic {
 
     // Don't spawn enemies before 50 meters
     if (formattedDistance < GAME_CONSTANTS.SAMURAI_MIN_SPAWN_DISTANCE) {
-      console.log(
-        "❌ Distance too low:",
-        formattedDistance,
-        "<",
-        GAME_CONSTANTS.SAMURAI_MIN_SPAWN_DISTANCE
-      );
       return false;
     }
 
     // Don't spawn at exactly 0 (which would be the case at the very beginning)
     if (formattedDistance === 0) {
-      console.log("❌ Distance is 0");
       return false;
     }
 
@@ -1724,16 +1694,9 @@ export class GameLogic {
     const distanceSinceLastSpawn =
       formattedDistance - gameState.lastEnemySpawnDistance;
     if (distanceSinceLastSpawn < GAME_CONSTANTS.SAMURAI_MIN_SPAWN_INTERVAL) {
-      console.log(
-        "❌ Not enough distance since last spawn:",
-        distanceSinceLastSpawn,
-        "<",
-        GAME_CONSTANTS.SAMURAI_MIN_SPAWN_INTERVAL
-      );
       return false;
     }
 
-    console.log("✅ Should spawn enemy at distance:", formattedDistance);
     // 100% chance to spawn when conditions are met
     return true;
   }

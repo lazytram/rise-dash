@@ -1,7 +1,7 @@
 export { AuthButton } from "./AuthButton";
 export { AuthGuard } from "./AuthGuard";
 export { DailyRevealButton } from "./DailyRevealButton";
-export { DailyRevealHomeButton } from "./DailyRevealHomeButton";
+export { GamingRoomHomeButton } from "./GamingRoomHomeButton";
 export { GameButton } from "./GameButton";
 export { InstructionsButton } from "./InstructionsButton";
 export { LeaderboardButton } from "./LeaderboardButton";
