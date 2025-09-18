@@ -5,6 +5,7 @@ export const RISE_TESTNET_ADDRESSES = {
   SCORE_BOARD: "0xF2dC776b9b71DEC08df3a40861b7DbFb629C9F5a",
   RICE_MANAGER: "0xd74e64EcEFCC745845878C215C5BE9D3d368c8bA",
   POWER_UP_MANAGER: "0xC12889D661c6BeE9930b00241FdAE913e64a5722",
+  CLAN_REGISTRY: "0x0000000000000000000000000000000000000000",
 } as const;
 
 // Get contract address based on current network
@@ -23,6 +24,7 @@ export const CONTRACT_ADDRESSES_CURRENT = {
   SCORE_BOARD: getContractAddress("SCORE_BOARD"),
   RICE_MANAGER: getContractAddress("RICE_MANAGER"),
   POWER_UP_MANAGER: getContractAddress("POWER_UP_MANAGER"),
+  CLAN_REGISTRY: getContractAddress("CLAN_REGISTRY"),
 } as const;
 
 // Convenience functions for specific contracts (kept for backward compatibility)
@@ -32,6 +34,8 @@ export const getRICEManagerAddress = (): Address =>
   CONTRACT_ADDRESSES_CURRENT.RICE_MANAGER;
 export const getPowerUpManagerAddress = (): Address =>
   CONTRACT_ADDRESSES_CURRENT.POWER_UP_MANAGER;
+export const getClanRegistryAddress = (): Address =>
+  CONTRACT_ADDRESSES_CURRENT.CLAN_REGISTRY;
 
 // Legacy exports for backward compatibility
 export const SCOREBOARD_CONTRACT_ADDRESS =

@@ -9,6 +9,7 @@ import {
 import { riseTestnet } from "wagmi/chains";
 import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { SCOREBOARD_ABI, RICEMANAGER_ABI, POWERUPMANAGER_ABI } from "./abis";
+import { CLANREGISTRY_ABI } from "./abis/clanRegistry";
 
 // Contract addresses are now managed centrally
 const SCOREBOARD_CONTRACT_ADDRESS = CONTRACT_ADDRESSES_CURRENT.SCORE_BOARD;
@@ -409,6 +410,71 @@ export class BlockchainService {
       }
       throw error;
     }
+  }
+
+  // ===== Clan Registry (reads) =====
+  async getCurrentSeasonId(): Promise<number> {
+    const result = await this.publicClient.readContract({
+      address: CONTRACT_ADDRESSES_CURRENT.CLAN_REGISTRY,
+      abi: CLANREGISTRY_ABI,
+      functionName: "currentSeasonId",
+    });
+    return Number(result);
+  }
+
+  async getSeasonTimes(
+    seasonId: number
+  ): Promise<{ start: number; end: number; uri: string }> {
+    const [start, end, uri] = (await this.publicClient.readContract({
+      address: CONTRACT_ADDRESSES_CURRENT.CLAN_REGISTRY,
+      abi: CLANREGISTRY_ABI,
+      functionName: "getSeasonTimes",
+      args: [BigInt(seasonId)],
+    })) as unknown as [bigint, bigint, string];
+    return { start: Number(start) * 1000, end: Number(end) * 1000, uri };
+  }
+
+  async getPlayerSeasonDistances(
+    player: Address,
+    seasonIds: number[]
+  ): Promise<number[]> {
+    const res = (await this.publicClient.readContract({
+      address: CONTRACT_ADDRESSES_CURRENT.CLAN_REGISTRY,
+      abi: CLANREGISTRY_ABI,
+      functionName: "getPlayerSeasonDistances",
+      args: [player, seasonIds.map((s) => BigInt(s))],
+    })) as bigint[];
+    return res.map((v) => Number(v));
+  }
+
+  async getClanStatsForSeason(
+    clanId: `0x${string}`,
+    seasonId: number
+  ): Promise<{ members: number; totalDistance: number }> {
+    const [members, totalDistance] = (await this.publicClient.readContract({
+      address: CONTRACT_ADDRESSES_CURRENT.CLAN_REGISTRY,
+      abi: CLANREGISTRY_ABI,
+      functionName: "getClanStatsForSeason",
+      args: [clanId, BigInt(seasonId)],
+    })) as unknown as [bigint, bigint];
+    return { members: Number(members), totalDistance: Number(totalDistance) };
+  }
+
+  async getAllSeasonsMeta(): Promise<
+    Array<{ id: number; startTimeMs: number; endTimeMs: number; uri: string }>
+  > {
+    const latest = await this.getCurrentSeasonId();
+    const metas: Array<{
+      id: number;
+      startTimeMs: number;
+      endTimeMs: number;
+      uri: string;
+    }> = [];
+    for (let id = 1; id <= latest; id++) {
+      const { start, end, uri } = await this.getSeasonTimes(id);
+      metas.push({ id, startTimeMs: start, endTimeMs: end, uri });
+    }
+    return metas.reverse();
   }
 
   /**

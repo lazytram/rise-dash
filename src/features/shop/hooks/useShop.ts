@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { useToastStore } from "@/infrastructure/store/toastStore";
 import { useRice } from "@/shared/hooks/useRice";
 import { usePowerUps } from "@/shared/hooks/usePowerUps";
+import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { PowerUpType } from "@/shared/types/powerUps";
 import { POWERUP_ORDER } from "@/shared/constants/powerUps";
 
@@ -178,8 +179,10 @@ export const useShop = (): ShopState & ShopActions => {
   const isMaxLevel = useCallback(
     (powerUpType: PowerUpType): boolean => {
       const currentLevel = powerUpLevels[powerUpType] || 0;
-      const config = powerUpConfigs[powerUpType];
-      return config ? currentLevel >= config.maxLevel : false;
+      const configuredMax = powerUpConfigs[powerUpType]?.maxLevel;
+      const fallbackMax = POWERUP_UPGRADES[powerUpType]?.upgrades?.length || 1;
+      const effectiveMax = configuredMax ?? fallbackMax;
+      return currentLevel >= effectiveMax;
     },
     [powerUpLevels, powerUpConfigs]
   );
@@ -198,15 +201,30 @@ export const useShop = (): ShopState & ShopActions => {
     [powerUpLevels]
   );
 
-  // Calculate progression percentage
-  const progression = Math.round(
-    (Object.values(powerUpLevels).reduce(
-      (sum, level) => sum + Math.max(0, (level || 1) - 1),
-      0
-    ) /
-      (POWERUP_ORDER.length * 9)) *
-      100
-  );
+  // Calculate progression percentage (normalized per power-up)
+  // - For multi-level power-ups: progress = (level - 1) / (maxLevel - 1)
+  // - For unlock-only power-ups (single level): progress = level >= 1 ? 1 : 0
+  const progression = useMemo(() => {
+    const perPowerUpProgress = POWERUP_ORDER.map((type) => {
+      const definition = POWERUP_UPGRADES[type];
+      const levelsCount = definition?.upgrades?.length || 1;
+      const currentLevel = powerUpLevels[type] ?? 0;
+
+      if (levelsCount <= 1) {
+        // Unlock-only: contributes 0 until bought, then 1
+        return currentLevel >= 1 ? 1 : 0;
+      }
+
+      const numerator = Math.max(0, (currentLevel || 1) - 1);
+      const denominator = Math.max(1, levelsCount - 1);
+      return Math.min(1, numerator / denominator);
+    });
+
+    const avg =
+      perPowerUpProgress.reduce((sum, p) => sum + p, 0) /
+      Math.max(1, perPowerUpProgress.length);
+    return Math.round(avg * 100);
+  }, [powerUpLevels]);
 
   // Create isUpgrading record
   const isUpgrading: Record<PowerUpType, boolean> = POWERUP_ORDER.reduce(

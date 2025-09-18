@@ -68,10 +68,19 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
       [upgrades.length]
     );
 
-    const isButtonDisabled = useMemo(
-      () => isLoading || isMaxLevel || !canAfford || isBalanceLoading,
-      [isLoading, isMaxLevel, canAfford, isBalanceLoading]
-    );
+    const isButtonDisabled = useMemo(() => {
+      const disabledByState = isLoading || isBalanceLoading || !canAfford;
+      // For unlock-only power-ups, hide/disable the button once unlocked
+      if (isUnlockOnly && boundedCurrentLevel >= 1) return true;
+      return disabledByState || isMaxLevel;
+    }, [
+      isLoading,
+      isBalanceLoading,
+      canAfford,
+      isUnlockOnly,
+      boundedCurrentLevel,
+      isMaxLevel,
+    ]);
 
     const progressPercentage = useMemo(
       () => computeProgressPercentage(boundedCurrentLevel, maxLevel),
@@ -112,6 +121,11 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 >
                   {shortName}
                 </Text>
+                {isUnlockOnly && boundedCurrentLevel >= 1 ? (
+                  <span className="hidden sm:inline-flex items-center text-[10px] uppercase tracking-wide text-emerald-700/80 bg-emerald-500/10 border border-emerald-600/30 px-1.5 py-0.5 rounded">
+                    {t("features.powerUps.unlocked")}
+                  </span>
+                ) : null}
                 {powerUp.stackable ? (
                   <span className="hidden sm:inline-flex items-center text-[10px] uppercase tracking-wide text-primary/80 border border-primary/30 px-1.5 py-0.5 rounded">
                     {t("features.powerUps.stackable")}
@@ -134,6 +148,11 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
             <div className="text-sm text-muted-foreground">
               {t(`features.powerUps.description.${powerUp.type}`)}
             </div>
+            {isUnlockOnly && boundedCurrentLevel >= 1 ? (
+              <span className="mt-2 inline-flex sm:hidden items-center text-[10px] uppercase tracking-wide text-emerald-700/80 bg-emerald-500/10 border border-emerald-600/30 px-1.5 py-0.5 rounded">
+                {t("features.powerUps.unlocked")}
+              </span>
+            ) : null}
             {powerUp.stackable ? (
               <span className="mt-2 inline-flex sm:hidden items-center text-[10px] uppercase tracking-wide text-primary/80 border border-primary/30 px-1.5 py-0.5 rounded">
                 {t("features.powerUps.stackable")}
@@ -187,52 +206,61 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
               </div>
 
               {/* Upgrade Button */}
-              <Button
-                onClick={onUpgrade}
-                disabled={isButtonDisabled}
-                variant={
-                  canAfford && !isBalanceLoading ? "gradient" : "secondary"
-                }
-                size="sm"
-                className={`w-full h-11 transition-all duration-200 ${
-                  isLoading ? "animate-pulse" : ""
-                }`}
-              >
-                {isLoading ? (
-                  <LoadingIndicator label={t("features.powerUps.upgrading")} />
-                ) : isBalanceLoading ? (
-                  <LoadingIndicator label={t("features.powerUps.loading")} />
-                ) : (
-                  <span className="text-sm font-medium">
-                    {isUnlockOnly
-                      ? t("features.powerUps.unlock")
-                      : `${t("features.powerUps.upgrade")} → ${t(
-                          "features.powerUps.level"
-                        )} ${nextLevel}`}
+              {!isUnlockOnly || boundedCurrentLevel < 1 ? (
+                <Button
+                  onClick={onUpgrade}
+                  disabled={isButtonDisabled}
+                  variant={
+                    canAfford && !isBalanceLoading ? "gradient" : "secondary"
+                  }
+                  size="sm"
+                  className={`w-full h-11 transition-all duration-200 ${
+                    isLoading ? "animate-pulse" : ""
+                  }`}
+                >
+                  {isLoading ? (
+                    <LoadingIndicator
+                      label={t("features.powerUps.upgrading")}
+                    />
+                  ) : isBalanceLoading ? (
+                    <LoadingIndicator label={t("features.powerUps.loading")} />
+                  ) : (
+                    <span className="text-sm font-medium">
+                      {isUnlockOnly
+                        ? t("features.powerUps.unlock")
+                        : `${t("features.powerUps.upgrade")} → ${t(
+                            "features.powerUps.level"
+                          )} ${nextLevel}`}
+                    </span>
+                  )}
+                </Button>
+              ) : (
+                <div className="text-center bg-emerald-500/10 rounded-lg p-3 border border-emerald-600/20">
+                  <span className="inline-flex items-center text-[12px] font-medium text-emerald-700">
+                    {t("features.powerUps.unlocked")}
                   </span>
-                )}
-              </Button>
+                </div>
+              )}
 
               {/* Insufficient Rice Warning - Simplified */}
-              {!canAfford && !isLoading && !isBalanceLoading && (
-                <Text
-                  variant="error"
-                  size="sm"
-                  className="text-error text-center font-medium"
-                >
-                  {t("features.powerUps.insufficientRice")}
-                </Text>
-              )}
+              {!isUnlockOnly &&
+                !canAfford &&
+                !isLoading &&
+                !isBalanceLoading && (
+                  <Text
+                    variant="error"
+                    size="sm"
+                    className="text-error text-center font-medium"
+                  >
+                    {t("features.powerUps.insufficientRice")}
+                  </Text>
+                )}
             </div>
           ) : (
-            <div className="text-center bg-primary/10 rounded-lg p-4 border border-primary/20">
-              <Text
-                variant="title"
-                size="lg"
-                className="text-primary font-bold"
-              >
+            <div className="text-center bg-primary/5 rounded-lg p-3 border border-primary/10">
+              <span className="inline-flex items-center text-[12px] font-medium text-primary/80">
                 {t("features.powerUps.maxLevelReached")}
-              </Text>
+              </span>
             </div>
           )}
         </div>
