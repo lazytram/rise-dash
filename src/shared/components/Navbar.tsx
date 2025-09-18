@@ -18,6 +18,7 @@ export const Navbar = memo(function Navbar() {
   const { data: session, status } = useSession();
   const { currentScene, setScene } = useSceneStore();
   const mobileMenuRef = useRef<HTMLDetailsElement>(null);
+  const ENABLE_DOJO = false; // Feature flag to show/hide Dojo entry
 
   const isAuthenticated = useMemo(() => {
     return isConnected && session && status === "authenticated";
@@ -46,6 +47,7 @@ export const Navbar = memo(function Navbar() {
     { scene: SceneType.GAMING_ROOM, label: t("nav.gamingRoom") },
     { scene: SceneType.SHOP, label: t("nav.shop") },
     { scene: SceneType.INSTRUCTIONS, label: t("nav.help") },
+    ...(ENABLE_DOJO ? [{ scene: SceneType.DOJO, label: t("nav.dojo") }] : []),
   ];
 
   return (

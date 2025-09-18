@@ -5,6 +5,7 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 import { blockchainService } from "@/infrastructure/blockchain/blockchainService";
+import { POWERUP_UPGRADES } from "@/shared/constants/powerUps";
 import { POWERUPMANAGER_ABI } from "@/infrastructure/blockchain/abis";
 import { CONTRACT_ADDRESSES_CURRENT } from "@/infrastructure/config";
 import { useToastStore } from "@/infrastructure/store/toastStore";
@@ -116,9 +117,21 @@ export const usePowerUps = () => {
       };
       levels.forEach((level, index) => {
         const powerUpType = powerUpTypeMap[index];
-        if (powerUpType) {
-          levelsMap[powerUpType] = level;
-        }
+        if (!powerUpType) return;
+
+        // Generic handling for unlockable power-ups:
+        // If a power-up requires purchase (unlock-only), interpret blockchain level as (realLevel + 1)
+        // and map back to realLevel so 0 means locked until purchased.
+        const definition = POWERUP_UPGRADES[powerUpType];
+        const isUnlockable = Boolean(
+          definition?.requiresPurchase ||
+            (definition?.upgrades?.length || 0) === 1
+        );
+        const mappedLevel = isUnlockable
+          ? Math.max(0, (level || 0) - 1)
+          : level;
+
+        levelsMap[powerUpType] = mappedLevel;
       });
 
       // Cache the result

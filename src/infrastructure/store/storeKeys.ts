@@ -5,4 +5,5 @@ export enum StoreKeys {
   DailyRevealStore = "dailyRevealStore",
   PowerUpStore = "powerUpStore",
   TutorialStore = "tutorialStore",
+  DojoStore = "dojoStore",
 }

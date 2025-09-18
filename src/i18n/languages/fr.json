@@ -327,9 +327,35 @@
       "buttons": {
         "understood": "J'ai compris"
       }
+    },
+    "dojo": {
+      "title": "Choisis ton Clan",
+      "subtitle": "Rejoins un clan et progressez ensemble"
+    },
+    "dojoDetail": {
+      "title": "Mon Clan",
+      "subtitle": "Vue d'ensemble et progression de ton clan"
     }
   },
   "features": {
+    "seasons": {
+      "countdown": {
+        "endsIn": "Saison {{id}} se termine dans",
+        "finished": "Saison terminée"
+      },
+      "participation": {
+        "title": "Tes Saisons",
+        "participated": "{{count}}/{{total}} participées"
+      },
+      "panel": {
+        "title": "Saisons",
+        "past": "Passées",
+        "history": "Historique",
+        "historyTitle": "Historique des saisons",
+        "noActive": "Aucune saison active",
+        "noHistory": "Aucun historique de saison disponible."
+      }
+    },
     "gameplay": {
       "distance": "Distance parcourue",
       "meters": "mètres",
@@ -395,6 +421,7 @@
       "rice": "RICE",
       "upgrade": "Améliorer",
       "unlock": "Débloquer",
+      "unlocked": "Débloqué",
       "maxLevelReached": "Niveau Maximum Atteint !",
       "insufficientRice": "RICE insuffisant",
       "noActive": "Aucun power-up actif",
@@ -508,6 +535,44 @@
     "leaderboard": "Classement",
     "shop": "Boutique",
     "help": "Aide",
-    "gamingRoom": "Bento"
+    "gamingRoom": "Bento",
+    "dojo": "Clan"
+  },
+  "dojo": {
+    "choose": "Choisir",
+    "selected": "Sélectionné",
+    "houses": {
+      "akaTora": {
+        "title": "Aka Tora",
+        "motto": "Force et courage à chaque pas"
+      },
+      "aoiTsuru": {
+        "title": "Aoi Tsuru",
+        "motto": "Grâce et précision ouvrent la voie"
+      },
+      "midoriRyuu": {
+        "title": "Midori Ryuu",
+        "motto": "Sagesse et puissance en harmonie"
+      },
+      "koganeKitsune": {
+        "title": "Kogane Kitsune",
+        "motto": "Agilité et ruse pour déjouer les rivaux"
+      }
+    }
+  },
+  "dojoDetail": {
+    "noSelection": "Aucun clan sélectionné pour le moment",
+    "totalDistance": "Distance totale",
+    "members": "Membres",
+    "rank": "Rang",
+    "progressOverTime": "Progression dans le temps",
+    "topContributors": "Meilleurs contributeurs",
+    "viewLeaderboard": "Voir le classement",
+    "inviteFriends": "Inviter des amis",
+    "switchDojo": "Changer de clan",
+    "viewAllDojos": "Comparer les clans",
+    "compareDojosTitle": "Comparer les clans",
+    "dojoColumn": "Clan",
+    "yourDojo": "Ton clan"
   }
 }

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
+import { useDojoData } from "@/features/dojo/useDojoData";
 
 type PlayerScore = {
   score: bigint;
@@ -43,6 +44,11 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
 }) => {
   const { t, locale } = useTranslations();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { selectedHouse, metas } = useDojoData();
+  const dojoMeta = useMemo(
+    () => metas.find((m) => m.key === selectedHouse),
+    [metas, selectedHouse]
+  );
 
   const stats = useMemo(() => computeStats(playerScores), [playerScores]);
 
@@ -63,11 +69,11 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     ctx.resetTransform();
     ctx.scale(dpr, dpr);
 
-    // Background (deeper, smoother)
-    const grad = ctx.createLinearGradient(0, 0, 0, height);
-    grad.addColorStop(0, "#0b1220");
-    grad.addColorStop(0.6, "#111827");
-    grad.addColorStop(1, "#0f172a");
+    // Background
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, "#0ea5e9");
+    grad.addColorStop(0.6, "#6366f1");
+    grad.addColorStop(1, "#8b5cf6");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
@@ -79,88 +85,10 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
       height * 0.2,
       Math.max(width, height) * 0.9
     );
-    glow.addColorStop(0, "rgba(255,255,255,0.18)");
+    glow.addColorStop(0, "rgba(255,255,255,0.25)");
     glow.addColorStop(1, "transparent");
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, width, height);
-
-    // Soft gradient blobs for a vibrant yet subtle feel
-    const drawBlob = (
-      cx: number,
-      cy: number,
-      radius: number,
-      inner: string,
-      outer: string,
-      blur: number,
-      alpha: number
-    ) => {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.filter = `blur(${blur}px)`;
-      const rg = ctx.createRadialGradient(cx, cy, 10, cx, cy, radius);
-      rg.addColorStop(0, inner);
-      rg.addColorStop(1, outer);
-      ctx.fillStyle = rg;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    };
-    drawBlob(
-      width * 0.2,
-      height * 0.1,
-      Math.max(width, height) * 0.35,
-      "rgba(99,102,241,0.9)",
-      "rgba(99,102,241,0)",
-      120,
-      0.6
-    );
-    drawBlob(
-      width * 0.82,
-      height * 0.2,
-      Math.max(width, height) * 0.3,
-      "rgba(34,211,238,0.9)",
-      "rgba(34,211,238,0)",
-      120,
-      0.55
-    );
-    drawBlob(
-      width * 0.5,
-      height * 0.85,
-      Math.max(width, height) * 0.35,
-      "rgba(244,114,182,0.85)",
-      "rgba(244,114,182,0)",
-      140,
-      0.5
-    );
-
-    // Subtle noise overlay for texture
-    const noiseCanvas = document.createElement("canvas");
-    noiseCanvas.width = 64;
-    noiseCanvas.height = 64;
-    const nctx = noiseCanvas.getContext("2d");
-    if (nctx) {
-      const imageData = nctx.createImageData(
-        noiseCanvas.width,
-        noiseCanvas.height
-      );
-      for (let i = 0; i < imageData.data.length; i += 4) {
-        const val = Math.random() * 255;
-        imageData.data[i] = val;
-        imageData.data[i + 1] = val;
-        imageData.data[i + 2] = val;
-        imageData.data[i + 3] = 12; // ~5% alpha
-      }
-      nctx.putImageData(imageData, 0, 0);
-      const pattern = ctx.createPattern(noiseCanvas, "repeat");
-      if (pattern) {
-        ctx.save();
-        ctx.globalAlpha = 0.06;
-        ctx.fillStyle = pattern;
-        ctx.fillRect(0, 0, width, height);
-        ctx.restore();
-      }
-    }
 
     // Card container
     const padding = 40;
@@ -169,13 +97,8 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     const cardW = width - padding * 2;
     const cardH = height - padding * 2;
 
-    ctx.save();
-    ctx.shadowColor = "rgba(0,0,0,0.35)";
-    ctx.shadowBlur = 30;
-    ctx.shadowOffsetY = 10;
-    ctx.fillStyle = "rgba(255,255,255,0.06)";
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
     roundRect(ctx, cardX + 8, cardY + 12, cardW, cardH, 28, true, false);
-    ctx.restore();
     // Gradient border ring
     const borderGrad = ctx.createLinearGradient(
       cardX,
@@ -183,15 +106,15 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
       cardX + cardW,
       cardY + cardH
     );
-    borderGrad.addColorStop(0, "rgba(255,255,255,0.25)");
-    borderGrad.addColorStop(1, "rgba(255,255,255,0.08)");
-    ctx.fillStyle = "rgba(255,255,255,0.08)";
+    borderGrad.addColorStop(0, "rgba(255,255,255,0.55)");
+    borderGrad.addColorStop(1, "rgba(255,255,255,0.25)");
+    ctx.fillStyle = "rgba(255,255,255,0.12)";
     ctx.strokeStyle = borderGrad;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     roundRect(ctx, cardX, cardY, cardW, cardH, 26, true, true);
 
     // Inner highlight border
-    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.strokeStyle = "rgba(255,255,255,0.25)";
     ctx.lineWidth = 1;
     roundRect(
       ctx,
@@ -204,24 +127,12 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
       true
     );
 
-    // Header (gradient text + soft glow)
-    const titleGrad = ctx.createLinearGradient(
-      cardX + 48,
-      cardY + 40,
-      cardX + 580,
-      cardY + 140
-    );
-    titleGrad.addColorStop(0, "#22d3ee");
-    titleGrad.addColorStop(1, "#a78bfa");
-    ctx.fillStyle = titleGrad;
-    ctx.shadowColor = "rgba(167,139,250,0.35)";
-    ctx.shadowBlur = 20;
-    ctx.font = "900 58px Inter, ui-sans-serif, system-ui";
+    // Header (fun/impactful)
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "800 54px Inter, ui-sans-serif, system-ui";
     ctx.fillText(t("scenes.profile.shareCard.title"), cardX + 48, cardY + 100);
-    ctx.shadowBlur = 0;
 
     ctx.globalAlpha = 0.95;
-    ctx.fillStyle = "rgba(229,231,235,0.9)";
     ctx.font = "500 26px Inter, ui-sans-serif, system-ui";
     ctx.fillText(
       t("scenes.profile.shareCard.subtitle"),
@@ -230,18 +141,8 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     );
     ctx.globalAlpha = 1;
 
-    // Subtle divider (fade edges)
-    const dividerGrad = ctx.createLinearGradient(
-      cardX + 48,
-      0,
-      cardX + cardW - 48,
-      0
-    );
-    dividerGrad.addColorStop(0, "rgba(255,255,255,0)");
-    dividerGrad.addColorStop(0.1, "rgba(255,255,255,0.15)");
-    dividerGrad.addColorStop(0.9, "rgba(255,255,255,0.15)");
-    dividerGrad.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.strokeStyle = dividerGrad;
+    // Subtle divider
+    ctx.strokeStyle = "rgba(255,255,255,0.20)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(cardX + 48, cardY + 165);
@@ -283,61 +184,37 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
 
     blocks.forEach((b, i) => {
       const x = x0 + i * (blockW + gap);
-      // Minimal glass tile with gentle depth
-      ctx.save();
-      ctx.shadowColor = "rgba(0,0,0,0.25)";
-      ctx.shadowBlur = 18;
-      ctx.shadowOffsetY = 6;
-      ctx.fillStyle = "rgba(255,255,255,0.07)";
-      ctx.strokeStyle = "rgba(255,255,255,0.16)";
+      // Minimal glass tile
+      ctx.fillStyle = "rgba(255,255,255,0.10)";
+      ctx.strokeStyle = "rgba(255,255,255,0.22)";
       ctx.lineWidth = 1.25;
       roundRect(ctx, x, blockY, blockW, blockH, 18, true, true);
-      ctx.restore();
 
-      // Top highlight line
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(x + 1, blockY + 1.5);
-      ctx.lineTo(x + blockW - 1, blockY + 1.5);
-      ctx.stroke();
-
-      // Title
       ctx.fillStyle = "#e5e7eb";
       ctx.font = "600 22px Inter, ui-sans-serif, system-ui";
       ctx.fillText(`${b.icon}  ${b.title}`, x + 24, blockY + 42);
 
-      // Value (soft gradient)
-      const valGrad = ctx.createLinearGradient(x, blockY, x, blockY + blockH);
-      valGrad.addColorStop(0, "#ffffff");
-      valGrad.addColorStop(1, "#d1d5db");
-      ctx.fillStyle = valGrad;
-      ctx.font = "800 60px Inter, ui-sans-serif, system-ui";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "800 56px Inter, ui-sans-serif, system-ui";
       ctx.fillText(
         new Intl.NumberFormat(locale).format(b.value),
         x + 24,
         blockY + 110
       );
 
-      // Subtitle
       ctx.fillStyle = "#e5e7eb";
       ctx.font = "500 22px Inter, ui-sans-serif, system-ui";
       ctx.fillText(b.subtitle, x + 24, blockY + 150);
     });
 
+    // (Top-right dojo badge intentionally removed)
+
     // Footer
     const footerY = cardY + cardH - 40;
-    const footGrad = ctx.createLinearGradient(
-      cardX + 48,
-      footerY - 20,
-      cardX + 240,
-      footerY + 20
-    );
-    footGrad.addColorStop(0, "#93c5fd");
-    footGrad.addColorStop(1, "#a78bfa");
-    ctx.fillStyle = footGrad;
-    ctx.font = "700 22px Inter, ui-sans-serif, system-ui";
-    ctx.fillText("Rise Dash", cardX + 48, footerY);
+    // Bottom-left: clan badge instead of brand logo (slightly larger)
+    if (dojoMeta) {
+      drawDojoBadge(ctx, cardX + 48, footerY - 32, dojoMeta, t);
+    }
     const wa = formatShortAddress(walletAddress || undefined);
     if (wa) {
       const text = `ID: ${wa}`;
@@ -347,7 +224,7 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
 
     // Logo
     drawRiceLogo(ctx, cardX + cardW - 80, cardY + 80, 56);
-  }, [t, locale, playerScores, walletAddress, width, height, stats]);
+  }, [t, locale, playerScores, walletAddress, width, height, stats, dojoMeta]);
 
   return (
     <canvas
@@ -356,6 +233,118 @@ export const ProfileShareCard: React.FC<ProfileShareCardProps> = ({
     />
   );
 };
+
+// Extracted: draw a consistent dojo badge
+function drawDojoBadge(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  dojoMeta: { key: string; titleI18nKey: string },
+  t: (k: string) => string
+) {
+  const colors: Record<string, string> = {
+    akaTora: "#ef4444",
+    aoiTsuru: "#3b82f6",
+    midoriRyuu: "#10b981",
+    koganeKitsune: "#f59e0b",
+  };
+  const color = colors[dojoMeta.key] || "#a78bfa";
+  const label = t("dojoDetail.dojoColumn");
+  const name = t(dojoMeta.titleI18nKey);
+  ctx.font = "600 14px Inter, ui-sans-serif, system-ui";
+  const labelW = ctx.measureText(label).width;
+  ctx.font = "700 20px Inter, ui-sans-serif, system-ui";
+  const nameW = ctx.measureText(name).width;
+  const padX = 14,
+    chipH = 38,
+    emblemW = 22,
+    gapTxt = 9;
+  const chipW = padX * 2 + emblemW + gapTxt + labelW + gapTxt + nameW;
+  const chipGrad = ctx.createLinearGradient(x, y, x + chipW, y);
+  chipGrad.addColorStop(0, "rgba(255,255,255,0.06)");
+  chipGrad.addColorStop(1, "rgba(255,255,255,0.02)");
+  ctx.fillStyle = chipGrad;
+  roundRect(ctx, x, y, chipW, chipH, 14, true, false);
+  ctx.strokeStyle = "rgba(255,255,255,0.12)";
+  ctx.lineWidth = 1;
+  roundRect(ctx, x, y, chipW, chipH, 14, false, true);
+  // emblem
+  const ex = x + padX + emblemW / 2;
+  const ey = y + chipH / 2;
+  ctx.beginPath();
+  ctx.arc(ex, ey, emblemW / 2.35, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  // tiny glyph (logo) inside emblem
+  ctx.save();
+  ctx.translate(ex, ey);
+  if (dojoMeta.key === "akaTora") {
+    // tiger face simplified
+    ctx.fillStyle = "#ffe4e6";
+    ctx.strokeStyle = "#7f1d1d";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, emblemW / 3.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // stripes
+    ctx.beginPath();
+    ctx.moveTo(-3, -1);
+    ctx.lineTo(-1, 0);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-3, 2);
+    ctx.lineTo(-1, 3);
+    ctx.stroke();
+  } else if (dojoMeta.key === "aoiTsuru") {
+    // crane head + beak
+    ctx.fillStyle = "#e2e8f0";
+    ctx.beginPath();
+    ctx.arc(-1, -1, emblemW / 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#f59e0b";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(1, -1);
+    ctx.lineTo(6, 0);
+    ctx.stroke();
+  } else if (dojoMeta.key === "midoriRyuu") {
+    // dragon curve
+    ctx.strokeStyle = "#065f46";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-6, 2);
+    ctx.quadraticCurveTo(-2, -4, 6, 2);
+    ctx.stroke();
+  } else if (dojoMeta.key === "koganeKitsune") {
+    // fox ears
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.moveTo(-3, -2);
+    ctx.lineTo(-1, -6);
+    ctx.lineTo(1, -2);
+    ctx.closePath();
+    ctx.fill();
+  } else {
+    // neutral inner dot fallback
+    ctx.beginPath();
+    ctx.arc(0, 0, emblemW / 7, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff";
+    ctx.globalAlpha = 0.9;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  // texts
+  let tx = x + padX + emblemW + gapTxt;
+  ctx.font = "600 14px Inter, ui-sans-serif, system-ui";
+  ctx.fillStyle = "#cbd5e1";
+  ctx.fillText(label, tx, y + chipH / 2 + 5);
+  tx += labelW + gapTxt;
+  ctx.font = "700 20px Inter, ui-sans-serif, system-ui";
+  ctx.fillStyle = "#e5e7eb";
+  ctx.fillText(name, tx, y + chipH / 2 + 5);
+}
 
 function roundRect(
   ctx: CanvasRenderingContext2D,

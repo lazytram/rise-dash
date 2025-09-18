@@ -327,9 +327,35 @@
       "buttons": {
         "understood": "I understand"
       }
+    },
+    "dojo": {
+      "title": "Choose Your Clan",
+      "subtitle": "Pick a clan to represent and compete together"
+    },
+    "dojoDetail": {
+      "title": "My Clan",
+      "subtitle": "Overview and progress of your clan"
     }
   },
   "features": {
+    "seasons": {
+      "countdown": {
+        "endsIn": "Season {{id}} ends in",
+        "finished": "Season finished"
+      },
+      "participation": {
+        "title": "Your Seasons",
+        "participated": "{{count}}/{{total}} participated"
+      },
+      "panel": {
+        "title": "Seasons",
+        "past": "Past",
+        "history": "History",
+        "historyTitle": "Seasons History",
+        "noActive": "No active season",
+        "noHistory": "No season history available."
+      }
+    },
     "gameplay": {
       "distance": "Distance traveled",
       "meters": "meters",
@@ -395,6 +421,7 @@
       "rice": "RICE",
       "upgrade": "Upgrade",
       "unlock": "Unlock",
+      "unlocked": "Unlocked",
       "maxLevelReached": "Max Level Reached!",
       "insufficientRice": "Insufficient RICE",
       "noActive": "No active power-up",
@@ -498,7 +525,8 @@
     "leaderboard": "Leaderboard",
     "shop": "Shop",
     "help": "Help",
-    "gamingRoom": "Bento"
+    "gamingRoom": "Bento",
+    "dojo": "Clan"
   },
   "errorBoundary": {
     "title": "Something went wrong",
@@ -511,5 +539,42 @@
     "file": "File",
     "line": "Line",
     "stack": "Stack Trace"
+  },
+  "dojo": {
+    "choose": "Choose",
+    "selected": "Selected",
+    "houses": {
+      "akaTora": {
+        "title": "Aka Tora",
+        "motto": "Strength and courage in every step"
+      },
+      "aoiTsuru": {
+        "title": "Aoi Tsuru",
+        "motto": "Grace and precision lead the way"
+      },
+      "midoriRyuu": {
+        "title": "Midori Ryuu",
+        "motto": "Wisdom and power in harmony"
+      },
+      "koganeKitsune": {
+        "title": "Kogane Kitsune",
+        "motto": "Agility and cunning to outsmart rivals"
+      }
+    }
+  },
+  "dojoDetail": {
+    "noSelection": "No clan selected yet",
+    "totalDistance": "Total Distance",
+    "members": "Members",
+    "rank": "Rank",
+    "progressOverTime": "Progress Over Time",
+    "topContributors": "Top Contributors",
+    "viewLeaderboard": "View Leaderboard",
+    "inviteFriends": "Invite Friends",
+    "switchDojo": "Switch Clan",
+    "viewAllDojos": "Compare Clans",
+    "compareDojosTitle": "Compare Clans",
+    "dojoColumn": "Clan",
+    "yourDojo": "Your clan"
   }
 }

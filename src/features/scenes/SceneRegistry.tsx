@@ -9,8 +9,22 @@ import { DailyRevealScene } from "../daily-reveal/DailyRevealScene";
 import { GamingRoomScene } from "../gaming-room/GamingRoomScene";
 import { MemoryFlipScene } from "../memory-flip/MemoryFlipScene";
 import { TapeRiceScene } from "../tape-rice/TapeRiceScene";
+import { DojoScene } from "../dojo/DojoScene";
+import { DojoDetailScene } from "../dojo/DojoDetailScene";
 
 export const scenes: SceneConfig[] = [
+  {
+    id: SceneType.DOJO,
+    component: DojoScene,
+    title: "Dojo",
+    showHeader: true,
+  },
+  {
+    id: SceneType.DOJO_DETAIL,
+    component: DojoDetailScene,
+    title: "Dojo Details",
+    showHeader: true,
+  },
   {
     id: SceneType.WELCOME,
     component: WelcomeScene,

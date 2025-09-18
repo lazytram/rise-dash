@@ -5,3 +5,4 @@ export * from "./sceneStore";
 export * from "./storeKeys";
 export * from "./toastStore";
 export * from "./tutorialStore";
+export * from "./dojoStore";
