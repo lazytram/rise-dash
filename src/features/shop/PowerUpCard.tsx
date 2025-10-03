@@ -64,28 +64,37 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
     );
 
     const isUnlockOnly = useMemo(
-      () => upgrades.length === 1,
-      [upgrades.length]
+      () => Boolean(powerUp.requiresPurchase) || upgrades.length === 1,
+      [powerUp.requiresPurchase, upgrades.length]
+    );
+
+    // Important: use the raw currentLevel to determine unlocked state for unlock-only power-ups
+    // because clampDisplayLevel maps 0 -> 1 for display purposes.
+    const isActuallyUnlocked = useMemo(
+      () => (isUnlockOnly ? currentLevel >= 1 : boundedCurrentLevel >= 1),
+      [isUnlockOnly, currentLevel, boundedCurrentLevel]
     );
 
     const isButtonDisabled = useMemo(() => {
       const disabledByState = isLoading || isBalanceLoading || !canAfford;
-      // For unlock-only power-ups, hide/disable the button once unlocked
-      if (isUnlockOnly && boundedCurrentLevel >= 1) return true;
+      // For unlock-only power-ups, hide/disable the button once unlocked (use raw level)
+      if (isUnlockOnly && isActuallyUnlocked) return true;
       return disabledByState || isMaxLevel;
     }, [
       isLoading,
       isBalanceLoading,
       canAfford,
       isUnlockOnly,
-      boundedCurrentLevel,
+      isActuallyUnlocked,
       isMaxLevel,
     ]);
 
-    const progressPercentage = useMemo(
-      () => computeProgressPercentage(boundedCurrentLevel, maxLevel),
-      [boundedCurrentLevel, maxLevel]
-    );
+    const progressPercentage = useMemo(() => {
+      if (isUnlockOnly) {
+        return isActuallyUnlocked ? 100 : 0;
+      }
+      return computeProgressPercentage(boundedCurrentLevel, maxLevel);
+    }, [isUnlockOnly, isActuallyUnlocked, boundedCurrentLevel, maxLevel]);
 
     const upgradeDescription = useMemo(
       () =>
@@ -121,7 +130,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
                 >
                   {shortName}
                 </Text>
-                {isUnlockOnly && boundedCurrentLevel >= 1 ? (
+                {isUnlockOnly && isActuallyUnlocked ? (
                   <span className="hidden sm:inline-flex items-center text-[10px] uppercase tracking-wide text-emerald-700/80 bg-emerald-500/10 border border-emerald-600/30 px-1.5 py-0.5 rounded">
                     {t("features.powerUps.unlocked")}
                   </span>
@@ -148,7 +157,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
             <div className="text-sm text-muted-foreground">
               {t(`features.powerUps.description.${powerUp.type}`)}
             </div>
-            {isUnlockOnly && boundedCurrentLevel >= 1 ? (
+            {isUnlockOnly && isActuallyUnlocked ? (
               <span className="mt-2 inline-flex sm:hidden items-center text-[10px] uppercase tracking-wide text-emerald-700/80 bg-emerald-500/10 border border-emerald-600/30 px-1.5 py-0.5 rounded">
                 {t("features.powerUps.unlocked")}
               </span>
@@ -206,7 +215,7 @@ export const PowerUpCard: React.FC<PowerUpCardBlockchainProps> = memo(
               </div>
 
               {/* Upgrade Button */}
-              {!isUnlockOnly || boundedCurrentLevel < 1 ? (
+              {!isUnlockOnly || !isActuallyUnlocked ? (
                 <Button
                   onClick={onUpgrade}
                   disabled={isButtonDisabled}

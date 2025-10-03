@@ -186,7 +186,3 @@ export const SeasonBadge: React.FC<SeasonBadgeProps> = ({
     </div>
   );
 };
-
-
-
-

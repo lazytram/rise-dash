@@ -76,7 +76,3 @@ export function useSeasons(): UseSeasonsResult {
 
   return { loading, error, currentSeason, recentSeasons, participation };
 }
-
-
-
-

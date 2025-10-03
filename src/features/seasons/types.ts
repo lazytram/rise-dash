@@ -6,7 +6,3 @@ export type SeasonMeta = {
 };
 
 export type SeasonParticipation = { id: number; distance: number };
-
-
-
-
