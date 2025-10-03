@@ -1,11 +1,11 @@
 "use client";
 
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
 import { Button } from "@/shared/components/Button";
 import { StatChip } from "@/shared/components/StatChip";
-import { Modal } from "@/shared/components/Modal";
-import { useRice } from "@/shared/hooks/useRice";
+import { MiniGameRewardModal } from "@/shared/components/MiniGameRewardModal";
+import { useGameReward } from "@/shared/hooks/useGameReward";
 import { cn } from "@/shared/utils/cn";
 import { useMemoryFlip } from "./hooks/useMemoryFlip";
 import { MemoryCard } from "./components/MemoryCard";
@@ -35,16 +35,10 @@ export const MemoryFlipContent: React.FC = memo(() => {
   const containerWidth = MAX_COLS * CELL_SIZE + (MAX_COLS - 1) * GAP_PX;
 
   // Modal & save to blockchain
-  const [open, setOpen] = useState(false);
-  const { addRICE, isAdding } = useRice();
-  useEffect(() => {
-    if (finished) setOpen(true);
-  }, [finished]);
-
-  const handleSave = async () => {
-    await addRICE(riceReward);
-    setOpen(false);
-  };
+  const reward = useGameReward({
+    finished,
+    riceAmount: riceReward,
+  });
 
   return (
     <div className="w-full">
@@ -137,35 +131,20 @@ export const MemoryFlipContent: React.FC = memo(() => {
       )}
 
       {/* Reward Modal */}
-      <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
+      <MiniGameRewardModal
+        isOpen={reward.isOpen}
+        onClose={reward.close}
+        onSave={reward.save}
+        isSaving={reward.isSaving}
         title={t("scenes.memoryFlip.congrats")}
-        size="md"
+        subtitle={t("scenes.memoryFlip.riceEarned", { amount: riceReward })}
+        emoji="🍚"
       >
-        <div className="space-y-4">
-          <div className="text-center">
-            <div className="text-4xl mb-2">🍚</div>
-            <div className="text-lg font-semibold">
-              {t("scenes.memoryFlip.riceEarned", { amount: riceReward })}
-            </div>
-            <div className="text-sm text-muted-foreground mt-1">
-              {t("scenes.memoryFlip.summary", {
-                moves,
-                time: (elapsedMs / 1000).toFixed(1),
-              })}
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-3">
-            <Button variant="secondary" onClick={() => setOpen(false)}>
-              {t("common.close")}
-            </Button>
-            <Button onClick={handleSave} loading={isAdding}>
-              {t("features.blockchain.saveScore")}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        {t("scenes.memoryFlip.summary", {
+          moves,
+          time: (elapsedMs / 1000).toFixed(1),
+        })}
+      </MiniGameRewardModal>
     </div>
   );
 });

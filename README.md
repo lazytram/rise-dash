@@ -281,6 +281,71 @@ npm run test:watch
 npm run test:coverage
 ```
 
+### Add a new game to Bento (Gaming Room)
+
+Use the centralized registry so adding a game is one edit with i18n support.
+
+1. Add translations
+
+- Edit `src/i18n/languages/en.json` (and other locales) and provide a title and subtitle/description, for example:
+
+```
+"scenes": {
+  "myNewGame": {
+    "title": "My New Game",
+    "subtitle": "Short catchy description here."
+  }
+}
+```
+
+2. Register the game in the Bento registry
+
+- Edit `src/features/gaming-room/miniGames.registry.ts` and append an entry:
+
+```ts
+{
+  id: "my-new-game",
+  titleKey: "scenes.myNewGame.title",
+  descriptionKey: "scenes.myNewGame.subtitle",
+  scene: SceneType.MY_NEW_GAME, // optional; omit for coming soon
+  status: "available", // or "coming_soon"
+  icon: "🎯", // optional
+}
+```
+
+3. Wire a scene (optional if coming soon)
+
+- Create a scene component under `src/features/<your-game>/<YourGame>Scene.tsx`.
+- Add a SceneType in `src/shared/types/scenes.ts` (e.g., `MY_NEW_GAME = "myNewGame"`).
+- Register the scene in `src/features/scenes/SceneRegistry.tsx` with the component and title.
+
+That’s it: Bento pulls from the registry and automatically renders the card and routes to your scene when available.
+
+4. Award RICE on completion (template)
+
+- Use the shared reward hook in your game content:
+
+```ts
+import { useGameReward } from "@/shared/hooks/useGameReward";
+import { MiniGameRewardModal } from "@/shared/components/MiniGameRewardModal";
+
+// inside your component
+const reward = useGameReward({ finished, riceAmount });
+
+// generic reward modal
+<MiniGameRewardModal
+  isOpen={reward.isOpen}
+  onClose={reward.close}
+  onSave={reward.save}
+  isSaving={reward.isSaving}
+  title={t("scenes.myNewGame.congrats")}
+  subtitle={t("scenes.myNewGame.riceEarned", { amount: riceAmount })}
+  emoji="🎯"
+/>;
+```
+
+- Under the hood it calls `const { addRICE, isAdding } = useRice();` and closes the modal after awarding.
+
 Test files are located alongside their respective source files in `__tests__/` directories.
 
 ---

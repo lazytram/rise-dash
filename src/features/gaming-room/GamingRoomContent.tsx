@@ -8,6 +8,7 @@ import { Badge } from "@/shared/components/Badge";
 import { useSceneStore } from "@/infrastructure/store/sceneStore";
 import { SceneType } from "@/shared/types/scenes";
 import { cn } from "@/shared/utils/cn";
+import { miniGamesRegistry } from "./miniGames.registry";
 
 interface MiniGameItem {
   id: string;
@@ -22,39 +23,17 @@ export const GamingRoomContent: React.FC = memo(() => {
   const { t } = useTranslations();
   const { setScene } = useSceneStore();
 
-  // Registry of minigames. Extend this list to add more games.
-  const miniGames = useMemo<MiniGameItem[]>(
-    () => [
-      {
-        id: "daily-reveal",
-        title: t("scenes.gamingRoom.items.dailyReveal.title"),
-        description: t("scenes.gamingRoom.items.dailyReveal.description"),
-        scene: SceneType.DAILY_REVEAL,
-        status: "available",
-      },
-      {
-        id: "memory-flip",
-        title: t("scenes.memoryFlip.title"),
-        description: t("scenes.memoryFlip.subtitle"),
-        scene: SceneType.MEMORY_FLIP,
-        status: "available",
-      },
-      {
-        id: "tape-rice",
-        title: t("scenes.tapeRice.title"),
-        description: t("scenes.tapeRice.subtitle"),
-        scene: SceneType.TAPE_RICE,
-        status: "available",
-      },
-      {
-        id: "coming-soon-2",
-        title: t("scenes.gamingRoom.items.comingSoon2.title"),
-        description: t("scenes.gamingRoom.items.comingSoon2.description"),
-        status: "coming_soon",
-      },
-    ],
-    [t]
-  );
+  // Resolve the registry with i18n at render time
+  const miniGames = useMemo<MiniGameItem[]>(() => {
+    return miniGamesRegistry.map((def) => ({
+      id: def.id,
+      title: t(def.titleKey),
+      description: t(def.descriptionKey),
+      scene: def.scene,
+      status: def.status,
+      icon: def.icon ? <span>{def.icon}</span> : undefined,
+    }));
+  }, [t]);
 
   const handleOpen = (item: MiniGameItem) => {
     if (item.status === "available" && item.scene) {
@@ -98,7 +77,11 @@ export const GamingRoomContent: React.FC = memo(() => {
                     {item.title}
                   </h3>
                   {item.status === "available" && (
-                    <Badge variant="gradient" size="sm" icon={<span>🍚</span>}>
+                    <Badge
+                      variant="gradient"
+                      size="sm"
+                      icon={item.icon ?? <span>🍚</span>}
+                    >
                       {t("scenes.gamingRoom.badges.earnRice")}
                     </Badge>
                   )}

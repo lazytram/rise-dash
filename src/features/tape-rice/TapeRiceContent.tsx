@@ -1,11 +1,10 @@
 "use client";
 
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import { useTranslations } from "@/shared/hooks/useTranslations";
-import { Button } from "@/shared/components/Button";
 import { StatChip } from "@/shared/components/StatChip";
-import { Modal } from "@/shared/components/Modal";
-import { useRice } from "@/shared/hooks/useRice";
+import { MiniGameRewardModal } from "@/shared/components/MiniGameRewardModal";
+import { useGameReward } from "@/shared/hooks/useGameReward";
 import { useTapeRice } from "./hooks/useTapeRice";
 import { TapeRiceLegend } from "./components/TapeRiceLegend";
 import { TatamiGrid } from "./components/TatamiGrid";
@@ -26,17 +25,10 @@ export const TapeRiceContent: React.FC = memo(() => {
       maxRicePerGame: 30,
     });
 
-  const [open, setOpen] = useState(false);
-  const { addRICE, isAdding } = useRice();
-
-  useEffect(() => {
-    if (state.finished && state.riceEarned > 0) setOpen(true);
-  }, [state.finished, state.riceEarned]);
-
-  const handleSave = async () => {
-    await addRICE(state.riceEarned);
-    setOpen(false);
-  };
+  const reward = useGameReward({
+    finished: state.finished,
+    riceAmount: state.riceEarned,
+  });
 
   // grid style now encapsulated by TatamiGrid
 
@@ -88,34 +80,19 @@ export const TapeRiceContent: React.FC = memo(() => {
         onPlayAgain={reset}
       />
 
-      <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
+      <MiniGameRewardModal
+        isOpen={reward.isOpen}
+        onClose={reward.close}
+        onSave={reward.save}
+        isSaving={reward.isSaving}
         title={t("scenes.tapeRice.congrats")}
-        size="md"
+        subtitle={t("scenes.tapeRice.riceEarned", { amount: state.riceEarned })}
+        emoji="🍙"
       >
-        <div className="space-y-4">
-          <div className="text-center">
-            <div className="text-4xl mb-2">🍙</div>
-            <div className="text-lg font-semibold">
-              {t("scenes.tapeRice.riceEarned", { amount: state.riceEarned })}
-            </div>
-            <div className="text-sm text-muted-foreground mt-1">
-              {t("scenes.tapeRice.summary", {
-                time: (state.timeLeftMs / 1000).toFixed(1),
-              })}
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-3">
-            <Button variant="secondary" onClick={() => setOpen(false)}>
-              {t("common.close")}
-            </Button>
-            <Button onClick={handleSave} loading={isAdding}>
-              {t("features.blockchain.saveScore")}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        {t("scenes.tapeRice.summary", {
+          time: (state.timeLeftMs / 1000).toFixed(1),
+        })}
+      </MiniGameRewardModal>
     </div>
   );
 });
